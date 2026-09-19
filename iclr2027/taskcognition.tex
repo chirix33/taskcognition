@@ -1,0 +1,297 @@
+\documentclass{article}
+\usepackage{iclr2027_conference,times}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{enumitem}
+\usepackage{microtype}
+
+\hypersetup{hidelinks}
+\newcommand{\TC}{\textsc{TaskCognition}}
+\newcommand{\D}{\mathrm{D}}
+\newcommand{\Rpol}{\mathrm{R}}
+\newcommand{\1}{\mathbb{I}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prb}{\mathbb{P}}
+\newcommand{\NA}{\textemdash}
+\newcommand{\hInd}{h_{\mathrm{ind}}}
+\newcommand{\Rspoil}{R_{\mathrm{spoil}}}
+
+\title{TaskCognition: When Does Overuse of Reasoning Models Degrade Answer Performance?}
+\author{Anonymous authors\\Paper under double-blind review}
+% Do not uncomment for anonymous review.
+% \iclrfinalcopy
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Explicit reasoning can improve multi-step problem solving, but it can also increase cost or reduce answer quality in particular settings. We propose \TC{}, a pre-results protocol for choosing between two fixed inference packages on one frozen, reasoning-capable Qwen3-8B checkpoint: one direct package and one bounded native-thinking package. The system contains exactly one learned input-only, pre-generation gate and exactly two answer policies. Its primary objective is expected native task score under an expected all-in cost budget and an aggregate independent-draw spoilage constraint; token-adjusted utility is only a prespecified sensitivity. Training, tuning, untouched certification, and test data have separate roles. A single threshold pair is chosen on tuning data, then an instance-clustered bootstrap on certification data audits aggregate spoilage and cost for that frozen candidate. Failure, including inadequate event count, defaults deployment to direct. We plan complete policy-swap evaluation on Reasoning Gym, LLMThinkBench, and independently generated Mind-Your-Step-inspired diagnostics. This design tests a narrow proposition: whether paired score-benefit and spoilage supervision improves routing beyond identically resourced winner, absolute-score/cost, and confidence baselines. It does not claim that reasoning models generally harm performance. No experiment has been run and no result is reported.
+\end{abstract}
+
+\section{Introduction}
+Chain-of-thought prompting can improve multi-step problem solving \citep{wei2022chain}, but visible or prolonged reasoning is neither free nor uniformly beneficial. Prior studies report task-dependent degradation, non-monotonic effects of trace length, and high token use on basic mathematics \citep{pmlr-v267-liu25t,wu2026more,srivastava-etal-2026-llms}. These findings motivate a deployment question: before producing an answer, can a system identify when a bounded reasoning package is preferable to a direct package?
+
+\paragraph{Motivation.}
+A model's capability does not imply that one inference policy should be used for every query. A direct response can preserve a correct pattern match that an added trace disrupts; conversely, intermediate reasoning can rescue a direct failure. ``Easy'' and ``hard'' are inadequate labels because value is policy-relative. We therefore study the score change produced by replacing one declared package with the other, together with the chance that an independent direct draw succeeds while an independent reasoning draw fails.
+
+Routing itself is not new. Prior work selects among inference paradigms, predicts thinking/non-thinking outcomes, or predicts quality and cost \citep{pan-etal-2024-dynathink,zhou2026select,zhang2025synapseroute,guo2026think,wang2025semantic,pan2025route}. Our question is narrower: \emph{does paired native-score benefit plus independent-draw spoilage supervision improve a constrained two-policy choice under renderer shift?} The study compares two fixed inference packages on one frozen model. Native thinking behavior is part of the package, so the design is not a clean causal intervention on visible traces and does not support a claim that all reasoning models are harmful.
+
+We make four prospective contributions. First, we define score as the primary objective and keep cost and spoilage as explicit constraints. Second, we define stochastic spoilage without same-seed coupling. Third, we separate model fitting, tuning, aggregate certification, and testing, with direct as the mandatory fallback. Fourth, we specify a complete paired audit, fair learned baselines, executable parsers, and fixed renderer-shift case studies. A null result would bound the value of the proposed objective rather than be hidden by adding policies or tasks.
+
+\section{Related Work and Claim Boundary}
+\paragraph{Routing and adaptive effort.}
+Select-then-Solve learns an embedding router across several paradigms; SynapseRoute derives labels from paired thinking/non-thinking outcomes; Think When Needed and When to Reason act before answer generation; and Route to Reason predicts quality and length for model--strategy pairs \citep{zhou2026select,zhang2025synapseroute,guo2026think,wang2025semantic,pan2025route}. Ares and Learning When to Plan allocate effort in broader action spaces \citep{yang2026ares,paglieri2025learning}. \TC{} is a constrained algorithm-selection study \citep{rice1975algorithm}, not a claim to invent routing.
+
+\paragraph{Cascades and risk control.}
+Confidence and perplexity cascades obtain a direct draft before escalation and must pay for that information \citep{lu2025prolonged,lewislim2026confidence}. Adaptive decomposition addresses a broader policy space \citep{liu-etal-2025-select-decompose,prasad-etal-2024-adapt}. Conformal Thinking controls an ongoing trace, while Conformal Risk Control studies expected bounded loss \citep{wang2026conformal,angelopoulos2024conformal}. We use the latter only as motivation for explicit risk accounting. We make no pointwise, conditional-coverage, or distribution-free safety claim.
+
+\paragraph{Reasoning degradation.}
+Mind Your Step, When More Is Less, and LLMThinkBench motivate stress tests \citep{pmlr-v267-liu25t,wu2026more,srivastava-etal-2026-llms}; they already occupy the broad claim that elicited or longer reasoning can hurt. Our proposed evidence would remain model-, package-, scorer-, cap-, and distribution-relative.
+
+\section{Problem and Constrained Objective}
+Let $X$ contain only information available before generation and let $g(X)\in\{0,1\}$ indicate reasoning, with $0=\D$ and $1=\Rpol$. A draw from fixed package $a$ yields $O_a=(S_a,C_a,Z_a)$, where native suite score $S_a\in[0,1]$, $C_a$ is the all-in deployed resource charge, and $Z_a$ records output, parser state, finish reason, tokens, calls, and latency. Define
+\begin{equation}
+ p_a(x)=\Prb(Y_a=1\mid X=x),\quad Y_a=\1\{S_a=1\},\quad
+ \hInd(x)=p_{\D}(x)[1-p_{\Rpol}(x)].
+ \label{eq:hind}
+\end{equation}
+Thus $Y$ marks perfect correctness only, and $\hInd$ is the probability that an independent direct draw is perfect while an independent reasoning draw is not. It does not include every partial-credit loss. For suites with partial-credit scorers, we additionally report $\Prb(S_{\D}-S_{\Rpol}\geq\epsilon)$ for prespecified $\epsilon\in\{0.10,0.25\}$.
+
+For a gate, the primary aggregate spoilage risk is
+\begin{equation}
+ \Rspoil(g)=
+ \frac{\E[g(X)p_{\D}(X)(1-p_{\Rpol}(X))]}
+      {\E[g(X)p_{\D}(X)]},
+ \label{eq:rspoil}
+\end{equation}
+when the denominator is positive. It asks: among reasoning-routed items, conditional on an independent direct draw succeeding, how often would an independent reasoning draw fail? We also report joint harm mass $\E[g\hInd]$, missed-rescue mass $\E[(1-g)(1-p_{\D})p_{\Rpol}]$, routed-rescue mass $\E[g(1-p_{\D})p_{\Rpol}]$, and routing rate $\E[g]$. We denote a realized perfect-to-imperfect event by $H$ and the converse rescue event by $G$; deterministic and common-seed $H/G$ flip tables are sensitivities only.
+
+All-in cost is method-specific. For \TC{},
+\begin{equation}
+ C^{\rm all}_{\TC}=C_{\rm gate}+(1-g)C_{\D}+gC_{\Rpol};
+ \label{eq:costtc}
+\end{equation}
+exactly one answer call is made. For a cascade with escalation indicator $e$, $C^{\rm all}_{\rm cas}=C_{\rm conf}+C_{\D}+eC_{\Rpol}$, where $C_{\rm conf}$ includes any separate router or preview-processing overhead and $C_{\D}$ charges the generated direct draft. A paid self-router similarly adds its call to the selected answer call. The scalar resource charge uses a preregistered hardware and price schedule covering gate computation, input and output processing, and all calls; raw input/generated tokens, call count, and wall-clock latency are always reported separately.
+
+Let $S_g=(1-g)S_{\D}+gS_{\Rpol}$. The primary operating point solves
+\begin{equation}
+ \max_{g\in\mathcal{G}}\ \E[S_g]
+ \quad\text{s.t.}\quad \E[C^{\rm all}_g]\leq\beta,
+ \quad \Rspoil(g)\leq\alpha,
+ \label{eq:objective}
+\end{equation}
+with fixed family weights. The main budget is fixed from training costs as
+$\beta=\bar C_{\rm gate,tr}+\tfrac12(\bar C_{\D,\rm tr}+\bar C_{\Rpol,\rm tr})$;
+$\alpha=0.10$ is a declared operating tolerance, not a universal safety value. Other preregistered budgets form a sensitivity frontier. A token-adjusted $U_\lambda=S-\lambda\widetilde C_{\rm token}$ is secondary only; its normalization and $\lambda$ are frozen before test access.
+
+\section{TaskCognition}
+\label{sec:method}
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{figures/taskcognition_architecture.pdf}
+  \caption{\textbf{Four-stage protocol.} Paired training draws supervise one benefit/harm gate. Tuning calibrates its heads and chooses one threshold pair. An untouched certification split audits aggregate spoilage and expected all-in cost for only that frozen candidate. Passing enables the input-only gate; any failure defaults deployment to direct. The deployed action is exactly one of two answer calls.}
+  \label{fig:architecture}
+\end{figure}
+
+\subsection{One input-only gate and two heads}
+A frozen encoder maps task text to $e(x)$, concatenated with frozen, cheap observables: input length, numeric-token count, multiple-choice markers, symbolic-operator count, and format indicators. Dataset identity, private generator parameters, answers, traces, verifier feedback, and direct drafts are excluded. One two-layer multilayer perceptron with a shared trunk has a score-benefit head $b_\phi(x)\approx\E[S_{\Rpol}-S_{\D}\mid x]$ and a harm head $q_\phi(x)\approx\hInd(x)$. There is exactly one learned pre-generation gate in \TC{}.
+
+For each instance and policy, $K=5$ draws are independently generated from the declared decoding distribution using disjoint, precommitted random-number streams. There is no same-seed pairing in the primary estimand. We estimate $p_a$ and mean score separately, then reduce all $K$ draws to one instance-level row. The benefit head uses weighted Huber loss; the harm head uses fractional-binomial log loss on $\widehat p_{\D}(1-\widehat p_{\Rpol})$. Training-only prevalence determines fixed loss weights.
+
+\subsection{Tuning and the frozen threshold family}
+On the tuning split, one architecture and initialization are selected and separate isotonic maps calibrate $b_\phi$ and $q_\phi$. The candidate family is
+\begin{equation}
+ g_{\tau,\eta}(x)=\Rpol
+ \quad\Longleftrightarrow\quad
+ \widetilde b_\phi(x)>\tau\ \land\ \widetilde q_\phi(x)\leq\eta,
+ \label{eq:gate}
+\end{equation}
+with direct otherwise. The pair $(\tau,\eta)$ maximizing tuning native score subject to the tuning estimates of Eq.~\ref{eq:objective} is selected; ties go to lower expected cost, then lower reasoning rate. Architecture, seed, calibrators, thresholds, $\alpha$, $\beta$, family weights, and analysis code are then frozen. These are calibrated point scores, not per-query confidence bounds.
+
+\subsection{Untouched aggregate certification}
+The single frozen candidate is applied once to the untouched certification split. A one-sided 95\% instance-clustered, family-stratified bootstrap computes upper confidence bounds for Eq.~\ref{eq:rspoil} and expected $C^{\rm all}$. Each resampled unit is an instance containing its $K$-draw aggregates. The candidate receives an \emph{empirical certificate under the declared IID/exchangeability and fixed-family sampling assumptions} only if both upper bounds are at most $\alpha$ and $\beta$. We also require at least 100 effective selected direct-correct instances, with Kish count
+$n_{\rm eff}=(\sum_i g_i\widehat p_{\D i})^2/\sum_i(g_i\widehat p_{\D i})^2$.
+If the count is smaller, certification is labeled uninformative. Any failed or uninformative certificate deploys always-direct; there is no certification-set retuning. The test set remains untouched. Certification says nothing pointwise and is not transferred as a guarantee to external suites or unseen renderers.
+
+\section{Fixed Inference Packages and Answer Contract}
+\label{sec:contract}
+The experiment uses the original unified \texttt{Qwen/Qwen3-8B} checkpoint, which supports thinking/non-thinking modes in one set of weights \citep{yang2025qwen3,qwen3modelcard2026}. The exact model and tokenizer revision is \texttt{b968826d9c46dd6066d109eabc6255188de91218}; the environment will pin Transformers, serving engine, precision, hardware, chat template, and prompt hashes before execution. The two arms are \emph{inference packages}, not a clean causal manipulation of visible text: native mode behavior may differ beyond the visible trace.
+
+Both packages use the same frozen checkpoint, task information, demonstrations, one call, no tools or feedback, one outer answer wrapper, and primary decoding knobs. Package $\D$ sets \texttt{enable\_thinking=False} and requests no visible rationale. Package $\Rpol$ sets \texttt{enable\_thinking=True} and requests a concise visible trace. The primary matched-decoding comparison uses temperature $0.6$, top-$p$ $0.95$, and top-$k$ $20$ for both. A secondary package-faithful sensitivity uses the mode-specific settings recommended by the pinned model card. Temperature zero is a diagnostic only, not a faithful performance setting.
+
+The output cap is selected using training completion curves only. Both packages start at 1,024 generated tokens. If either has less than 99\% valid final-tag completion on training data, the cap increases once to 2,048; it is then frozen before tuning, certification, and test. Separate 256- and 512-token cap runs are sensitivities. Reports distinguish finish reason, generated reasoning tokens, final-tag truncation, parser failure, and completed-but-wrong outputs.
+
+\paragraph{Two-level parser contract.}
+Every response must contain exactly one case-sensitive outer \texttt{<FINAL>}\ldots\texttt{</FINAL>} pair with a nonempty payload and no text after the closing tag. Direct output may contain no other nonwhitespace text; reasoning output may contain a preceding trace. Missing, nested, repeated, or truncated tags fail level one. At level two, a version-pinned adapter sends only the extracted payload to the suite's reference evaluator. LLMThinkBench requires its LaTeX boxed answer when the task specifies one. Reasoning Gym graph coloring requires the pinned JSON schema, and other families retain their documented task-specific syntax. Adapter unit tests cover valid, invalid, repeated-tag, truncated, empty, nested, and adversarial outputs. Parser failures receive score zero and are reported separately from completed wrong answers.
+
+\section{Experimental Design}
+\subsection{Four-way split and renderer allocation}
+Reasoning Gym provides procedural, algorithmically scored tasks \citep{stojanovski2025reasoninggym,reasoninggymsoftware2026}. We pin software version 0.1.25 and six families: \texttt{number\_sorting}, \texttt{number\_format}, \texttt{letter\_counting}, \texttt{graph\_color}, \texttt{shortest\_path}, and \texttt{knights\_knaves}. For each family, renderer 1 supplies 200 training, 75 tuning, 75 untouched certification, and 100 in-distribution test items. Seeds are disjoint and parameter ranges match across these four splits. Two unseen renderers, independently authored without sharing wording and frozen before any model execution, each supply 50 test items per family. Thus the renderer-shift set has 600 items and is reported as 12 fixed family--renderer case studies, not population-level proof. A disjoint parameter-range shift is appendix-only if feasible.
+
+LLMThinkBench v0.1.6 is test-only, with 50 newly generated items from each of comparison, subtraction, multiplication, division, odd/even counting, mean, median, and mode (400 total); scoring uses its pinned evaluator \citep{srivastava-etal-2026-llms,llmthinkbenchsoftware2026}. The third suite is an independently generated \emph{Mind-Your-Step-inspired diagnostic}, not redistributed source data and not a replication \citep{pmlr-v267-liu25t,mindyourstepsoftware2025,taskcognitiondiagnosticplan2026}. It contains 200 artificial-grammar and 200 classification-with-exceptions items, with independent grammar graphs, alphabets, rules, exception placements, and paraphrases. The generator will be frozen and released under Apache-2.0. A separate development pool will validate whether difficulty and direct/CoT response patterns reproduce the intended constructs. Unless that validation succeeds under preregistered criteria, results will be labeled only as a new diagnostic.
+
+\subsection{Identically resourced comparators}
+All input-only learned routers use the same frozen encoder/features, split roles, two-layer trunk parameter budget, optimizer search, initialization count, $K$-rollout instance table, candidate-selection rule, and final score/cost/spoilage constraints. The absolute router predicts $\E[S_{\D}\mid X]$, $\E[S_{\Rpol}\mid X]$, $\E[C_{\D}\mid X]$, and $\E[C_{\Rpol}\mid X]$, then optimizes Eq.~\ref{eq:objective}. The winner router predicts which package has higher mean native score within the cost envelope; it retains ties and both-fail cases and uses a frozen tie-to-direct rule. The no-harm ablation is otherwise identical to \TC{} and removes only the harm head. Logistic and shallow-MLP embedding routers receive the same resources. Nonlearned comparators include always-direct, always-reasoning, random assignments, and observable-count thresholds.
+
+Cascades declare their confidence signal in advance: normalized final-answer log probability and direct-draft perplexity are the primary signals. They pay for the direct answer and any router computation, and pay for reasoning when escalated. A paid zero-shot self-router also pays for its routing call. Cascades are compared at matched total deployed cost, not matched reasoning rate. The offline paired oracle is a nondeployable ceiling.
+
+\subsection{Metrics, adequacy, and inference}
+Primary evaluation reports the paired native-score difference from always-direct for the certificate-selected deployment policy at $\beta$ and $\alpha$, with a family-stratified paired instance bootstrap interval and a 10,000-sign-flip paired permutation test. The instance, not a rollout, is the inferential unit; $K$ rollouts are averaged first. Six Reasoning Gym families receive equal fixed weights, and external suites use equal family weights. Inference is finite-family: unseen-renderer tests cover the 12 fixed cases, and no unseen-family generalization is claimed.
+
+Before execution, a prospective simulation based only on training variances and event prevalence will report 80\% power and the minimum detectable paired score effect at two-sided $0.05$. It will also project the selected direct-correct denominator for certification. If planned counts do not support the target precision, this is recorded before tuning; the primary sample manifest is not altered after test access. Regardless of power, certification requires $n_{\rm eff}\geq100$ or defaults to direct.
+
+We report native score; Eq.~\ref{eq:rspoil}; joint and rescue masses; perfect-correctness $H/G$ sensitivities; $\epsilon$-degradation; routing; input/output and reasoning tokens; calls; latency; finish reasons; truncation; parser failures; completed wrong answers; and oracle regret. Tests use paired instance bootstrap or permutation procedures and Holm correction for nonprimary comparisons. Rare rates receive one-sided bounds when zero is observed. Shift statements are restricted to fixed families/renderers. No non-significant result is interpreted as equivalence.
+
+\subsection{Ablations and falsification}
+Target ablations are the absolute score/cost router, winner router, and reasoning-success prediction. Mechanism ablations remove only the harm head, omit isotonic calibration, or use one rollout; feature ablations use embeddings or counts alone. Protocol sensitivities cover matched versus mode-recommended decoding, temperature-zero diagnostics, 256/512 caps, parser permissiveness, prompt paraphrases, and random-instance versus renderer-held-out splits. Predeclared negative regimes include rare spoilage, direct confidence matching \TC{}, winner labels sufficing, shift miscalibration, and always-direct dominance. None is an implementation failure.
+
+\section{Planned Results and Decision Rule}
+No experiment has been run. Table~\ref{tab:planned} is an empty reporting contract; every result cell remains unavailable. The preregistered confirmatory claim is supported only if the full gate changes decisions and improves the score--spoilage--cost frontier over both the winner and absolute routers. Otherwise the paper will report a negative audit.
+
+\begin{table}[t]
+\caption{Planned primary report. All result cells are intentionally empty pending execution. Costs will be shown as all-in charge and separately as tokens/calls/latency.}
+\label{tab:planned}
+\centering\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lccccccc}
+\toprule
+Method & Native score & $\Rspoil$ & Joint harm & Missed rescue & R rate & All-in cost & Tokens/calls/latency \\
+\midrule
+Always direct & \NA & \NA & \NA & \NA & \NA & \NA & \NA \\
+Always reasoning & \NA & \NA & \NA & \NA & \NA & \NA & \NA \\
+Confidence cascade & \NA & \NA & \NA & \NA & \NA & \NA & \NA \\
+Winner router & \NA & \NA & \NA & \NA & \NA & \NA & \NA \\
+Absolute score/cost router & \NA & \NA & \NA & \NA & \NA & \NA & \NA \\
+No-harm ablation & \NA & \NA & \NA & \NA & \NA & \NA & \NA \\
+\TC{} & \NA & \NA & \NA & \NA & \NA & \NA & \NA \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\section{Limitations and Conclusion}
+The design is conditional on one checkpoint, two native-mode packages, prompts, caps, parsers, cost schedule, and three suites. Package differences cannot identify the causal effect of displaying a rationale or reveal latent cognition. Repeated draws estimate package distributions but do not remove model drift or evaluator error. Perfect-to-imperfect spoilage omits smaller losses, hence the separate $\epsilon$ metric. An empirical certificate depends on IID/exchangeability within its fixed certification design, is aggregate rather than pointwise, and does not guarantee behavior under renderer or suite shift. The 12 renderer cases are not samples from a renderer population. Fresh generation reduces exact duplication but cannot prove absence of pretraining familiarity. Tools, retrieval, multi-call reflection, memory, agents, and other model families are outside the action space.
+
+\TC{} will test whether one pre-generation gate can improve native score without exceeding explicit all-in cost and independent-draw spoilage limits. Passing certification enables one of two fixed answer policies; failure returns to direct. The result may support the paired objective, show that simpler routers suffice, or show that the certificate rarely has enough events. All are informative outcomes; none has yet been observed.
+
+\subsection*{Reproducibility statement}
+Before test access we will publish a dated preregistration and archive model/tokenizer and software revisions, environment lockfile, prompts and hashes, package wrappers, split/seed/renderer manifests, feature code, checkpoints, isotonic maps, the frozen threshold pair, parser/scorer adapters and unit tests, cost ledger, and statistical scripts. Raw prompts and outputs will be released only where model and dataset licenses permit. Otherwise we will release source IDs where allowed, cryptographic hashes, derived instance statistics, and evaluation scripts. The independent diagnostic generator is planned for Apache-2.0 release; third-party materials retain their own terms.
+
+\subsection*{AI use statement (draft stage)}
+Generative AI tools assisted the literature search and organization; critique and revision of hypotheses, estimands, protocol, baselines, ablations, and statistical analysis; drafting and editing manuscript text; preparation of BibTeX metadata; and programmatic layout of Figure~\ref{fig:architecture}. Generative AI has not run the proposed experiments or produced experimental evidence, and all result cells remain empty. This statement describes the current draft, not a verified submission. Before submission, the authors must manually read every cited primary source, verify citation metadata and novelty claims, inspect policies and split manifests, run and review all code and analyses, test parsers and generated artifacts, check prose for unsupported claims or inappropriate overlap, verify license compliance, and revise or remove every unverified AI suggestion. The authors will take responsibility for the final text, claims, code, data processing, figures, and results, including AI-assisted material.
+
+\clearpage
+\bibliography{taskcognition}
+\bibliographystyle{iclr2027_conference}
+
+\appendix
+\section{Frozen Protocol Details}
+\label{app:protocol}
+
+\subsection{Split manifest}
+The planned counts below are design quantities, not results. Renderer 1 uses nonoverlapping generator seeds with the same parameter range across train, tuning, certification, and ID test. Each unseen renderer is authored independently and then frozen. External suites remain test-only.
+\begin{center}\small
+\begin{tabular}{lrrrrr}
+\toprule
+Source & Train & Tune & Certify & ID test & Shift/test \\
+\midrule
+Reasoning Gym, per family & 200 & 75 & 75 & 100 & $2\times50$ \\
+Reasoning Gym, six families & 1200 & 450 & 450 & 600 & 600 \\
+LLMThinkBench, eight families & 0 & 0 & 0 & 0 & 400 \\
+Independent diagnostic, two families & 0 & 0 & 0 & 0 & 400 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Candidate selection and certification pseudocode}
+\begin{verbatim}
+TRAIN (renderer 1 only)
+for each training instance x and policy a in {D,R}:
+    run K independent draws from the frozen package distribution
+    aggregate draws to one row: mean score, p_hat_a,
+        mean all-in cost
+fit one shared-trunk gate with score-benefit and h_ind heads
+use training completion curves to freeze cap at 1024 or 2048
+
+TUNE (renderer 1, disjoint seeds)
+choose architecture and initialization; fit isotonic maps
+for each (tau, eta), set g=R iff b_cal>tau and q_cal<=eta
+choose one pair maximizing native score subject to cost<=beta
+and aggregate R_spoil<=alpha; apply frozen tie-breaks
+freeze everything
+
+CERTIFY (renderer 1, untouched)
+apply the single frozen candidate; never search thresholds
+bootstrap instances within fixed families
+compute one-sided 95% upper bounds for cost and R_spoil
+if either bound fails or n_eff<100: deployment = always-D
+else: deployment = frozen g_tau,eta
+
+TEST
+apply the certification-selected deployment without adaptation
+force D and R offline only to audit every test instance
+\end{verbatim}
+
+\subsection{Prompt and parser interface}
+The shared instruction requires exactly one outer final-answer pair. The direct user wrapper requests only the payload; the reasoning wrapper requests a concise analysis before the same payload. Both receive identical task text and demonstrations.
+\begin{quote}\ttfamily\small
+Return exactly one final answer inside <FINAL> and </FINAL>. The payload must follow the task's required answer syntax. Do not place text after </FINAL> and do not emit another FINAL tag.
+\end{quote}
+The version-pinned adapter first validates the outer wrapper, then applies the task-native parser. Its test corpus includes Unicode confusables, tag text inside quoted JSON, nested tags, duplicated closers, whitespace-only payloads, malformed LaTeX, invalid JSON keys, oversized payloads, and premature end-of-sequence.
+
+\section{Cost, Power, and Statistical Specification}
+The all-in scalar charge will be computed from a public, frozen resource schedule. The artifact will expose each component before aggregation: gate encoder/trunk time; router or confidence overhead; input tokens; generated answer and reasoning tokens; answer-call count; and measured latency on named hardware. Bootstrap resampling is at the instance level after $K$-draw aggregation. Fixed family weights are applied inside every resample.
+
+The prospective power script estimates the standard deviation of paired native-score differences from training instances, simulates the complete tuning-selected routing rule without consulting certification or test outcomes, and reports the minimum detectable effect for 80\% power at two-sided $0.05$. It separately simulates the width of the one-sided spoilage bound as a function of selected direct-correct events. These calculations are planning diagnostics, not results and not permission to tune on certification.
+
+A scalar utility sensitivity uses $\widetilde C_{\rm token}=(C_{\rm token}-m_{\rm tr})/s_{\rm tr}$ with training-only $m_{\rm tr},s_{\rm tr}$ and a preregistered $\lambda$. It cannot replace the primary native-score objective or its cost and spoilage constraints.
+
+\section{Additional Empty Reporting Contracts}
+Every cell below remains empty until execution.
+\begin{table}[h]
+\caption{Planned certificate and event-count report.}
+\centering\small
+\begin{tabular}{lccccc}
+\toprule
+Candidate & Cost UCB & Spoilage UCB & $n_{\rm eff}$ & Decision & Fallback \\
+\midrule
+Frozen \TC{} candidate & \NA & \NA & \NA & \NA & \NA \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\caption{Planned fixed renderer-case report.}
+\centering\small
+\begin{tabular}{lccccc}
+\toprule
+Family--renderer case & Score & $\Rspoil$ & $\epsilon$-degradation & Cost & Parser failure \\
+\midrule
+Twelve prespecified cases & \NA & \NA & \NA & \NA & \NA \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\caption{Planned package-output audit.}
+\centering\small
+\begin{tabular}{lccccc}
+\toprule
+Package & Finish reason & Reasoning tokens & Tag truncation & Parse failure & Complete/wrong \\
+\midrule
+Direct $\D$ & \NA & \NA & \NA & \NA & \NA \\
+Reasoning $\Rpol$ & \NA & \NA & \NA & \NA & \NA \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Release and Interpretation Checklist}
+The frozen record will include the exact Qwen model card and repository revision; Reasoning Gym 0.1.25; LLMThinkBench 0.1.6; the independent diagnostic generator release; all parser adapters; renderer authorship and hashes; RNG stream derivation; cap-selection report; training-only power analysis; and the certificate decision. The Mind Your Step repository currently exposes code and a data-download location but no explicit redistribution license in the cited repository snapshot \citep{mindyourstepsoftware2025}. We therefore will not redistribute its raw data without separate permission. License-limited prompts or outputs will be replaced by permitted IDs, hashes, derived statistics, and evaluation code.
+
+No appendix analysis may change the primary policy, thresholds, budget, spoilage cap, score, family weights, or test decision. Parameter-range shift, common-seed flips, deterministic decoding, mode-recommended decoding, lower token caps, permissive parsing, and token-adjusted utility are labeled sensitivities. Any protocol deviation will be timestamped and classified by whether it occurred before or after certification or test access.
+
+\end{document}

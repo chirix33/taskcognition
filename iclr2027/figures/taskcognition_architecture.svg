@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L9,3 L0,6 Z" fill="#536273"/>
+    </marker>
+    <marker id="greenArrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L9,3 L0,6 Z" fill="#087F5B"/>
+    </marker>
+    <marker id="redArrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L9,3 L0,6 Z" fill="#C2410C"/>
+    </marker>
+    <style>
+      .title{font:700 25px Arial,Helvetica,sans-serif;fill:#1F2937}
+      .label{font:600 20px Arial,Helvetica,sans-serif;fill:#1F2937;text-anchor:middle}
+      .small{font:18px Arial,Helvetica,sans-serif;fill:#334155;text-anchor:middle}
+      .note{font:17px Arial,Helvetica,sans-serif;fill:#475569;text-anchor:middle}
+      .edge{fill:none;stroke:#536273;stroke-width:3;marker-end:url(#arrow)}
+      .green{fill:none;stroke:#087F5B;stroke-width:3;marker-end:url(#greenArrow)}
+      .red{fill:none;stroke:#C2410C;stroke-width:3;marker-end:url(#redArrow)}
+      .box{rx:18;ry:18;stroke-width:3}
+    </style>
+  </defs>
+
+  <!-- Panel 1 -->
+  <rect x="25" y="25" width="750" height="375" rx="24" fill="#F2F8FC" stroke="#6F9EBB" stroke-width="3"/>
+  <text x="55" y="66" class="title">1  TRAINING</text>
+  <rect class="box" x="60" y="125" width="160" height="100" fill="#E8EDF2" stroke="#64748B"/>
+  <text x="140" y="165" class="label">Renderer 1</text><text x="140" y="194" class="small">disjoint seeds</text>
+  <rect class="box" x="285" y="105" width="190" height="140" fill="#E8F2EE" stroke="#009E73"/>
+  <text x="380" y="145" class="label">Force both</text><text x="380" y="174" class="small">D and R</text><text x="380" y="204" class="small">K independent draws</text>
+  <rect class="box" x="540" y="105" width="195" height="140" fill="#FFF4D6" stroke="#E69F00"/>
+  <text x="638" y="143" class="label">Paired targets</text><text x="638" y="173" class="small">native-score benefit</text><text x="638" y="203" class="small">p_D, p_R, h_ind</text>
+  <path class="edge" d="M220 175 H285"/><path class="edge" d="M475 175 H540"/>
+  <rect class="box" x="285" y="285" width="260" height="75" fill="#EAF2FB" stroke="#0072B2"/>
+  <text x="415" y="318" class="label">Fit one input-only gate</text><text x="415" y="346" class="small">benefit head + harm head</text>
+  <path class="edge" d="M638 245 V268 H415 V285"/>
+
+  <!-- Panel 2 -->
+  <rect x="825" y="25" width="750" height="375" rx="24" fill="#FFFAEB" stroke="#C6A13A" stroke-width="3"/>
+  <text x="855" y="66" class="title">2  TUNING</text>
+  <rect class="box" x="860" y="125" width="180" height="100" fill="#E8EDF2" stroke="#64748B"/>
+  <text x="950" y="165" class="label">Separate tasks</text><text x="950" y="194" class="small">not used for fitting</text>
+  <rect class="box" x="1090" y="105" width="205" height="140" fill="#FFF4D6" stroke="#E69F00"/>
+  <text x="1192" y="144" class="label">Calibrate</text><text x="1192" y="174" class="small">choose model seed</text><text x="1192" y="204" class="small">fit isotonic maps</text>
+  <rect class="box" x="1340" y="95" width="200" height="160" fill="#FFF4D6" stroke="#E69F00"/>
+  <text x="1440" y="135" class="label">Select one</text><text x="1440" y="165" class="small">threshold pair (τ, η)</text><text x="1440" y="195" class="small">subject to cost β</text><text x="1440" y="225" class="small">and spoilage α</text>
+  <path class="edge" d="M1040 175 H1090"/><path class="edge" d="M1295 175 H1340"/>
+  <rect class="box" x="1110" y="295" width="210" height="65" fill="#F2ECF4" stroke="#8B5E83"/>
+  <text x="1215" y="336" class="label">Freeze candidate</text>
+  <path class="edge" d="M1440 255 V275 H1215 V295"/>
+  <path class="edge" d="M545 323 H790 V175 H860"/><text x="790" y="153" class="note">predictions</text>
+
+  <!-- Panel 3 -->
+  <rect x="25" y="450" width="750" height="425" rx="24" fill="#FFF5F2" stroke="#CF7B6B" stroke-width="3"/>
+  <text x="55" y="491" class="title">3  UNTOUCHED CERTIFICATION</text>
+  <rect class="box" x="60" y="555" width="185" height="100" fill="#E8EDF2" stroke="#64748B"/>
+  <text x="152" y="594" class="label">Frozen candidate</text><text x="152" y="623" class="small">no retuning</text>
+  <rect class="box" x="300" y="535" width="220" height="140" fill="#FBE9E5" stroke="#D55E00"/>
+  <text x="410" y="574" class="label">Aggregate audit</text><text x="410" y="604" class="small">bootstrap cost UCB</text><text x="410" y="634" class="small">+ spoilage UCB</text>
+  <polygon points="650,520 745,605 650,690 555,605" fill="#FBE9E5" stroke="#D55E00" stroke-width="3"/>
+  <text x="650" y="575" class="label">Both pass?</text><text x="650" y="606" class="small">and n_eff ≥ 100</text><text x="650" y="637" class="small">direct-correct cases</text>
+  <path class="edge" d="M245 605 H300"/><path class="edge" d="M520 605 H555"/>
+  <text x="400" y="730" class="note">One frozen candidate. Failure or inadequate event count means default-to-direct.</text>
+  <path class="edge" d="M1215 360 V425 H152 V555"/><text x="970" y="420" class="note">single candidate</text>
+
+  <!-- Panel 4 -->
+  <rect x="825" y="450" width="750" height="425" rx="24" fill="#F3FAF5" stroke="#6EA27A" stroke-width="3"/>
+  <text x="855" y="491" class="title">4  DEPLOYMENT / TEST</text>
+  <rect class="box" x="855" y="555" width="165" height="100" fill="#E8EDF2" stroke="#64748B"/>
+  <text x="938" y="594" class="label">New task x</text><text x="938" y="623" class="small">input only</text>
+  <rect class="box" x="1070" y="535" width="210" height="140" fill="#EAF2FB" stroke="#0072B2"/>
+  <text x="1175" y="570" class="label">Frozen gate</text><text x="1175" y="600" class="small">R iff benefit &gt; τ</text><text x="1175" y="630" class="small">and harm ≤ η</text>
+  <rect class="box" x="1330" y="535" width="205" height="140" fill="#E8F2EE" stroke="#009E73"/>
+  <text x="1432" y="570" class="label">Exactly one call</text><text x="1432" y="600" class="small">D: direct</text><text x="1432" y="630" class="small">R: reasoning</text>
+  <path class="edge" d="M1020 605 H1070"/><path class="green" d="M1280 605 H1330"/>
+  <rect class="box" x="1110" y="755" width="260" height="80" fill="#F2ECF4" stroke="#8B5E83"/>
+  <text x="1240" y="786" class="label">One FINAL payload</text><text x="1240" y="815" class="small">suite-native scorer</text>
+  <path class="edge" d="M1432 675 V715 H1240 V755"/>
+  <path class="green" d="M745 585 H800 V545 H1070"/><text x="920" y="531" class="note">pass: enable gate</text>
+  <path class="red" d="M650 690 V795 H1110"/><text x="890" y="779" class="note">fail: force D; bypass learned routing</text>
+</svg>
