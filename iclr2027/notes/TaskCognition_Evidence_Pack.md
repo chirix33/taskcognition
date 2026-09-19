@@ -1,5 +1,7 @@
 # TaskCognition Manuscript Evidence Pack
 
+> **SUPERSEDED — NOT AN IMPLEMENTATION SPECIFICATION (19 September 2026).** This historical evidence pack is retained for literature traceability only. The active manuscript is [`../taskcognition.tex`](../taskcognition.tex); governance and freezing rules are in [`../PROTOCOL_SOURCE_OF_TRUTH.md`](../PROTOCOL_SOURCE_OF_TRUTH.md). This pack conflicts with the active protocol on the recommended title, per-query LCB/UCB gate, utility-first and same-seed framing, 256-token primary cap, renderer allocation, and train/calibration/test split. Do **not** use it to implement a gate, estimator, output cap, split, audit, or final claim.
+
 **Status:** Pre-results manuscript plan. **No TaskCognition experiment has been run, and no proposed effect has been observed.** Every TaskCognition architecture, hypothesis, comparison, table, and analysis below is prospective.
 
 **Literature cutoff:** 19 September 2026.
