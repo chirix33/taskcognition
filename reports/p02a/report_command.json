@@ -1,0 +1,12 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-09-28T18:48:13.218121+00:00",
+  "argv": [
+    ".venv-inference/Scripts/python.exe",
+    "scripts/p02a_report.py"
+  ],
+  "exit": 0,
+  "seconds": 4.162184699998761,
+  "stdout": "{\n  \"evidence_kind\": \"development_observation\",\n  \"status\": \"READY_FOR_REVIEW\",\n  \"dispatched\": 24,\n  \"admitted\": 24,\n  \"reserved_tokens\": 24576,\n  \"generated_tokens\": 11298,\n  \"conservative_gpu_residency_seconds\": 750.1206486999836,\n  \"generation_seconds\": 461.3995302999974,\n  \"load_seconds\": 187.02556330000516,\n  \"execution_wall_seconds\": 753.4279819000003,\n  \"peak_allocated_bytes\": 16664601600,\n  \"peak_reserved_bytes\": 16919822336,\n  \"live_D_valid_final\": 3,\n  \"software_incidents\": 0,\n  \"warmups\": 0,\n  \"gate_generations\": 0,\n  \"gate_training\": 0,\n  \"final_labels\": 0,\n  \"scalar_cost\": \"provisional conservative worker residency; not frozen audit support bounds\",\n  \"backup\": \"local raw evidence plus verified local ZIP only; no off-machine backup\"\n}\n",
+  "stderr": ""
+}

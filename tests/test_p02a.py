@@ -54,6 +54,20 @@ class BoundaryTests(unittest.TestCase):
             with tempfile.TemporaryDirectory() as td:
                 q=self.request();q[field]=value
                 with self.assertRaises(IntegrityError):reserve(Path(td),q,{'requests':[{'request_id':'q','request_hash':digest(q)}]})
+    def test_exact_twenty_four_attempt_ceiling_includes_unknown(self):
+        with tempfile.TemporaryDirectory() as td:
+            run=Path(td);requests=[]
+            for i in range(25):
+                q=self.request();q.update(request_id=str(i),stream_id=digest(i));requests.append(q)
+            plan={'requests':[dict(request_id=q['request_id'],request_hash=digest(q)) for q in requests]}
+            from taskcognition.p01_ledger import terminal
+            for q in requests[:23]:
+                reserve(run,q,plan)
+                terminal(run,q['request_id'],dict(request_id=q['request_id']))
+                append(run,'resource',q['request_id'],seconds=1)
+            reserve(run,requests[23],plan)  # Unknown admission consumes slot 24.
+            self.assertEqual(sum(r['reserved_output_tokens'] for r in reconcile(run).values()),24576)
+            with self.assertRaisesRegex(IntegrityError,'budget exhausted'):reserve(run,requests[24],plan)
     def test_budget_reserves_cleanup(self):
         envelope_check(5100,6900,496*1024**2)
         for values in [(5100.001,0,0),(0,6900.001,0),(0,0,496*1024**2+1)]:

@@ -1,0 +1,13 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-09-28T18:35:30.792108+00:00",
+  "argv": [
+    ".venv-inference/Scripts/python.exe",
+    "-m",
+    "taskcognition.p02_runner"
+  ],
+  "exit": 0,
+  "seconds": 753.6031036000022,
+  "stdout": "{'request_id': '00_number_sorting_D_0', 'seconds': 15.564913700000034, 'finish': 'eos'}\n{'request_id': '01_number_sorting_R_0', 'seconds': 40.34824589999698, 'finish': 'eos'}\n{'request_id': '02_number_format_D_0', 'seconds': 13.982496199998423, 'finish': 'eos'}\n{'request_id': '03_number_format_R_0', 'seconds': 42.3159169999999, 'finish': 'eos'}\n{'request_id': '04_letter_counting_D_0', 'seconds': 12.57096029999957, 'finish': 'eos'}\n{'request_id': '05_letter_counting_R_0', 'seconds': 40.10552919999827, 'finish': 'eos'}\n{'request_id': '06_graph_color_D_0', 'seconds': 14.189409899998282, 'finish': 'eos'}\n{'request_id': '07_graph_color_R_0', 'seconds': 40.33111219999773, 'finish': 'eos'}\n{'request_id': '08_shortest_path_D_0', 'seconds': 20.691929000000528, 'finish': 'eos'}\n{'request_id': '09_shortest_path_R_0', 'seconds': 46.599715299998934, 'finish': 'cap'}\n{'request_id': '10_knights_knaves_D_0', 'seconds': 26.942739899997832, 'finish': 'eos'}\n{'request_id': '11_knights_knaves_R_0', 'seconds': 56.980355300001975, 'finish': 'cap'}\n{'request_id': '12_number_sorting_D_1', 'seconds': 14.538592200002313, 'finish': 'eos'}\n{'request_id': '13_number_sorting_R_1', 'seconds': 38.17306290000124, 'finish': 'eos'}\n{'request_id': '14_number_format_D_1', 'seconds': 13.884444399998756, 'finish': 'eos'}\n{'request_id': '15_number_format_R_1', 'seconds': 53.09566529999938, 'finish': 'cap'}\n{'request_id': '16_letter_counting_D_1', 'seconds': 12.550786399999197, 'finish': 'eos'}\n{'request_id': '17_letter_counting_R_1', 'seconds': 47.62693080000099, 'finish': 'eos'}\n{'request_id': '18_graph_color_D_1', 'seconds': 14.96267109999826, 'finish': 'eos'}\n{'request_id': '19_graph_color_R_1', 'seconds': 34.05953969999973, 'finish': 'eos'}\n{'request_id': '20_shortest_path_D_1', 'seconds': 13.30531239999982, 'finish': 'eos'}\n{'request_id': '21_shortest_path_R_1', 'seconds': 55.40839359999882, 'finish': 'cap'}\n{'request_id': '22_knights_knaves_D_1', 'seconds': 35.33753689999867, 'finish': 'eos'}\n{'request_id': '23_knights_knaves_R_1', 'seconds': 46.554389099997934, 'finish': 'eos'}\n",
+  "stderr": ""
+}
