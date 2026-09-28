@@ -1,0 +1,20 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-09-28T14:45:24.329281+00:00",
+  "argv": [
+    "C:/Users/aashraf/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe",
+    "-m",
+    "pip",
+    "wheel",
+    ".",
+    "--no-deps",
+    "--no-index",
+    "--no-build-isolation",
+    "--wheel-dir",
+    "dist/p01-final"
+  ],
+  "exit": 0,
+  "seconds": 1.9314091999999619,
+  "stdout": "Processing .\\.\n  Preparing metadata (pyproject.toml): started\n  Preparing metadata (pyproject.toml): finished with status 'done'\nBuilding wheels for collected packages: taskcognition\n  Building wheel for taskcognition (pyproject.toml): started\n  Building wheel for taskcognition (pyproject.toml): finished with status 'done'\n  Created wheel for taskcognition: filename=taskcognition-0.1.1-py3-none-any.whl size=23876 sha256=fff47dcee4cde08f0abc551c14ef4312eb4d5424d0796982d2f534efcd19284d\n  Stored in directory: <home>\\AppData\\Local\\Temp\\pip-ephem-wheel-cache-sdbwe3ys\\wheels\\43\\0c\\15\\02f451538a95dc986b6a6a955f9cb855cd2fdd42e37af6bc05\nSuccessfully built taskcognition\n",
+  "stderr": ""
+}

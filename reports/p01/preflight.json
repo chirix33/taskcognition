@@ -1,0 +1,60 @@
+{
+  "evidence_kind": "development_observation",
+  "purpose": "P01_local_P00_revalidation",
+  "timestamp_utc": "2026-09-28T14:14:36.999493+00:00",
+  "code_commit": "255860890dd480cdd8607e27957b251aa3e1cb1f",
+  "packet_commit": "44cb33d8a178de9a15bf5ea3793e7d9ea64f7b6f",
+  "commands": [
+    {
+      "argv": [
+        ".venv/Scripts/python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": "test_canonical_hash_and_disjoint_streams (test_p00.ArtifactTests.test_canonical_hash_and_disjoint_streams) ... ok\ntest_cli_collect_is_guard_only (test_p00.ArtifactTests.test_cli_collect_is_guard_only) ... ok\ntest_complete_roundtrip_and_resume_are_immutable (test_p00.ArtifactTests.test_complete_roundtrip_and_resume_are_immutable) ... ok\ntest_deterministic_artifacts_across_directories (test_p00.ArtifactTests.test_deterministic_artifacts_across_directories) ... ok\ntest_doctor_does_not_load_models (test_p00.ArtifactTests.test_doctor_does_not_load_models) ... ok\ntest_dry_run_writes_nothing (test_p00.ArtifactTests.test_dry_run_writes_nothing) ... ok\ntest_final_development_and_traversal_output_rejected (test_p00.ArtifactTests.test_final_development_and_traversal_output_rejected) ... ok\ntest_immutable_write (test_p00.ArtifactTests.test_immutable_write) ... ok\ntest_interrupted_write_is_retained_not_regenerated (test_p00.ArtifactTests.test_interrupted_write_is_retained_not_regenerated) ... ok\ntest_json_duplicate_keys_nonfinite_and_path_escape (test_p00.ArtifactTests.test_json_duplicate_keys_nonfinite_and_path_escape) ... ok\ntest_missing_corrupted_unexpected_evidence_rejected (test_p00.ArtifactTests.test_missing_corrupted_unexpected_evidence_rejected) ... ok\ntest_rehashed_wrong_report_still_fails_recomputation (test_p00.ArtifactTests.test_rehashed_wrong_report_still_fails_recomputation) ... ok\ntest_feature_allowlist_rejects_leaks (test_p00.GuardTests.test_feature_allowlist_rejects_leaks) ... ok\ntest_final_label_kinds_do_not_authorize_collection (test_p00.GuardTests.test_final_label_kinds_do_not_authorize_collection) ... ok\ntest_final_label_kinds_match_exact_split (test_p00.GuardTests.test_final_label_kinds_match_exact_split) ... ok\ntest_hash_or_fake_freeze_cannot_enable_p00 (test_p00.GuardTests.test_hash_or_fake_freeze_cannot_enable_p00) ... ok\ntest_manifest_scope_and_freeze (test_p00.GuardTests.test_manifest_scope_and_freeze) ... ok\ntest_no_final_collection_without_freeze (test_p00.GuardTests.test_no_final_collection_without_freeze) ... ok\ntest_stage_guard_rejects_unauthorized_phase (test_p00.GuardTests.test_stage_guard_rejects_unauthorized_phase) ... ok\ntest_train_reader_rejects_all_nontrain_splits (test_p00.GuardTests.test_train_reader_rejects_all_nontrain_splits) ... ok\ntest_admitted_failure_retained (test_p00.TargetTests.test_admitted_failure_retained) ... ok\ntest_all_perfect_and_exact_ties_direct (test_p00.TargetTests.test_all_perfect_and_exact_ties_direct) ... ok\ntest_analytical_k4 (test_p00.TargetTests.test_analytical_k4) ... ok\ntest_cross_mode_rng_reuse_rejected (test_p00.TargetTests.test_cross_mode_rng_reuse_rejected) ... ok\ntest_duplicate_draw_id_rejected (test_p00.TargetTests.test_duplicate_draw_id_rejected) ... ok\ntest_equal_distributions_can_have_spoilage (test_p00.TargetTests.test_equal_distributions_can_have_spoilage) ... ok\ntest_invalid_score_cost_correctness (test_p00.TargetTests.test_invalid_score_cost_correctness) ... ok\ntest_k_one_rejected (test_p00.TargetTests.test_k_one_rejected) ... ok\ntest_missing_draw_not_zero_imputed (test_p00.TargetTests.test_missing_draw_not_zero_imputed) ... ok\ntest_mixed_cost_units_rejected (test_p00.TargetTests.test_mixed_cost_units_rejected) ... ok\ntest_mixed_evidence_or_split_rejected (test_p00.TargetTests.test_mixed_evidence_or_split_rejected) ... ok\ntest_near_one_is_not_perfect (test_p00.TargetTests.test_near_one_is_not_perfect) ... ok\ntest_partial_credit_not_exact_match (test_p00.TargetTests.test_partial_credit_not_exact_match) ... ok\ntest_wrong_package_rejected (test_p00.TargetTests.test_wrong_package_rejected) ... ok\n\n----------------------------------------------------------------------\nRan 34 tests in 2.084s\n\nOK\n",
+      "seconds": 2.536348500000031
+    },
+    {
+      "argv": [
+        ".venv/Scripts/python.exe",
+        "-m",
+        "taskcognition",
+        "verify-artifacts",
+        "--run",
+        "artifacts/fixtures/p00-analytical-v2"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"evidence_kind\": \"fixture\",\n  \"files\": 54,\n  \"manifest_sha256\": \"c7575da8e3b7cef956138f172627b3d45f0821947dc7ed2471bae2ad3ea4db3a\",\n  \"status\": \"VERIFIED\"\n}\n",
+      "stderr": "",
+      "seconds": 0.2421487999999954
+    }
+  ],
+  "checks": [
+    {
+      "path": "reports/phases/P00_completion.md",
+      "sha256": "d92635ea671490365e88a7b4a8d4adb98d9f3fe333d29fc93ae83cf05e0494f2",
+      "matches": true
+    },
+    {
+      "path": "reports/phases/P00_evidence_manifest.json",
+      "sha256": "cf65f8d4ef5b398f0e527cb7d78590b347afaf84d9ebe1707737b687ddedd935",
+      "matches": true
+    },
+    {
+      "path": "reports/phases/P00_proposed_seal.md",
+      "sha256": "e414b43d0d20ed6e69a1aa974be3f50ff00edc8ba4e6250695d67a5c75670331",
+      "matches": true
+    }
+  ],
+  "model_calls": 0,
+  "indexed_files_verified_in_snapshot_and_worktree": 162,
+  "original_source_files_verified": 30,
+  "C01_C03_present": true,
+  "status": "PASS"
+}

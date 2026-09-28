@@ -1,0 +1,14 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-09-28T14:31:20.923894+00:00",
+  "argv": [
+    ".venv-inference/Scripts/python.exe",
+    "-m",
+    "taskcognition.p01_smoke",
+    "prepare"
+  ],
+  "exit": 1,
+  "seconds": 4.348691599999938,
+  "stdout": "",
+  "stderr": "Traceback (most recent call last):\n  File \"<frozen runpy>\", line 198, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"<home>\\Desktop\\Work\\TaskCognition\\implementation\\.venv-inference\\Lib\\site-packages\\taskcognition\\p01_smoke.py\", line 166, in <module>\n    if __name__=='__main__':main()\n                            ^^^^^^\n  File \"<home>\\Desktop\\Work\\TaskCognition\\implementation\\.venv-inference\\Lib\\site-packages\\taskcognition\\p01_smoke.py\", line 156, in main\n    if args.action=='prepare':prepare(root)\n                              ^^^^^^^^^^^^^\n  File \"<home>\\Desktop\\Work\\TaskCognition\\implementation\\.venv-inference\\Lib\\site-packages\\taskcognition\\p01_smoke.py\", line 67, in prepare\n    assert opening==(mode=='R')\n           ^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+}

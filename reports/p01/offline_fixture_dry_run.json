@@ -1,0 +1,17 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-09-28T14:40:04.934633+00:00",
+  "argv": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "taskcognition",
+    "fixture-run",
+    "--output",
+    "artifacts/fixtures/p01-offline-check",
+    "--dry-run"
+  ],
+  "exit": 0,
+  "seconds": 0.17700360000026194,
+  "stdout": "{\n  \"actual_model_calls\": 0,\n  \"evidence_kind\": \"fixture\",\n  \"input_clusters\": 6,\n  \"output\": \"artifacts/fixtures/p01-offline-check\",\n  \"status\": \"PLAN\",\n  \"synthetic_draw_records\": 48\n}\n",
+  "stderr": ""
+}

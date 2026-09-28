@@ -1,0 +1,13 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-09-28T16:11:51.682817+00:00",
+  "argv": [
+    ".venv-inference/Scripts/python.exe",
+    "scripts/p01_correction_verify.py",
+    "replay"
+  ],
+  "exit": 0,
+  "seconds": 0.2463980000002266,
+  "stdout": "PASS: protected files unchanged; 15 events, 3 historical calls, 567 tokens, scores 0/1/0; zero new model activity.\n",
+  "stderr": ""
+}

@@ -1,0 +1,12 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-09-28T14:48:26.170213+00:00",
+  "argv": [
+    ".venv/Scripts/python.exe",
+    "scripts/p01_ready.py"
+  ],
+  "exit": 0,
+  "seconds": 0.10385610000002998,
+  "stdout": "P01 READY_FOR_REVIEW; P00 remains SEALED; no next phase authorized\n",
+  "stderr": ""
+}

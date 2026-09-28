@@ -1,0 +1,14 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-09-28T14:25:28.721223+00:00",
+  "argv": [
+    ".venv/Scripts/python.exe",
+    "-X",
+    "utf8",
+    "scripts/p01_download_model.py"
+  ],
+  "exit": 0,
+  "seconds": 206.015674,
+  "stdout": "Downloading LICENSE (11343 bytes)\nVerified LICENSE\nDownloading README.md (16660 bytes)\nVerified README.md\nDownloading config.json (728 bytes)\nVerified config.json\nDownloading generation_config.json (239 bytes)\nVerified generation_config.json\nDownloading merges.txt (1671853 bytes)\nVerified merges.txt\nDownloading model-00001-of-00005.safetensors (3996250744 bytes)\nVerified model-00001-of-00005.safetensors\nDownloading model-00002-of-00005.safetensors (3993160032 bytes)\nVerified model-00002-of-00005.safetensors\nDownloading model-00003-of-00005.safetensors (3959604768 bytes)\nVerified model-00003-of-00005.safetensors\nDownloading model-00004-of-00005.safetensors (3187841392 bytes)\nVerified model-00004-of-00005.safetensors\nDownloading model-00005-of-00005.safetensors (1244659840 bytes)\nVerified model-00005-of-00005.safetensors\nDownloading model.safetensors.index.json (32878 bytes)\nVerified model.safetensors.index.json\nDownloading tokenizer.json (11422654 bytes)\nVerified tokenizer.json\nDownloading tokenizer_config.json (9732 bytes)\nVerified tokenizer_config.json\nDownloading vocab.json (2776833 bytes)\nVerified vocab.json\nPinned snapshot complete; all weight LFS SHA-256 hashes verified.\n",
+  "stderr": ""
+}

@@ -1,0 +1,14 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-09-28T14:33:00.820990+00:00",
+  "argv": [
+    ".venv-inference/Scripts/python.exe",
+    "-m",
+    "pip",
+    "check"
+  ],
+  "exit": 0,
+  "seconds": 0.5222721000000092,
+  "stdout": "No broken requirements found.\n",
+  "stderr": ""
+}

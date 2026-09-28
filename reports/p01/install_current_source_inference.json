@@ -1,0 +1,18 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-09-28T14:31:19.150854+00:00",
+  "argv": [
+    ".venv-inference/Scripts/python.exe",
+    "-m",
+    "pip",
+    "install",
+    "--no-index",
+    "--no-deps",
+    "--force-reinstall",
+    "tmp/wheels/taskcognition-0.1.0-py3-none-any.whl"
+  ],
+  "exit": 0,
+  "seconds": 0.6963212999999087,
+  "stdout": "Processing c:\\users\\aashraf\\desktop\\work\\taskcognition\\implementation\\tmp\\wheels\\taskcognition-0.1.0-py3-none-any.whl\nInstalling collected packages: taskcognition\nSuccessfully installed taskcognition-0.1.0\n",
+  "stderr": ""
+}

@@ -1,0 +1,19 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-09-28T16:10:04.968235+00:00",
+  "argv": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-p",
+    "test_p01_worker_correction.py",
+    "-v"
+  ],
+  "exit": 0,
+  "seconds": 0.7388060999992376,
+  "stdout": "",
+  "stderr": "test_admission_callback_error_stops_before_generate (test_p01_worker_correction.WorkerBoundaryTests.test_admission_callback_error_stops_before_generate) ... ok\ntest_arbitrary_runtimeerror_is_not_allowlisted (test_p01_worker_correction.WorkerBoundaryTests.test_arbitrary_runtimeerror_is_not_allowlisted) ... ok\ntest_damaged_cancellation_record_stops_after_tokens (test_p01_worker_correction.WorkerBoundaryTests.test_damaged_cancellation_record_stops_after_tokens) ... ok\ntest_deliberate_cancellation_retains_documented_zero (test_p01_worker_correction.WorkerBoundaryTests.test_deliberate_cancellation_retains_documented_zero) ... ok\ntest_error_accounted_once_and_unknown_exit_zero_cannot_hide_it (test_p01_worker_correction.WorkerBoundaryTests.test_error_accounted_once_and_unknown_exit_zero_cannot_hide_it) ... ok\ntest_error_after_valid_looking_partial_output_never_scores (test_p01_worker_correction.WorkerBoundaryTests.test_error_after_valid_looking_partial_output_never_scores) ... ok\ntest_first_token_ledger_io_error_retains_partial_diagnostic (test_p01_worker_correction.WorkerBoundaryTests.test_first_token_ledger_io_error_retains_partial_diagnostic) ... ok\ntest_generate_typeerror_stops_without_score (test_p01_worker_correction.WorkerBoundaryTests.test_generate_typeerror_stops_without_score) ... ok\ntest_generate_valueerror_stops_without_score (test_p01_worker_correction.WorkerBoundaryTests.test_generate_valueerror_stops_without_score) ... ok\ntest_integrityerror_still_propagates (test_p01_worker_correction.WorkerBoundaryTests.test_integrityerror_still_propagates) ... ok\ntest_known_timeout_retains_valid_output (test_p01_worker_correction.WorkerBoundaryTests.test_known_timeout_retains_valid_output) ... ok\ntest_offline_correction_guard_before_backend_import_or_dispatch (test_p01_worker_correction.WorkerBoundaryTests.test_offline_correction_guard_before_backend_import_or_dispatch) ... ok\ntest_streamed_returned_mismatch_is_incident (test_p01_worker_correction.WorkerBoundaryTests.test_streamed_returned_mismatch_is_incident) ... ok\ntest_successful_generation_scores_normally (test_p01_worker_correction.WorkerBoundaryTests.test_successful_generation_scores_normally) ... ok\ntest_supervisor_rejects_legacy_swallowed_model_error_even_exit_zero (test_p01_worker_correction.WorkerBoundaryTests.test_supervisor_rejects_legacy_swallowed_model_error_even_exit_zero) ... ok\n\n----------------------------------------------------------------------\nRan 15 tests in 0.458s\n\nOK\n"
+}

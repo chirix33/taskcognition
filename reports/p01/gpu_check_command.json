@@ -1,0 +1,14 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-09-28T14:24:39.518260+00:00",
+  "argv": [
+    ".venv-inference/Scripts/python.exe",
+    "-X",
+    "utf8",
+    "scripts/p01_gpu_check.py"
+  ],
+  "exit": 0,
+  "seconds": 6.201496399999996,
+  "stdout": "{\n  \"evidence_kind\": \"development_observation\",\n  \"purpose\": \"GPU kernel compatibility, no model\",\n  \"timestamp_utc\": \"2026-09-28T14:24:39.636052+00:00\",\n  \"model_calls\": 0,\n  \"python\": \"3.12.14\",\n  \"torch\": \"2.11.0+cu128\",\n  \"cuda_runtime\": \"12.8\",\n  \"device\": \"NVIDIA GeForce RTX 5090\",\n  \"capability\": [\n    12,\n    0\n  ],\n  \"architectures\": [\n    \"sm_75\",\n    \"sm_80\",\n    \"sm_86\",\n    \"sm_90\",\n    \"sm_100\",\n    \"sm_120\"\n  ],\n  \"native_bf16_reported\": true,\n  \"checks\": [\n    {\n      \"operation\": \"64x64 ones matmul\",\n      \"dtype\": \"torch.float32\",\n      \"expected\": 64,\n      \"passed\": true,\n      \"seconds\": 0.13458510000009483\n    },\n    {\n      \"operation\": \"64x64 ones matmul\",\n      \"dtype\": \"torch.bfloat16\",\n      \"expected\": 64,\n      \"passed\": true,\n      \"seconds\": 0.0628743999998278\n    },\n    {\n      \"operation\": \"built-in SDPA MATH BF16\",\n      \"expected\": 1,\n      \"passed\": true,\n      \"seconds\": 0.03615689999992355\n    }\n  ],\n  \"warnings\": [],\n  \"max_allocated_bytes\": 8581120,\n  \"max_reserved_bytes\": 23068672,\n  \"gpu_free_total_bytes\": [\n    32343326720,\n    34190458880\n  ],\n  \"status\": \"PASS\",\n  \"process_elapsed_seconds\": 5.757953900000075\n}\n",
+  "stderr": ""
+}

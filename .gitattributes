@@ -1,0 +1,16 @@
+# Evidence/source hashes cover exact bytes on every checkout.
+artifacts/** -text
+reports/** -text
+src/** -text
+tests/** -text
+scripts/** -text
+docs/** -text
+AGENTS.md -text
+README.md -text
+.gitignore -text
+.gitattributes -text
+configs/** -text
+requirements-build.lock -text
+pyproject.toml -text
+*.pdf -text
+vendor/** -text

@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools==84.0.0", "wheel==0.48.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "taskcognition"
+version = "0.1.1"
+description = "TaskCognition offline tools and bounded P01 local smoke"
+requires-python = ">=3.12"
+dependencies = []
+
+[project.scripts]
+taskcognition = "taskcognition.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -1,0 +1,54 @@
+{
+  "evidence_kind": "development_observation",
+  "purpose": "GPU kernel compatibility, no model",
+  "timestamp_utc": "2026-09-28T14:24:39.636052+00:00",
+  "model_calls": 0,
+  "python": "3.12.14",
+  "torch": "2.11.0+cu128",
+  "cuda_runtime": "12.8",
+  "device": "NVIDIA GeForce RTX 5090",
+  "capability": [
+    12,
+    0
+  ],
+  "architectures": [
+    "sm_75",
+    "sm_80",
+    "sm_86",
+    "sm_90",
+    "sm_100",
+    "sm_120"
+  ],
+  "native_bf16_reported": true,
+  "checks": [
+    {
+      "operation": "64x64 ones matmul",
+      "dtype": "torch.float32",
+      "expected": 64,
+      "passed": true,
+      "seconds": 0.13458510000009483
+    },
+    {
+      "operation": "64x64 ones matmul",
+      "dtype": "torch.bfloat16",
+      "expected": 64,
+      "passed": true,
+      "seconds": 0.0628743999998278
+    },
+    {
+      "operation": "built-in SDPA MATH BF16",
+      "expected": 1,
+      "passed": true,
+      "seconds": 0.03615689999992355
+    }
+  ],
+  "warnings": [],
+  "max_allocated_bytes": 8581120,
+  "max_reserved_bytes": 23068672,
+  "gpu_free_total_bytes": [
+    32343326720,
+    34190458880
+  ],
+  "status": "PASS",
+  "process_elapsed_seconds": 5.757953900000075
+}

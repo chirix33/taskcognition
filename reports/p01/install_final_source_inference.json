@@ -1,0 +1,18 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-09-28T14:45:37.265086+00:00",
+  "argv": [
+    ".venv-inference/Scripts/python.exe",
+    "-m",
+    "pip",
+    "install",
+    "--no-index",
+    "--no-deps",
+    "--force-reinstall",
+    "dist/p01-final/taskcognition-0.1.1-py3-none-any.whl"
+  ],
+  "exit": 0,
+  "seconds": 0.7531057000001056,
+  "stdout": "Processing c:\\users\\aashraf\\desktop\\work\\taskcognition\\implementation\\dist\\p01-final\\taskcognition-0.1.1-py3-none-any.whl\nInstalling collected packages: taskcognition\n  Attempting uninstall: taskcognition\n    Found existing installation: taskcognition 0.1.0\n    Uninstalling taskcognition-0.1.0:\n      Successfully uninstalled taskcognition-0.1.0\nSuccessfully installed taskcognition-0.1.1\n",
+  "stderr": ""
+}

@@ -1,0 +1,14 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-09-28T16:08:48.527915+00:00",
+  "argv": [
+    ".venv/Scripts/python.exe",
+    "artifacts/development/P01_worker_exception_probe.py",
+    "--repo",
+    "."
+  ],
+  "exit": 1,
+  "seconds": 0.09251419999964128,
+  "stdout": "TypeError: SWALLOWED as 'TypeError: injected software/evidence failure'\nValueError: SWALLOWED as 'ValueError: injected software/evidence failure'\nOSError: SWALLOWED as 'OSError: injected software/evidence failure'\nIntegrityError: propagated\n",
+  "stderr": ""
+}

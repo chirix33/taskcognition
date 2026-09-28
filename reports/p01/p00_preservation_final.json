@@ -1,0 +1,1 @@
+{"P00_reports_fixtures_original_sources_unchanged":true,"P00_snapshot_verified":true,"evidence_kind":"development_observation","indexed_files":162,"legitimately_evolved_current_paths":[".gitattributes",".gitignore","configs/phase_state.json","pyproject.toml","src/taskcognition/__init__.py","src/taskcognition/cli.py"],"snapshot_commit":"44cb33d8a178de9a15bf5ea3793e7d9ea64f7b6f"}

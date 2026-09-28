@@ -1,0 +1,14 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-09-28T14:33:02.519103+00:00",
+  "argv": [
+    ".venv-inference/Scripts/python.exe",
+    "-m",
+    "taskcognition.p01_smoke",
+    "initial"
+  ],
+  "exit": 0,
+  "seconds": 40.63874889999988,
+  "stdout": "{'request_id': 'initial_D', 'state': 'COMPLETE', 'seconds': 11.990325400000074, 'exit': 0, 'finish_reason': 'eos'}\n{'request_id': 'initial_R', 'state': 'COMPLETE', 'seconds': 28.471466599999985, 'exit': 0, 'finish_reason': 'eos'}\n",
+  "stderr": ""
+}
