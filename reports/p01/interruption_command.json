@@ -1,0 +1,14 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-09-28T14:34:28.739497+00:00",
+  "argv": [
+    ".venv-inference/Scripts/python.exe",
+    "-m",
+    "taskcognition.p01_smoke",
+    "interrupt"
+  ],
+  "exit": 0,
+  "seconds": 11.44662900000003,
+  "stdout": "{'request_id': 'interrupt_R', 'state': 'COMPLETE', 'seconds': 11.275317399999949, 'exit': 0, 'finish_reason': 'controlled_interruption'}\n",
+  "stderr": ""
+}

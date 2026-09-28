@@ -1,0 +1,14 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-09-28T14:36:42.217099+00:00",
+  "argv": [
+    ".venv-inference/Scripts/python.exe",
+    "-X",
+    "utf8",
+    "scripts/p01_verify_smoke.py"
+  ],
+  "exit": 0,
+  "seconds": 1.7112397000000783,
+  "stdout": "{\"admitted\": 3, \"output_tokens\": 567, \"conservative_gpu_seconds\": 57.49506330000008, \"actual_footprint_GiB\": 19.666455725207925, \"restart\": \"REFUSED_WITHOUT_NEW_DISPATCH\"}\n",
+  "stderr": ""
+}

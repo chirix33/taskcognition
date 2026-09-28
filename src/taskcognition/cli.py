@@ -9,7 +9,7 @@ from .stages import guard_final_collection, require_p00
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(description="P00 offline tools; no generation/training backend")
+    parser = argparse.ArgumentParser(description="Offline tools; P01 smoke has a separate explicit entry point")
     parser.add_argument("--root", type=Path, default=Path.cwd())
     sub = parser.add_subparsers(dest="command", required=True)
     doctor = sub.add_parser("doctor", help="read-only local inventory, no generation or network")
@@ -34,7 +34,11 @@ def main(argv=None):
             if not result["source_matches"]:
                 raise IntegrityError("governing PDF hash mismatch/missing")
         elif args.command == "fixture-run":
-            require_p00(read_json(root / "configs/phase_state.json"))
+            state=read_json(root / "configs/phase_state.json")
+            if state.get('active_phase')=='P01' and state.get('status') in ('IN_PROGRESS','READY_FOR_REVIEW'):
+                pass  # Offline fixtures stay available during P01; no model imported.
+            else:
+                require_p00(state)
             result = run_fixture(root, root / args.output, args.resume, args.dry_run)
         elif args.command == "verify-artifacts":
             result = verify_fixture(root / args.run)

@@ -1,0 +1,16 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-09-28T14:40:04.605337+00:00",
+  "argv": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "taskcognition",
+    "verify-artifacts",
+    "--run",
+    "artifacts/fixtures/p00-analytical-v2"
+  ],
+  "exit": 0,
+  "seconds": 0.230296200000339,
+  "stdout": "{\n  \"evidence_kind\": \"fixture\",\n  \"files\": 54,\n  \"manifest_sha256\": \"c7575da8e3b7cef956138f172627b3d45f0821947dc7ed2471bae2ad3ea4db3a\",\n  \"status\": \"VERIFIED\"\n}\n",
+  "stderr": ""
+}

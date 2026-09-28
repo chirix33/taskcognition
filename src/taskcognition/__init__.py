@@ -1,2 +1,2 @@
-"""Offline P00 contracts, fixtures and workflow guards. No model backend."""
-__version__ = "0.0.1"
+"""Study contracts and phase-scoped tools; model imports are explicit and lazy."""
+__version__ = "0.1.0"
