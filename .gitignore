@@ -1,0 +1,8 @@
+docs/iclr2027
+
+# Ignore all markdown files everywhere
+*.md
+**/*.md
+
+# Un-ignore the root README.md
+!README.md
