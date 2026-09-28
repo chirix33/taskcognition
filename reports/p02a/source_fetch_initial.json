@@ -1,0 +1,39 @@
+{
+  "evidence_kind": "development_observation",
+  "files": [
+    {
+      "path": "reasoning_gym/arithmetic/number_format.py",
+      "url": "https://raw.githubusercontent.com/open-thought/reasoning-gym/21e6d2a9a581b3e11aafe711abfd37402f8482d5/reasoning_gym/arithmetic/number_format.py",
+      "sha256": "a30fb4f8086eff3a9fbc481e2dd423fa0d552502d3746c0a8bd2bff12e1b92e2",
+      "bytes": 5769
+    },
+    {
+      "path": "reasoning_gym/algorithmic/letter_counting.py",
+      "url": "https://raw.githubusercontent.com/open-thought/reasoning-gym/21e6d2a9a581b3e11aafe711abfd37402f8482d5/reasoning_gym/algorithmic/letter_counting.py",
+      "sha256": "52e442146f1067b6cacc24cf343ea022ab2e15cd02835624b13cfb870d4bc099",
+      "bytes": 3369
+    },
+    {
+      "path": "reasoning_gym/graphs/graph_color.py",
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "path": "reasoning_gym/graphs/shortest_path.py",
+      "url": "https://raw.githubusercontent.com/open-thought/reasoning-gym/21e6d2a9a581b3e11aafe711abfd37402f8482d5/reasoning_gym/graphs/shortest_path.py",
+      "sha256": "40756d552a64f6c7b513e2e6eb2d57755e31f70b766fff62113f786165dcaabd",
+      "bytes": 7586
+    },
+    {
+      "path": "reasoning_gym/logic/knights_knaves.py",
+      "url": "https://raw.githubusercontent.com/open-thought/reasoning-gym/21e6d2a9a581b3e11aafe711abfd37402f8482d5/reasoning_gym/logic/knights_knaves.py",
+      "sha256": "8837a3c6dfc72bb40db168b82ad6b3da45a08a4000a006fc306368b77b622705",
+      "bytes": 20743
+    },
+    {
+      "path": "pyproject.toml",
+      "url": "https://raw.githubusercontent.com/open-thought/reasoning-gym/21e6d2a9a581b3e11aafe711abfd37402f8482d5/pyproject.toml",
+      "sha256": "bbb7356ce9557c03c218a85b9bbf54cf846f1fa234ad7323b6bdcbd155439111",
+      "bytes": 1724
+    }
+  ]
+}

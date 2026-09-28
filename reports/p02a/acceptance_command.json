@@ -1,0 +1,12 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-09-28T18:28:32.271784+00:00",
+  "argv": [
+    ".venv/Scripts/python.exe",
+    "scripts/p02a_accept.py"
+  ],
+  "exit": 0,
+  "seconds": 0.2724820000003092,
+  "stdout": "PASS: accepted P01 snapshot; P01 sealed; only P02A active, dispatch disabled.\n",
+  "stderr": ""
+}
