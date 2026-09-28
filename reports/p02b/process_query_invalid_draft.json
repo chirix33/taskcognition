@@ -1,0 +1,7 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-09-28T19:47:41.5510591Z",
+  "active_p02b_runner_or_worker_processes": 0,
+  "process_ids": [],
+  "live_dispatch_enabled": false
+}

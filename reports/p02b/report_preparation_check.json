@@ -1,0 +1,1 @@
+{"earlier_failure":"An ad-hoc syntax check read UTF-8 reporting source with default Windows cp1252 and raised UnicodeDecodeError; explicit UTF-8 read succeeded.","evidence_kind":"fixture","generation_impact":false,"live_source_unchanged":true,"status":"PASS"}

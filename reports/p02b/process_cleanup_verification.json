@@ -1,0 +1,10 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-09-28T19:48:12.9640405Z",
+  "status": "PASS",
+  "supported_inventory": "Get-Process filtered by ProcessName python",
+  "active_python_process_count": 0,
+  "process_ids": [],
+  "prior_query": "Get-CimInstance Win32_Process returned Access denied; process_query_invalid_draft.json is invalid and not evidence of absence",
+  "live_dispatch_enabled": false
+}

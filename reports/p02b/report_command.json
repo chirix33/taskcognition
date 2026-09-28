@@ -1,0 +1,12 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-09-28T19:46:56.817867+00:00",
+  "argv": [
+    ".venv-inference/Scripts/python.exe",
+    "scripts/p02b_report.py"
+  ],
+  "exit": 0,
+  "seconds": 4.343785299999581,
+  "stdout": "{\n  \"evidence_kind\": \"development_observation\",\n  \"status\": \"READY_FOR_REVIEW\",\n  \"planned\": 48,\n  \"dispatched\": 48,\n  \"retained\": 48,\n  \"reserved_output_tokens\": 73728,\n  \"known_generated_tokens\": 28690,\n  \"unknown_output_token_count\": 0,\n  \"conservative_gpu_residency_seconds\": 1682.543499299998,\n  \"resource_records_missing\": [],\n  \"cost_is_lower_bound_if_records_missing\": false,\n  \"execution\": {\n    \"all_planned_executed\": true,\n    \"evidence_kind\": \"development_observation\",\n    \"execution_wall_seconds\": 1693.7150865000003,\n    \"timestamp_utc\": \"2026-09-28T19:46:17.637671+00:00\"\n  },\n  \"known_generation_seconds\": 1111.0012759999918,\n  \"known_load_seconds\": 369.52227760001915,\n  \"peak_allocated_bytes\": 16888340480,\n  \"peak_reserved_bytes\": 17710448640,\n  \"incidents\": [],\n  \"unexecuted\": [],\n  \"dispatched_without_retained_result\": [],\n  \"new_model_downloads\": 0,\n  \"dependency_changes\": 0,\n  \"encoder_forwards\": 0,\n  \"gate_training\": 0,\n  \"final_labels\": 0,\n  \"backup\": \"local raw evidence plus local review ZIP; no off-machine backup\"\n}\n",
+  "stderr": ""
+}

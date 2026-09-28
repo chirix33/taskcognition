@@ -1,0 +1,22 @@
+{
+  "evidence_kind": "fixture",
+  "failures": [
+    {
+      "error": "Access denied",
+      "invalid_draft": "reports/p02b/process_query_invalid_draft.json",
+      "operation": "optional post-run CIM process inventory",
+      "resolution": "Get-Process inventory succeeded with zero Python processes; supervisor ledger has 48 zero-exit resource records"
+    },
+    {
+      "error": "patch context not found",
+      "operation": "report-source patch",
+      "resolution": "No files changed by failed patch; smaller patch applied successfully"
+    },
+    {
+      "error": "Windows CRLF and raw progress carriage returns flagged",
+      "operation": "initial generic git whitespace check",
+      "resolution": "Raw evidence retained byte-for-byte; subsequent source/report check allows CR-at-EOL; one extra blank line at EOF removed from new inspection Markdown only"
+    }
+  ],
+  "generation_impact": false
+}

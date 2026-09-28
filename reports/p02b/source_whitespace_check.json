@@ -1,0 +1,22 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-09-28T19:49:35.194911+00:00",
+  "argv": [
+    "git",
+    "-c",
+    "core.whitespace=cr-at-eol",
+    "diff",
+    "--cached",
+    "--check",
+    "--",
+    "src",
+    "tests",
+    "scripts",
+    "configs",
+    "reports"
+  ],
+  "exit": 2,
+  "seconds": 0.037950599999021506,
+  "stdout": "reports/p02b/failure_inspection.md:296: new blank line at EOF.\n",
+  "stderr": ""
+}

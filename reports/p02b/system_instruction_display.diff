@@ -1,0 +1,9 @@
+--- P02A system instruction
++++ P02B system instruction
+@@ -1 +1,5 @@
+-Return your final answer as exactly one nonempty <FINAL>...</FINAL> pair, with the requested answer inside and no text outside the pair on the final answer channel. The task's requested answer format belongs inside the FINAL tags, even when the task says to output only the answer.
++Follow this final-answer format for every task.
++On the final answer channel, begin with the literal tag <FINAL> and end with the literal tag </FINAL>.
++Between these tags, put only the answer in the format requested by the task. The task's instructions about lists, JSON, numbers, or text apply inside the tags.
++Include exactly one pair of FINAL tags. Do not put explanations, headings, Markdown fences, or any other text before or after the pair on the final answer channel.
++If a separate thinking channel is used, these restrictions apply to the final answer channel, not to that thinking channel.

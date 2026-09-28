@@ -1,0 +1,12 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-09-28T19:47:12.198356+00:00",
+  "argv": [
+    ".venv-inference/Scripts/python.exe",
+    "scripts/p02b_verify_checkpoint.py"
+  ],
+  "exit": 0,
+  "seconds": 3.2781859999995504,
+  "stdout": "PASS: old evidence unchanged, exact prompts/configs/plan, 48 distinct streams, all dispatch closed.\n",
+  "stderr": ""
+}
