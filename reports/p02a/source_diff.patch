@@ -1,0 +1,796 @@
+diff --git a/scripts/p02a_accept.py b/scripts/p02a_accept.py
+new file mode 100644
+index 0000000..2e1daa5
+--- /dev/null
++++ b/scripts/p02a_accept.py
+@@ -0,0 +1,37 @@
++"""Verify the accepted immutable P01 snapshot before recording conveyed acceptance."""
++import hashlib, json, subprocess, zipfile
++from datetime import datetime, timezone
++from pathlib import Path
++from taskcognition.artifacts import write_new
++from taskcognition.contracts import file_hash, canonical
++
++root=Path(__file__).resolve().parents[1]
++expected={
++ 'reports/phases/P01_completion_v2.md':'e75e0f4e99396223b61beb3f378c10d3a3a7c9d5db4db0d248700fae5ac69f13',
++ 'reports/phases/P01_proposed_seal_v2.md':'ea632c19ffa3a9b842e6a3e74c7fe3cd078cf0dbceda7eb347307bbe12bcf4da',
++ 'reports/phases/P01_evidence_manifest_v2.json':'1237761e49fcee9a9e027324995f6452b27b83417b205e12c44d451940b09a3f',
++ 'reports/p01_correction_v2/P01_review_packet_v2.zip':'dab8fd3ae4ea7b09e5802de7f02ee12f9f00dbf843c857e5921ca9dc69a639b3'}
++for n,h in expected.items(): assert file_hash(root/n)==h,n
++index=json.loads((root/'reports/phases/P01_evidence_manifest_v2.json').read_text())
++with zipfile.ZipFile(root/'reports/p01_correction_v2/P01_review_packet_v2.zip') as z:
++ for n,h in index['files'].items():
++  assert hashlib.sha256(z.read(n)).hexdigest()==h,n
++  assert file_hash(root/n)==h,n
++code='6e8cec19d3e7f374aebddaa4f9b410767b02676a'
++packet=subprocess.check_output(['git','rev-parse','0c92cb1'],cwd=root,text=True).strip()
++subprocess.run(['git','merge-base','--is-ancestor',code,packet],cwd=root,check=True)
++now=datetime.now(timezone.utc).isoformat()
++write_new(root/'reports/p02a/p01_acceptance_verification.json',dict(evidence_kind='development_observation',timestamp_utc=now,status='PASS',artifacts=expected,indexed_files=len(index['files']),zip_and_current_match=True,code_commit=code,packet_commit=packet,new_generations=0))
++snapshot=root/'configs/state_snapshots/P01_accepted_v2_before_P02A.json'
++with snapshot.open('xb') as f:f.write((root/'configs/phase_state.json').read_bytes())
++seal=root/'reports/phases/P01_accepted_seal.md'
++with seal.open('x',encoding='utf-8') as f:
++ f.write('# P01 accepted seal\n\nP01 is SEALED by user-conveyed coordinator acceptance.\n\n')
++ f.write(f'Recorded UTC: {now}. Authority: current user P02A prompt, “The user is conveying the coordinator\'s P01 v2 acceptance and authorizing this prompt\'s bounded local work.”\n\n')
++ f.write('Acceptance: reports/p01_correction_v2/P01_v2_coordinator_acceptance.md, SHA-256 '+file_hash(root/'reports/p01_correction_v2/P01_v2_coordinator_acceptance.md')+'\n\n')
++ for n,h in expected.items():f.write(f'- `{n}`: `{h}`\n')
++ f.write(f'\nAll {len(index["files"])} indexed files match accepted ZIP and current checkout. Corrected code/evidence commit `{code}`; separate report-packet commit `{packet}`. Both proposed seals and all historical evidence remain unchanged.\n\nP01 dispatch remains disabled; five unused slots remain inactive. Live D valid-FINAL success remains unestablished in P01. Only P02A is activated within incomplete, unsealed P02. No scientific freeze or final labels authorized.\n')
++event='configs/state_events/005_P01_accept_P02A_start.json'
++write_new(root/event,dict(evidence_kind='development_observation',timestamp_utc=now,event='phase_acceptance_and_bounded_activation',previous_state_sha256=file_hash(snapshot),accepted_phase='P01',accepted_status='SEALED',acceptance_sha256=file_hash(seal),active_phase='P02A',parent_phase='P02',status='IN_PROGRESS',real_dispatch_enabled=False,p01_dispatch_enabled=False,p01_unused_slots_inactive=5,authorized_prompt_sha256=file_hash(root/'docs/prompts/P02A_six_family_integration_prompt.md')))
++(root/'configs/phase_state.json').write_bytes(canonical(dict(active_phase='P02A',parent_phase='P02',status='IN_PROGRESS',real_dispatch_enabled=False,accepted_previous_phase='P01',accepted_previous_seal='reports/phases/P01_accepted_seal.md',latest_event=event,authorized_next_phase=None,study_freeze=None))+b'\n')
++print('PASS: accepted P01 snapshot; P01 sealed; only P02A active, dispatch disabled.')
+diff --git a/scripts/p02a_finish_report.py b/scripts/p02a_finish_report.py
+new file mode 100644
+index 0000000..ec86c5c
+--- /dev/null
++++ b/scripts/p02a_finish_report.py
+@@ -0,0 +1,148 @@
++"""Write review prose using saved measurements; proposals do not authorize execution."""
++from datetime import datetime,timezone
++from pathlib import Path
++import statistics
++from taskcognition.artifacts import read_json,write_new
++from taskcognition.contracts import file_hash
++root=Path(__file__).resolve().parents[1];out=root/'reports/p02a';run=root/'artifacts/development/p02a-six-family'
++r=read_json(out/'resources.json');obs=read_json(out/'integration_observations.json')['rows']
++planhash=file_hash(run/'run_plan.json');commit=read_json(root/'configs/state_events/006_P02A_bounded_dispatch.json')['source_commit']
++mean=statistics.fmean(o['worker_residency_seconds'] for o in obs)
++rawbytes=sum(p.stat().st_size for p in run.rglob('*') if p.is_file())
++start=datetime.fromisoformat(read_json(run/'execution_start.json')['timestamp_utc'])
++accepted=datetime.fromisoformat(read_json(out/'p01_acceptance_verification.json')['timestamp_utc'])
++prep=(start-accepted).total_seconds()
++write_new(out/'preparation_and_storage.json',dict(evidence_kind='development_observation',preparation_elapsed_seconds_acceptance_to_dispatch=prep,definition='wall interval, including source inspection, test runs and commits; not GPU residency; initial governing-document reading precedes acceptance',raw_run_bytes=rawbytes,source_vendor_bytes=sum(p.stat().st_size for p in (root/'vendor/reasoning_gym_p02a').rglob('*') if p.is_file() and '__pycache__' not in p.parts),temporary_source_bytes=sum(p.stat().st_size for p in (root/'tmp/p02a-source').rglob('*') if p.is_file()),new_dependency_bytes=0,packet_bytes='external receipt measures final ZIP and all evidence'))
++proposal=f'''# Proposed next P02 work — not authorized or executed
++
++Evidence kind: `development_observation` only for the P02A measurements quoted here. All future counts, estimates and allowances below are proposals. P02 remains incomplete and unsealed.
++
++## Interface checkpoint before spending a cap-study budget
++
++P02A retained {r['dispatched']} attempts, with {r['live_D_valid_final']} live strict-valid D outputs. Inspect all twelve cells, including cap and wrapper failures, in integration_table.md. One input per family and two draws per mode give almost no distributional precision. Do not infer feasibility from a successful cell or invoke the formal 2,048 stop from a poor diagnostic cell.
++
++Recommend a separately reviewed DEVELOPMENT package revision/interface checkpoint before the formal cap study if wrapper failures persist. Specify one common system instruction more explicitly requiring literal FINAL opening/closing tags around the task-native answer, retaining every original question verbatim. Review the exact wording/diff and hash it before any new outputs. Do not change the parser, native scorer, native default difficulty or sampler to rescue this run. Proposed check: six fresh inputs, K=2 each mode, 24 calls at 1,024, 90-minute residency/2-hour wall/0.5-GiB envelope again. No within-run prompt alternatives, gold examples, repair or replacement. Retain P01/P02A and any unsuccessful revised-package records separately. A subsequent fresh cap study must evaluate the finally reviewed package, never pool this diagnostic.
++
++If the next interface checkpoint is still unpromising, bring that evidence back for a stop/development decision. Do not launch a large cap sample merely to spend its budget, suppress weak families, or keep revising until a tiny test looks favorable. Any authorized package revision is documented as development, and formal evaluation follows on new predeclared inputs.
++
++## Concrete formal cap-study plan for review
++
++- At cap 1,024: **100 independent fresh inputs per family, K=2 independent draws per mode per input**. Exactly **200 planned draws per family-mode cell**, 12 cells, **2,400 total attempts**. Interleave families and modes in a predeclared order. Independent input count is 100 per family; the two within-input repeats are nested, not 200 independent inputs.
++- Fixed pass rule: at least **198/200 strict-valid-FINAL** in **every** cell. Use unchanged native channel separation, exactly one nonempty case-sensitive FINAL pair with ASCII-whitespace-only outside, and the reviewed native syntax. Completion is distinct from correctness. Every planned draw stays in the denominator; recorded malformed/capped/known-timeout outcomes fail completion unless a valid retainable output exists under the frozen rule. Missing/corrupt evidence or software incidents block the decision and require investigation, never score imputation/replacement.
++- If 1,024 fails, a separately budgeted predeclared **fresh** set of 100 inputs/family at 2,048 uses the same 200/cell denominator and >=198 rule, with both packages assessed. No package/config change between formal stages except cap. If any 2,048 cell fails, preserve evidence and stop the confirmatory study as infeasible. Do not raise the primary cap. If operations cannot complete the planned sample, report an incomplete/blocked cap decision, not a scientific pass.
++- Maximum output reservation: **2,457,600 tokens** at 1,024, **4,915,200** at 2,048; **7,372,800 combined** if both run. These counts exclude any prior diagnostic, P01 interruption, and high-repeat observations.
++- Separate seeds, stream roots and latent/content checks from all historical DEVELOPMENT and reserved final partitions. Materialize defaults and ceiling in each plan. An overlength or duplicate selected input blocks preparation; no outcome-informed simplification or quiet substitution.
++- This is an empirical 99% completion rule, **not a lower confidence bound establishing a population completion probability of 99%**. If the coordinator wants a confidence-based certification, that requires an explicit prospective statistical decision and independent-cluster treatment; do not silently add it to the paper's operational rule.
++
++## Costed compute/storage proposals and uncertainty
++
++P02A measured mean worker residency **{mean:.3f} s/request**, total **{r['conservative_gpu_residency_seconds']:.3f} s**, generation **{r['generation_seconds']:.3f} s**, load **{r['load_seconds']:.3f} s**, execution wall **{r['execution_wall_seconds']:.3f} s**, peak allocated **{r['peak_allocated_bytes']/1024**3:.3f} GiB**, and **{r['generated_tokens']} output tokens**. These include all six families but only one item per family. Repeated process loading, per-token synchronization and evidence logging are included. No persistent-worker speedup is assumed.
++
++| Proposed workload | Generations / reserved tokens | P02A-rate illustration | Conservative planning allowance to review |
++|---|---|---|---|
++| Interface check | 24 / 24,576 at 1,024 | {24*mean/3600:.2f} residency hours | 1.5 GPU hours, 2 wall hours, 0.5 GiB evidence |
++| Formal 1,024 stage | 2,400 / 2,457,600 | {2400*mean/3600:.1f} residency hours | Up to 100 GPU hours, 120 wall hours, 2 GiB evidence |
++| Conditional formal 2,048 stage | 2,400 / 4,915,200 | {2400*mean/3600:.1f}–{4800*mean/3600:.1f} hours if per-request costs stay within 1–2x; unmeasured | Up to 150 GPU hours, 180 wall hours, 2 GiB evidence |
++| First high-repeat tranche, after cap review | 5 fresh inputs/family x 20 draws/mode = 1,200; 1,228,800 or 2,457,600 tokens | {1200*mean/3600:.1f}–{2400*mean/3600:.1f} hours under 1–2x assumption | 100 GPU hours, 120 wall hours, 2 GiB evidence |
++| Manuscript high-repeat reference | 25 inputs/family x 50 draws/mode = 15,000; 15,360,000 or 30,720,000 tokens | {15000*mean/3600:.1f}–{30000*mean/3600:.1f} hours under 1–2x assumption | Separate review; provisional 1,250 GPU hours / 1,500 wall hours and 8 GiB evidence |
++
++These are resource-planning illustrations and proposed stopping ceilings, not confidence intervals or a reliable whole-study forecast. Per-request load + deadline + cleanup reservation remains 300 s provisionally (thus 2,400 requests could reserve 200 hours if each used all 300 s). Smaller proposed total ceilings may stop an unusually slow run before its denominator is complete. Re-estimate with each reviewed tranche, without moving its scientific acceptance rule or extending its slots after outcomes. At 2,048 a 120-second timeout may dominate the cap; validate timing before formal package freeze under separate authorization. Measure and report cancellation/cleanup overshoot without clipping actual costs.
++
++The 1,200-draw tranche is useful for variance exploration but cannot substitute for broad independent-input coverage. If expanded to the manuscript reference, predeclare whether the first 30 inputs contribute 20 of their 50 repeats (9,000 additional draws for 90 fresh inputs plus 4,800 for the remaining 30 fresh inputs and 1,800 additional repeats on the first 30 would be miscounted); the simple recommended accounting is **retain first 30 inputs and add 30 draws/mode to each = 1,800 draws, plus 120 new inputs x 50/mode = 12,000 draws**, totaling 15,000 including the initial 1,200. This expansion is not authorized and requires outcome-independent selection and explicit review.
++
++## Feature cost, scalar ledger, hard bounds and backup
++
++Propose a separately authorized input-only same-checkpoint encoder benchmark: 30 fresh texts (5/family), three measured forwards each (90 total, no autoregressive answers), fixed masked mean pooling/layer/tokenization, plus cheap-feature timing. Freeze that proposal first; no encoder or gate was measured in P02A. Request 1 GPU hour, 2 wall hours and 0.25 GiB, counting all loads, warm-ups if declared, forwards, CPU features and any caching. If repeated forwards are too variable, report the measurement limitation. A separate encoder checkpoint remains an explicit scientific decision. MLP/calibration/dispatch cost must also be measured when available; do not treat cached offline embeddings as free live work.
++
++Worker residency is currently a conservative descriptive hardware charge, not a frozen scalar support theorem. Timeout/kill/OS cleanup latency has no demonstrated deterministic upper bound, and there is no live gate-cost bound. Observed minima/maxima cannot supply [c_min,c_max]. Before design acceptance, either establish an enforceable service-time accounting contract including CPU/GPU, dispatch, pre-admission attempts, load/cache policy and cleanup, or review an explicit monetary reference token/call tariff that charges gate encoding/features/calibration and selected answers exactly once. Such a reference tariff is not a claim of actual paid fees; its finite counts/rates and bounds must be fixed prospectively. Do not mix duplicate monetary and time charges. Freeze common reference charges and beta midpoint only after measured all-in work; preserve c_R<=c_D if observed.
++
++For the larger pilot propose a user-designated **encrypted external SSD**, e.g. a dedicated `TaskCognition/P02/` directory, with sufficient free capacity for raw data, an independent ZIP and checksum receipts (at least 20 GiB reserved for the proposed development evidence). Verify a second copy by hash before deleting or moving anything. Device/absolute destination remains unconfirmed; no backup was uploaded or copied off this workstation. The present local ZIP protects review transport, not disk-loss recovery.
++
++## Remaining P02 exit criteria
++
++Six-family integration and native scorer checks are now demonstrated within this diagnostic's limits. Still required: reviewed formal cap decision; adequate independent-input/high-repeat target-noise package; input-only feature implementation/cost; all-in scalar reference costs and credible hard support bounds; resource/backup approval; full future partition manifests; a P03 simulation input package. Statistical theorem assumptions/constants and full fit/tune/audit/fallback/test simulations belong to later authorized work. P03/P04 acceptance must remain blocked by unresolved cost/dependence issues. No gate, comparator training, audit or final labels is authorized here.
++'''
++# Avoid retaining an abandoned arithmetic alternative in the review proposal.
++proposal=proposal.replace(' (9,000 additional draws for 90 fresh inputs plus 4,800 for the remaining 30 fresh inputs and 1,800 additional repeats on the first 30 would be miscounted)','')
++(out/'next_P02_proposal.md').write_text(proposal,encoding='utf-8')
++commands=[(p.name,read_json(p)) for p in out.glob('*command.json')]+[(p.name,read_json(p)) for p in [out/'offline_tests_v1.json',out/'offline_tests_v2.json',out/'pip_check.json']]
++table='\n'.join('| '+' '.join(d.get('argv',[]))+' | '+str(d['exit'])+' | '+name+' |' for name,d in commands)
++finding_summary='Across all 24 draws: 10 perfect, 1 strict-valid but wrong, 9 wrapper failures, and 4 capped R outputs without valid FINAL. The three valid D outputs include two perfect letter-counting answers and one wrong shortest-path answer. No live partial credit, timeout or software incident occurred. Zero observed spoilage targets in this tiny sample do not establish safety.'
++report=f'''# P02A completion report
++
++Status: **P02A {r['status']}**. **P02 is incomplete and unsealed.** Live dispatch is disabled.
++
++## Scope
++
++- Active authority: current user-conveyed P02A prompt, preserved at docs/prompts/P02A_six_family_integration_prompt.md. Generic P02 is limited by this bounded checkpoint.
++- Accepted previous seal: reports/phases/P01_accepted_seal.md. All four accepted hashes and 242 indexed snapshot files verified before new work. Code/evidence commit 6e8cec19d3e7f374aebddaa4f9b410767b02676a; separate packet commit 0c92cb1. P01 five unused slots inactive.
++- Governing PDF SHA-256 `{file_hash(root/'reference/TaskCognition_Revised_Verified.pdf')}`. C01–C03 retained. No study/candidate/deployment freeze.
++- Branch `codex/p02a-six-family`; pre-dispatch source/plan commit `{commit}`. User prompt/review files were pre-existing untracked files and were not staged/committed by this work. No push, merge, history rewrite or unrelated cleanup.
++
++## Delivered slice
++
++Unchanged native source, renderer, effective default configs and native scorers for all six prescribed families; input-only gate projections; independent sampling streams; fixed common wrapper clarification; P02A guard and single-request supervisor; durable corrected admission/incident/cost handling; complete immutable 24-request plan. Exact plan SHA-256: `{planhash}`.
++
++Source/config/scorer records: adapter_contracts.md, native_scorer_checks.json, native_git_blob_verification.json, vendor source_manifest.json and six outcome_inputs records. Exact prompt diff: prompt_diff.json. Actual .venv-inference source imports are recorded in runtime_preflight.json; subprocess explicitly inherits absolute PYTHONPATH=src. Historical installed 0.1.1 metadata was not mistaken for executed source.
++
++## Verification
++
++| Command actually executed | Exit | Result artifact under reports/p02a |
++|---|---|---|
++{table}
++
++The pre-dispatch suite passed **90 tests**, retaining all original 81 and adding native-score/channel, gate-field, scope, budget and supervisor-error checks. The first run failed two assertions expecting decimal 0.65 where unchanged native arithmetic returns 0.6499999999999999; test expectations were corrected, without changing the scorer or rounding evidence. The small supervisor injection launches a real sleeping child, raises a monitoring/evidence error, verifies kill/wait, unscored incident persistence, resource charge and no replay. The final suite passed **91 tests**, including an additional exact 24-slot/unknown-admission boundary check; see offline_tests_final.json.
++
++Other actual checks: all 15 native upstream files matched pinned Git-tree blobs; all local model files rehashed; pip check clean; offline gold checks for every selected native item; original question hashes disjoint from P01; retained output tokens decoded and every native score replayed offline. PDF extraction initially hit a console-encoding error and succeeded with PYTHONUTF8=1. Initial sandbox network fetch and Git branch creation were denied; authorized scoped escalations succeeded. Initial graph path guess returned 404; pinned tree resolved the actual algorithmic entry, with no revision substitution. CIM inventory was denied; native Windows memory API supplied RAM. These preparation failures used zero model generations.
++
++## Data and execution
++
++- Evidence: DEVELOPMENT observations only; fixture tests kept distinct. Six inputs, one/family; two D and two R draws each. Dispatched **{r['dispatched']}**, admitted **{r['admitted']}**, reserved output **{r['reserved_tokens']}**, retained observations **{len(obs)}**; planned requests 24. No retry/replacement, hidden warm-up, gate training, encoder run, final label, audit or test exposure.
++- Generated output **{r['generated_tokens']} tokens**. Generation **{r['generation_seconds']:.3f} s**; load **{r['load_seconds']:.3f} s**; conservative cumulative GPU residency (full worker lifetime including load/cleanup) **{r['conservative_gpu_residency_seconds']:.3f} s / 5,400 s**; execution wall **{r['execution_wall_seconds']:.3f} s / 7,200 s**. Actual values are not clipped. Preparation acceptance-to-dispatch wall interval **{prep:.3f} s**, separately recorded; initial reading preceded that interval. Report preparation and the final offline test run overlapped live execution; no time was subtracted from measured worker residency or execution wall.
++- Peak PyTorch allocated **{r['peak_allocated_bytes']} bytes**, reserved **{r['peak_reserved_bytes']} bytes**. Per-draw duration, failures, memory, tokens and costs are in integration_observations.json/twelve_cells.json. Ledger resource seconds are charged once; generation/load times are descriptive components, not extra additive scalar charges.
++- Raw run size before reports/ZIP **{rawbytes} bytes**. No new dependencies or weights; source/data closure 149,485 bytes before manifest, with temporary source copy separately retained. Final evidence byte count and ZIP verification are in P02A_packet_receipt.json. Only local raw files and local ZIP exist; no off-machine backup claimed.
++- Model revision b968826d9c46dd6066d109eabc6255188de91218, native BF16 Windows Transformers 4.57.6/PyTorch 2.11.0+cu128 with forced SDPA MATH, no backend change. Matched sampler and all effective defaults in package/request records. Input ceiling 2,048; observed serialized lengths 112–295; no truncation/replacement.
++
++## Findings and limits
++
++Live D strict-valid FINAL count is **{r['live_D_valid_final']}**. {finding_summary} The twelve cells, all retained failures and complete-cluster T_b/T_h/h_DD/d_0.10/d_0.25 checks follow in integration_table.md. Wrong/malformed/capped outcomes were not replaced. **This is not a formal cap selection**, a 99% certification, target-noise precision estimate, gate comparison, significance test or evidence of routing superiority. K-squared pairs are not independent samples. No pooling with P01 or a future cap denominator.
++
++The unchanged text-native scorers for letter counting and knights/knaves accept text and retain their partial-credit logic; full details are explicit in adapter_contracts.md. The 2,048 input ceiling and hardware charge are provisional operational choices, not final population or support bounds. GPU bit-identical reruns were not established.
++
++## Changes and decisions
++
++| ID | Value/status | Evidence / authority | Downstream impact |
++|---|---|---|---|
++| P02A-01 | P01 sealed by conveyed acceptance | Accepted four hashes and 242 files; new event 005 | P01 remains closed; no old evidence rewritten |
++| P02A-02 / D06 | Native defaults, six declared seeds, index 0, input ceiling 2,048; provisional | selection_declaration and immutable plan | Fresh reviewed cap population still required |
++| P02A-03 | One common FINAL clarification, parser unchanged | prompt_diff.json, fixed before all outputs | P02A package differs from P01; preserve both |
++| P02A-04 / D09 | J=0, 120 s generation deadline, 300 s load/deadline/cleanup reservation; sequential isolated workers | runner tests and live ledger | Operational controls, not hard audit support bounds |
++| P02A-05 / D07,D10 | Formal cap and high-repeat plans proposed only | next_P02_proposal.md | No automatic execution |
++| P02A-06 / D05,D08,D16,D17 | Encoder/cost/bounds/beta/durable backup unresolved | P02A measures answers only | Remain blockers for later design/freeze acceptance |
++
++No scientific scope deviation or scorer/source change. Old P01 records remain byte-identical except the intentionally advanced current phase state; snapshot and event chain preserve it. Preparation test failures are retained. No accepted P02 seal exists.
++
++## Acceptance checklist
++
++| P02A requirement | Result | Evidence |
++|---|---|---|
++| Accepted P01 revalidation/seal, P01 disabled | PASS | acceptance verification/seal, events 005–007 |
++| Six native default families and offline scorer checks | PASS | six outcome_inputs records, native checks/source hashes |
++| Immutable six-input/24-request plan and disjoint streams | PASS | run_plan.json, requests, source commit |
++| Corrected worker and supervisor incident cleanup | PASS | 90 preflight tests; raw live ledger |
++| Bounded single execution, failures retained, twelve cells | {r['status']} | execution log, resources, twelve_cells.json |
++| Complete input target pipeline checks | PASS for recorded complete clusters | target_pipeline_checks.json |
++| Review ZIP/index verified | See external receipt | P02A_packet_receipt.json |
++| Formal cap / high-repeat / encoder / scalar hard bounds | NOT_RUN / UNRESOLVED, outside authorization | next_P02_proposal.md |
++| Full P02 completion/seal, P03 or final labels | NOT_RUN, prohibited | checkpoint phase state |
++
++## Review packet
++
++Send P02A_review_packet.zip with P02A_packet_receipt.json, this completion report, integration_table.md and next_P02_proposal.md. The index contains exact hashes for the raw evidence, source, source diff, tests, native configs, phase events and reports. Weights/environments/secrets/private meetings are excluded. Proposed next work and backup destination need a conveyed review prompt; the proposal is not execution authority.
++
++## Stop statement
++
++**P02A {r['status']}. Live dispatch disabled. P02 incomplete and unsealed.** No further slice, P03, formal cap study, high-repeat pilot, encoder benchmark, gate training or final-label work was started.
++'''
++(root/'reports/phases/P02A_completion.md').write_text(report,encoding='utf-8')
++print('Wrote completion report and costed next-P02 proposal from retained observations.')
+diff --git a/scripts/p02a_packet.py b/scripts/p02a_packet.py
+new file mode 100644
+index 0000000..9eb52f6
+--- /dev/null
++++ b/scripts/p02a_packet.py
+@@ -0,0 +1,33 @@
++"""Build a local review ZIP and independently re-read every indexed byte."""
++import hashlib, json, subprocess, zipfile
++from pathlib import Path
++from taskcognition.artifacts import read_json,write_new
++from taskcognition.contracts import file_hash,canonical
++
++root=Path(__file__).resolve().parents[1];out=root/'reports/p02a'
++assert read_json(root/'configs/phase_state.json')['real_dispatch_enabled'] is False
++files=set()
++for base in ['src/taskcognition','tests','vendor/reasoning_gym_p01','vendor/reasoning_gym_p02a','reports/p02a','artifacts/development/p02a-six-family']:
++    files.update(p for p in (root/base).rglob('*') if p.is_file() and '__pycache__' not in p.parts and p.suffix!='.pyc')
++for pattern in ['scripts/p02a_*.py','configs/state_events/*.json','configs/state_snapshots/*.json']:
++    files.update(root.glob(pattern))
++for name in ['AGENTS.md','pyproject.toml','configs/phase_state.json','configs/p01_requirements.lock','reference/TaskCognition_Revised_Verified.pdf','docs/PROTOCOL_SOURCE_OF_TRUTH.md','docs/ARCHITECTURE_AND_DATA.md','docs/STATISTICAL_CONTRACT.md','docs/EVIDENCE_AND_MANUSCRIPT.md','docs/DECISIONS_AND_GAPS.md','docs/prompts/P02_development_pilot.md','docs/prompts/P02A_six_family_integration_prompt.md','reports/decision_ledger.md','reports/phases/P01_accepted_seal.md','reports/phases/P01_completion_v2.md','reports/phases/P01_proposed_seal_v2.md','reports/phases/P01_evidence_manifest_v2.json','reports/p01_correction_v2/P01_v2_coordinator_acceptance.md','reports/phases/P02A_completion.md','reports/p01/P02_resource_proposal.md','reports/p01/model_download.json','reports/p01/gpu_check.json','scripts/p01_command.py']:
++    files.add(root/name)
++excluded={'P02A_review_packet.zip','P02A_evidence_index.json','P02A_packet_receipt.json'}
++files={p for p in files if p.name not in excluded}
++index={p.relative_to(root).as_posix():file_hash(p) for p in sorted(files)}
++write_new(out/'P02A_evidence_index.json',dict(evidence_kind='development_observation',phase='P02A',files=index,source_commit=read_json(root/'configs/state_events/006_P02A_bounded_dispatch.json')['source_commit'],evidence_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip(),exclusions='Index, ZIP and external receipt avoid hash cycles. No weights, environments, credentials or private meeting content.'))
++packet=out/'P02A_review_packet.zip'
++with zipfile.ZipFile(packet,'x',zipfile.ZIP_DEFLATED,compresslevel=9) as z:
++    for name in index:z.write(root/name,name)
++    z.write(out/'P02A_evidence_index.json','reports/p02a/P02A_evidence_index.json')
++with zipfile.ZipFile(packet) as z:
++    assert z.testzip() is None
++    stored=json.loads(z.read('reports/p02a/P02A_evidence_index.json'))
++    for name,h in stored['files'].items():assert hashlib.sha256(z.read(name)).hexdigest()==h,name
++    assert len(z.namelist())==len(index)+1
++receipt=dict(evidence_kind='development_observation',status='PASS',indexed_files=len(index),zip_sha256=file_hash(packet),zip_bytes=packet.stat().st_size,index_sha256=file_hash(out/'P02A_evidence_index.json'),completion_sha256=file_hash(root/'reports/phases/P02A_completion.md'),verified_zip_members=True,backup='verified local ZIP; no off-machine backup',total_p02a_evidence_bytes=sum(p.stat().st_size for base in [root/'artifacts/development/p02a-six-family',out] for p in base.rglob('*') if p.is_file()))
++base_bytes=receipt['total_p02a_evidence_bytes']
++for _ in range(5):receipt['total_p02a_evidence_bytes']=base_bytes+len(canonical(receipt))+1
++write_new(out/'P02A_packet_receipt.json',receipt)
++print(json.dumps(read_json(out/'P02A_packet_receipt.json'),indent=2))
+diff --git a/scripts/p02a_prepare.py b/scripts/p02a_prepare.py
+new file mode 100644
+index 0000000..217b3cf
+--- /dev/null
++++ b/scripts/p02a_prepare.py
+@@ -0,0 +1,74 @@
++"""Offline-only immutable six-input/24-request preparation; no model loading."""
++import ctypes, dataclasses, difflib, importlib.metadata, json, os, platform, shutil, subprocess, sys
++from datetime import datetime,timezone
++from pathlib import Path
++from taskcognition.artifacts import read_json,write_new
++from taskcognition.contracts import digest,file_hash,stream_id
++from taskcognition.p02_native import native_dataset,gate_record,ENTRIES
++from taskcognition.p02_runner import RUN
++
++root=Path(__file__).resolve().parents[1];run=root/RUN
++assert read_json(root/'configs/phase_state.json')['real_dispatch_enabled'] is False
++assert not run.exists()
++now=datetime.now(timezone.utc).isoformat()
++# Written before native item generation and before tokenizer inspection.
++selection={'evidence_kind':'development_observation','timestamp_utc':now,'namespace':'P02A-DEVELOPMENT',
++ 'seeds':{f:720260928+i*10000 for i,f in enumerate(ENTRIES)},'index':0,'size':1,
++ 'difficulty':'all native dataclass defaults; only seed/size overridden',
++ 'serialized_input_ceiling':2048,'ceiling_reason':'provisional conservative SDPA MATH memory allowance; input+1024 <=3072, below native checkpoint context; no truncation/reselection',
++ 'reserved_namespaces':['P02-CAP-1024','P02-CAP-2048','P02-HIGH-REPEAT','FINAL-TRAIN','FINAL-TUNE','FINAL-AUDIT','FINAL-TEST'],
++ 'future_disjointness':'future plans must reject P01/P02A latent and question hashes as well as distinct namespace/seed; namespaces alone do not prove disjointness'}
++write_new(root/'reports/p02a/selection_declaration.json',selection)
++from transformers import AutoTokenizer,GenerationConfig
++model=read_json(root/'reports/p01/model_download.json');model_dir=root/model['local_directory']
++for f in model['files']:
++    assert file_hash(model_dir/f['name'])==f['sha256'],f['name']
++tokenizer=AutoTokenizer.from_pretrained(model_dir,local_files_only=True,trust_remote_code=False)
++config=GenerationConfig.from_pretrained(model_dir,local_files_only=True)
++config.update(do_sample=True,temperature=.6,top_p=.95,top_k=20,min_p=0.,max_new_tokens=1024,num_beams=1,num_return_sequences=1,use_cache=True,return_dict_in_generate=False,output_scores=False,output_logits=False)
++config.pad_token_id=config.eos_token_id[0] if isinstance(config.eos_token_id,list) else config.eos_token_id
++original=read_json(root/'artifacts/development/p01-windows-5090-20260928-v2/requests/initial_D.json')['messages'][0]['content']
++wrapper=original+' The task\'s requested answer format belongs inside the FINAL tags, even when the task says to output only the answer.'
++write_new(root/'reports/p02a/prompt_diff.json',dict(evidence_kind='development_observation',original=original,revised=wrapper,diff=''.join(difflib.unified_diff([original+'\n'],[wrapper+'\n'],fromfile='P01',tofile='P02A')),revision_fixed_before_outputs=True,parser_unchanged=True))
++source={p.name:file_hash(p) for p in sorted((root/'src/taskcognition').glob('*.py'))}
++package=dict(evidence_kind='development_observation',model_id=model['model_id'],revision=model['revision'],precision='BF16',attention='sdpa forced MATH',generation_config=config.to_dict(),source_files=source,model_files={f['name']:f['sha256'] for f in model['files']},wrapper=wrapper,native_source_manifest_sha256=file_hash(root/'vendor/reasoning_gym_p02a/source_manifest.json'),torch=importlib.metadata.version('torch'),transformers=importlib.metadata.version('transformers'),cap_includes_thinking_and_final=True)
++write_new(run/'package.json',package)
++oldtexts=set()
++for p in (root/'artifacts/development').glob('p01*/requests/*.json'):
++    oldtexts.add(digest(read_json(p)['messages'][1]['content']))
++inputs={};hashes=set();validation=[]
++sys.path.insert(0,str(root/'tests'))
++from test_p02a import scorer_cases
++for family in ENTRIES:
++    ds=native_dataset(root,family,dict(seed=selection['seeds'][family],size=1));effective=dataclasses.asdict(ds.config);entry=ds[0]
++    text_hash=digest(entry['question']);assert text_hash not in oldtexts|hashes;hashes.add(text_hash)
++    latent=digest([family,effective,0,entry['metadata']]);input_id=digest(['P02A-DEVELOPMENT',latent,text_hash])
++    gold=entry['answer'] if family!='graph_color' else json.dumps(entry['metadata']['possible_answer'])
++    assert ds.score_answer(gold,entry)==1.
++    record=dict(evidence_kind='development_observation',split='DEVELOPMENT',family=family,input_id=input_id,latent_hash=latent,question_hash=text_hash,entry=entry,entry_hash=digest(entry),effective_config=effective,dataset_index=0,native_source_path=f'vendor/reasoning_gym_p02a/reasoning_gym/{ENTRIES[family][0]}/{family}.py',provisional=True)
++    write_new(run/'outcome_inputs'/f'{family}.json',record);write_new(run/'gate_inputs'/f'{input_id}.json',gate_record(input_id,entry['question']));inputs[family]=record
++    fixture,cases=scorer_cases()[family]
++    validation.append(dict(evidence_kind='fixture',family=family,cases=[dict(payload=p,expected=s,observed=ds.score_answer(p,fixture)) for p,s in cases],fixture=fixture,native_gold_check=ds.score_answer(gold,entry)))
++write_new(root/'reports/p02a/native_scorer_checks.json',dict(evidence_kind='fixture',checks=validation,model_generations=0))
++requests=[]
++for draw in range(2):
++    for family in ENTRIES:
++        for mode in ('D','R'):
++            row=inputs[family];key=f'{len(requests):02d}_{family}_{mode}_{draw}'
++            messages=[{'role':'system','content':wrapper},{'role':'user','content':row['entry']['question']}]
++            rendered=tokenizer.apply_chat_template(messages,tokenize=False,add_generation_prompt=True,enable_thinking=mode=='R')
++            ids=tokenizer.encode(rendered,add_special_tokens=False);assert len(ids)<=2048,'selected input blocked, no replacement'
++            opening=rendered.rfind('<think>')>rendered.rfind('</think>')
++            assert mode!='D' or not opening
++            package_hash=digest({**package,'mode':mode,'enable_thinking':mode=='R'})
++            stream=stream_id('P02A-DEVELOPMENT',2026092802,'DEVELOPMENT',row['input_id'],package_hash,draw)
++            request=dict(evidence_kind='development_observation',split='DEVELOPMENT',request_id=key,purpose='six-family integration diagnostic; not formal cap sample',family=family,mode=mode,enable_thinking=mode=='R',draw_index=draw,dataset_index=0,dataset_config=row['effective_config'],entry_hash=row['entry_hash'],input_id=row['input_id'],stream_id=stream,sampling_seed=int(stream[:15],16),package_hash=package_hash,messages=messages,rendered_prompt=rendered,rendered_prompt_hash=digest(rendered),input_ids=ids,input_tokens=len(ids),opening_in_prompt=opening,effective_generation_config=config.to_dict(),max_new_tokens=1024,model_directory=model['local_directory'],source_files=source)
++            write_new(run/'requests'/f'{key}.json',request)
++            requests.append(dict(request_id=key,request_hash=digest(request),family=family,mode=mode,draw_index=draw,stream_id=stream,input_id=row['input_id'],input_tokens=len(ids)))
++assert len({r['stream_id'] for r in requests})==24
++bound={p.relative_to(root).as_posix():file_hash(p) for p in run.rglob('*.json')}
++bound['vendor/reasoning_gym_p02a/source_manifest.json']=file_hash(root/'vendor/reasoning_gym_p02a/source_manifest.json')
++write_new(run/'run_plan.json',dict(evidence_kind='development_observation',timestamp_utc=now,phase='P02A',source_files=source,bound_files=bound,requests=requests,selection=selection,package_sha256=file_hash(run/'package.json'),limits=dict(answer_generations=24,reserved_output_tokens=24576,total_new_tokens_per_generation=1024,gpu_residency_seconds=5400,execution_wall_seconds=7200,evidence_bytes=536870912,additional_source_dependency_bytes=1073741824,timeout_seconds=120,J=0,concurrency=1,request_reservation_seconds=300),initial_counters=dict(dispatched=0,admitted_or_unknown=0,reserved_tokens=0),stop_rules=['no replacement or retry','missing/corrupt/software incident stops; unscored','retain known timeouts/caps/wrong/malformed','reserve load+deadline+cleanup before dispatch','no further dispatch if remaining budget insufficient'],warmups=0,scientific_freeze=False))
++import taskcognition.p02_worker as worker,taskcognition.p01_ledger as ledger
++write_new(root/'reports/p02a/runtime_preflight.json',dict(evidence_kind='development_observation',timestamp_utc=datetime.now(timezone.utc).isoformat(),python=sys.version,os=platform.platform(),cpu=platform.processor(),disk_free_bytes=shutil.disk_usage(root).free,model_files_verified=True,model_bytes=model['total_bytes'],gpu=subprocess.check_output(['nvidia-smi','--query-gpu=name,driver_version,memory.total,memory.used','--format=csv'],text=True),imports={m.__name__:dict(path=Path(m.__file__).relative_to(root).as_posix(),sha256=file_hash(Path(m.__file__))) for m in [worker,ledger]},distributions={d.metadata['Name']:d.version for d in importlib.metadata.distributions()},numpy_version=importlib.metadata.version('numpy'),additional_dependency_installs=0,plan_sha256=file_hash(run/'run_plan.json'),input_lengths=[r['input_tokens'] for r in requests],checkpoint_max_position_embeddings=read_json(model_dir/'config.json')['max_position_embeddings']))
++print(json.dumps(dict(status='PASS',requests=len(requests),max_input_tokens=max(r['input_tokens'] for r in requests),plan_sha256=file_hash(run/'run_plan.json'))))
+diff --git a/scripts/p02a_report.py b/scripts/p02a_report.py
+new file mode 100644
+index 0000000..cda8158
+--- /dev/null
++++ b/scripts/p02a_report.py
+@@ -0,0 +1,62 @@
++"""Replay retained outputs, disable dispatch, and derive integration tables/targets."""
++import dataclasses, json, statistics, subprocess, sys
++from datetime import datetime,timezone
++from pathlib import Path
++from taskcognition.artifacts import read_json,write_new
++from taskcognition.contracts import canonical,digest,file_hash,InputRecord,DrawRecord
++from taskcognition.p01_ledger import reconcile,events
++from taskcognition.p01_parsing import parse_and_score
++from taskcognition.p02_native import native_dataset,syntax,ENTRIES
++from taskcognition.p02_runner import RUN
++from taskcognition.targets import aggregate
++
++root=Path(__file__).resolve().parents[1];run=root/RUN;out=root/'reports/p02a'
++assert (run/'execution_end.json').exists(),'execution still active'
++statepath=root/'configs/phase_state.json';state=read_json(statepath)
++snapshot=root/'configs/state_snapshots/P02A_dispatch_ended.json'
++with snapshot.open('xb') as f:f.write(statepath.read_bytes())
++rows=reconcile(run);plan=read_json(run/'run_plan.json');all_complete=len(rows)==24 and all(r['state']=='COMPLETE' for r in rows.values())
++status='READY_FOR_REVIEW' if all_complete and read_json(out/'execution_command.json')['exit']==0 else 'BLOCKED'
++event='configs/state_events/007_P02A_checkpoint.json'
++write_new(root/event,dict(evidence_kind='development_observation',timestamp_utc=datetime.now(timezone.utc).isoformat(),event='bounded_checkpoint_dispatch_disabled',previous_state_sha256=file_hash(snapshot),status=status,active_phase='P02A',parent_phase='P02',p02_complete=False,p02_sealed=False,real_dispatch_enabled=False,p01_dispatch_enabled=False))
++state.update(status=status,real_dispatch_enabled=False,latest_event=event);statepath.write_bytes(canonical(state)+b'\n')
++for name,h in plan['bound_files'].items():assert file_hash(root/name)==h,name
++for name,h in plan['source_files'].items():assert file_hash(root/'src/taskcognition'/name)==h,name
++observations=[];targets=[];cells=[]
++from transformers import AutoTokenizer
++model=read_json(root/'reports/p01/model_download.json')
++tokenizer=AutoTokenizer.from_pretrained(root/model['local_directory'],local_files_only=True,trust_remote_code=False)
++for family in ENTRIES:
++    native=read_json(run/'outcome_inputs'/f'{family}.json');ds=native_dataset(root,family,native['effective_config']);entry=ds[0]
++    assert digest(entry)==native['entry_hash']
++    draws=[];packages={}
++    for item in [r for r in plan['requests'] if r['family']==family]:
++        key=item['request_id'];request=read_json(run/'requests'/f'{key}.json');packages[item['mode']]=request['package_hash']
++        if key not in rows or rows[key]['state']!='COMPLETE':continue
++        retained=rows[key];result=retained['result'];parsed=result['parsed']
++        assert result['request_hash']==digest(request) and result['package_hash']==request['package_hash'] and result['stream_id']==request['stream_id']
++        assert len(result['raw_token_ids'])==result['generated_tokens']<=1024
++        assert tokenizer.decode(result['raw_token_ids'],skip_special_tokens=False)==result['raw_decoded_text']
++        replay=parse_and_score(parsed['raw_decoded_text'],item['mode'],request['opening_in_prompt'],result['finish_reason'],lambda p:ds.score_answer(p,entry),lambda p:syntax(family,p))
++        assert replay['native_score']==parsed['native_score'] and replay['strict_valid_final']==parsed['strict_valid_final']
++        record=dict(evidence_kind='development_observation',family=family,mode=item['mode'],request_id=key,draw_index=item['draw_index'],strict_valid_final=parsed['strict_valid_final'],native_score=parsed['native_score'],perfect_correct=parsed['perfect_correct'],status=parsed['status'],failures=parsed['failure_flags'],finish_reason=result['finish_reason'],input_tokens=request['input_tokens'],output_tokens=result['generated_tokens'],generation_seconds=result['generation_seconds'],load_seconds=result['load_seconds'],worker_residency_seconds=retained['resource_seconds'],max_allocated_bytes=result['max_allocated_bytes'],max_reserved_bytes=result['max_reserved_bytes'],result_sha256=file_hash(run/'results'/f'{key}.json'))
++        observations.append(record)
++        score=parsed['native_score'];draw_status='perfect' if score==1 else 'partial' if score>0 else 'wrong' if parsed['strict_valid_final'] else 'admitted_failure'
++        draws.append(DrawRecord('development_observation',digest([request['input_id'],request['package_hash'],item['draw_index']]),request['input_id'],'DEVELOPMENT',item['mode'],request['package_hash'],item['draw_index'],request['stream_id'],f'results/{key}.json',record['result_sha256'],score,score==1,retained['resource_seconds'],'diagnostic_worker_residency_seconds',draw_status))
++    for mode in ('D','R'):
++        cell=[o for o in observations if o['family']==family and o['mode']==mode]
++        cells.append(dict(evidence_kind='development_observation',family=family,mode=mode,planned=2,executed=sum(r['request_id'] in rows for r in plan['requests'] if r['family']==family and r['mode']==mode),retained=len(cell),unexecuted=2-sum(r['request_id'] in rows for r in plan['requests'] if r['family']==family and r['mode']==mode),strict_valid_final=sum(o['strict_valid_final'] for o in cell),perfect_correct=sum(o['perfect_correct'] for o in cell),scores=[o['native_score'] for o in cell],failures=[o['failures'] for o in cell],output_tokens=[o['output_tokens'] for o in cell],generation_seconds=[o['generation_seconds'] for o in cell],worker_residency_seconds=[o['worker_residency_seconds'] for o in cell],max_allocated_bytes=max((o['max_allocated_bytes'] for o in cell),default=None),max_reserved_bytes=max((o['max_reserved_bytes'] for o in cell),default=None)))
++    if len(draws)==4:
++        inp=InputRecord('development_observation',native['input_id'],'DEVELOPMENT',family,native['latent_hash'],entry['question'],None,native['effective_config']['seed'],digest(native['effective_config']),native['native_source_path'],f'outcome_inputs/{family}.json')
++        targets.append(dataclasses.asdict(aggregate(inp,draws,2,packages)))
++write_new(out/'integration_observations.json',dict(evidence_kind='development_observation',rows=observations))
++write_new(out/'twelve_cells.json',dict(evidence_kind='development_observation',cells=cells,formal_cap_sample=False))
++write_new(out/'target_pipeline_checks.json',dict(evidence_kind='development_observation',unit='complete input cluster; cross-pairs not independent',K=2,rows=targets,equal_family_pipeline_means={key:sum(t[key] for t in targets)/6 for key in ('benefit','joint_spoilage','direct_redraw','decline_010','decline_025')} if len(targets)==6 else None,interpretation='pipeline checks only; no precision, superiority or significance claim'))
++resources=dict(evidence_kind='development_observation',status=status,dispatched=len(rows),admitted=sum(e['event']=='admitted' for e in events(run)),reserved_tokens=sum(r['reserved_output_tokens'] for r in rows.values()),generated_tokens=sum(o['output_tokens'] for o in observations),conservative_gpu_residency_seconds=sum(r['resource_seconds'] for r in rows.values()),generation_seconds=sum(o['generation_seconds'] for o in observations),load_seconds=sum(o['load_seconds'] for o in observations),execution_wall_seconds=read_json(run/'execution_end.json')['execution_wall_seconds'],peak_allocated_bytes=max((o['max_allocated_bytes'] for o in observations),default=0),peak_reserved_bytes=max((o['max_reserved_bytes'] for o in observations),default=0),live_D_valid_final=sum(o['strict_valid_final'] for o in observations if o['mode']=='D'),software_incidents=len(list((run/'incidents').glob('*.json'))),warmups=0,gate_generations=0,gate_training=0,final_labels=0,scalar_cost='provisional conservative worker residency; not frozen audit support bounds',backup='local raw evidence plus verified local ZIP only; no off-machine backup')
++write_new(out/'resources.json',resources)
++lines=['# P02A twelve-cell integration','', 'Planned denominator is two in every cell. DEVELOPMENT diagnostic only; not the formal cap study.','', '| Family | Mode | Executed / retained / planned | Strict FINAL | Perfect | Native scores | Failure flags | Output tokens | Generation seconds | Worker seconds (cost) | Peak allocated / reserved MiB |','|---|---|---|---|---|---|---|---|---|---|---|']
++for c in cells:lines.append(f'| {c["family"]} | {c["mode"]} | {c["executed"]}/{c["retained"]}/{c["planned"]} | {c["strict_valid_final"]}/2 | {c["perfect_correct"]}/2 | {c["scores"]} | {c["failures"]} | {c["output_tokens"]} | {[round(t,3) for t in c["generation_seconds"]]} | {[round(t,3) for t in c["worker_residency_seconds"]]} | {None if c["max_allocated_bytes"] is None else round(c["max_allocated_bytes"]/1024**2,2)} / {None if c["max_reserved_bytes"] is None else round(c["max_reserved_bytes"]/1024**2,2)} |')
++lines+=['','Full precision, failure flags, individual generation times and memory are in twelve_cells.json and integration_observations.json. All cells retain their planned denominators; missing rows are not imputed.','','## Complete-cluster target checks','','| Family | T_b | T_h | h_DD | d_0.10 | d_0.25 |','|---|---|---|---|---|---|']
++for t in targets:lines.append(f'| {t["family"]} | {t["benefit"]} | {t["joint_spoilage"]} | {t["direct_redraw"]} | {t["decline_010"]} | {t["decline_025"]} |')
++(out/'integration_table.md').write_text('\n'.join(lines)+'\n',encoding='utf-8')
++print(json.dumps(resources,indent=2))
+diff --git a/src/taskcognition/p02_native.py b/src/taskcognition/p02_native.py
+new file mode 100644
+index 0000000..81a2570
+--- /dev/null
++++ b/src/taskcognition/p02_native.py
+@@ -0,0 +1,47 @@
++"""Six pinned native implementations; no gold or metadata in gate records."""
++import importlib, json, math, sys
++from pathlib import Path
++from .artifacts import read_json
++from .contracts import IntegrityError, file_hash
++from .p01_parsing import numeric_list_syntax
++
++ENTRIES={
++ 'number_sorting':('algorithmic','NumberSorting'),
++ 'number_format':('arithmetic','NumberFormat'),
++ 'letter_counting':('algorithmic','LetterCounting'),
++ 'graph_color':('algorithmic','GraphColor'),
++ 'shortest_path':('graphs','ShortestPath'),
++ 'knights_knaves':('logic','KnightsKnaves')}
++
++def native_dataset(root, family, config):
++    vendor=(root/'vendor/reasoning_gym_p02a').resolve()
++    manifest=read_json(vendor/'source_manifest.json')
++    for name,info in manifest['files'].items():
++        if file_hash(vendor/name)!=info['sha256']:raise IntegrityError('native source mismatch')
++    existing=sys.modules.get('reasoning_gym')
++    if existing and Path(existing.__file__).parent!=vendor/'reasoning_gym':
++        # Offline test processes may have loaded the P01 closure first.
++        for name in list(sys.modules):
++            if name=='reasoning_gym' or name.startswith('reasoning_gym.'):del sys.modules[name]
++    sys.path.insert(0,str(vendor)) if str(vendor) not in sys.path else None
++    category,cls=ENTRIES[family]
++    module=importlib.import_module(f'reasoning_gym.{category}.{family}')
++    if Path(module.__file__).resolve()!=vendor/f'reasoning_gym/{category}/{family}.py':raise IntegrityError('wrong native import')
++    return getattr(module,cls+'Dataset')(getattr(module,cls+'Config')(**config))
++
++def syntax(family, payload):
++    if family=='number_sorting':numeric_list_syntax(payload)
++    elif family=='number_format':
++        if not math.isfinite(float(payload.replace(',',''))):raise ValueError('finite number required')
++    elif family=='graph_color':
++        if not isinstance(json.loads(payload),dict):raise ValueError('JSON map required')
++    elif family=='shortest_path':
++        if payload!='infeasible' and not all(p in ('up','down','left','right') for p in payload.split()):raise ValueError('directions required')
++    elif family in ('letter_counting','knights_knaves'):
++        # Native scorers intentionally accept text, including substring credit or
++        # normalized name-role assignments. Do not narrow away native partial credit.
++        if not payload:raise ValueError('nonempty text required')
++    else:raise IntegrityError('unknown family')
++
++def gate_record(input_id,text):
++    return {'input_id':input_id,'text':text,'observables':{'character_count':len(text)}}
+diff --git a/src/taskcognition/p02_runner.py b/src/taskcognition/p02_runner.py
+new file mode 100644
+index 0000000..258052c
+--- /dev/null
++++ b/src/taskcognition/p02_runner.py
+@@ -0,0 +1,98 @@
++"""P02A immutable plan guard and sequential supervisor. P01 stays closed."""
++import os, subprocess, sys, time, traceback
++from datetime import datetime, timezone
++from pathlib import Path
++from .artifacts import read_json,write_new
++from .contracts import IntegrityError,digest,file_hash
++from .p01_ledger import events,reconcile,append,terminal
++from .p01_smoke import record_worker_exit
++
++RUN='artifacts/development/p02a-six-family'
++
++def require_real_dispatch(root):
++    state=read_json(root/'configs/phase_state.json')
++    if state.get('active_phase')!='P02A' or state.get('status')!='IN_PROGRESS' or state.get('real_dispatch_enabled') is not True:
++        raise IntegrityError('P02A dispatch disabled')
++    run=root/RUN
++    if file_hash(run/'run_plan.json')!=state.get('p02a_plan_sha256'):raise IntegrityError('P02A plan changed')
++    plan=read_json(run/'run_plan.json')
++    for name,expected in plan['source_files'].items():
++        if file_hash(root/'src/taskcognition'/name)!=expected:raise IntegrityError('planned source changed')
++    for name,expected in plan['bound_files'].items():
++        if file_hash(root/name)!=expected:raise IntegrityError('planned evidence changed')
++    return plan
++
++def reserve(run,request,plan):
++    rows=reconcile(run)
++    key=request['request_id']
++    if key in rows:raise IntegrityError('no replay; J=0')
++    index=len(rows)
++    if index>=24 or sum(r['reserved_output_tokens'] for r in rows.values())+1024>24576:raise IntegrityError('P02A budget exhausted')
++    expected=plan['requests'][index]
++    if expected['request_id']!=key or expected['request_hash']!=digest(request):raise IntegrityError('request not next in immutable plan')
++    if request.get('split')!='DEVELOPMENT' or request.get('evidence_kind')!='development_observation' or request.get('max_new_tokens')!=1024:raise IntegrityError('scope/cap')
++    if request['stream_id'] in {r['stream_id'] for r in rows.values()}:raise IntegrityError('stream reuse')
++    if any(r['state']!='COMPLETE' or not r.get('resource_recorded') for r in rows.values()):raise IntegrityError('unfinished previous attempt')
++    append(run,'dispatch',key,request_hash=digest(request),stream_id=request['stream_id'],max_new_tokens=1024)
++
++def envelope_check(spent,wall,evidence_bytes):
++    # Reserve 300 s: up to 150 s startup/load, 120 s generation, 30 s cleanup.
++    if spent+300>5400 or wall+300>7200 or evidence_bytes+16*1024**2>512*1024**2:raise IntegrityError('insufficient remaining envelope')
++
++def supervise(run,request,command,env,monitor=None):
++    """On any parent failure kill AND wait before propagating; incident is unscored."""
++    key=request['request_id'];started=time.perf_counter();process=None
++    cancel_time=None;admitted_seen=None;forced=False;error=None
++    logs=run/'worker_logs';logs.mkdir(exist_ok=True)
++    try:
++        with (logs/f'{key}.stdout.txt').open('xb') as out,(logs/f'{key}.stderr.txt').open('xb') as err:
++            process=subprocess.Popen(command,stdout=out,stderr=err,env=env,creationflags=subprocess.CREATE_NO_WINDOW if os.name=='nt' else 0)
++            while process.poll() is None:
++                if monitor is not None:monitor(process)
++                current=[e for e in events(run) if e['request_id']==key]
++                if admitted_seen is None and any(e['event']=='admitted' for e in current):admitted_seen=time.perf_counter()
++                now=time.perf_counter()
++                if admitted_seen is not None and now-admitted_seen>=120 and cancel_time is None:
++                    cancel_time=now
++                    write_new(run/'cancel'/f'{key}.json',dict(evidence_kind='development_observation',reason='timeout',timestamp_utc=datetime.now(timezone.utc).isoformat()))
++                if (admitted_seen is not None and now-admitted_seen>=130) or now-started>=270:
++                    forced=True;cancel_time=cancel_time or now;process.kill();break
++                time.sleep(.02)
++            process.wait(timeout=30)
++    except BaseException as exc:
++        error=exc
++        raise
++    finally:
++        cleanup_start=time.perf_counter()
++        if process is not None and process.poll() is None:process.kill()
++        if process is not None:process.wait(timeout=30)
++        elapsed=time.perf_counter()-started
++        if error is not None:
++            incident=dict(evidence_kind='development_observation',split='DEVELOPMENT',request_id=key,scored=False,status='supervisor_incident',error_type=type(error).__name__,error_message=str(error),seconds=elapsed,child_pid=None if process is None else process.pid,child_exit=None if process is None else process.returncode,child_waited=process is not None,cleanup_seconds=time.perf_counter()-cleanup_start,automatic_retry=False)
++            # Independent diagnostic survives a broken monitoring ledger; never a result.
++            write_new(run/'incidents'/f'{key}_supervisor.json',incident)
++            append(run,'resource',key,seconds=elapsed,process_exit=incident['child_exit'],supervisor_incident=True,conservative_gpu_residency=True)
++    return record_worker_exit(run,request,elapsed=elapsed,exit_code=process.returncode,forced=forced,cancellation_seconds=None if cancel_time is None else time.perf_counter()-cancel_time)
++
++def execute(root):
++    plan=require_real_dispatch(root);run=root/RUN
++    startfile=run/'execution_start.json'
++    if startfile.exists():raise IntegrityError('single execution invocation; investigate interrupted run without automatic resume')
++    write_new(startfile,dict(evidence_kind='development_observation',timestamp_utc=datetime.now(timezone.utc).isoformat(),plan_sha256=file_hash(run/'run_plan.json')))
++    start=time.perf_counter()
++    try:
++        for item in plan['requests']:
++            require_real_dispatch(root)
++            rows=reconcile(run)
++            spent=sum(r['resource_seconds'] for r in rows.values())
++            size=sum(p.stat().st_size for base in (run,root/'reports/p02a') for p in base.rglob('*') if p.is_file())
++            envelope_check(spent,time.perf_counter()-start,size)
++            request=read_json(run/'requests'/f'{item["request_id"]}.json')
++            reserve(run,request,plan)
++            env=os.environ.copy();env.update(PYTHONPATH=str(root/'src'),HF_HUB_OFFLINE='1',TRANSFORMERS_OFFLINE='1',HF_HUB_DISABLE_TELEMETRY='1',PYTHONUTF8='1')
++            result=supervise(run,request,[sys.executable,'-m','taskcognition.p02_worker','--root',str(root),'--request',str(run/'requests'/f'{item["request_id"]}.json')],env)
++            print(dict(request_id=item['request_id'],seconds=result['resource_seconds'],finish=result['result']['finish_reason']),flush=True)
++    finally:
++        write_new(run/'execution_end.json',dict(evidence_kind='development_observation',timestamp_utc=datetime.now(timezone.utc).isoformat(),execution_wall_seconds=time.perf_counter()-start))
++
++if __name__=='__main__':execute(Path.cwd())
+diff --git a/src/taskcognition/p02_worker.py b/src/taskcognition/p02_worker.py
+new file mode 100644
+index 0000000..00413c9
+--- /dev/null
++++ b/src/taskcognition/p02_worker.py
+@@ -0,0 +1,153 @@
++"""One isolated GPU request per process; no repeat, fallback or answer repair."""
++import argparse
++from pathlib import Path
++import time
++import traceback
++import warnings
++from .artifacts import read_json,write_new
++from .contracts import digest,file_hash,IntegrityError
++from .p01_ledger import append,terminal,reconcile
++from .p02_runner import require_real_dispatch,RUN
++from .p02_native import native_dataset,syntax
++from .p01_parsing import parse_and_score
++
++
++def main():
++    parser=argparse.ArgumentParser()
++    parser.add_argument('--root',type=Path,required=True)
++    parser.add_argument('--request',type=Path,required=True)
++    args=parser.parse_args()
++    root=args.root.resolve()
++    if Path(__file__).resolve()!=root/'src/taskcognition/p02_worker.py':raise IntegrityError('wrong worker import')
++    require_real_dispatch(root)
++    run=root/RUN
++    request=read_json(args.request)
++    key=request['request_id']
++    state=reconcile(run)[key]
++    if state['state']!='UNKNOWN_ADMISSION' or state['request_hash']!=digest(request):
++        raise IntegrityError('worker requires unique unchanged dispatch')
++    for name,expected in request['source_files'].items():
++        if file_hash(Path(__file__).parent/name)!=expected:raise IntegrityError('worker source changed after planning')
++    import torch
++    from torch.nn.attention import sdpa_kernel,SDPBackend
++    from transformers import AutoModelForCausalLM,AutoTokenizer,GenerationConfig,StoppingCriteria,StoppingCriteriaList
++    model_path=root/request['model_directory']
++    start_load=time.perf_counter()
++    with warnings.catch_warnings(record=True) as caught:
++        warnings.simplefilter('always')
++        tokenizer=AutoTokenizer.from_pretrained(model_path,local_files_only=True,trust_remote_code=False)
++        model=AutoModelForCausalLM.from_pretrained(model_path,dtype=torch.bfloat16,
++                  attn_implementation='sdpa',local_files_only=True,trust_remote_code=False).to('cuda:0')
++        model.eval()
++        assert all(p.device.type=='cuda' and p.dtype==torch.bfloat16 for p in model.parameters())
++        torch.cuda.synchronize()
++        load_seconds=time.perf_counter()-start_load
++        config=GenerationConfig.from_dict(request['effective_generation_config'])
++        inputs=torch.tensor([request['input_ids']],device='cuda',dtype=torch.long)
++        mask=torch.ones_like(inputs)
++        torch.manual_seed(request['sampling_seed'])
++        torch.cuda.manual_seed_all(request['sampling_seed'])
++        torch.cuda.reset_peak_memory_stats()
++        cancel=run/'cancel'/f'{key}.json'
++        token_ids=[]
++        first=True
++        generation_start=None
++        stopping_reason=None
++        callback_error=None
++        def callback(fn):
++            # Do not let a backend that swallows a callback exception authorize scoring.
++            def checked(*args,**kwargs):
++                nonlocal callback_error
++                try:return fn(*args,**kwargs)
++                except Exception as exc:
++                    callback_error=exc
++                    raise
++            return checked
++        class Stream:
++            @callback
++            def put(self,value):
++                nonlocal first
++                if first:
++                    first=False
++                    return
++                values=value.reshape(-1).tolist()
++                first_output=not token_ids
++                token_ids.extend(values)  # diagnostic only if evidence publication then fails
++                if first_output:
++                    append(run,'first_token',key,elapsed_seconds=time.perf_counter()-generation_start)
++            def end(self):pass
++        class Stop(StoppingCriteria):
++            @callback
++            def __call__(self,input_ids,scores,**kwargs):
++                nonlocal stopping_reason
++                if cancel.exists():
++                    reason=read_json(cancel)['reason']
++                    if reason not in ('deliberate_interruption','timeout'):raise IntegrityError('unknown cancellation reason')
++                    stopping_reason='controlled_interruption' if reason=='deliberate_interruption' else 'timeout'
++                elif time.perf_counter()-generation_start>=120:stopping_reason='timeout'
++                return stopping_reason is not None
++        stage='admission'
++        try:
++            # Conservative admission boundary: durable admission immediately before generate.
++            torch.cuda.synchronize()
++            append(run,'admitted',key,boundary='immediately before model.generate',load_seconds=load_seconds)
++            generation_start=time.perf_counter()
++            stage='generation'
++            with torch.inference_mode(),sdpa_kernel([SDPBackend.MATH]):
++                generated=model.generate(input_ids=inputs,attention_mask=mask,generation_config=config,
++                    streamer=Stream(),stopping_criteria=StoppingCriteriaList([Stop()]))
++            if callback_error is not None:raise callback_error
++            stage='returned_token_check'
++            returned=generated[0,inputs.shape[1]:].tolist()
++            if returned!=token_ids:raise IntegrityError('streamed/returned token mismatch')
++            stage='synchronization'
++            before_sync=time.perf_counter()
++            torch.cuda.synchronize()
++            sync_seconds=time.perf_counter()-before_sync
++        except Exception as exc:
++            # Diagnostic capture only: no exception allowlist and no score imputation.
++            # Preserve any damaged files; if diagnostic writing fails, retain both errors
++            # in the uncaught traceback/worker stderr and still stop the process.
++            incident={'evidence_kind':request['evidence_kind'],'split':request['split'],
++                'request_id':key,'request_hash':digest(request),'scored':False,
++                'status':'unclassified_worker_incident','stage':'callback' if callback_error is not None else stage,
++                'error_type':type(exc).__name__,'error_message':str(exc),'traceback':traceback.format_exc(),
++                'partial_token_ids':list(token_ids),'partial_tokens_are_unscored':True,
++                'automatic_retry':False,'device_completion':'unknown; no synchronization claim on incident path'}
++            try:write_new(run/'incidents'/f'{key}.json',incident)
++            except Exception as diagnostic_error:
++                exc.add_note('Incident persistence also failed: '+repr(diagnostic_error))
++            raise
++        generation_seconds=time.perf_counter()-generation_start
++        raw_text=tokenizer.decode(token_ids,skip_special_tokens=False)
++        parse_ids=list(token_ids)
++        eos=config.eos_token_id if isinstance(config.eos_token_id,list) else [config.eos_token_id]
++        terminal_eos=parse_ids[-1] if parse_ids and parse_ids[-1] in eos else None
++        if terminal_eos is not None:parse_ids.pop()
++        text=tokenizer.decode(parse_ids,skip_special_tokens=False)
++        finish=stopping_reason or ('eos' if terminal_eos is not None else 'cap' if len(token_ids)>=1024 else 'other')
++        dataset=native_dataset(root,request['family'],request['dataset_config'])
++        entry=dataset[request['dataset_index']]
++        if digest(entry)!=request['entry_hash']:raise IntegrityError('native entry changed')
++        parsed=parse_and_score(text,request['mode'],request['opening_in_prompt'],finish,
++                               lambda payload:dataset.score_answer(payload,entry),
++                               syntax_fn=lambda payload:syntax(request['family'],payload))
++        if finish in ('timeout','controlled_interruption'):
++            parsed['failure_flags'].append(finish)
++            if not parsed['strict_valid_final']:parsed['status']='admitted_execution_failure'
++        result={'evidence_kind':'development_observation','split':'DEVELOPMENT','request_id':key,
++                'purpose':request['purpose'],'mode':request['mode'],'package_hash':request['package_hash'],
++                'request_hash':digest(request),'stream_id':request['stream_id'],
++                'raw_token_ids':token_ids,'raw_decoded_text':raw_text,'removed_terminal_eos_id':terminal_eos,
++                'generated_tokens':len(token_ids),'parsed':parsed,'finish_reason':finish,'model_error':None,
++                'generation_seconds':generation_seconds,'synchronization_seconds':sync_seconds,
++                'load_seconds':load_seconds,'max_allocated_bytes':torch.cuda.max_memory_allocated(),
++                'max_reserved_bytes':torch.cuda.max_memory_reserved(),'warnings':[str(w.message) for w in caught],
++                'cancellation_observation':'generate returned and CUDA synchronized; no asynchronous device work from this request remains',
++                'native_scorer':'unchanged pinned upstream '+request['family'],
++                'model_device':'cuda:0','model_dtype':'bfloat16','attention':'sdpa forced MATH',
++                'automatic_retry':False}
++        terminal(run,key,result)
++    print(digest(result),flush=True)
++
++if __name__=='__main__':main()
+diff --git a/tests/test_p02a.py b/tests/test_p02a.py
+new file mode 100644
+index 0000000..cbf16ec
+--- /dev/null
++++ b/tests/test_p02a.py
+@@ -0,0 +1,90 @@
++"""Offline native scorer, channel, scope and supervisor failure checks."""
++import json, os, subprocess, sys, tempfile, unittest
++from pathlib import Path
++from taskcognition.artifacts import write_new
++from taskcognition.contracts import IntegrityError,digest
++from taskcognition.p01_ledger import append,reconcile
++from taskcognition.p01_parsing import parse_and_score
++from taskcognition.p02_native import native_dataset,syntax,gate_record,ENTRIES
++from taskcognition.p02_runner import reserve,envelope_check,supervise,require_real_dispatch
++
++ROOT=Path(__file__).resolve().parents[1]
++
++def scorer_cases():
++    return {
++      'number_sorting':({'answer':"['1', '3']",'metadata':{'direction':'ascending'}},[("['1','3']",1.),("['2','4']",1.),("['2.01','4.01']",0.),("['3','1']",0.),('bad',0.)]),
++      'number_format':({'metadata':{'solution':12.0}},[('12',1.),('12.009',1.),('12.011',0.),('wrong',0.)]),
++      'letter_counting':({'answer':'3'},[('3',1.),('4',0.),('33',.5),('bad',0.)]),
++      'graph_color':({'metadata':{'puzzle':{'vertices':[0,1],'edges':[(0,1)],'color_options':[1,2]}}},[('{"0":1,"1":2}',1.),('{"0":1,"1":1}',.01),('{}',.01),('bad',0.)]),
++      'shortest_path':({'answer':'right right','metadata':{'matrix':[['*','O','#'],['O','O','O']]}},[('right right',1.),('down right right up',.5),('left',0.),('bad',0.)]),
++      'knights_knaves':({'answer':'Alice is a knight, and Bob is a knave.'},[('Alice is a knight, Bob is a knave',1.),('Alice is a knight, Bob is a knight',0.3+0.7/2),('Alice is a knave, Bob is a knight',0.),('bad',0.)])}
++
++class NativeTests(unittest.TestCase):
++    def test_native_hand_checked_scores_and_precision(self):
++        for family,(entry,cases) in scorer_cases().items():
++            ds=native_dataset(ROOT,family,dict(seed=710000,size=1))
++            for payload,score in cases:
++                with self.subTest(family=family,payload=payload):self.assertEqual(ds.score_answer(payload,entry),score)
++    def test_each_native_syntax_and_channel_boundary(self):
++        for family,(entry,cases) in scorer_cases().items():
++            ds=native_dataset(ROOT,family,dict(seed=710000,size=1));payload=cases[0][0]
++            fn=lambda text:parse_and_score(text,'R',False,'eos',lambda p:ds.score_answer(p,entry),lambda p:syntax(family,p))
++            self.assertTrue(fn('<think>private</think><FINAL>'+payload+'</FINAL>')['strict_valid_final'])
++            self.assertFalse(fn('<think><FINAL>'+payload+'</FINAL></think>bare')['strict_valid_final'])
++            self.assertFalse(fn('<think>x</think><FINAL>'+payload+'</FINAL>tail')['strict_valid_final'])
++    def test_native_partial_scores_survive_parser(self):
++        for family,(entry,cases) in scorer_cases().items():
++            ds=native_dataset(ROOT,family,dict(seed=710000,size=1))
++            for payload,score in cases:
++                if 0<score<1:
++                    row=parse_and_score('<FINAL>'+payload+'</FINAL>','D',False,'eos',lambda p:ds.score_answer(p,entry),lambda p:syntax(family,p))
++                    self.assertEqual(row['native_score'],score);self.assertFalse(row['perfect_correct'])
++    def test_gate_no_metadata(self):
++        self.assertEqual(set(gate_record('id','text')),{'input_id','text','observables'})
++
++class BoundaryTests(unittest.TestCase):
++    def request(self):return dict(request_id='q',stream_id='a'*64,split='DEVELOPMENT',evidence_kind='development_observation',max_new_tokens=1024)
++    def test_no_replay_and_plan_mismatch(self):
++        with tempfile.TemporaryDirectory() as td:
++            run=Path(td);q=self.request();plan={'requests':[{'request_id':'q','request_hash':digest(q)}]}
++            reserve(run,q,plan)
++            with self.assertRaises(IntegrityError):reserve(run,q,plan)
++    def test_scope_and_unplanned_request(self):
++        for field,value in [('split','TRAIN'),('max_new_tokens',2048),('evidence_kind','fixture')]:
++            with tempfile.TemporaryDirectory() as td:
++                q=self.request();q[field]=value
++                with self.assertRaises(IntegrityError):reserve(Path(td),q,{'requests':[{'request_id':'q','request_hash':digest(q)}]})
++    def test_exact_twenty_four_attempt_ceiling_includes_unknown(self):
++        with tempfile.TemporaryDirectory() as td:
++            run=Path(td);requests=[]
++            for i in range(25):
++                q=self.request();q.update(request_id=str(i),stream_id=digest(i));requests.append(q)
++            plan={'requests':[dict(request_id=q['request_id'],request_hash=digest(q)) for q in requests]}
++            from taskcognition.p01_ledger import terminal
++            for q in requests[:23]:
++                reserve(run,q,plan)
++                terminal(run,q['request_id'],dict(request_id=q['request_id']))
++                append(run,'resource',q['request_id'],seconds=1)
++            reserve(run,requests[23],plan)  # Unknown admission consumes slot 24.
++            self.assertEqual(sum(r['reserved_output_tokens'] for r in reconcile(run).values()),24576)
++            with self.assertRaisesRegex(IntegrityError,'budget exhausted'):reserve(run,requests[24],plan)
++    def test_budget_reserves_cleanup(self):
++        envelope_check(5100,6900,496*1024**2)
++        for values in [(5100.001,0,0),(0,6900.001,0),(0,0,496*1024**2+1)]:
++            with self.assertRaises(IntegrityError):envelope_check(*values)
++    def test_p01_state_cannot_authorize_p02(self):
++        with tempfile.TemporaryDirectory() as td:
++            root=Path(td);write_new(root/'configs/phase_state.json',dict(active_phase='P01',status='IN_PROGRESS',real_dispatch_enabled=True))
++            with self.assertRaises(IntegrityError):require_real_dispatch(root)
++    def test_supervisor_monitor_error_kills_waits_charges_once(self):
++        with tempfile.TemporaryDirectory() as td:
++            run=Path(td);q=self.request();append(run,'dispatch','q',request_hash=digest(q),stream_id=q['stream_id'],max_new_tokens=1024)
++            children=[]
++            def fail(child):children.append(child);raise OSError('injected monitoring evidence failure')
++            with self.assertRaisesRegex(OSError,'injected'):
++                supervise(run,q,[sys.executable,'-c','import time; time.sleep(20)'],os.environ.copy(),monitor=fail)
++            self.assertIsNotNone(children[0].poll())
++            row=reconcile(run)['q'];self.assertTrue(row['resource_recorded']);self.assertEqual(row['state'],'UNKNOWN_ADMISSION')
++            self.assertFalse((run/'results/q.json').exists());self.assertTrue((run/'incidents/q_supervisor.json').exists())
++
++if __name__=='__main__':unittest.main()
