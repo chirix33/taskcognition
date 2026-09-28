@@ -49,3 +49,37 @@ No external services, Jev integration, paid inference, manuscript submission, or
 Send the completion report, changed-file summary, commit or patch identity, commands and outcomes, failed checks, decision requests, run manifest, and relevant compact JSON/CSV evidence. Large raw generations remain in the repository's artifact store, addressed by hashes. A narrative saying "all tests passed" alone cannot seal a research phase.
 
 The original TeX and bibliography are not included. Their recovery is tracked; it does not block bootstrap. They are needed before editing the original manuscript in P09.
+
+## P00 implementation addendum (2026-09-28 UTC)
+
+The sentence above describes the supplied handoff. Repository inspection found the original
+`docs/iclr2027/taskcognition.tex`, `taskcognition.bib`, and protocol. They remain unchanged
+and ignored under the existing archive rule. Their verified PDF matches the governing
+reference byte for byte. See `reports/source_inventory.json` and `reports/decision_ledger.md`.
+
+P00 provides an offline package, not an inference backend. Run from this repository root:
+
+```powershell
+.venv/Scripts/python.exe -m taskcognition doctor
+.venv/Scripts/python.exe -m taskcognition fixture-run --output artifacts/fixtures/my-check --dry-run
+.venv/Scripts/python.exe -m taskcognition fixture-run --output artifacts/fixtures/my-check
+.venv/Scripts/python.exe -m taskcognition verify-artifacts --run artifacts/fixtures/my-check
+.venv/Scripts/python.exe -m taskcognition fixture-run --output artifacts/fixtures/my-check --resume
+.venv/Scripts/python.exe -m unittest discover -s tests -v
+```
+
+`--resume` verifies complete evidence without rewriting it; partial evidence is retained
+and rejected. The `collect` command is a rejection-only guard. No model loading,
+downloads, generation, training, audit, test analysis, or phase advancement is implemented.
+The fixture's family names label six copies of an analytical example, not six real tasks.
+All synthetic records are explicitly `fixture`, including their synthetic cost units.
+
+For a fresh environment, use Python 3.12.14 (tested), create a project-local venv, install
+`requirements-build.lock` into it, and run `python -m pip install --no-build-isolation .`.
+Runtime and tests have no third-party dependencies. This workstation's offline installation
+instead built a wheel using the already bundled pinned build tools, then installed that
+wheel into `.venv` with `--no-index --no-deps`. Exact commands and limits are in the P00 report.
+
+The manifest class is an explicitly UNFROZEN bootstrap schema. Real freeze completeness,
+native parsing/admission/cost accounting, and held-out readers need their authorized later
+phases. Guard tests exercise synthetic rows only; they do not establish a security boundary.

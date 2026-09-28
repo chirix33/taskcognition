@@ -6,3 +6,20 @@ docs/iclr2027
 
 # Un-ignore the root README.md
 !README.md
+
+# Preserve the supplied P00 handoff in version control; historical source stays ignored.
+!AGENTS.md
+!docs/*.md
+!docs/prompts/*.md
+!docs/templates/*.md
+!reports/**/*.md
+.venv/
+__pycache__/
+*.egg-info/
+build/
+dist/
+tmp/
+artifacts/development/**
+!artifacts/development/.gitkeep
+artifacts/final/**
+!artifacts/final/.gitkeep

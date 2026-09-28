@@ -1,0 +1,131 @@
+{
+  "evidence_kind": "development_observation",
+  "artifact_role": "offline_software_validation",
+  "timestamp_utc": "2026-09-28T03:32:10.022476+00:00",
+  "actual_model_calls": 0,
+  "commands": [
+    {
+      "argv": [
+        ".venv/python",
+        "-m",
+        "pip",
+        "check"
+      ],
+      "exit": 0,
+      "expected_exit": 0,
+      "seconds": 0.49205950000032317,
+      "stdout": "No broken requirements found.\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        ".venv/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "exit": 0,
+      "expected_exit": 0,
+      "seconds": 2.3447605000001204,
+      "stdout": "",
+      "stderr": "test_canonical_hash_and_disjoint_streams (test_p00.ArtifactTests.test_canonical_hash_and_disjoint_streams) ... ok\ntest_cli_collect_is_guard_only (test_p00.ArtifactTests.test_cli_collect_is_guard_only) ... ok\ntest_complete_roundtrip_and_resume_are_immutable (test_p00.ArtifactTests.test_complete_roundtrip_and_resume_are_immutable) ... ok\ntest_deterministic_artifacts_across_directories (test_p00.ArtifactTests.test_deterministic_artifacts_across_directories) ... ok\ntest_doctor_does_not_load_models (test_p00.ArtifactTests.test_doctor_does_not_load_models) ... ok\ntest_dry_run_writes_nothing (test_p00.ArtifactTests.test_dry_run_writes_nothing) ... ok\ntest_final_development_and_traversal_output_rejected (test_p00.ArtifactTests.test_final_development_and_traversal_output_rejected) ... ok\ntest_immutable_write (test_p00.ArtifactTests.test_immutable_write) ... ok\ntest_interrupted_write_is_retained_not_regenerated (test_p00.ArtifactTests.test_interrupted_write_is_retained_not_regenerated) ... ok\ntest_json_duplicate_keys_nonfinite_and_path_escape (test_p00.ArtifactTests.test_json_duplicate_keys_nonfinite_and_path_escape) ... ok\ntest_missing_corrupted_unexpected_evidence_rejected (test_p00.ArtifactTests.test_missing_corrupted_unexpected_evidence_rejected) ... ok\ntest_rehashed_wrong_report_still_fails_recomputation (test_p00.ArtifactTests.test_rehashed_wrong_report_still_fails_recomputation) ... ok\ntest_feature_allowlist_rejects_leaks (test_p00.GuardTests.test_feature_allowlist_rejects_leaks) ... ok\ntest_final_label_kinds_do_not_authorize_collection (test_p00.GuardTests.test_final_label_kinds_do_not_authorize_collection) ... ok\ntest_final_label_kinds_match_exact_split (test_p00.GuardTests.test_final_label_kinds_match_exact_split) ... ok\ntest_hash_or_fake_freeze_cannot_enable_p00 (test_p00.GuardTests.test_hash_or_fake_freeze_cannot_enable_p00) ... ok\ntest_manifest_scope_and_freeze (test_p00.GuardTests.test_manifest_scope_and_freeze) ... ok\ntest_no_final_collection_without_freeze (test_p00.GuardTests.test_no_final_collection_without_freeze) ... ok\ntest_stage_guard_rejects_unauthorized_phase (test_p00.GuardTests.test_stage_guard_rejects_unauthorized_phase) ... ok\ntest_train_reader_rejects_all_nontrain_splits (test_p00.GuardTests.test_train_reader_rejects_all_nontrain_splits) ... ok\ntest_admitted_failure_retained (test_p00.TargetTests.test_admitted_failure_retained) ... ok\ntest_all_perfect_and_exact_ties_direct (test_p00.TargetTests.test_all_perfect_and_exact_ties_direct) ... ok\ntest_analytical_k4 (test_p00.TargetTests.test_analytical_k4) ... ok\ntest_cross_mode_rng_reuse_rejected (test_p00.TargetTests.test_cross_mode_rng_reuse_rejected) ... ok\ntest_duplicate_draw_id_rejected (test_p00.TargetTests.test_duplicate_draw_id_rejected) ... ok\ntest_equal_distributions_can_have_spoilage (test_p00.TargetTests.test_equal_distributions_can_have_spoilage) ... ok\ntest_invalid_score_cost_correctness (test_p00.TargetTests.test_invalid_score_cost_correctness) ... ok\ntest_k_one_rejected (test_p00.TargetTests.test_k_one_rejected) ... ok\ntest_missing_draw_not_zero_imputed (test_p00.TargetTests.test_missing_draw_not_zero_imputed) ... ok\ntest_mixed_cost_units_rejected (test_p00.TargetTests.test_mixed_cost_units_rejected) ... ok\ntest_mixed_evidence_or_split_rejected (test_p00.TargetTests.test_mixed_evidence_or_split_rejected) ... ok\ntest_near_one_is_not_perfect (test_p00.TargetTests.test_near_one_is_not_perfect) ... ok\ntest_partial_credit_not_exact_match (test_p00.TargetTests.test_partial_credit_not_exact_match) ... ok\ntest_wrong_package_rejected (test_p00.TargetTests.test_wrong_package_rejected) ... ok\n\n----------------------------------------------------------------------\nRan 34 tests in 2.032s\n\nOK\n"
+    },
+    {
+      "argv": [
+        ".venv/python",
+        "-m",
+        "taskcognition",
+        "doctor",
+        "--output",
+        "reports/environment_p00_v2.json"
+      ],
+      "exit": 0,
+      "expected_exit": 0,
+      "seconds": 1.5019319000020914,
+      "stdout": "{\n  \"actual_model_calls\": 0,\n  \"artifact_role\": \"environment_inventory_no_generation\",\n  \"disk\": {\n    \"free_bytes\": 1806089097216,\n    \"total_bytes\": 2025740824576\n  },\n  \"evidence_kind\": \"development_observation\",\n  \"git\": {\n    \"branch\": {\n      \"exit\": 0,\n      \"stderr\": \"\",\n      \"stdout\": \"codex/p00-bootstrap\"\n    },\n    \"head\": {\n      \"exit\": 0,\n      \"stderr\": \"\",\n      \"stdout\": \"d6e4c2335588a8ed1377243cdd7b7c8479a43577\"\n    }\n  },\n  \"gpu\": {\n    \"exit\": 0,\n    \"stderr\": \"\",\n    \"stdout\": \"NVIDIA GeForce RTX 5090, 32607 MiB, 30450 MiB, 610.60, 12.0\"\n  },\n  \"gpu_runtime_verified\": false,\n  \"logical_cpu_count\": 24,\n  \"memory\": {\n    \"available_bytes\": 45526999040,\n    \"total_bytes\": 68135153664\n  },\n  \"os\": {\n    \"machine\": \"AMD64\",\n    \"processor\": \"Intel(R) Core(TM) Ultra 9 285K\",\n    \"release\": \"11\",\n    \"system\": \"Windows\",\n    \"version\": \"10.0.26200\"\n  },\n  \"python\": {\n    \"packages\": {\n      \"accelerate\": null,\n      \"huggingface-hub\": null,\n      \"pip\": \"25.0.1\",\n      \"setuptools\": null,\n      \"taskcognition\": \"0.0.1\",\n      \"torch\": null,\n      \"transformers\": null,\n      \"wheel\": null\n    },\n    \"project_local\": true,\n    \"version\": \"3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]\"\n  },\n  \"qwen_cache\": {\n    \"bounded_search_only\": true,\n    \"locations\": [\n      {\n        \"exists\": false,\n        \"location_label\": \"default_hf_hub\",\n        \"qwen_directories\": 0,\n        \"qwen_file_bytes\": 0\n      },\n      {\n        \"exists\": false,\n        \"location_label\": \"project_models\",\n        \"qwen_directories\": 0,\n        \"qwen_file_bytes\": 0\n      },\n      {\n        \"exists\": false,\n        \"location_label\": \"project_cache\",\n        \"qwen_directories\": 0,\n        \"qwen_file_bytes\": 0\n      }\n    ]\n  },\n  \"shell\": {\n    \"exit\": 0,\n    \"stderr\": \"\",\n    \"stdout\": \"7.6.5\"\n  },\n  \"source_matches\": true,\n  \"source_sha256\": \"9eed0fe74f46c3acbc200183cf11693f1bec66a1180568087aeb775c97d8f6c8\",\n  \"timestamp_utc\": \"2026-09-28T03:32:13.426507+00:00\",\n  \"tools_on_path\": {\n    \"git\": true,\n    \"nvcc\": false,\n    \"nvidia-smi\": true,\n    \"pdftoppm\": true,\n    \"py\": false,\n    \"python\": false,\n    \"uv\": false\n  }\n}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        ".venv/python",
+        "-m",
+        "taskcognition",
+        "fixture-run",
+        "--output",
+        "artifacts/fixtures/p00-analytical-v2",
+        "--dry-run"
+      ],
+      "exit": 0,
+      "expected_exit": 0,
+      "seconds": 0.19427160000122967,
+      "stdout": "{\n  \"actual_model_calls\": 0,\n  \"evidence_kind\": \"fixture\",\n  \"input_clusters\": 6,\n  \"output\": \"artifacts/fixtures/p00-analytical-v2\",\n  \"status\": \"PLAN\",\n  \"synthetic_draw_records\": 48\n}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        ".venv/python",
+        "-m",
+        "taskcognition",
+        "fixture-run",
+        "--output",
+        "artifacts/fixtures/p00-analytical-v2"
+      ],
+      "exit": 0,
+      "expected_exit": 0,
+      "seconds": 0.39486759999999776,
+      "stdout": "{\n  \"evidence_kind\": \"fixture\",\n  \"files\": 54,\n  \"manifest_sha256\": \"c7575da8e3b7cef956138f172627b3d45f0821947dc7ed2471bae2ad3ea4db3a\",\n  \"status\": \"VERIFIED\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        ".venv/python",
+        "-m",
+        "taskcognition",
+        "verify-artifacts",
+        "--run",
+        "artifacts/fixtures/p00-analytical-v2"
+      ],
+      "exit": 0,
+      "expected_exit": 0,
+      "seconds": 0.2446447000002081,
+      "stdout": "{\n  \"evidence_kind\": \"fixture\",\n  \"files\": 54,\n  \"manifest_sha256\": \"c7575da8e3b7cef956138f172627b3d45f0821947dc7ed2471bae2ad3ea4db3a\",\n  \"status\": \"VERIFIED\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        ".venv/python",
+        "-m",
+        "taskcognition",
+        "fixture-run",
+        "--output",
+        "artifacts/fixtures/p00-analytical-v2",
+        "--resume"
+      ],
+      "exit": 0,
+      "expected_exit": 0,
+      "seconds": 0.25342880000243895,
+      "stdout": "{\n  \"evidence_kind\": \"fixture\",\n  \"files\": 54,\n  \"manifest_sha256\": \"c7575da8e3b7cef956138f172627b3d45f0821947dc7ed2471bae2ad3ea4db3a\",\n  \"status\": \"VERIFIED\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        ".venv/python",
+        "-m",
+        "taskcognition",
+        "collect",
+        "--split",
+        "TRAIN"
+      ],
+      "exit": 2,
+      "expected_exit": 2,
+      "seconds": 0.19500849999894854,
+      "stdout": "{\"status\": \"REJECTED\", \"error\": \"final collection requires an accepted immutable base freeze\"}\n",
+      "stderr": ""
+    }
+  ],
+  "elapsed_seconds": 5.621513800000685,
+  "passed": true
+}

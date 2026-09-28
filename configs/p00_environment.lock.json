@@ -1,0 +1,1 @@
+{"evidence_kind":"development_observation","artifact_role":"tested_bootstrap_environment","python":"3.12.14","build_tools":{"pip":"26.2.1","setuptools":"84.0.0","wheel":"0.48.0"},"project_environment":{"pip":"25.0.1","taskcognition":"0.0.1"},"runtime_dependencies":[],"test_dependencies":[],"model_backend":null,"model_revision":null,"quantization":null}
