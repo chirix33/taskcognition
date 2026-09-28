@@ -1,1 +1,1 @@
-{"accepted_previous_phase":"P00","accepted_previous_seal":"reports/phases/P00_accepted_seal.md","active_phase":"P01","authorized_next_phase":null,"latest_event":"configs/state_events/001_P00_accept_P01_start.json","status":"IN_PROGRESS","study_freeze":null}
+{"accepted_previous_phase":"P00","accepted_previous_seal":"reports/phases/P00_accepted_seal.md","active_phase":"P01","authorized_next_phase":null,"latest_event":"configs/state_events/002_P01_ready_for_review.json","status":"READY_FOR_REVIEW","study_freeze":null}

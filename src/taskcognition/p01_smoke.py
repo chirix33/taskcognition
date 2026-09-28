@@ -88,9 +88,32 @@ def prepare(root):
     print(read_json(run/'run_plan.json'))
 
 
+def record_worker_exit(run,request,*,elapsed,exit_code,forced,cancellation_seconds):
+    """Charge observed work, then fail closed on unexplained missing evidence."""
+    key=request['request_id']
+    if any(e['request_id']==key and e['event']=='resource' for e in events(run)):
+        raise IntegrityError('worker resources already recorded; investigate without replay')
+    append(run,'resource',key,seconds=elapsed,process_exit=exit_code,forced_termination=forced,
+           cancellation_to_exit_seconds=cancellation_seconds,conservative_gpu_residency=True)
+    state=reconcile(run)[key]
+    if state['state']!='COMPLETE':
+        if (run/'results'/f'{key}.json').exists():raise IntegrityError('orphan result requires investigation')
+        if not forced:
+            raise IntegrityError('unexpected worker exit without terminal evidence; investigate, never impute a model score')
+        terminal(run,key,{'evidence_kind':'development_observation','split':'DEVELOPMENT','request_id':key,
+                         'purpose':request['purpose'],'mode':request['mode'],'finish_reason':'supervisor_forced_termination',
+                         'native_score':0.0,'valid_retainable_output':False,'generated_tokens':None,
+                         'admission':'known' if state['state']=='ADMITTED_NO_TERMINAL' else 'unknown_counts_as_admitted',
+                         'failure_record_basis':'supervisor deliberately killed the live worker at its operational limit; no result file existed',
+                         'process_exit':exit_code,'forced_termination':True})
+    if exit_code!=0:raise IntegrityError('worker failure; stop and inspect without retry')
+    return reconcile(run)[key]
+
+
 def run_job(root,key):
     plan,run=paths(root)
-    if read_json(root/'configs/phase_state.json').get('active_phase')!='P01':raise IntegrityError('P01 not active')
+    phase=read_json(root/'configs/phase_state.json')
+    if phase.get('active_phase')!='P01' or phase.get('status')!='IN_PROGRESS':raise IntegrityError('P01 not in progress')
     request=read_json(run/'requests'/f'{key}.json')
     rows=reconcile(run)
     if any(not r.get('resource_recorded') for r in rows.values()):raise IntegrityError('unreconciled previous worker resources')
@@ -129,23 +152,10 @@ def run_job(root,key):
             time.sleep(.02)
         process.wait(timeout=30)
     elapsed=time.perf_counter()-started
-    state=reconcile(run)[key]
-    if state['state']!='COMPLETE':
-        # A saved but uncommitted result is an integrity/reconciliation problem, not a fabricated model failure.
-        if (run/'results'/f'{key}.json').exists():raise IntegrityError('orphan result requires investigation')
-        terminal(run,key,{'evidence_kind':'development_observation','split':'DEVELOPMENT','request_id':key,
-                         'purpose':request['purpose'],'mode':request['mode'],'finish_reason':'worker_terminated_or_failed',
-                         'native_score':0.0,'valid_retainable_output':False,'generated_tokens':None,
-                         'admission':'known' if admitted_seen else 'unknown_counts_as_admitted',
-                         'failure_record_basis':'supervisor observed process exit without terminal result; no persisted result expected',
-                         'process_exit':process.returncode,'forced_termination':forced})
-    append(run,'resource',key,seconds=elapsed,process_exit=process.returncode,forced_termination=forced,
-           cancellation_to_exit_seconds=None if cancellation_requested is None else time.perf_counter()-cancellation_requested,
-           conservative_gpu_residency=True)
-    result=reconcile(run)[key]
+    result=record_worker_exit(run,request,elapsed=elapsed,exit_code=process.returncode,forced=forced,
+                             cancellation_seconds=None if cancellation_requested is None else time.perf_counter()-cancellation_requested)
     print({'request_id':key,'state':result['state'],'seconds':elapsed,'exit':process.returncode,
            'finish_reason':result['result']['finish_reason']},flush=True)
-    if process.returncode!=0:raise IntegrityError('worker failure; stop and inspect without retry')
 
 
 def main():

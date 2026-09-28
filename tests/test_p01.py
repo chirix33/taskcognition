@@ -6,6 +6,7 @@ from taskcognition.contracts import IntegrityError,digest
 from taskcognition.artifacts import write_new
 from taskcognition.p01_ledger import reserve,reconcile,append,terminal,events
 from taskcognition.p01_parsing import parse_and_score
+from taskcognition.p01_smoke import record_worker_exit
 
 
 class ParserTests(unittest.TestCase):
@@ -123,5 +124,44 @@ class LedgerTests(unittest.TestCase):
         self.assertEqual(reconcile(self.root)['one']['resource_seconds'],2.5)
         append(self.root,'resource','one',seconds=2.5)
         with self.assertRaises(IntegrityError):reconcile(self.root)
+
+    def finish_worker(self,forced=False):
+        return record_worker_exit(self.root,{**self.request(),'purpose':'fixture','mode':'R'},
+                                  elapsed=2.5,exit_code=1,forced=forced,cancellation_seconds=None)
+    def test_unexpected_worker_exit_never_imputes_zero(self):
+        for admitted in (False,True):
+            with self.subTest(admitted=admitted),tempfile.TemporaryDirectory() as temp:
+                self.root=Path(temp)
+                reserve(self.root,self.request())
+                if admitted:append(self.root,'admitted','one')
+                with self.assertRaisesRegex(IntegrityError,'never impute'):self.finish_worker()
+                row=reconcile(self.root)['one']
+                self.assertEqual(row['resource_seconds'],2.5)
+                self.assertNotIn('result',row)
+                self.assertFalse((self.root/'results/one.json').exists())
+                with self.assertRaises(IntegrityError):reserve(self.root,self.request())
+                with self.assertRaisesRegex(IntegrityError,'already recorded'):self.finish_worker()
+    def test_corrupted_worker_result_remains_integrity_failure_with_cost(self):
+        reserve(self.root,self.request())
+        terminal(self.root,'one',{'request_id':'one','native_score':1})
+        path=self.root/'results/one.json'
+        path.write_text('{}')
+        with self.assertRaisesRegex(IntegrityError,'corrupted'):self.finish_worker()
+        self.assertEqual(path.read_text(),'{}')
+        self.assertEqual([e['seconds'] for e in events(self.root) if e['event']=='resource'],[2.5])
+    def test_forced_exit_cannot_replace_orphan_evidence(self):
+        reserve(self.root,self.request())
+        write_new(self.root/'results/one.json',{'request_id':'one','native_score':1})
+        with self.assertRaisesRegex(IntegrityError,'orphan'):self.finish_worker(forced=True)
+        self.assertFalse(any(e['event']=='terminal' for e in events(self.root)))
+    def test_observed_forced_kill_is_explicit_execution_failure(self):
+        reserve(self.root,self.request())
+        append(self.root,'admitted','one')
+        with self.assertRaisesRegex(IntegrityError,'worker failure'):self.finish_worker(forced=True)
+        row=reconcile(self.root)['one']
+        self.assertEqual(row['result']['finish_reason'],'supervisor_forced_termination')
+        self.assertEqual(row['result']['native_score'],0)
+        self.assertEqual(row['resource_seconds'],2.5)
+        with self.assertRaises(IntegrityError):reserve(self.root,self.request())
 
 if __name__=='__main__':unittest.main()
