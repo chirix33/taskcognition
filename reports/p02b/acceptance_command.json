@@ -1,0 +1,12 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-09-28T19:07:58.735300+00:00",
+  "argv": [
+    ".venv/Scripts/python.exe",
+    "scripts/p02b_accept.py"
+  ],
+  "exit": 0,
+  "seconds": 0.33116189999782364,
+  "stdout": "PASS: four hashes, 359 current/packet files, both commits; P02A accepted, only P02B active, dispatch off.\n",
+  "stderr": ""
+}

@@ -1,0 +1,12 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-09-28T19:15:24.598029+00:00",
+  "argv": [
+    ".venv-inference/Scripts/python.exe",
+    "scripts/p02b_prepare.py"
+  ],
+  "exit": 0,
+  "seconds": 12.856663900001877,
+  "stdout": "{\"status\": \"PASS\", \"requests\": 48, \"reserved_tokens\": 73728, \"min_input_tokens\": 160, \"max_input_tokens\": 346, \"plan_sha256\": \"9afcea3b3fe41aa39cfbf44e30f81514128f077ecdb42a18f13fb25f8f2eff36\"}\n",
+  "stderr": ""
+}

@@ -1,0 +1,1 @@
+{"evidence_kind":"fixture","failures":[{"command":"compile scripts/p02b_report.py after incomplete-record review","error":"SyntaxError: missing closing parenthesis in peak_reserved_bytes expression","exit":1,"resolution":"closed expression; syntax check passed; actual report-script incomplete-run regression added before live execution"}],"new_model_calls_during_preparation":0}
