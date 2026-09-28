@@ -1,0 +1,1 @@
+{"accepted_previous_phase": "P00", "accepted_previous_seal": "reports/phases/P00_accepted_seal.md", "active_phase": "P01", "authorized_next_phase": null, "correction_status": "IN_PROGRESS", "latest_event": "configs/state_events/003_P01_offline_correction_v2.json", "real_dispatch_enabled": false, "status": "READY_FOR_REVIEW", "study_freeze": null}

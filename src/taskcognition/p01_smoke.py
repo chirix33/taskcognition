@@ -9,7 +9,7 @@ import sys
 import time
 from .artifacts import read_json,write_new
 from .contracts import IntegrityError,digest,file_hash,stream_id
-from .p01_ledger import reserve,reconcile,append,terminal,events
+from .p01_ledger import reserve,reconcile,append,terminal,events,require_real_dispatch
 from .p01_native import native_dataset
 
 
@@ -19,6 +19,7 @@ def paths(root):
 
 
 def prepare(root):
+    require_real_dispatch(root)
     from transformers import AutoTokenizer,GenerationConfig
     plan,run=paths(root)
     if run.exists():raise IntegrityError('run already planned; immutable')
@@ -96,6 +97,11 @@ def record_worker_exit(run,request,*,elapsed,exit_code,forced,cancellation_secon
     append(run,'resource',key,seconds=elapsed,process_exit=exit_code,forced_termination=forced,
            cancellation_to_exit_seconds=cancellation_seconds,conservative_gpu_residency=True)
     state=reconcile(run)[key]
+    if (run/'incidents'/f'{key}.json').exists():
+        raise IntegrityError('worker incident requires investigation; not a scored model outcome')
+    if state['state']=='COMPLETE' and (state['result'].get('model_error') is not None
+                                      or state['result'].get('finish_reason')=='model_error'):
+        raise IntegrityError('legacy unclassified worker error cannot count as successful scored completion')
     if state['state']!='COMPLETE':
         if (run/'results'/f'{key}.json').exists():raise IntegrityError('orphan result requires investigation')
         if not forced:
@@ -111,9 +117,8 @@ def record_worker_exit(run,request,*,elapsed,exit_code,forced,cancellation_secon
 
 
 def run_job(root,key):
+    require_real_dispatch(root)
     plan,run=paths(root)
-    phase=read_json(root/'configs/phase_state.json')
-    if phase.get('active_phase')!='P01' or phase.get('status')!='IN_PROGRESS':raise IntegrityError('P01 not in progress')
     request=read_json(run/'requests'/f'{key}.json')
     rows=reconcile(run)
     if any(not r.get('resource_recorded') for r in rows.values()):raise IntegrityError('unreconciled previous worker resources')

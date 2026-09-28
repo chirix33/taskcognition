@@ -1,0 +1,13 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-09-28T16:12:55.079492+00:00",
+  "argv": [
+    ".venv-inference/Scripts/python.exe",
+    "scripts/p01_correction_verify.py",
+    "replay"
+  ],
+  "exit": 1,
+  "seconds": 0.24342029999934311,
+  "stdout": "",
+  "stderr": "Traceback (most recent call last):\n  File \"<home>\\Desktop\\Work\\TaskCognition\\implementation\\scripts\\p01_correction_verify.py\", line 76, in <module>\n    write_new(output/'preservation_and_replay.json',{'evidence_kind':'development_observation',\n  File \"<home>\\Desktop\\Work\\TaskCognition\\implementation\\src\\taskcognition\\artifacts.py\", line 23, in write_new\n    with path.open(\"xb\") as stream:\n         ^^^^^^^^^^^^^^^\n  File \"<home>\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\pathlib.py\", line 1013, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileExistsError: [Errno 17] File exists: 'C:\\\\Users\\\\aashraf\\\\Desktop\\\\Work\\\\TaskCognition\\\\implementation\\\\reports\\\\p01_correction_v2\\\\preservation_and_replay.json'\n"
+}

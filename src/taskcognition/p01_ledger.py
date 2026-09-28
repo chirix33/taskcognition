@@ -6,6 +6,13 @@ from .artifacts import read_json, write_new, child_path
 from .contracts import IntegrityError, file_hash, digest
 
 
+def require_real_dispatch(root: Path):
+    phase=read_json(root/'configs/phase_state.json')
+    if (phase.get('active_phase')!='P01' or phase.get('status')!='IN_PROGRESS'
+            or phase.get('real_dispatch_enabled') is not True):
+        raise IntegrityError('real P01 dispatch disabled; offline correction does not authorize generation')
+
+
 def events(run: Path):
     rows=[]
     previous=None
