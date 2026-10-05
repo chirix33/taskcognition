@@ -1,0 +1,12 @@
+{
+  "acceptance_record_sha256": "47c7e72b57cc2c3f047a91ee8fa470ff646217d239f565dace7979028dfd6649",
+  "active_phase": "P02C",
+  "event": "P02B_acceptance_and_offline_P02C_activation",
+  "evidence_kind": "development_observation",
+  "p02_complete": false,
+  "p02_sealed": false,
+  "p03_started": false,
+  "previous_state_sha256": "e66d0dc5e3a7fe26a83941afe659854682fe883d715e6267d69f32d1d626d677",
+  "real_dispatch_enabled": false,
+  "timestamp_utc": "2026-10-05T23:10:09.894651+00:00"
+}

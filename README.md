@@ -1,8 +1,10 @@
 # TaskCognition implementation handoff
 
-Prepared 2026-09-28. Status: implementation plan; no experiments or results.
+Active specification: **TaskCognition-CR01-2026-10-05-v1**, approved 2026-10-05. P01 is sealed; P02A/P02B are accepted DEVELOPMENT checkpoints. P02C is offline adoption only; P02 remains incomplete/unsealed and live dispatch is disabled. There are no final gate/audit/test results.
 
-## Start here
+Start with [adopted CR01](docs/amendments/CR01_2026-10-05_v1.md), [active protocol](docs/PROTOCOL_SOURCE_OF_TRUTH.md), [active manuscript source](paper/cr01-2026-10-05-v1/taskcognition.tex), and [P02C report](reports/phases/P02C_completion.md). Primary D/R cap is fixed at 2,048 total tokens; completion is descriptive, with no eligibility threshold. Historical bootstrap instructions below are retained for provenance, not current authorization.
+
+## Historical initial handoff (2026-09-28)
 
 1. Extract this bundle into a dedicated TaskCognition repository. If a repository already exists, merge the files deliberately; never overwrite existing instructions, code, or user changes without examining them.
 2. Keep `AGENTS.md` at the repository root and the supplied `docs/` and `reference/` directories beside it.

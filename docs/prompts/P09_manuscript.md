@@ -1,5 +1,7 @@
 # P09 prompt: complete the manuscript from evidence
 
+Active authority: original reference PDF + approved `TaskCognition-CR01-2026-10-05-v1` + C01-C03. This document does not authorize a new phase or live run.
+
 Execute only after accepted P08 review, or after an explicitly reviewed early-stop plan authorizes an honest feasibility/null report. Implement P09 only. No additional scientific experiments are authorized by manuscript preparation.
 
 ## Work

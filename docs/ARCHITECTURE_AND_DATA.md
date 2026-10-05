@@ -1,5 +1,7 @@
 # Architecture and data contracts
 
+Active authority: original reference PDF + approved `TaskCognition-CR01-2026-10-05-v1` + C01-C03. This document does not authorize a new phase or live run.
+
 Implementation direction, not pre-existing code. Codex may adjust module organization for an existing repository while preserving interfaces and invariants.
 
 ## Minimal layout
@@ -92,3 +94,9 @@ P00 user clarification (2026-09-28 UTC): final TRAIN and TUNE label artifacts us
 The user also accepted staged hash-linked records: the pre-label base manifest binds the candidate schema and selection rules; later candidate/deployment records reference their immutable parents. Candidate hashes are not fabricated before training. See `reports/decision_ledger.md`, C01, for the acceptance reference; original manuscript sources remain preserved.
 
 A hash mismatch, unsupported sampler, out-of-range score/cost, missing family, duplicate draw, or unexpected model revision fails closed. Preserve the run for review rather than relabeling it as valid.
+
+## Versioned CR01 scope
+
+Prospective primary contracts must identify `TaskCognition-CR01-2026-10-05-v1`, reference the approved amendment hash, use 2,048 total tokens for each D/R package and `completion_policy: descriptive`. See `configs/cr01_development_design_template.json`. This is an incomplete development template, not a study/candidate/deployment freeze. Any future production validator must reject other prospective primary caps and unresolved required freeze fields, while accepting no completion-threshold eligibility rejection.
+
+Historical P01/P02A/P02B runners, immutable plans, schemas and fixtures retain their original versions/caps and remain closed. They cannot be reused to authorize CR01 dispatch. The existing StudyManifest is UNFROZEN-only and final collection always rejects; no full freeze validator is claimed. Score/cost ranges, exact perfect-score equality, denominator adequacy, no replay and evidence-integrity requirements remain unchanged.

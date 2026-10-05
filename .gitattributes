@@ -14,3 +14,4 @@ requirements-build.lock -text
 pyproject.toml -text
 *.pdf -text
 vendor/** -text
+paper/** -text

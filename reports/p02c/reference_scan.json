@@ -1,0 +1,1045 @@
+{
+  "command": [
+    "rg",
+    "-n",
+    "--json",
+    "99|0\\.99|1024|1,024|cap[ -]feasib|cap[ -]certif|terminal cap|cellwise cap|else STOP",
+    "AGENTS.md",
+    "README.md",
+    "docs",
+    "src",
+    "tests",
+    "configs",
+    "paper",
+    "--glob",
+    "!*.pdf",
+    "--glob",
+    "!*.png"
+  ],
+  "evidence_kind": "development_observation",
+  "exit": 0,
+  "ignored_original_archive": "Separately read and hash-verified docs/iclr2027; immutable historical cap rule retained.",
+  "matches": [
+    {
+      "line": 19,
+      "path": "AGENTS.md",
+      "scope": "active context or incidental numeric match; inspected in reference audit",
+      "text": "7. CR01 primary common D/R cap: 2,048 total generated tokens, including thinking and final output. Completion and failure subtypes are descriptive for all 12 cells; no 99% eligibility prerequisite or automatic completion-threshold stop. Strict parsing, failure retention, audit denominator adequacy and all other audit/test requirements remain unchanged. Historical packages retain their original cap/version; no larger-cap or extra live work is authorized."
+    },
+    {
+      "line": 16,
+      "path": "tests/test_p02b.py",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "            r=Path(td);qs=[self.q(i,(1024,2048)[i%2]) for i in range(49)];p=self.plan(qs)"
+    },
+    {
+      "line": 28,
+      "path": "tests/test_p02b.py",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "            q=self.q(0,2048);q['effective_generation_config']['max_new_tokens']=1024"
+    },
+    {
+      "line": 31,
+      "path": "tests/test_p02b.py",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "        for cap in (1024,2048):"
+    },
+    {
+      "line": 33,
+      "path": "tests/test_p02b.py",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "            self.assertEqual(finish_reason(None,999,cap,cap),'eos')"
+    },
+    {
+      "line": 36,
+      "path": "tests/test_p02b.py",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "        self.assertEqual(finish_reason(None,None,1024,2048),'other')"
+    },
+    {
+      "line": 39,
+      "path": "tests/test_p02b.py",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "        ids=[identity({'x':1},m,c,'input',d) for c in (1024,2048) for m in ('D','R') for d in (0,1)]"
+    },
+    {
+      "line": 57,
+      "path": "tests/test_p02b.py",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "            qs=[dict(request_id=k,family='number_sorting',mode='D',cap=1024) for k in ('unknown','not_run')]"
+    },
+    {
+      "line": 60,
+      "path": "tests/test_p02b.py",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "            append(run,'dispatch','unknown',request_hash=digest(qs[0]),stream_id=digest('stream'),max_new_tokens=1024)"
+    },
+    {
+      "line": 82,
+      "path": "tests/test_p02b.py",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "                append(r,'dispatch',k,request_hash=digest(k),stream_id=digest(k),max_new_tokens=1024)"
+    },
+    {
+      "line": 46,
+      "path": "tests/test_p02a.py",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "    def request(self):return dict(request_id='q',stream_id='a'*64,split='DEVELOPMENT',evidence_kind='development_observation',max_new_tokens=1024)"
+    },
+    {
+      "line": 72,
+      "path": "tests/test_p02a.py",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "        envelope_check(5100,6900,496*1024**2)"
+    },
+    {
+      "line": 73,
+      "path": "tests/test_p02a.py",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "        for values in [(5100.001,0,0),(0,6900.001,0),(0,0,496*1024**2+1)]:"
+    },
+    {
+      "line": 81,
+      "path": "tests/test_p02a.py",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "            run=Path(td);q=self.request();append(run,'dispatch','q',request_hash=digest(q),stream_id=q['stream_id'],max_new_tokens=1024)"
+    },
+    {
+      "line": 147,
+      "path": "paper/cr01-2026-10-05-v1/taskcognition.tex",
+      "scope": "active context or incidental numeric match; inspected in reference audit",
+      "text": "The primary common D/R cap is fixed prospectively at \\textbf{2,048 total generated tokens}, including native thinking and final output. Strict-valid-FINAL completion and failure subtypes are reported descriptively in all twelve mode-by-family cells. There is no 99\\% completion eligibility prerequisite or automatic stop based on that threshold. Strict parsing and native scoring remain unchanged: valid partial scores are retained, and recorded model failures without a valid retainable answer score zero and remain in the distribution. Software/evidence integrity failures still stop the affected operation; unresolved design, cost support and audit-denominator requirements remain binding."
+    },
+    {
+      "line": 205,
+      "path": "paper/cr01-2026-10-05-v1/taskcognition.tex",
+      "scope": "active context or incidental numeric match; inspected in reference audit",
+      "text": "Equation~\\ref{eq:audit-pass} is a level-$\\gamma$ intersection--union pass rule for one frozen candidate under the declared independent-cluster design \\citep{berger1996bioequivalence}. Because passage requires rejection of every component null, no Bonferroni adjustment is applied; the displayed bounds are not advertised as a joint confidence region. This empirical acceptance test is a deployment safeguard, not a novel certificate. It is not conformal, pointwise, distribution-free, or a renderer/suite-shift guarantee. Cluster bootstrap intervals may be reported descriptively only \\citep{field2007bootstrapping}; test superiority is separate."
+    },
+    {
+      "line": 39,
+      "path": "tests/test_p01_worker_correction.py",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "            'stream_id':digest('fixture'),'max_new_tokens':1024,'model_directory':'nonexistent-mock',"
+    },
+    {
+      "line": 41,
+      "path": "tests/test_p01_worker_correction.py",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "            'sampling_seed':1,'effective_generation_config':{'eos_token_id':999},'dataset_index':0,"
+    },
+    {
+      "line": 59,
+      "path": "tests/test_p01_worker_correction.py",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "        tokenizer=NS(decode=lambda ids,**kwargs:''.join(chr(i) for i in ids if i!=999))"
+    },
+    {
+      "line": 73,
+      "path": "tests/test_p01_worker_correction.py",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "        tokens=self.tokens+[999] if tokens is None else tokens"
+    },
+    {
+      "line": 7,
+      "path": "paper/cr01-2026-10-05-v1/taskcognition.bib",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": "  url          = {https://docs.lib.purdue.edu/cstech/99/}"
+    },
+    {
+      "line": 144,
+      "path": "paper/cr01-2026-10-05-v1/taskcognition.bib",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": "  url       = {https://proceedings.iclr.cc/paper_files/paper/2026/hash/ce916251b4fe04f54f99c8d304d68877-Abstract-Conference.html}"
+    },
+    {
+      "line": 262,
+      "path": "paper/cr01-2026-10-05-v1/taskcognition.bib",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": "@article{berger1996bioequivalence,"
+    },
+    {
+      "line": 269,
+      "path": "paper/cr01-2026-10-05-v1/taskcognition.bib",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": "  year    = {1996},"
+    },
+    {
+      "line": 294,
+      "path": "paper/cr01-2026-10-05-v1/taskcognition.bib",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": "  doi     = {10.1214/24-AOAS1998},"
+    },
+    {
+      "line": 295,
+      "path": "paper/cr01-2026-10-05-v1/taskcognition.bib",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": "  url     = {https://doi.org/10.1214/24-AOAS1998}"
+    },
+    {
+      "line": 66,
+      "path": "tests/test_p01.py",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "                'stream_id':digest(key),'max_new_tokens':1024}"
+    },
+    {
+      "line": 155,
+      "path": "tests/test_p00.py",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "            FeatureRecord.from_dict({**good, \"character_count\": 999})"
+    },
+    {
+      "line": 4,
+      "path": "paper/cr01-2026-10-05-v1/iclr2027_conference.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": "%%%% Dec 12, 1990   Rev Aug 14, 1991; Sept, 1995; April, 1997; April, 1999; October 2014"
+    },
+    {
+      "line": 229,
+      "path": "paper/cr01-2026-10-05-v1/iclr2027_conference.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": "\\def\\iclrruler#1{\\makevruler[12pt][#1][1][3][0.993\\textheight]\\usebox{\\iclrrulerbox}}"
+    },
+    {
+      "line": 22,
+      "path": "paper/cr01-2026-10-05-v1/natbib.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": "%% Copyright 1993-2009 Patrick W Daly"
+    },
+    {
+      "line": 28,
+      "path": "paper/cr01-2026-10-05-v1/natbib.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": "\\NeedsTeXFormat{LaTeX2e}[1995/06/01]"
+    },
+    {
+      "line": 43,
+      "path": "paper/cr01-2026-10-05-v1/natbib.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": " %   \\bibitem[Jones et al.(1990)]{key}..."
+    },
+    {
+      "line": 44,
+      "path": "paper/cr01-2026-10-05-v1/natbib.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": " %   \\bibitem[Jones et al.(1990)Jones, Baker, and Williams]{key}..."
+    },
+    {
+      "line": 45,
+      "path": "paper/cr01-2026-10-05-v1/natbib.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": " %   \\bibitem[Jones et al., 1990]{key}..."
+    },
+    {
+      "line": 47,
+      "path": "paper/cr01-2026-10-05-v1/natbib.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": " %       et al.}{1990}]{key}..."
+    },
+    {
+      "line": 48,
+      "path": "paper/cr01-2026-10-05-v1/natbib.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": " %   \\bibitem[\\protect\\citeauthoryear{Jones et al.}{1990}]{key}..."
+    },
+    {
+      "line": 49,
+      "path": "paper/cr01-2026-10-05-v1/natbib.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": " %   \\bibitem[\\protect\\astroncite{Jones et al.}{1990}]{key}..."
+    },
+    {
+      "line": 50,
+      "path": "paper/cr01-2026-10-05-v1/natbib.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": " %   \\bibitem[\\protect\\citename{Jones et al., }1990]{key}..."
+    },
+    {
+      "line": 51,
+      "path": "paper/cr01-2026-10-05-v1/natbib.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": " %   \\harvarditem[Jones et al.]{Jones, Baker, and Williams}{1990}{key}..."
+    },
+    {
+      "line": 56,
+      "path": "paper/cr01-2026-10-05-v1/natbib.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": " % Then, \\citet{key}  ==>>  Jones et al. (1990)    ||   Jones et al. [21]"
+    },
+    {
+      "line": 57,
+      "path": "paper/cr01-2026-10-05-v1/natbib.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": " %       \\citep{key}  ==>> (Jones et al., 1990)    ||   [21]"
+    },
+    {
+      "line": 59,
+      "path": "paper/cr01-2026-10-05-v1/natbib.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": " % \\citep{key1,key2}  ==>> (Jones et al., 1990; Smith, 1989) || [21,24]"
+    },
+    {
+      "line": 60,
+      "path": "paper/cr01-2026-10-05-v1/natbib.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": " %                           or  (Jones et al., 1990, 1991)  || [21,24]"
+    },
+    {
+      "line": 61,
+      "path": "paper/cr01-2026-10-05-v1/natbib.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": " %                           or  (Jones et al., 1990a,b)     || [21,24]"
+    },
+    {
+      "line": 65,
+      "path": "paper/cr01-2026-10-05-v1/natbib.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": " %       \\citep*{key}      ==>> (Jones, Baker, and Williams, 1990)"
+    },
+    {
+      "line": 67,
+      "path": "paper/cr01-2026-10-05-v1/natbib.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": " %   \\citep[chap. 2]{key}    ==>> (Jones et al., 1990, chap. 2)"
+    },
+    {
+      "line": 68,
+      "path": "paper/cr01-2026-10-05-v1/natbib.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": " %   \\citep[e.g.,][]{key}    ==>> (e.g., Jones et al., 1990)"
+    },
+    {
+      "line": 69,
+      "path": "paper/cr01-2026-10-05-v1/natbib.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": " %   \\citep[see][pg. 34]{key}==>> (see Jones et al., 1990, pg. 34)"
+    },
+    {
+      "line": 72,
+      "path": "paper/cr01-2026-10-05-v1/natbib.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": " %   \\citealt{key}          ==>> Jones et al. 1990"
+    },
+    {
+      "line": 73,
+      "path": "paper/cr01-2026-10-05-v1/natbib.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": " %   \\citealt*{key}         ==>> Jones, Baker, and Williams 1990"
+    },
+    {
+      "line": 74,
+      "path": "paper/cr01-2026-10-05-v1/natbib.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": " %   \\citealp{key}          ==>> Jones et al., 1990"
+    },
+    {
+      "line": 75,
+      "path": "paper/cr01-2026-10-05-v1/natbib.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": " %   \\citealp*{key}         ==>> Jones, Baker, and Williams, 1990"
+    },
+    {
+      "line": 79,
+      "path": "paper/cr01-2026-10-05-v1/natbib.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": " %   \\citeyear{key}         ==>> 1990"
+    },
+    {
+      "line": 80,
+      "path": "paper/cr01-2026-10-05-v1/natbib.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": " %   \\citeyearpar{key}      ==>> (1990)"
+    },
+    {
+      "line": 87,
+      "path": "paper/cr01-2026-10-05-v1/natbib.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": " %   \\Citet{dRob98}         ==>> Della Robbia (1998)"
+    },
+    {
+      "line": 88,
+      "path": "paper/cr01-2026-10-05-v1/natbib.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": " %   \\Citep{dRob98}         ==>> (Della Robbia, 1998)"
+    },
+    {
+      "line": 8,
+      "path": "paper/cr01-2026-10-05-v1/iclr2027_conference.bst",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": "%% Copyright 1993-2007 Patrick W Daly"
+    },
+    {
+      "line": 24,
+      "path": "paper/cr01-2026-10-05-v1/iclr2027_conference.bst",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": " %   version 0.99b for BibTeX versions 0.99a or later,"
+    },
+    {
+      "line": 3,
+      "path": "configs/p01_requirements.lock",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "fsspec @ https://files.pythonhosted.org/packages/6c/c0/a98505f18594f1bce828bb159cec0fcf9860562f1a2c85913409fc8f3d9e/fsspec-2026.9.0-py3-none-any.whl --hash=sha256:8dd6e646e99ea382bd85f97a45e6b526a442d79423a7dc673f1e2756d05fcb5f"
+    },
+    {
+      "line": 4,
+      "path": "configs/p01_requirements.lock",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "huggingface_hub @ https://files.pythonhosted.org/packages/a8/af/48ac8483240de756d2438c380746e7130d1c6f75802ef22f3c6d49982787/huggingface_hub-0.36.2-py3-none-any.whl --hash=sha256:48f0c8eac16145dfce371e9d2d7772854a4f591bcb56c9cf548accf531d54270"
+    },
+    {
+      "line": 6,
+      "path": "configs/p01_requirements.lock",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "numpy @ https://files.pythonhosted.org/packages/3c/a1/accf6d4f0c80c5d9ba9735d6b1550e444180599f34dec69ca01360f717ad/numpy-2.5.3-cp312-cp312-win_amd64.whl --hash=sha256:0a59a421a32580a009e8a1751345bf829631b990dc1794b80514ab722b435def"
+    },
+    {
+      "line": 8,
+      "path": "configs/p01_requirements.lock",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "PyYAML @ https://files.pythonhosted.org/packages/86/bf/899e81e4cce32febab4fb42bb97dcdf66bc135272882d1987881a4b519e9/pyyaml-6.0.3-cp312-cp312-win_amd64.whl --hash=sha256:5fcd34e47f6e0b794d17de1b4ff496c00986e1c83f7ab2fb8fcfe9616ff7477b"
+    },
+    {
+      "line": 9,
+      "path": "configs/p01_requirements.lock",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "regex @ https://files.pythonhosted.org/packages/ad/d4/4dcd0a05d3e97ca829165df1c39717f899d1d484dac8a6032439f2cb8d6d/regex-2026.9.10-cp312-cp312-win_amd64.whl --hash=sha256:4db7d00c4afbfbb55b8e17b1e371da11418ea9389b030acec63c1fa4c7ad4b86"
+    },
+    {
+      "line": 10,
+      "path": "configs/p01_requirements.lock",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "safetensors @ https://files.pythonhosted.org/packages/1b/6d/3fba214c1e5e0f69991677ec3bc17023f0421776975e1de0c682dca475e2/safetensors-0.8.0-cp310-abi3-win_amd64.whl --hash=sha256:096ec1a98435df7beb08853bb5aa9081a84f23d0adc67ed1a0a10550f608373f"
+    },
+    {
+      "line": 11,
+      "path": "configs/p01_requirements.lock",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "setuptools @ https://files.pythonhosted.org/packages/e1/e3/c164c88b2e5ce7b24d667b9bd83589cf4f3520d97cad01534cd3c4f55fdb/setuptools-81.0.0-py3-none-any.whl --hash=sha256:fdd925d5c5d9f62e4b74b30d6dd7828ce236fd6ed998a08d81de62ce5a6310d6"
+    },
+    {
+      "line": 12,
+      "path": "configs/p01_requirements.lock",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "sympy @ https://files.pythonhosted.org/packages/a2/09/77d55d46fd61b4a135c444fc97158ef34a095e5681d0a6c10b75bf356191/sympy-1.14.0-py3-none-any.whl --hash=sha256:e091cc3e99d2141a0ba2847328f5479b05d94a6635cb96148ccb3f34671bd8f5"
+    },
+    {
+      "line": 13,
+      "path": "configs/p01_requirements.lock",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "tokenizers @ https://files.pythonhosted.org/packages/65/71/0670843133a43d43070abeb1949abfdef12a86d490bea9cd9e18e37c5ff7/tokenizers-0.22.2-cp39-abi3-win_amd64.whl --hash=sha256:c9ea31edff2968b44a88f97d784c2f16dc0729b8b143ed004699ebca91f05c48"
+    },
+    {
+      "line": 19,
+      "path": "configs/p01_requirements.lock",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "certifi @ https://files.pythonhosted.org/packages/0b/a7/71ac2cff56fec219ed242bb11b8efb69fcc4bec75db06fb7bfe35de520e6/certifi-2026.7.22-py3-none-any.whl --hash=sha256:62f22742b58a1a33014a2b6b706588a8d7e2a88ae7bd1a6ebe8c992928483775"
+    },
+    {
+      "line": 25,
+      "path": "configs/p01_requirements.lock",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "colorama @ https://download.pytorch.org/whl/colorama-0.4.6-py2.py3-none-any.whl --hash=sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"
+    },
+    {
+      "line": 57,
+      "path": "docs/templates/PHASE_COMPLETION_TEMPLATE.md",
+      "scope": "active context or incidental numeric match; inspected in reference audit",
+      "text": "Record original PDF hash, adopted amendment/version/hash, approval versus adoption dates, historical package identities, and changed active references. Under CR01, fixed 2,048-token completion is descriptive; never use an obsolete cap-certification branch as eligibility. Distinguish zero new model/GPU work from offline preparation. No final freeze is implied by phase review."
+    },
+    {
+      "line": 14,
+      "path": "configs/cr01_development_design_template.json",
+      "scope": "active context or incidental numeric match; inspected in reference audit",
+      "text": "  \"instruction_sha256\": \"34f703e83c58853a9b912bbf2754952c9d86aefea36bd729971c5e85587140cb\","
+    },
+    {
+      "line": 76,
+      "path": "paper/cr01-2026-10-05-v1/figures/taskcognition_architecture_CR01_2026-10-05_v1.svg",
+      "scope": "active context or incidental numeric match; inspected in reference audit",
+      "text": "  <polygon points=\"666,531 754,615 666,699 578,615\" fill=\"#FFF0C8\" stroke=\"#C88700\" stroke-width=\"3\"/>"
+    },
+    {
+      "line": 105,
+      "path": "paper/cr01-2026-10-05-v1/figures/taskcognition_architecture_CR01_2026-10-05_v1.svg",
+      "scope": "active context or incidental numeric match; inspected in reference audit",
+      "text": "  <path class=\"red\" d=\"M666 699 V854 H1530 V680\"/>"
+    },
+    {
+      "line": 1,
+      "path": "configs/state_snapshots/P02A_accepted_before_P02B.json",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "{\"accepted_previous_phase\":\"P01\",\"accepted_previous_seal\":\"reports/phases/P01_accepted_seal.md\",\"active_phase\":\"P02A\",\"authorized_next_phase\":null,\"latest_event\":\"configs/state_events/007_P02A_checkpoint.json\",\"p02a_plan_sha256\":\"11be399c6ea01eb773cc6ad4b3c40cd270e18056f0737b4ae14da5971f18e38a\",\"parent_phase\":\"P02\",\"real_dispatch_enabled\":false,\"status\":\"READY_FOR_REVIEW\",\"study_freeze\":null}"
+    },
+    {
+      "line": 9,
+      "path": "docs/TaskCognition_CR01_feasibility_DRAFT.md",
+      "scope": "historical pre-approval authority document",
+      "text": "The current Section 5 requires at least 99% strict-valid-FINAL completion in each of twelve mode-by-family cells, first at 1,024 and then at 2,048. P02A/P02B show repeated formatting and truncation problems, but their six-input diagnostics do not constitute the formal cap test."
+    },
+    {
+      "line": 11,
+      "path": "docs/TaskCognition_CR01_feasibility_DRAFT.md",
+      "scope": "historical pre-approval authority document",
+      "text": "The paper's main question concerns learning the expected score benefit and independent-draw spoilage of choosing R over D under cost and harm constraints. Its scoring contract already assigns zero to admitted failures without a valid retainable answer. From those definitions, the targets remain well-defined when completion is below 99%. The completion threshold is a chosen experimental eligibility condition; it is not itself the bounded-score assumption used by the audit. This does not establish that an affordable, powerful or audit-passing revised study exists."
+    },
+    {
+      "line": 19,
+      "path": "docs/TaskCognition_CR01_feasibility_DRAFT.md",
+      "scope": "historical pre-approval authority document",
+      "text": "| Primary common output cap | Select 1,024 or 2,048 using the cellwise 99% rule | Fix **2,048 total generated tokens** prospectively for both D and R |"
+    },
+    {
+      "line": 20,
+      "path": "docs/TaskCognition_CR01_feasibility_DRAFT.md",
+      "scope": "historical pre-approval authority document",
+      "text": "| Completion eligibility | All twelve cells must meet 99%; otherwise formal study stops | Completion rates and failure subtypes are reported; **99% is not a prerequisite for proceeding** |"
+    },
+    {
+      "line": 21,
+      "path": "docs/TaskCognition_CR01_feasibility_DRAFT.md",
+      "scope": "historical pre-approval authority document",
+      "text": "| Completion claim | Development rule determines eligibility | No claim of 99% reliability or completion certification |"
+    },
+    {
+      "line": 59,
+      "path": "docs/TaskCognition_CR01_feasibility_DRAFT.md",
+      "scope": "historical pre-approval authority document",
+      "text": "- **Approve CR01:** replace the 99% completion eligibility rule with a fixed common 2,048-token package and descriptive completion reporting, retaining every unchanged constraint above. Then prepare the versioned amendment and next bounded development plan for review."
+    },
+    {
+      "line": 83,
+      "path": "src/taskcognition/p01_ledger.py",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "    if len(rows)>=8 or sum(r['reserved_output_tokens'] for r in rows.values())+1024>8192:"
+    },
+    {
+      "line": 87,
+      "path": "src/taskcognition/p01_ledger.py",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "    if request.get('max_new_tokens')!=1024:raise IntegrityError('P01 cap must be 1024')"
+    },
+    {
+      "line": 89,
+      "path": "src/taskcognition/p01_ledger.py",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "    append(run,'dispatch',key,request_hash=digest(request),stream_id=request['stream_id'],max_new_tokens=1024)"
+    },
+    {
+      "line": 12,
+      "path": "docs/TaskCognition_CR01_APPROVED.md",
+      "scope": "active context or incidental numeric match; inspected in reference audit",
+      "text": "2. Remove the **99% strict-valid-FINAL completion prerequisite** and its automatic cap-feasibility stop from the active revised study. Completion and failure subtypes remain measured and reported for all twelve family-by-mode cells."
+    },
+    {
+      "line": 16,
+      "path": "docs/TaskCognition_CR01_APPROVED.md",
+      "scope": "active context or incidental numeric match; inspected in reference audit",
+      "text": "The previous rule selecting 1,024 or 2,048 via 99% completion is historical. It no longer governs prospective primary cap selection under CR01. Historical 1,024 observations and every old score remain unchanged and labelled with their original package."
+    },
+    {
+      "line": 1,
+      "path": "configs/state_snapshots/P02A_dispatch_ended.json",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "{\"accepted_previous_phase\":\"P01\",\"accepted_previous_seal\":\"reports/phases/P01_accepted_seal.md\",\"active_phase\":\"P02A\",\"authorized_next_phase\":null,\"latest_event\":\"configs/state_events/006_P02A_bounded_dispatch.json\",\"p02a_plan_sha256\":\"11be399c6ea01eb773cc6ad4b3c40cd270e18056f0737b4ae14da5971f18e38a\",\"parent_phase\":\"P02\",\"real_dispatch_enabled\":true,\"status\":\"IN_PROGRESS\",\"study_freeze\":null}"
+    },
+    {
+      "line": 14,
+      "path": "paper/cr01-2026-10-05-v1/fancyhdr.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": "% Sep 16, 1994"
+    },
+    {
+      "line": 16,
+      "path": "paper/cr01-2026-10-05-v1/fancyhdr.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": "% Sep 29, 1994:"
+    },
+    {
+      "line": 18,
+      "path": "paper/cr01-2026-10-05-v1/fancyhdr.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": "% Oct 4, 1994:"
+    },
+    {
+      "line": 21,
+      "path": "paper/cr01-2026-10-05-v1/fancyhdr.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": "% Oct 4, 1994:"
+    },
+    {
+      "line": 24,
+      "path": "paper/cr01-2026-10-05-v1/fancyhdr.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": "% Dec 5, 1994:"
+    },
+    {
+      "line": 28,
+      "path": "paper/cr01-2026-10-05-v1/fancyhdr.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": "% May 31, 1995:"
+    },
+    {
+      "line": 31,
+      "path": "paper/cr01-2026-10-05-v1/fancyhdr.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": "% June 1, 1995:"
+    },
+    {
+      "line": 34,
+      "path": "paper/cr01-2026-10-05-v1/fancyhdr.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": "% June 1, 1995:"
+    },
+    {
+      "line": 37,
+      "path": "paper/cr01-2026-10-05-v1/fancyhdr.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": "% June 1, 1995:"
+    },
+    {
+      "line": 39,
+      "path": "paper/cr01-2026-10-05-v1/fancyhdr.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": "% Dec 11, 1995:"
+    },
+    {
+      "line": 41,
+      "path": "paper/cr01-2026-10-05-v1/fancyhdr.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": "% CJCH, Dec 11, 1995: added \\footruleskip to allow control over footrule"
+    },
+    {
+      "line": 44,
+      "path": "paper/cr01-2026-10-05-v1/fancyhdr.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": "% Jan 31, 1996:"
+    },
+    {
+      "line": 52,
+      "path": "paper/cr01-2026-10-05-v1/fancyhdr.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": "% April 25, 1996:"
+    },
+    {
+      "line": 59,
+      "path": "paper/cr01-2026-10-05-v1/fancyhdr.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": "% May 3, 1996:"
+    },
+    {
+      "line": 69,
+      "path": "paper/cr01-2026-10-05-v1/fancyhdr.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": "% May 7, 1996:"
+    },
+    {
+      "line": 72,
+      "path": "paper/cr01-2026-10-05-v1/fancyhdr.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": "% May 7, 1996:"
+    },
+    {
+      "line": 73,
+      "path": "paper/cr01-2026-10-05-v1/fancyhdr.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": "% version 1.99: This is the alpha version of fancyhdr 2.0"
+    },
+    {
+      "line": 81,
+      "path": "paper/cr01-2026-10-05-v1/fancyhdr.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": "% May 10, 1996:"
+    },
+    {
+      "line": 82,
+      "path": "paper/cr01-2026-10-05-v1/fancyhdr.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": "% version 1.99a:"
+    },
+    {
+      "line": 84,
+      "path": "paper/cr01-2026-10-05-v1/fancyhdr.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": "% May 10, 1996:"
+    },
+    {
+      "line": 85,
+      "path": "paper/cr01-2026-10-05-v1/fancyhdr.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": "% version 1.99b:"
+    },
+    {
+      "line": 89,
+      "path": "paper/cr01-2026-10-05-v1/fancyhdr.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": "% June 24, 1997:"
+    },
+    {
+      "line": 90,
+      "path": "paper/cr01-2026-10-05-v1/fancyhdr.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": "% version 1.99c:"
+    },
+    {
+      "line": 95,
+      "path": "paper/cr01-2026-10-05-v1/fancyhdr.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": "% Aug 24, 1998"
+    },
+    {
+      "line": 96,
+      "path": "paper/cr01-2026-10-05-v1/fancyhdr.sty",
+      "scope": "unchanged bibliography/style incidental numeral",
+      "text": "% version 1.99d"
+    },
+    {
+      "line": 1,
+      "path": "configs/state_events/001_P00_accept_P01_start.json",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "{\"acceptance_record\":\"reports/phases/P00_accepted_seal.md\",\"acceptance_sha256\":\"4a888ebc0edd85b3d566d2c6071ce2799f25544999a3d4b2991baa6bddb615f5\",\"accepted_phase\":\"P00\",\"accepted_status\":\"SEALED\",\"active_phase\":\"P01\",\"authorized_next_phase\":null,\"authorized_prompt_sha256\":\"f08794bfcf4a4f62361203f852d67e8f3735bdea9d2185fce3c43529f733e7a8\",\"event\":\"phase_acceptance_and_activation\",\"evidence_kind\":\"development_observation\",\"previous_state_sha256\":\"3b28ac0a195d00a0d1b60200efb2dd6f6dcbf7c0f7f91d606f5200cab4306ed6\",\"status\":\"IN_PROGRESS\",\"timestamp_utc\":\"2026-09-28T14:15:45.561996+00:00\"}"
+    },
+    {
+      "line": 26,
+      "path": "docs/SOURCE_REGISTER.md",
+      "scope": "active context or incidental numeric match; inspected in reference audit",
+      "text": "Historical reference check (2026-09-28): Qwen's documented output allowances were longer than the original manuscript caps. Under approved CR01 the prospective primary cap is fixed at 2,048 and completion is descriptive; no cap-certification study is required. This offline adoption did not recheck current upstream documentation. Verify the original theorem for independent, potentially nonidentically distributed bounded rows, sample variance convention, and both bound directions during P03."
+    },
+    {
+      "line": 128,
+      "path": "src/taskcognition/p02_worker.py",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "        finish=stopping_reason or ('eos' if terminal_eos is not None else 'cap' if len(token_ids)>=1024 else 'other')"
+    },
+    {
+      "line": 1,
+      "path": "configs/state_events/003_P01_offline_correction_v2.json",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "{\"acceptance\": null, \"active_phase\": \"P01\", \"authorization\": \"Current user P01 targeted correction prompt: zero new model loads/generations/GPU work/downloads/dependency changes; five unused slots not active\", \"authorized_next_phase\": null, \"correction_status\": \"IN_PROGRESS\", \"event\": \"offline_implementation_correction\", \"evidence_kind\": \"development_observation\", \"previous_state_sha256\": \"fecff28b80f805399bf2a579c6e429183d1f43baf3a0d2277668ae07db7e86c6\", \"real_dispatch_enabled\": false, \"review\": \"reports/P01_coordinator_review.md\", \"review_sha256\": \"e7a46b8c3719d7ae6e85685c9c6655b48e05f7b8094a59e9b1c7052586b7bf85\", \"status\": \"READY_FOR_REVIEW\", \"timestamp_utc\": \"2026-09-28T16:07:05.345602+00:00\"}"
+    },
+    {
+      "line": 18,
+      "path": "src/taskcognition/p02b_runner.py",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "    if mode not in ('D','R') or cap not in (1024,2048):raise IntegrityError('P02B mode/cap')"
+    },
+    {
+      "line": 24,
+      "path": "src/taskcognition/p02b_runner.py",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "    if cap not in (1024,2048) or not 0<=count<=cap:raise IntegrityError('output cap integrity')"
+    },
+    {
+      "line": 34,
+      "path": "src/taskcognition/p02b_runner.py",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "    if {c:sum(q['cap']==c for q in plan['requests']) for c in (1024,2048)}!={1024:24,2048:24}:raise IntegrityError('mixed cap counts')"
+    },
+    {
+      "line": 44,
+      "path": "src/taskcognition/p02b_runner.py",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "    if cap not in (1024,2048):raise IntegrityError('unapproved cap')"
+    },
+    {
+      "line": 1,
+      "path": "configs/state_events/004_P01_correction_v2_ready.json",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "{\"accepted\": false, \"active_phase\": \"P01\", \"authorized_next_phase\": null, \"correction_status\": \"READY_FOR_REVIEW\", \"event\": \"offline_correction_ready_for_review\", \"evidence_kind\": \"development_observation\", \"historical_admitted\": 3, \"historical_tokens\": 567, \"new_generations\": 0, \"new_model_loads\": 0, \"previous_state_sha256\": \"3d0199aa4073304e3242372236f9870f01bcf62af6b4a25a1a0aae17837dc4f4\", \"real_dispatch_enabled\": false, \"report\": \"reports/phases/P01_completion_v2.md\", \"review\": \"reports/P01_coordinator_review.md\", \"status\": \"READY_FOR_REVIEW\", \"tests_passed\": 81, \"timestamp_utc\": \"2026-09-28T16:12:54.943617+00:00\"}"
+    },
+    {
+      "line": 16,
+      "path": "docs/PROTOCOL_SOURCE_OF_TRUTH.md",
+      "scope": "active context or incidental numeric match; inspected in reference audit",
+      "text": "- CR01 fixes the common primary D/R cap at 2,048 total generated tokens, including thinking and final output. Report strict-valid-FINAL completion and failure subtypes in all 12 cells descriptively; no 99% eligibility prerequisite or automatic threshold stop. Keep the exact P02B instruction and effective matched sampler/parser. Historical 1,024 artifacts remain valid under their original identities, never reinterpreted as CR01."
+    },
+    {
+      "line": 34,
+      "path": "docs/EVIDENCE_AND_MANUSCRIPT.md",
+      "scope": "active context or incidental numeric match; inspected in reference audit",
+      "text": "- `INFEASIBLE`: an informative valid design cannot meet its remaining cost, denominator or resource requirements. Under CR01, low completion alone is not this decision; the removed 99% prerequisite cannot trigger it."
+    },
+    {
+      "line": 30,
+      "path": "src/taskcognition/p02_runner.py",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "    if index>=24 or sum(r['reserved_output_tokens'] for r in rows.values())+1024>24576:raise IntegrityError('P02A budget exhausted')"
+    },
+    {
+      "line": 33,
+      "path": "src/taskcognition/p02_runner.py",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "    if request.get('split')!='DEVELOPMENT' or request.get('evidence_kind')!='development_observation' or request.get('max_new_tokens')!=1024:raise IntegrityError('scope/cap')"
+    },
+    {
+      "line": 36,
+      "path": "src/taskcognition/p02_runner.py",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "    append(run,'dispatch',key,request_hash=digest(request),stream_id=request['stream_id'],max_new_tokens=1024)"
+    },
+    {
+      "line": 40,
+      "path": "src/taskcognition/p02_runner.py",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "    if spent+300>5400 or wall+300>7200 or evidence_bytes+16*1024**2>512*1024**2:raise IntegrityError('insufficient remaining envelope')"
+    },
+    {
+      "line": 127,
+      "path": "src/taskcognition/p01_worker.py",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "        finish=stopping_reason or ('eos' if terminal_eos is not None else 'cap' if len(token_ids)>=1024 else 'other')"
+    },
+    {
+      "line": 32,
+      "path": "src/taskcognition/p01_smoke.py",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "    config.update(do_sample=True,temperature=.6,top_p=.95,top_k=20,min_p=0.,max_new_tokens=1024,"
+    },
+    {
+      "line": 77,
+      "path": "src/taskcognition/p01_smoke.py",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "                 'effective_generation_config':config.to_dict(),'max_new_tokens':1024,"
+    },
+    {
+      "line": 1,
+      "path": "configs/state_events/006_P02A_bounded_dispatch.json",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "{\"authority\":\"current user P02A bounded local execution prompt\",\"event\":\"enable_only_predeclared_P02A_plan\",\"evidence_kind\":\"development_observation\",\"p01_dispatch_enabled\":false,\"plan_sha256\":\"11be399c6ea01eb773cc6ad4b3c40cd270e18056f0737b4ae14da5971f18e38a\",\"previous_state_sha256\":\"2b515aa03a61de16a3a522ecb6ab5f2cda035b9767580873b4e469f4adeccfba\",\"source_commit\":\"d9f78e6467ab5509219390475930b361364257b2\",\"timestamp_utc\":\"2026-09-28T18:35:30.645765+00:00\"}"
+    },
+    {
+      "line": 1,
+      "path": "configs/state_events/005_P01_accept_P02A_start.json",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "{\"acceptance_sha256\":\"d7eb830206571d5646df96d987c966051867dc534ac267d6d2447aa85dd6edd8\",\"accepted_phase\":\"P01\",\"accepted_status\":\"SEALED\",\"active_phase\":\"P02A\",\"authorized_prompt_sha256\":\"3a8195483e8e3c481b1552cddf77f0e7999e57e2b5b1d1da36f980f179d7c95f\",\"event\":\"phase_acceptance_and_bounded_activation\",\"evidence_kind\":\"development_observation\",\"p01_dispatch_enabled\":false,\"p01_unused_slots_inactive\":5,\"parent_phase\":\"P02\",\"previous_state_sha256\":\"d106f8619badfebf567a87edd5ea8f6e0e5d64a7951dcd7cdaf49488216d1e29\",\"real_dispatch_enabled\":false,\"status\":\"IN_PROGRESS\",\"timestamp_utc\":\"2026-09-28T18:28:32.528217+00:00\"}"
+    },
+    {
+      "line": 15,
+      "path": "docs/P02B_coordinator_review.md",
+      "scope": "historical pre-approval authority document",
+      "text": "- Reconciled **240 ledger events**, **48 retained requests**, **28,690 output tokens**, and **1,682.543499299998 seconds** of worker residency."
+    },
+    {
+      "line": 18,
+      "path": "docs/P02B_coordinator_review.md",
+      "scope": "historical pre-approval authority document",
+      "text": "- Rechecked the governing PDF's Section 5 and Figure 1. The 99% cellwise rule and the 1,024/2,048 primary cap restriction are explicit scientific requirements of the current draft."
+    },
+    {
+      "line": 24,
+      "path": "docs/P02B_coordinator_review.md",
+      "scope": "historical pre-approval authority document",
+      "text": "| P02B_review_packet.zip | `a66ae570dcd7c470fda399bd858bc19100d750db8c388951b977a6a138be314b` |"
+    },
+    {
+      "line": 27,
+      "path": "docs/P02B_coordinator_review.md",
+      "scope": "historical pre-approval authority document",
+      "text": "Pre-dispatch commit: `72d88843067b8a8f0f29d2937587a102d5a24f6b`. Evidence commit: `ba3ef09dd8db95a1e60a380723f398f99e5d52d4`. Identify the separate packet commit locally when recording acceptance."
+    },
+    {
+      "line": 33,
+      "path": "docs/P02B_coordinator_review.md",
+      "scope": "historical pre-approval authority document",
+      "text": "| D, 1,024 | 7/12 | 4/12 |"
+    },
+    {
+      "line": 34,
+      "path": "docs/P02B_coordinator_review.md",
+      "scope": "historical pre-approval authority document",
+      "text": "| R, 1,024 | 5/12 | 5/12 |"
+    },
+    {
+      "line": 44,
+      "path": "docs/P02B_coordinator_review.md",
+      "scope": "historical pre-approval authority document",
+      "text": "The larger-cap number-format R samples succeed where the smaller-cap samples failed, but they are independent generations. Do not describe an observed 2,048 answer as the continuation of an observed 1,024 answer. Inputs also changed from P02A, so apparent improvement across instruction versions is not a controlled prompt comparison."
+    },
+    {
+      "line": 50,
+      "path": "docs/P02B_coordinator_review.md",
+      "scope": "historical pre-approval authority document",
+      "text": "The gate question remains untested: can direct supervision of benefit and independent-draw spoilage improve audited score/cost/harm relative to winner and factorized routers? The immediate obstacle is the requirement that both answer packages finish in the prescribed format at least 99% of the time in every family before that experiment can begin."
+    },
+    {
+      "line": 57,
+      "path": "docs/P02B_coordinator_review.md",
+      "scope": "historical pre-approval authority document",
+      "text": "My recommendation is to consider the narrow CR01 amendment: fix the common cap at 2,048 and study the actual failure-retaining packages, with completion reported rather than used as a 99% eligibility gate. Keep strict parsing, zero-score failure retention, the same model/families/baselines, all-in costs, and the full audit and primary superiority criteria. This preserves the core gate comparison but changes the experimental regime and its interpretation. It must be openly documented as an outcome-informed DEVELOPMENT revision, not presented as the original unchanged study."
+    },
+    {
+      "line": 1,
+      "path": "configs/state_events/009_P02B_bounded_dispatch.json",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "{\"authority\":\"current user P02B fixed-instruction two-cap 48-call prompt\",\"event\":\"enable_only_immutable_P02B_plan\",\"evidence_kind\":\"development_observation\",\"p01_dispatch_enabled\":false,\"p02a_dispatch_enabled\":false,\"plan_sha256\":\"9afcea3b3fe41aa39cfbf44e30f81514128f077ecdb42a18f13fb25f8f2eff36\",\"previous_state_sha256\":\"e7431a36fb8e33c25ab4ff375c29a3cc0f8d7d23b15212c102efd993e09e6919\",\"source_commit\":\"72d88843067b8a8f0f29d2937587a102d5a24f6b\",\"timestamp_utc\":\"2026-09-28T19:18:03.617195+00:00\"}"
+    },
+    {
+      "line": 1,
+      "path": "configs/state_events/008_P02A_accept_P02B_start.json",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "{\"acceptance_record_sha256\":\"7bd60f93f9c1cb25e94ee62764f96a2c6bb417668011230b08ad00413162e994\",\"accepted_checkpoint\":\"P02A\",\"active_phase\":\"P02B\",\"event\":\"checkpoint_acceptance_and_bounded_activation\",\"evidence_kind\":\"development_observation\",\"p01_dispatch_enabled\":false,\"p02_sealed\":false,\"p02a_dispatch_enabled\":false,\"previous_state_sha256\":\"862a99eccc43ad1bb5d0d9e3160d700f94b95009ddc829572bebd8c5afa896ba\",\"real_dispatch_enabled\":false,\"status\":\"IN_PROGRESS\",\"timestamp_utc\":\"2026-09-28T19:07:59.048859+00:00\"}"
+    },
+    {
+      "line": 1,
+      "path": "configs/p01_resource_plan.json",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "{\"cancellation_policy\":\"isolated worker process; durable admission immediately before generate; token-step timeout plus parent watchdog; deliberate interrupt after first token; synchronize after cooperative cancellation; hard terminate process if unresponsive; retain incurred wall time and unknown admission; no automatic repeat or R-to-D rescue\",\"correction\":\"Pre-dispatch preparation assumed R opening was prefilled; official pinned R template leaves opening to generation. No request dispatched. Prior draft artifacts preserved.\",\"cumulative_gpu_active_envelope_seconds\":1800,\"dataset_config\":{\"max_decimals\":0,\"max_numbers\":3,\"max_value\":10,\"min_decimals\":0,\"min_numbers\":3,\"min_value\":-10,\"seed\":20260928,\"size\":2},\"evidence_kind\":\"development_observation\",\"family\":\"number_sorting\",\"gpu_time_accounting\":\"conservative cumulative worker residency including load/check/cleanup, plus synchronized kernel check duration; report measured overshoot without clipping\",\"initial_counters\":{\"admitted_or_unknown\":0,\"dispatched\":0,\"reserved_output_tokens\":0},\"initial_input_index\":0,\"initial_pair\":{\"max_generations\":2,\"max_output_tokens\":2048,\"modes\":[\"D\",\"R\"],\"same_input\":true},\"interruption_input_index\":1,\"main_study_freeze\":false,\"max_additional_disk_bytes\":42949672960,\"max_admitted_or_unknown_generations\":8,\"max_output_tokens_reserved\":8192,\"model_id\":\"Qwen/Qwen3-8B\",\"model_revision\":\"b968826d9c46dd6066d109eabc6255188de91218\",\"native_revision\":\"21e6d2a9a581b3e11aafe711abfd37402f8482d5\",\"output_directory\":\"artifacts/development/p01-windows-5090-20260928-v2\",\"per_generation_output_cap\":1024,\"per_generation_timeout_seconds\":120,\"planned_followup\":{\"max_generations\":1,\"mode\":\"R\",\"purpose\":\"controlled post-admission interruption and no-replay restart diagnostic\",\"separate_development_input\":true},\"pre_admission_retries\":0,\"purpose\":\"P01 native Windows smoke only\"}"
+    },
+    {
+      "line": 1,
+      "path": "configs/p01_resource_plan_v1.json",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "{\"evidence_kind\":\"development_observation\",\"purpose\":\"P01 native Windows smoke only\",\"model_id\":\"Qwen/Qwen3-8B\",\"model_revision\":\"b968826d9c46dd6066d109eabc6255188de91218\",\"max_additional_disk_bytes\":42949672960,\"max_admitted_or_unknown_generations\":8,\"max_output_tokens_reserved\":8192,\"per_generation_output_cap\":1024,\"per_generation_timeout_seconds\":120,\"cumulative_gpu_active_envelope_seconds\":1800,\"pre_admission_retries\":0,\"initial_pair\":{\"modes\":[\"D\",\"R\"],\"same_input\":true,\"max_generations\":2,\"max_output_tokens\":2048},\"planned_followup\":{\"purpose\":\"controlled post-admission interruption and no-replay restart diagnostic\",\"mode\":\"R\",\"separate_development_input\":true,\"max_generations\":1},\"family\":\"number_sorting\",\"native_revision\":\"21e6d2a9a581b3e11aafe711abfd37402f8482d5\",\"dataset_config\":{\"min_numbers\":3,\"max_numbers\":3,\"min_decimals\":0,\"max_decimals\":0,\"min_value\":-10,\"max_value\":10,\"seed\":20260928,\"size\":2},\"initial_input_index\":0,\"interruption_input_index\":1,\"output_directory\":\"artifacts/development/p01-windows-5090-20260928\",\"initial_counters\":{\"dispatched\":0,\"admitted_or_unknown\":0,\"reserved_output_tokens\":0},\"cancellation_policy\":\"isolated worker process; durable admission immediately before generate; token-step timeout plus parent watchdog; deliberate interrupt after first token; synchronize after cooperative cancellation; hard terminate process if unresponsive; retain incurred wall time and unknown admission; no automatic repeat or R-to-D rescue\",\"gpu_time_accounting\":\"conservative cumulative worker residency including load/check/cleanup, plus synchronized kernel check duration; report measured overshoot without clipping\",\"main_study_freeze\":false}"
+    },
+    {
+      "line": 25,
+      "path": "docs/prompts/P00_coordinator_review.md",
+      "scope": "historical completed-phase prompt",
+      "text": "Hardware is reported as Windows 11, RTX 5090 with 32,607 MiB VRAM, about 63.46 GiB RAM, and ample free disk. This supports trying the proposed native Windows backend, but does not establish CUDA kernel compatibility, native BF16 execution, Qwen fit, parsing reliability, or cap feasibility."
+    },
+    {
+      "line": 3,
+      "path": "docs/prompts/P01_local_qwen.md",
+      "scope": "historical completed-phase prompt",
+      "text": "Execute only after accepted P00 review is conveyed. Record that acceptance in the P00 seal. Implement P01 only; read the governing contracts and P00 report. Resolve hardware/backend choices using measured evidence. Do not begin six-family cap certification or final labels."
+    },
+    {
+      "line": 11,
+      "path": "docs/prompts/P01_local_qwen.md",
+      "scope": "historical completed-phase prompt",
+      "text": "5. Run at most 24 real answer generations on disjoint DEVELOPMENT smoke inputs across both modes at cap 1,024. Use scheduled independent streams. This limit is an implementation default for P01, not a scientific sample count or cap feasibility test. Report every attempt, failed response, token count, memory peak, and measured time."
+    },
+    {
+      "line": 20,
+      "path": "docs/prompts/P01_local_qwen.md",
+      "scope": "historical completed-phase prompt",
+      "text": "- Resource report supports a bounded pilot proposal; no claim that 99% cap feasibility has been established."
+    },
+    {
+      "line": 27,
+      "path": "docs/prompts/P01_reviewed_local_qwen.md",
+      "scope": "historical completed-phase prompt",
+      "text": "- Start with two admitted answer generations: one D and one R on the same DEVELOPMENT smoke input, independent sampling streams, cap 1,024 each. This initial pair allows at most 2,048 generated tokens."
+    },
+    {
+      "line": 57,
+      "path": "docs/prompts/P01_reviewed_local_qwen.md",
+      "scope": "historical completed-phase prompt",
+      "text": "Primary sampler for BOTH: sampling enabled, temperature=.6, top_p=.95, top_k=20, min_p=0. Pin other effective defaults, including EOS/pad/stop behavior. The cap is total new output tokens, including thinking plus final output, not 1,024 thinking tokens plus a second final-answer budget. Do not use model-card differing D settings for the primary smoke."
+    },
+    {
+      "line": 63,
+      "path": "docs/prompts/P01_reviewed_local_qwen.md",
+      "scope": "historical completed-phase prompt",
+      "text": "Use one fixed, tiny DEVELOPMENT example from a named primary family with a version-pinned native adapter/scorer for the live smoke. Inspect only the necessary generator/scorer integration; implementing six-family sampling/cap certification belongs to P02. Do not claim the P00 synthetic family labels already exercised native scorers. If using Reasoning Gym, pin the revision used and confirm its native score on hand-checked valid and invalid payloads without model calls."
+    },
+    {
+      "line": 81,
+      "path": "docs/prompts/P01_reviewed_local_qwen.md",
+      "scope": "historical completed-phase prompt",
+      "text": "The smoke does not establish a 99% completion rate, gate quality, audit validity, Qwen superiority, or the final model/package freeze. P02 owns systematic six-family feasibility."
+    },
+    {
+      "line": 27,
+      "path": "docs/prompts/P01_reviwed_local_qwen.md",
+      "scope": "historical completed-phase prompt",
+      "text": "- Start with two admitted answer generations: one D and one R on the same DEVELOPMENT smoke input, independent sampling streams, cap 1,024 each. This initial pair allows at most 2,048 generated tokens."
+    },
+    {
+      "line": 57,
+      "path": "docs/prompts/P01_reviwed_local_qwen.md",
+      "scope": "historical completed-phase prompt",
+      "text": "Primary sampler for BOTH: sampling enabled, temperature=.6, top_p=.95, top_k=20, min_p=0. Pin other effective defaults, including EOS/pad/stop behavior. The cap is total new output tokens, including thinking plus final output, not 1,024 thinking tokens plus a second final-answer budget. Do not use model-card differing D settings for the primary smoke."
+    },
+    {
+      "line": 63,
+      "path": "docs/prompts/P01_reviwed_local_qwen.md",
+      "scope": "historical completed-phase prompt",
+      "text": "Use one fixed, tiny DEVELOPMENT example from a named primary family with a version-pinned native adapter/scorer for the live smoke. Inspect only the necessary generator/scorer integration; implementing six-family sampling/cap certification belongs to P02. Do not claim the P00 synthetic family labels already exercised native scorers. If using Reasoning Gym, pin the revision used and confirm its native score on hand-checked valid and invalid payloads without model calls."
+    },
+    {
+      "line": 81,
+      "path": "docs/prompts/P01_reviwed_local_qwen.md",
+      "scope": "historical completed-phase prompt",
+      "text": "The smoke does not establish a 99% completion rate, gate quality, audit validity, Qwen superiority, or the final model/package freeze. P02 owns systematic six-family feasibility."
+    },
+    {
+      "line": 13,
+      "path": "docs/prompts/P02A_six_family_integration_prompt.md",
+      "scope": "historical completed-phase prompt",
+      "text": "| reports/phases/P01_completion_v2.md | `e75e0f4e99396223b61beb3f378c10d3a3a7c9d5db4db0d248700fae5ac69f13` |"
+    },
+    {
+      "line": 15,
+      "path": "docs/prompts/P02A_six_family_integration_prompt.md",
+      "scope": "historical completed-phase prompt",
+      "text": "| reports/phases/P01_evidence_manifest_v2.json | `1237761e49fcee9a9e027324995f6452b27b83417b205e12c44d451940b09a3f` |"
+    },
+    {
+      "line": 30,
+      "path": "docs/prompts/P02A_six_family_integration_prompt.md",
+      "scope": "historical completed-phase prompt",
+      "text": "- **1,024 total new tokens per generation**, including thinking plus final output; maximum reserved output **24,576 tokens**."
+    },
+    {
+      "line": 71,
+      "path": "docs/prompts/P02A_six_family_integration_prompt.md",
+      "scope": "historical completed-phase prompt",
+      "text": "This slice is **not the formal cap-selection sample**. A 2/2 cell does not certify a 99% completion rate, and a poor cell here does not by itself invoke the formal 2,048 infeasibility stop. Do not pool these rows or P01's deliberate interruption into a later formal cap denominator. Later formal cap evaluation must use a reviewed predeclared plan and fresh DEVELOPMENT inputs."
+    },
+    {
+      "line": 82,
+      "path": "docs/prompts/P02A_six_family_integration_prompt.md",
+      "scope": "historical completed-phase prompt",
+      "text": "4. A concrete proposal for the next P02 slice: formal 1,024/2,048 cap-study denominators, independent input/repeat structure, fixed completion rule, expected compute/storage, and handling of an unpromising interface. If recommending a development package revision, separate it from the subsequent fresh cap evaluation and retain all earlier attempts. No automatic execution."
+    },
+    {
+      "line": 17,
+      "path": "docs/prompts/P02C_adopt_CR01_prompt.md",
+      "scope": "historical completed-phase prompt",
+      "text": "| P02B_review_packet.zip | `a66ae570dcd7c470fda399bd858bc19100d750db8c388951b977a6a138be314b` |"
+    },
+    {
+      "line": 20,
+      "path": "docs/prompts/P02C_adopt_CR01_prompt.md",
+      "scope": "historical completed-phase prompt",
+      "text": "Verify the 598 indexed files against the accepted ZIP, allowing later documented current-state changes without rewriting historical hashes. Identify pre-dispatch commit `72d88843067b8a8f0f29d2937587a102d5a24f6b`, evidence commit `ba3ef09dd8db95a1e60a380723f398f99e5d52d4` and the packet commit. Stop on an unexplained discrepancy rather than regenerating evidence."
+    },
+    {
+      "line": 26,
+      "path": "docs/prompts/P02C_adopt_CR01_prompt.md",
+      "scope": "historical completed-phase prompt",
+      "text": "The approved change is precise: **primary D/R cap = 2,048 total generated tokens; completion is descriptive, with no 99% eligibility prerequisite or automatic stop based on that threshold.** Strict parsing/scoring, all retained failures, all audit checks and all primary comparisons continue unchanged."
+    },
+    {
+      "line": 34,
+      "path": "docs/prompts/P02C_adopt_CR01_prompt.md",
+      "scope": "historical completed-phase prompt",
+      "text": "- Active future P02/P03/P04 prompts, applicable templates, configuration schemas and validation rules that currently require cap certification or the old selection branch."
+    },
+    {
+      "line": 37,
+      "path": "docs/prompts/P02C_adopt_CR01_prompt.md",
+      "scope": "historical completed-phase prompt",
+      "text": "Search active source/documentation for `99`, `0.99`, `1024`, `1,024`, cap-feasibility/certification and stop-rule references; inspect matches in context. Do not perform blanket replacements. Historical prompts, immutable runs, regression fixtures and reports legitimately retain the old values. Preserve them and label/link their historical scope. Produce a short reference audit listing changed active references and intentionally retained historical ones."
+    },
+    {
+      "line": 39,
+      "path": "docs/prompts/P02C_adopt_CR01_prompt.md",
+      "scope": "historical completed-phase prompt",
+      "text": "Where existing validators encode the old scientific rule, update them narrowly for the explicitly versioned CR01 configuration. Historical validation must remain possible. Do not globally reject a historical 1,024 artifact or silently reinterpret it as CR01. New prospective primary CR01 configurations must use 2,048; low completion alone cannot be an active eligibility rejection. Missing required freeze fields, invalid scores/costs, insufficient denominator bounds and software/evidence integrity errors must still block the relevant action."
+    },
+    {
+      "line": 11,
+      "path": "docs/prompts/P02_development_pilot.md",
+      "scope": "active context or incidental numeric match; inspected in reference audit",
+      "text": "3. Use the fixed CR01 cap of 2,048 total generated tokens for D and R. Predeclare per-cell planned/executed/retained denominators; report strict-valid-FINAL completion descriptively. No 99% prerequisite or automatic threshold stop applies. Keep strict scoring and every failure; no pooling to hide failures, output repair or cap escalation."
+    },
+    {
+      "line": 1,
+      "path": "configs/p01_download_lock.json",
+      "scope": "historical phase guard, regression fixture, snapshot or resource unit",
+      "text": "{\"evidence_kind\":\"development_observation\",\"files\":[{\"bytes\":2753189216,\"name\":\"torch\",\"sha256\":\"7c78215c3af4f62e63f2b2e360f1722fc719b0853c7ac22666483d9810613a4c\",\"url\":\"https://download-r2.pytorch.org/whl/cu128/torch-2.11.0%2Bcu128-cp312-cp312-win_amd64.whl\",\"version\":\"2.11.0+cu128\"},{\"bytes\":11993498,\"name\":\"transformers\",\"sha256\":\"4c9e9de11333ddfe5114bc872c9f370509198acf0b87a832a0ab9458e2bd0550\",\"url\":\"https://files.pythonhosted.org/packages/03/b8/e484ef633af3887baeeb4b6ad12743363af7cce68ae51e938e00aaa0529d/transformers-4.57.6-py3-none-any.whl\",\"version\":\"4.57.6\"},{\"bytes\":221738,\"name\":\"fsspec\",\"sha256\":\"8dd6e646e99ea382bd85f97a45e6b526a442d79423a7dc673f1e2756d05fcb5f\",\"url\":\"https://files.pythonhosted.org/packages/6c/c0/a98505f18594f1bce828bb159cec0fcf9860562f1a2c85913409fc8f3d9e/fsspec-2026.9.0-py3-none-any.whl\",\"version\":\"2026.9.0\"},{\"bytes\":566395,\"name\":\"huggingface_hub\",\"sha256\":\"48f0c8eac16145dfce371e9d2d7772854a4f591bcb56c9cf548accf531d54270\",\"url\":\"https://files.pythonhosted.org/packages/a8/af/48ac8483240de756d2438c380746e7130d1c6f75802ef22f3c6d49982787/huggingface_hub-0.36.2-py3-none-any.whl\",\"version\":\"0.36.2\"},{\"bytes\":2142205,\"name\":\"networkx\",\"sha256\":\"e3fd2c13a7814cee3746340d8d7f8598a67f16a58bf47fb7f8793fab6efca1b0\",\"url\":\"https://files.pythonhosted.org/packages/7e/cd/fe58041e9011f307c490e3e17dd48cc516448f7c698a3f2d9d9d65d7e6a8/networkx-3.7-py3-none-any.whl\",\"version\":\"3.7\"},{\"bytes\":12567828,\"name\":\"numpy\",\"sha256\":\"0a59a421a32580a009e8a1751345bf829631b990dc1794b80514ab722b435def\",\"url\":\"https://files.pythonhosted.org/packages/3c/a1/accf6d4f0c80c5d9ba9735d6b1550e444180599f34dec69ca01360f717ad/numpy-2.5.3-cp312-cp312-win_amd64.whl\",\"version\":\"2.5.3\"},{\"bytes\":129956,\"name\":\"packaging\",\"sha256\":\"d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c\",\"url\":\"https://files.pythonhosted.org/packages/63/34/ba1c580383c9eada3711951fef0795c80b829a078d72188184bcab9dd527/packaging-26.3-py3-none-any.whl\",\"version\":\"26.3\"},{\"bytes\":154003,\"name\":\"PyYAML\",\"sha256\":\"5fcd34e47f6e0b794d17de1b4ff496c00986e1c83f7ab2fb8fcfe9616ff7477b\",\"url\":\"https://files.pythonhosted.org/packages/86/bf/899e81e4cce32febab4fb42bb97dcdf66bc135272882d1987881a4b519e9/pyyaml-6.0.3-cp312-cp312-win_amd64.whl\",\"version\":\"6.0.3\"},{\"bytes\":277933,\"name\":\"regex\",\"sha256\":\"4db7d00c4afbfbb55b8e17b1e371da11418ea9389b030acec63c1fa4c7ad4b86\",\"url\":\"https://files.pythonhosted.org/packages/ad/d4/4dcd0a05d3e97ca829165df1c39717f899d1d484dac8a6032439f2cb8d6d/regex-2026.9.10-cp312-cp312-win_amd64.whl\",\"version\":\"2026.9.10\"},{\"bytes\":355540,\"name\":\"safetensors\",\"sha256\":\"096ec1a98435df7beb08853bb5aa9081a84f23d0adc67ed1a0a10550f608373f\",\"url\":\"https://files.pythonhosted.org/packages/1b/6d/3fba214c1e5e0f69991677ec3bc17023f0421776975e1de0c682dca475e2/safetensors-0.8.0-cp310-abi3-win_amd64.whl\",\"version\":\"0.8.0\"},{\"bytes\":1062021,\"name\":\"setuptools\",\"sha256\":\"fdd925d5c5d9f62e4b74b30d6dd7828ce236fd6ed998a08d81de62ce5a6310d6\",\"url\":\"https://files.pythonhosted.org/packages/e1/e3/c164c88b2e5ce7b24d667b9bd83589cf4f3520d97cad01534cd3c4f55fdb/setuptools-81.0.0-py3-none-any.whl\",\"version\":\"81.0.0\"},{\"bytes\":6299353,\"name\":\"sympy\",\"sha256\":\"e091cc3e99d2141a0ba2847328f5479b05d94a6635cb96148ccb3f34671bd8f5\",\"url\":\"https://files.pythonhosted.org/packages/a2/09/77d55d46fd61b4a135c444fc97158ef34a095e5681d0a6c10b75bf356191/sympy-1.14.0-py3-none-any.whl\",\"version\":\"1.14.0\"},{\"bytes\":2747786,\"name\":\"tokenizers\",\"sha256\":\"c9ea31edff2968b44a88f97d784c2f16dc0729b8b143ed004699ebca91f05c48\",\"url\":\"https://files.pythonhosted.org/packages/65/71/0670843133a43d43070abeb1949abfdef12a86d490bea9cd9e18e37c5ff7/tokenizers-0.22.2-cp39-abi3-win_amd64.whl\",\"version\":\"0.22.2\"},{\"bytes\":80199,\"name\":\"tqdm\",\"sha256\":\"c293e525e6fef9c20e8728fd4612df02a0aa31bb5fe91ecd93e123b1b7bffa73\",\"url\":\"https://files.pythonhosted.org/packages/a7/03/921a3d3c75785aca9ebfbfcabfbc3a1be12e2ab5265deb026d55a5a3f83e/tqdm-4.70.1-py3-none-any.whl\",\"version\":\"4.70.1\"},{\"bytes\":45571,\"name\":\"typing_extensions\",\"sha256\":\"481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8\",\"url\":\"https://files.pythonhosted.org/packages/49/d3/b8441a820a491ddfc024b0b0cf0393375b75ea13866d9c66727e54c2fc80/typing_extensions-4.16.0-py3-none-any.whl\",\"version\":\"4.16.0\"},{\"bytes\":108976,\"name\":\"filelock\",\"sha256\":\"be9166068623636cedcad7b2ef735b04e5fb4344d978e09fd6fbd6ede06f14f0\",\"url\":\"https://files.pythonhosted.org/packages/62/34/d90d7e7ef972900e09f45b9c0661376dd03e77fece26ee83ec93b7719bae/filelock-4.0.5-py3-none-any.whl\",\"version\":\"4.0.5\"},{\"bytes\":134899,\"name\":\"Jinja2\",\"sha256\":\"85ece4451f492d0c13c5dd7c13a64681a86afae63a5f347908daf103ce6d2f67\",\"url\":\"https://download.pytorch.org/whl/jinja2-3.1.6-py3-none-any.whl\",\"version\":\"3.1.6\"},{\"bytes\":73075,\"name\":\"requests\",\"sha256\":\"2a0d60c172f83ac6ab31e4554906c0f3b3588d37b5cb939b1c061f4907e278e0\",\"url\":\"https://files.pythonhosted.org/packages/a0/f4/c67b0b3f1b9245e8d266f0f112c500d50e5b4e83cb6f3b71b6528104182a/requests-2.34.2-py3-none-any.whl\",\"version\":\"2.34.2\"},{\"bytes\":136983,\"name\":\"certifi\",\"sha256\":\"62f22742b58a1a33014a2b6b706588a8d7e2a88ae7bd1a6ebe8c992928483775\",\"url\":\"https://files.pythonhosted.org/packages/0b/a7/71ac2cff56fec219ed242bb11b8efb69fcc4bec75db06fb7bfe35de520e6/certifi-2026.7.22-py3-none-any.whl\",\"version\":\"2026.7.22\"},{\"bytes\":200551,\"name\":\"charset-normalizer\",\"sha256\":\"3617ac3cfd8b9888f145ad89dd6e692285834b0201c6074a5eeaad3fd4d668c2\",\"url\":\"https://files.pythonhosted.org/packages/9d/7a/4c6c298171e6b3e745633180ff59350fc0ca0db1ffd28df1e369e0579f71/charset_normalizer-3.5.1-cp312-cp312-win_amd64.whl\",\"version\":\"3.5.1\"},{\"bytes\":69583,\"name\":\"idna\",\"sha256\":\"ab7ae7122974553370f0bdb919e1a960b2cd1bc1ef0276416d896db81c14582c\",\"url\":\"https://files.pythonhosted.org/packages/58/a2/bb081bab032533a855d44de1d56f8e8426114ff1ba5d1f07a438a0a654f8/idna-3.20-py3-none-any.whl\",\"version\":\"3.20\"},{\"bytes\":15105,\"name\":\"MarkupSafe\",\"sha256\":\"26a5784ded40c9e318cfc2bdb30fe164bdb8665ded9cd64d500a34fb42067b1c\",\"url\":\"https://download.pytorch.org/whl/markupsafe-3.0.3-cp312-cp312-win_amd64.whl\",\"version\":\"3.0.3\"},{\"bytes\":536198,\"name\":\"mpmath\",\"sha256\":\"a0b2b9fe80bbcd81a6647ff13108738cfb482d481d826cc0e02f5b35e5c88d2c\",\"url\":\"https://files.pythonhosted.org/packages/43/e3/7d92a15f894aa0c9c4b49b8ee9ac9850d6e63b03c9c32c0367a13ae62209/mpmath-1.3.0-py3-none-any.whl\",\"version\":\"1.3.0\"},{\"bytes\":135717,\"name\":\"urllib3\",\"sha256\":\"0cf3cae568d36aa9576b28dfb35f11328f1cb974ca7647d9475ebb86c75ac6e3\",\"url\":\"https://files.pythonhosted.org/packages/92/9d/c4e665119135114480843e7ab388fa94d8480650450e6f8e26b70d323a4c/urllib3-2.8.0-py3-none-any.whl\",\"version\":\"2.8.0\"},{\"bytes\":25335,\"name\":\"colorama\",\"sha256\":\"4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6\",\"url\":\"https://download.pytorch.org/whl/colorama-0.4.6-py2.py3-none-any.whl\",\"version\":\"0.4.6\"}],\"model_id\":\"Qwen/Qwen3-8B\",\"model_revision\":\"b968826d9c46dd6066d109eabc6255188de91218\",\"reasoning_gym_revision\":\"21e6d2a9a581b3e11aafe711abfd37402f8482d5\"}"
+    }
+  ],
+  "operation": "offline_reference_audit"
+}

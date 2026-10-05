@@ -1,0 +1,14 @@
+{
+  "event": "P02C_offline_review_checkpoint",
+  "evidence_kind": "development_observation",
+  "instruction_verification_sha256": "b470cdffa7efc7cbc540da03e7a3488d9486ebc2c6d75584170c00ea92111ae3",
+  "new_generations": 0,
+  "p02_complete": false,
+  "p02_sealed": false,
+  "p03_started": false,
+  "previous_state_sha256": "40b2f937b3946ef8eb8f95a0bb3045544b837b162c6628d939f6506260a17701",
+  "real_dispatch_enabled": false,
+  "status": "READY_FOR_REVIEW",
+  "timestamp_utc": "2026-10-05T23:29:16.574536+00:00",
+  "verification_sha256": "d20406d9ee8de4d15f0c6bb4dc8857ef3d59fb0ea33bf5b8d72a2580be8b1f0f"
+}

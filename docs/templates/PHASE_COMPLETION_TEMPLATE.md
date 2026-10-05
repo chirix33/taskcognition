@@ -51,3 +51,7 @@ List compact files the user should send to the coordinating assistant, in priori
 ## Stop statement
 
 State that this phase ended and no next-phase work was performed. Name the next phase conditionally, without starting it.
+
+## Applicable specification version
+
+Record original PDF hash, adopted amendment/version/hash, approval versus adoption dates, historical package identities, and changed active references. Under CR01, fixed 2,048-token completion is descriptive; never use an obsolete cap-certification branch as eligibility. Distinguish zero new model/GPU work from offline preparation. No final freeze is implied by phase review.

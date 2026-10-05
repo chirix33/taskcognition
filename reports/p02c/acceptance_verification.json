@@ -1,0 +1,21 @@
+{
+  "accepted_artifacts": {
+    "reports/p02b/P02B_evidence_index.json": "f92a2903b0d44649ac9670e2108d8ef8092dbe5f4d516f57ea1954c2be174ddf",
+    "reports/p02b/P02B_packet_receipt.json": "44c8ae0433c23f7f26eb2cae87f447d0e536bee40d410b5e6a7f5baa690802cd",
+    "reports/p02b/P02B_review_packet.zip": "a66ae570dcd7c470fda399bd858bc19100d750db8c388951b977a6a138be314b",
+    "reports/phases/P02B_completion.md": "75e858192c9a0f4ec863e51ffb3f0a4d37b0af3e2f229a1265c53ecc5a6b2534"
+  },
+  "accepted_zip_and_current_bytes_match": true,
+  "commits": [
+    "72d88843067b8a8f0f29d2937587a102d5a24f6b",
+    "ba3ef09dd8db95a1e60a380723f398f99e5d52d4",
+    "123a43ff198b2e1a450b98b6be226a2cbea896e9"
+  ],
+  "evidence_kind": "development_observation",
+  "indexed_files": 598,
+  "new_generations": 0,
+  "operation": "offline_hash_verification",
+  "original_source_files_match": true,
+  "reference_pdf_sha256": "9eed0fe74f46c3acbc200183cf11693f1bec66a1180568087aeb775c97d8f6c8",
+  "timestamp_utc": "2026-10-05T23:10:09.894651+00:00"
+}

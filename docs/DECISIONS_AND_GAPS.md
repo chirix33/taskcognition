@@ -1,6 +1,6 @@
 # Decisions, gaps, and scope controls
 
-No blocking clarification is needed to start P00. Unknown workstation and repository details can be discovered locally. Scientific/resource choices below must be resolved before the relevant irreversible evidence stage, not guessed now.
+Active version: TaskCognition-CR01-2026-10-05-v1. CR01 is approved and adopted; its former scientific-choice block is resolved. P02 remains incomplete; the remaining resource/design choices below are not approved by CR01.
 
 ## Decision register
 
@@ -11,8 +11,8 @@ No blocking clarification is needed to start P00. Unknown workstation and reposi
 | D03 | Local inference backend and exact revisions | Prefer a simple native Transformers path if supported; optimize only if measurements require | P01/P02 |
 | D04 | Precision/quantization | Prefer native supported precision; if memory demands a change, report package implications before adoption | P01, final lock P04 |
 | D05 | Frozen input encoder | PDF leaves identity unspecified. Conservative scope-preserving candidate: input-only pooled features from the same frozen Qwen checkpoint, with exact pooling/layer/template frozen. Measure full encoding cost. A separate encoder checkpoint requires an explicit interpretation/decision; never quietly download an extra judge model | P02/P03 |
-| D06 | Dataset version, difficulty configs, maximum input length | Inspect six native generators/scorers. Freeze configs and outcome-independent input eligibility. No tuning difficulty to help TC | Before cap pilot; final lock P04 |
-| D07 | Cap-study sample plan and denominator | Predeclare inputs/repeats per cell and count failed requests conservatively in strict-valid-FINAL rates. Same evaluation rule at 1,024 and 2,048; no pooling cells to hide failure | Before cap run in P02 |
+| D06 | Dataset version, difficulty configs, maximum input length | Inspect six native generators/scorers. Freeze configs and outcome-independent input eligibility. No tuning difficulty to help TC | Before next prospective pilot; final lock P04 |
+| D07 | CR01 primary cap resolved; descriptive completion design outstanding | Fixed 2,048 total D/R tokens; no completion eligibility threshold. Predeclare fresh inputs/repeats and planned/executed/retained denominators in all 12 cells; preserve failures and distinguish completion from correctness | Cap adopted 2026-10-05; sampling before next approved P02 run |
 | D08 | Scalar cost and hard bound | Propose measured hardware service time for local workstation if enforceable bounded accounting is justified. A monetary reference tariff is possible but must be explicit and must cover gate work; not a claim of actual paid fees | P02/P03 |
 | D09 | Timeouts, J, crash/admission proof, warm-up, cache and batching | Validate interruption semantics and truthful cost accounting. Timeout alone does not automatically bound actual hardware consumption | P02/P03 |
 | D10 | Development and full-study resource ceilings | User-confirmed GPU-hours/wall-time, disk and backup plan; no cloud/paid fallback. Propose with observed throughput | Before substantial pilot; final before P04 |
@@ -32,9 +32,9 @@ Codex adds resolved values, provenance, authorizing review, and affected hashes 
 
 No experiment guarantees a positive finding or universal proof. Completion is an honest evidence package and manuscript, with the primary claim stated only if all required comparisons pass. Do not make paper completion contingent on hiding nulls.
 
-### Cap feasibility
+### Fixed bounded packages under CR01
 
-The paper's small cap and 99% cellwise completion rule may make the planned package infeasible. A final output is not the same as a correct output. Freeze the completion definition before the pilot; do not weaken wrappers, omit failed rows, or simplify generators after observing failures to claim the original design passed. Legitimate development revisions are versioned and re-evaluated; the cap limit itself cannot be raised within the current confirmatory protocol.
+CR01 fixes 2,048 total tokens and removes completion-based eligibility and its automatic stop. Completion remains descriptive; wrong, partial and recorded failure scores remain in the distribution. No wrapper weakening, failed-row omission or easier-case selection is allowed. Low direct-perfect mass can still prevent denominator adequacy, and cost/design constraints can still make an informative study infeasible. The original route paused without a formal cap test. See `amendments/CR01_2026-10-05_v1.md`.
 
 ### Cost of a "small" gate
 

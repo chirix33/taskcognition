@@ -91,3 +91,7 @@ Use these as analytical anchors, alongside randomized and adversarial tests:
 - Imbalanced stored family counts must still yield equal-family reporting, while the primary audit rejects a non-balanced manifest rather than silently changing its theorem inputs.
 
 Analytical tests, pipeline negative controls, and external theorem verification are required before final labels. Retain a short derivation memo with equation-to-code links.
+
+## CR01 scope annotation (approved 2026-10-05)
+
+The original PDF plus `amendments/CR01_2026-10-05_v1.md` governs. The primary cap is fixed at 2,048 total D/R output tokens; completion is descriptive, without the removed eligibility threshold. Every estimator, range, four-check audit inequality, positive b_min denominator requirement and three-contrast success criterion above is unchanged. Formatting/truncation failures remain in the score distribution. A low harm estimate with inadequate direct-perfect exposure cannot establish safety. No numerical tolerance, margin or design count is adopted here.

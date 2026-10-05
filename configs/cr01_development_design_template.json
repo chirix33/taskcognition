@@ -1,0 +1,35 @@
+{
+  "artifact_role": "incomplete_development_design_template_not_manifest",
+  "specification_version": "TaskCognition-CR01-2026-10-05-v1",
+  "original_pdf_sha256": "9eed0fe74f46c3acbc200183cf11693f1bec66a1180568087aeb775c97d8f6c8",
+  "amendment_path": "docs/amendments/CR01_2026-10-05_v1.md",
+  "amendment_sha256": "ec07c0133224fb10f535fc9ac4d0816d12fb10acc683c09043de717cc089c0b8",
+  "approval_source_sha256": "463fa03de2604218524e74afc246d4e907c1382d602d146eb30ecd630f8a6ede",
+  "primary_output_cap_total_tokens": {
+    "D": 2048,
+    "R": 2048
+  },
+  "completion_policy": "descriptive_no_eligibility_threshold",
+  "instruction_source": "artifacts/development/p02b-two-cap/package_base.json",
+  "instruction_sha256": "34f703e83c58853a9b912bbf2754952c9d86aefea36bd729971c5e85587140cb",
+  "strict_scoring_unchanged": true,
+  "final_freeze": false,
+  "real_dispatch_enabled": false,
+  "unresolved": {
+    "dataset_final_configs": null,
+    "features": null,
+    "repeats": null,
+    "sample_sizes": null,
+    "timeout": null,
+    "scalar_cost": null,
+    "cost_support_bounds": null,
+    "beta": null,
+    "alpha": null,
+    "b_min": null,
+    "delta_score": null,
+    "resource_ceiling": null,
+    "backup_destination": null
+  },
+  "instruction_hash_encoding": "SHA-256 of canonical JSON string, UTF-8; taskcognition.contracts.digest",
+  "instruction_text_utf8_sha256": "f20d1d5387261359968930804c62915c6f76aee54e48ff2da49aa31ca99e6295"
+}

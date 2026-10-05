@@ -23,7 +23,7 @@ These are implementation references, not permission to change the paper. Recheck
 4. Reasoning Gym upstream: https://github.com/open-thought/reasoning-gym
 5. Maurer and Pontil, Empirical Bernstein Bounds and Sample Variance Penalization (2009): https://www.cs.mcgill.ca/~colt2009/papers/012.pdf and https://arxiv.org/abs/0907.3740
 
-References checked 2026-09-28: Qwen's official card supports native thinking switches and recommends much longer output allowance than this manuscript's 1,024/2,048 cap. Therefore the cap completion study is substantive, not a presumed pass. Verify the original theorem for independent, potentially nonidentically distributed bounded rows, sample variance convention, and both bound directions during P03.
+Historical reference check (2026-09-28): Qwen's documented output allowances were longer than the original manuscript caps. Under approved CR01 the prospective primary cap is fixed at 2,048 and completion is descriptive; no cap-certification study is required. This offline adoption did not recheck current upstream documentation. Verify the original theorem for independent, potentially nonidentically distributed bounded rows, sample variance convention, and both bound directions during P03.
 
 No existing experiments, power estimates, or manuscript result cells were supplied as empirical evidence for this implementation. The handoff adds no empirical findings.
 
@@ -38,3 +38,7 @@ scope and accepted clarifications govern implementation; recovered older notes d
 activate alternate specifications. Staged candidate hashes (C01), failure/corruption
 handling (C02), and final TRAIN/TUNE evidence kinds (C03) are recorded in
 `reports/decision_ledger.md`, with the user's acceptance/clarification text.
+
+## Active authority after CR01
+
+Original PDF hash above remains unchanged. Approved `TaskCognition_CR01_APPROVED.md`, adopted `amendments/CR01_2026-10-05_v1.md`, and accepted C01-C03 supply the explicit limited revisions. `paper/cr01-2026-10-05-v1` is the active amended source copy; `docs/iclr2027` is historical. Consult `reports/p02c/reference_audit.md` rather than applying historical cap language to prospective CR01 work.

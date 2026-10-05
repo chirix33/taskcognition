@@ -1,5 +1,7 @@
 # Evidence and manuscript completion
 
+Active authority: original reference PDF + approved `TaskCognition-CR01-2026-10-05-v1` + C01-C03. This document does not authorize a new phase or live run.
+
 ## Evidence kinds
 
 Every artifact records one of `fixture`, `development_observation`, `development_simulation`, `final_train_labels`, `final_tune_labels`, `confirmatory_audit`, `confirmatory_test`, or `secondary_descriptive`. A fixture checks code. A simulation checks behavior under declared assumptions. Neither is an observed TaskCognition result.
@@ -29,7 +31,7 @@ Recreate tables from machine-readable evidence; do not hand-copy values into LaT
 
 - `SUPPORTED_IN_DECLARED_SETTING`: valid study; all required primary lower bounds exceed delta_score. State the checkpoint/packages/population and uncertainty.
 - `NOT_ESTABLISHED`: valid study; one or more criteria fail. Distinguish observed disadvantages from imprecision. Nonsignificant does not mean equivalent.
-- `INFEASIBLE`: prescribed bounded package or informative design cannot meet feasibility requirements within declared resources.
+- `INFEASIBLE`: an informative valid design cannot meet its remaining cost, denominator or resource requirements. Under CR01, low completion alone is not this decision; the removed 99% prerequisite cannot trigger it.
 - `INVALID_OR_INCOMPLETE`: protocol breach, missing evidence, or unexecuted required work prevents adjudication.
 
 Frequent audit fallback is a result, not an omitted row. If TC falls back to D, its paired score difference versus D is zero and the primary superiority claim cannot hold.
@@ -56,3 +58,7 @@ The broad question "when should a model reason?" is established prior work. Nove
 Provide pinned environment, source fingerprints, frozen manifests, data-generation/config scripts, permitted data or reconstructable IDs, evaluation and table-generation commands, model download instructions, artifact hashes, known nondeterminism, and small offline smoke fixtures. Respect data/model licenses. Do not release credentials, private meetings, or proprietary material. This handoff does not authorize publishing the repository or submitting the paper.
 
 Validate a clean reproduction of analysis from saved final rows without rerunning Qwen. Recompute the three claim contrasts and manuscript tables from the same hashes. If rendering a manuscript, inspect pages for clipping, broken references, missing figures, and malformed equations.
+
+## CR01 manuscript and evidence authority
+
+The active revision source is `paper/cr01-2026-10-05-v1/taskcognition.tex`, governed by the original PDF plus `docs/amendments/CR01_2026-10-05_v1.md` and C01-C03. The original `docs/iclr2027` package remains historical and immutable. Include the outcome-informed P02A/P02B development history, fixed 2,048-token package and descriptive completion; preserve all primary scores. Package differences include format compliance/truncation and do not isolate improved native solving. Keep final gate/audit/test result cells empty until those stages occur. Historical totals remain 75 admitted generations / 40,555 output tokens, including P01's separately labelled deliberate interruption.

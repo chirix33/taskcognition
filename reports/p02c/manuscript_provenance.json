@@ -1,0 +1,22 @@
+{
+  "evidence_kind": "development_observation",
+  "operation": "offline_document_revision",
+  "compiled_manuscript": false,
+  "compile_status": "UNAVAILABLE",
+  "compiler_discovery": {
+    "pdflatex": null,
+    "bibtex": null,
+    "latexmk": null,
+    "tectonic": null
+  },
+  "original_tex_sha256": "3e326ffa8725b9e6e243cca5a076e78e03339500b045eaf25776ab1e3e06fccd",
+  "revised_tex_sha256": "2abe9ab497224af77da372ff16c140afd4d27b82b2f841d4b42d2f631b0c92d8",
+  "bibliography_unchanged": true,
+  "title_unchanged": true,
+  "all_equation_and_align_blocks_unchanged": true,
+  "original_figure_sha256": "0fe729438576a31e6b4d9637adc85856b919866d5fb1e6a649dda2943ec07bf6",
+  "revised_figure_sha256": "e3efbf9942a16672bedcedfbbe214aaecdeaab39d48b1216a2945bcdc3e14b10",
+  "figure_removed_text_blocks": 2,
+  "original_source_snapshot": "reports/p02c/pre_CR01_source_snapshot.zip",
+  "new_model_work": 0
+}

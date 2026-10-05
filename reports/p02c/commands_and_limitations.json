@@ -1,0 +1,91 @@
+{
+  "commands": [
+    {
+      "command": "git switch -c codex/p02c-cr01-adoption",
+      "exit": 0,
+      "result": "Task branch; unrelated user files preserved"
+    },
+    {
+      "command": ".venv/Scripts/python.exe scripts/p02c_establish.py",
+      "exit": 0,
+      "result": "Accepted P02B hashes/598 files/commits verified; original source snapshot; one acceptance event"
+    },
+    {
+      "command": ".venv/Scripts/python.exe scripts/p02c_adopt.py",
+      "exit": 0,
+      "result": "CR01 authority and active document synchronization"
+    },
+    {
+      "command": "bundled node .../pdf/container_tools/mark_artifact_operation_started.mjs --operation-kind edit --expected-output-count 1 --output-format pdf",
+      "exit": 0,
+      "result": "PDF operation marker"
+    },
+    {
+      "command": "bundled Python scripts/p02c_manuscript.py",
+      "exit": 0,
+      "result": "Revised TeX and vector figure; equations/title/BibTeX unchanged",
+      "warning": "pypdf replace_contents deprecation; result independently text/raster checked"
+    },
+    {
+      "command": "pdftoppm -png -singlefile -r 96 paper/cr01-2026-10-05-v1/figures/taskcognition_architecture_CR01_2026-10-05_v1.pdf reports/p02c/visual_check/figure_CR01",
+      "exit": 0,
+      "result": "Rendered and visually inspected changed box"
+    },
+    {
+      "command": "pdftoppm -png -singlefile -r 96 docs/iclr2027/figures/taskcognition_architecture_critique_revised.pdf reports/p02c/visual_check/figure_original",
+      "exit": 0,
+      "result": "Historical comparison render",
+      "warning": "Missing display fonts Symbol/ArialUnicode notices; only cap-box pixels differ"
+    },
+    {
+      "command": ".venv/Scripts/python.exe scripts/p01_command.py reports/p02c/verification_command.json .venv/Scripts/python.exe scripts/p02c_verify.py",
+      "exit": 1,
+      "result": "New template referenced nonexistent package.json; corrected to package_base.json"
+    },
+    {
+      "command": ".venv/Scripts/python.exe scripts/p01_command.py reports/p02c/verification_command_v2.json .venv/Scripts/python.exe scripts/p02c_verify.py",
+      "exit": 0,
+      "result": "Affected-risk checks passed"
+    },
+    {
+      "command": "Ad-hoc exact-wrapper hash comparison with hashlib.sha256(wrapper.encode())",
+      "exit": 1,
+      "result": "Compared raw UTF-8 to historical canonical-JSON hash; investigated original serializer, no content mismatch"
+    },
+    {
+      "command": "Exact-wrapper comparison using taskcognition.contracts.digest plus separate raw UTF-8 SHA",
+      "exit": 0,
+      "result": "Exact P02B text preserved; both hash encodings explicit in template and verification"
+    },
+    {
+      "command": "pdflatex / bibtex full-manuscript compilation",
+      "exit": null,
+      "result": "No toolchain on PATH, bundled native runtime or standard checked paths; multi-file project unsupported by standalone app compiler; no installation",
+      "status": "NOT_RUN_UNAVAILABLE"
+    },
+    {
+      "command": "Historical regression suite",
+      "exit": null,
+      "result": "No execution/test source changed; consistency/hash and production closed-dispatch checks used; no manufactured tests",
+      "status": "NOT_RERUN"
+    },
+    {
+      "command": "git -c core.whitespace=cr-at-eol diff --cached --check",
+      "exit": 1,
+      "result": "Broad style check flagged preserved third-party style whitespace, PDF/patch contents and one helper EOF blank line. Imported bytes were not normalized; helper EOF blank removed. paper/** -text added to preserve exact source bytes across checkouts."
+    },
+    {
+      "command": "Staged blob byte comparison against working files",
+      "exit": 1,
+      "result": "Previously staged imported manuscript style used line-ending conversion; refreshed only paper/ with git add --renormalize under -text attributes. Working files unchanged."
+    },
+    {
+      "command": "git add --renormalize -- paper/cr01-2026-10-05-v1; staged blob and changed-artifact hash comparison",
+      "exit": 0,
+      "result": "All 67 staged files match exact working bytes; all 46 changed artifact hashes pass."
+    }
+  ],
+  "evidence_kind": "development_observation",
+  "new_model_compute": 0,
+  "operation": "offline_command_receipt"
+}

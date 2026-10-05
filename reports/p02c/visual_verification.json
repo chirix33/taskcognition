@@ -1,0 +1,19 @@
+{
+  "evidence_kind": "development_observation",
+  "operation": "offline_visual_verification",
+  "changed_pixel_rectangle": [
+    564,
+    97,
+    757,
+    207
+  ],
+  "all_pixels_outside_cap_box_unchanged": true,
+  "changed_box_text_legible": true,
+  "old_cap_text_absent_from_active_pdf": true,
+  "full_manuscript_compilation": "UNAVAILABLE",
+  "warnings": [
+    "pypdf replace_contents deprecation warning; output text and raster difference verified",
+    "Poppler emitted missing-display-font notices for Symbol/ArialUnicode while rendering the historical comparison; changed box inspected"
+  ],
+  "limitation": "Inherited crowding elsewhere in the historical architecture layout is unchanged; full amended manuscript pagination not verified."
+}

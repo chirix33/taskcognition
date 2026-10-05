@@ -1,5 +1,7 @@
 # P08 prompt: prespecified diagnostics and robustness
 
+Active authority: original reference PDF + approved `TaskCognition-CR01-2026-10-05-v1` + C01-C03. This document does not authorize a new phase or live run.
+
 Execute only after accepted P07 review. Implement P08 only. Read the frozen secondary registry. Do not add an analysis because the primary results were disappointing or surprising without labeling it a separately reviewed exploratory addition.
 
 ## Work

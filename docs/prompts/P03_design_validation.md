@@ -1,6 +1,8 @@
 # P03 prompt: validate the full experimental design
 
-Execute only after accepted P02 review. Implement P03 only using DEVELOPMENT observations, fixtures, and simulations. Do not generate final labels. A cap-infeasible study cannot proceed through this prompt.
+Active authority: original reference PDF + approved `TaskCognition-CR01-2026-10-05-v1` + C01-C03. This document does not authorize a new phase or live run.
+
+Execute only after accepted P02 review. Implement P03 only using DEVELOPMENT observations, fixtures, and simulations. Do not generate final labels. CR01 fixes the primary cap at 2,048; completion is descriptive and imposes no eligibility threshold. All remaining cost/support, denominator and design requirements still apply.
 
 ## Work
 

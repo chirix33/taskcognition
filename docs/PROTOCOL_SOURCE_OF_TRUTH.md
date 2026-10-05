@@ -1,6 +1,6 @@
 # Operational protocol: TaskCognition revised study
 
-Status: pre-execution. This document transcribes the included revised PDF and identifies operational details to freeze during DEVELOPMENT. It is not a claim that the PDF's referenced TeX or prior protocol file has been recovered.
+Status: active pre-freeze specification `TaskCognition-CR01-2026-10-05-v1`. Authority: original reference PDF plus [approved CR01 adoption](amendments/CR01_2026-10-05_v1.md) and accepted C01-C03. P02 remains incomplete/unsealed. The historical source is preserved; the active revision copy is `paper/cr01-2026-10-05-v1`.
 
 ## Scientific question
 
@@ -13,7 +13,7 @@ The study is checkpoint-, package-, scorer-, cap-, and distribution-relative. "O
 - Frozen answer model: `Qwen/Qwen3-8B`; freeze revision, tokenizer, precision, backend, template, prompts, samplers, and stop rules.
 - D: `enable_thinking=False`. R: `enable_thinking=True`.
 - Primary sampler for BOTH: sampling enabled; temperature 0.6; top_p 0.95; top_k 20; min_p 0. Pin other effective sampler defaults.
-- Shared terminal output cap selected in development: 1,024 if every mode-by-family strict-valid-FINAL rate is at least 99%; otherwise test 2,048 across all cells; if any cell still fails, stop. Cap covers all generated output tokens, including thinking and final output. Confirm this interpretation against the backend and log it before the cap study.
+- CR01 fixes the common primary D/R cap at 2,048 total generated tokens, including thinking and final output. Report strict-valid-FINAL completion and failure subtypes in all 12 cells descriptively; no 99% eligibility prerequisite or automatic threshold stop. Keep the exact P02B instruction and effective matched sampler/parser. Historical 1,024 artifacts remain valid under their original identities, never reinterpreted as CR01.
 - Six families: `number_sorting`, `number_format`, `letter_counting`, `graph_color`, `shortest_path`, `knights_knaves`. Resolve registry names at a pinned Reasoning Gym commit. Freeze every generator configuration; use the original renderer.
 - Equal family weights: E_w[T] = (1/6) sum_f E[T | F=f]. This is a declared balanced target, not a population-frequency estimate.
 - Native deterministic score S_a in [0,1]; perfect correctness Y_a = 1{S_a=1}. Do not replace partial scores with exact match. Freeze scorer adapters and precision handling; do not silently round scores to 1.
@@ -96,3 +96,7 @@ For m in {always-direct, winner deployment, factorized deployment}, the one-side
 Report direct-direct redraw spoilage, partial-credit declines at epsilon 0.10/0.25, and per-family results. The PDF also plans sampler sensitivity, renderer variants, LLMThinkBench, and an independently generated diagnostic. Their exact availability, license, freeze, and scope belong in P03/P04 before test; never invent or introduce them in response to primary results. External/renderer shifts inherit no audit guarantee. Jev and live judges are not primary requirements.
 
 No outcome here is a proof of universal superiority. An unsuccessful comparison is evidence to report, not authorization to broaden the study.
+
+## CR01 development provenance
+
+P02A/P02B exposed formatting and truncation problems on DEVELOPMENT inputs. The user approved CR01 on 2026-10-05 before any final labels. This outcome-informed amendment concerns bounded answer packages, including compliance and truncation; it does not establish improved native solving or routing. The original rule was not formally rejected. Completion alone cannot reject CR01 eligibility; unresolved freeze fields, invalid scores/costs, inadequate audit denominator bounds and software/evidence incidents still block the relevant action.

@@ -1,0 +1,12 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-10-05T23:24:47.390824+00:00",
+  "argv": [
+    ".venv/Scripts/python.exe",
+    "scripts/p02c_verify.py"
+  ],
+  "exit": 1,
+  "seconds": 0.3494721000024583,
+  "stdout": "",
+  "stderr": "Traceback (most recent call last):\n  File \"<home>\\Desktop\\Work\\TaskCognition\\implementation\\scripts\\p02c_verify.py\", line 48, in <module>\n    assert (root/design['instruction_source']).is_file()\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+}

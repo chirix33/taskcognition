@@ -1,5 +1,7 @@
 # P07 prompt: final primary evaluation
 
+Active authority: original reference PDF + approved `TaskCognition-CR01-2026-10-05-v1` + C01-C03. This document does not authorize a new phase or live run.
+
 Execute only after accepted P06 review. Implement P07 only under frozen deployments and the frozen analysis plan. Do not modify candidates, packages, resource ceilings, outcomes, or thresholds after exposing TEST.
 
 ## Work

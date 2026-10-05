@@ -1,3 +1,5 @@
+Current authority: approved/adopted CR01; see the dated P02C section below. The following P00 decisions are retained historical records, not current phase authorization.
+
 # P00 decision ledger
 
 Status: pre-freeze; no empirical TaskCognition finding. Active authorization: user's P00 prompt.
@@ -25,3 +27,11 @@ remaining development choices do not change the offline K=4 estimators or author
 > Add final_train_labels and final_tune_labels to the evidence-kind list. Keep the separate split field and validate that it matches the evidence kind. Both types require a frozen study manifest before real collection. TRAIN supports fitting; TUNE supports the prescribed calibration and selection.
 >
 > Stay within P00. Record these as resolved clarifications and update the relevant documentation, schema definitions, and offline validation tests. Real collection remains disabled; corrupted evidence remains rejected. Do not implement later-phase collection or bootstrap execution yet.
+
+## P02C / CR01 adoption
+
+Approval date: **2026-10-05**, America/Chicago. Verbatim user approval: **“Understood. I approve it”**. Actual adoption UTC: **2026-10-05T23:13:12.673586+00:00**. Approved source SHA-256 `463fa03de2604218524e74afc246d4e907c1382d602d146eb30ecd630f8a6ede`. Adopted amendment `docs/amendments/CR01_2026-10-05_v1.md`, SHA-256 `ec07c0133224fb10f535fc9ac4d0816d12fb10acc683c09043de717cc089c0b8`.
+
+P02B accepted once in event 012 after four-artifact/598-file verification; the later supplied coordinator review confirms it. P01 remains sealed and P02A/P02B accepted. CR01 resolves the scientific-choice pause only: fixed 2,048 primary D/R total tokens, descriptive completion, no 99% eligibility or automatic threshold stop. P02 remains incomplete/unsealed; P03 unstarted; real dispatch false.
+
+Affected artifacts: root AGENTS/README; active protocol, statistical scope annotation, decisions, roadmap, architecture/evidence/source guidance; future P02-P09 prompts; completion/freeze templates; versioned development design template; revised manuscript/figure in `paper/cr01-2026-10-05-v1`. Exact path/hash inventory: `reports/p02c/changed_artifacts.json`. Original sources and all diagnostic scores remain unchanged. C01-C03, method/comparators, audit inequalities and all primary superiority criteria continue to govern. D05/D06/D08-D17 remain unresolved where not already accepted; no final values or resource authority are inferred. No new generations or features were measured.

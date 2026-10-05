@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <marker id="arrow" markerWidth="11" markerHeight="11" refX="10" refY="3.5" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L10,3.5 L0,7 Z" fill="#475569"/></marker>
+    <marker id="greenArrow" markerWidth="11" markerHeight="11" refX="10" refY="3.5" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L10,3.5 L0,7 Z" fill="#047857"/></marker>
+    <marker id="redArrow" markerWidth="11" markerHeight="11" refX="10" refY="3.5" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L10,3.5 L0,7 Z" fill="#C2410C"/></marker>
+    <style>
+      .panelTitle{font:700 31px Arial,Helvetica,sans-serif;fill:#172033}
+      .label{font:700 25px Arial,Helvetica,sans-serif;fill:#172033;text-anchor:middle}
+      .small{font:21px Arial,Helvetica,sans-serif;fill:#334155;text-anchor:middle}
+      .tiny{font:19px Arial,Helvetica,sans-serif;fill:#475569;text-anchor:middle}
+      .edge{fill:none;stroke:#475569;stroke-width:3.5;marker-end:url(#arrow)}
+      .green{fill:none;stroke:#047857;stroke-width:4;marker-end:url(#greenArrow)}
+      .red{fill:none;stroke:#C2410C;stroke-width:4;marker-end:url(#redArrow)}
+      .box{rx:16;ry:16;stroke-width:3}
+    </style>
+  </defs>
+
+  <!-- 1: Development and train -->
+  <rect x="24" y="24" width="752" height="405" rx="22" fill="#F1F7FB" stroke="#6B96B3" stroke-width="3"/>
+  <text x="50" y="65" class="panelTitle">1  DEVELOPMENT → TRAIN</text>
+  <rect class="box" x="54" y="102" width="195" height="108" fill="#E8EDF2" stroke="#64748B"/>
+  <text x="151" y="140" class="label">Disjoint pool</text>
+  <text x="151" y="171" class="small">no final labels</text>
+  <rect class="box" x="292" y="86" width="244" height="140" fill="#FFF5D9" stroke="#C88700"/>
+  <text x="414" y="124" class="label">Validate contract</text>
+  <text x="414" y="155" class="small">modes · templates · parser</text>
+  <text x="414" y="184" class="small">retries · throughput · cost</text>
+  <rect class="box" x="579" y="78" width="163" height="157" fill="#FCE9E5" stroke="#C85C39"/>
+  <text x="661" y="116" class="label">Fixed cap</text>
+  <text x="661" y="148" class="small">2,048 total</text>
+  <text x="661" y="177" class="tiny" style="font-size:16px">Report completion</text>
+  <text x="661" y="206" class="tiny" style="font-size:17px">Retain failures</text>
+  <path class="edge" d="M249 156 H292"/><path class="edge" d="M536 156 H579"/>
+  <rect class="box" x="110" y="275" width="288" height="105" fill="#E8F2EE" stroke="#008A63"/>
+  <text x="254" y="314" class="label">Freeze D/R packages</text>
+  <text x="254" y="345" class="small">manifest before every label</text>
+  <rect class="box" x="462" y="275" width="255" height="105" fill="#EAF1FB" stroke="#1769AA"/>
+  <text x="590" y="314" class="label">TRAIN</text>
+  <text x="590" y="344" class="small">K draws/package</text>
+  <text x="590" y="369" class="tiny">fit methods</text>
+  <path class="edge" d="M661 235 V255 H254 V275"/><path class="edge" d="M398 327 H462"/>
+
+  <!-- 2: Tuning -->
+  <rect x="824" y="24" width="752" height="405" rx="22" fill="#FFFAE9" stroke="#BE9A32" stroke-width="3"/>
+  <text x="850" y="65" class="panelTitle">2  TUNING</text>
+  <rect class="box" x="864" y="103" width="206" height="106" fill="#E8EDF2" stroke="#64748B"/>
+  <text x="967" y="141" class="label">Disjoint tune set</text>
+  <text x="967" y="172" class="small">fixed 1/6 family weights</text>
+  <rect class="box" x="1120" y="86" width="206" height="140" fill="#FFF0C8" stroke="#C88700"/>
+  <text x="1223" y="124" class="label">Calibrate + search</text>
+  <text x="1223" y="155" class="small">same gate family, budget,</text>
+  <text x="1223" y="184" class="small">resources, tie-to-direct</text>
+  <rect class="box" x="1374" y="86" width="166" height="140" fill="#F2ECF4" stroke="#805A78"/>
+  <text x="1457" y="124" class="label">Select one</text>
+  <text x="1457" y="155" class="small">candidate per</text>
+  <text x="1457" y="184" class="small">learned method</text>
+  <path class="edge" d="M1070 156 H1120"/><path class="edge" d="M1326 156 H1374"/>
+  <rect class="box" x="1045" y="285" width="312" height="92" fill="#E8F2EE" stroke="#008A63"/>
+  <text x="1201" y="322" class="label">Freeze candidate hash</text>
+  <text x="1201" y="352" class="small">no audit-set candidate change</text>
+  <path class="edge" d="M1457 226 V255 H1201 V285"/>
+  <path class="edge" d="M717 327 H798 V156 H864"/>
+
+  <!-- 3: Audit -->
+  <rect x="24" y="471" width="752" height="405" rx="22" fill="#FFF5F1" stroke="#C96F5B" stroke-width="3"/>
+  <text x="50" y="512" class="panelTitle">3  HELD-OUT DEPLOYMENT AUDIT</text>
+  <rect class="box" x="55" y="563" width="184" height="105" fill="#E8EDF2" stroke="#64748B"/>
+  <text x="147" y="595" class="label">Frozen</text>
+  <text x="147" y="624" class="label">candidate</text>
+  <text x="147" y="652" class="tiny">one audit; no retuning</text>
+  <rect class="box" x="282" y="542" width="273" height="146" fill="#FBE9E5" stroke="#C85C39"/>
+  <text x="418" y="579" class="label">Empirical-Bernstein</text>
+  <text x="418" y="610" class="small">score LCB · cost UCB</text>
+  <text x="418" y="639" class="small">spoilage Z UCB</text>
+  <text x="418" y="668" class="small">denominator B LCB</text>
+  <polygon points="666,531 754,615 666,699 578,615" fill="#FFF0C8" stroke="#C88700" stroke-width="3"/>
+  <text x="666" y="598" class="label">All four</text>
+  <text x="666" y="630" class="label">checks pass?</text>
+  <path class="edge" d="M239 615 H282"/><path class="edge" d="M555 615 H578"/>
+  <text x="400" y="744" class="tiny">Level-gamma intersection–union pass rule for one frozen candidate</text>
+  <text x="400" y="773" class="tiny">Empirical safeguard—not conformal, pointwise, or shift guarantee</text>
+  <path class="edge" d="M1201 377 V449 H147 V563"/>
+
+  <!-- 4: Deployment and offline test -->
+  <rect x="824" y="471" width="752" height="405" rx="22" fill="#F1FAF4" stroke="#679B73" stroke-width="3"/>
+  <text x="850" y="512" class="panelTitle">4  DEPLOYMENT / TEST</text>
+  <rect class="box" x="855" y="560" width="166" height="104" fill="#E8EDF2" stroke="#64748B"/>
+  <text x="938" y="598" class="label">New input x</text>
+  <text x="938" y="629" class="small">input only</text>
+  <rect class="box" x="1063" y="544" width="205" height="136" fill="#EAF1FB" stroke="#1769AA"/>
+  <text x="1165" y="582" class="label">Frozen gate</text>
+  <text x="1165" y="613" class="small">enabled only on pass</text>
+  <text x="1165" y="642" class="small">otherwise bypassed</text>
+  <rect class="box" x="1310" y="544" width="232" height="136" fill="#E8F2EE" stroke="#008A63"/>
+  <text x="1426" y="582" class="label">Exactly one answer call</text>
+  <text x="1426" y="613" class="small">D: direct  or  R: bounded</text>
+  <text x="1426" y="642" class="small">native thinking</text>
+  <path class="edge" d="M1021 612 H1063"/><path class="green" d="M1268 612 H1310"/>
+  <rect class="box" x="1018" y="747" width="424" height="88" fill="#F2ECF4" stroke="#805A78"/>
+  <text x="1230" y="782" class="label">TEST: offline policy swap only</text>
+  <text x="1230" y="813" class="small">after action log; never changes deployment gate</text>
+  <path class="edge" d="M1426 680 V715 H1230 V747"/>
+  <path class="green" d="M754 592 H790 V710 H1165 V680"/>
+  <text x="925" y="700" class="tiny">PASS: enable frozen gate</text>
+  <path class="red" d="M666 699 V854 H1530 V680"/>
+  <text x="860" y="845" class="tiny">FAIL: force D and bypass gate</text>
+</svg>

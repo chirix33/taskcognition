@@ -1,5 +1,7 @@
 # P05 prompt: train, calibrate, and freeze three candidates
 
+Active authority: original reference PDF + approved `TaskCognition-CR01-2026-10-05-v1` + C01-C03. This document does not authorize a new phase or live run.
+
 Execute only after accepted P04 review. Implement P05 only. Use TRAIN to fit and TUNE to calibrate/select exactly as frozen. AUDIT and TEST outcomes remain inaccessible.
 
 ## Work

@@ -1,0 +1,20 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-10-05T23:13:12.673586+00:00",
+  "event": "CR01_adopted",
+  "approval_date": "2026-10-05",
+  "approval_timezone": "America/Chicago",
+  "approval_verbatim": "Understood. I approve it",
+  "approved_source_sha256": "463fa03de2604218524e74afc246d4e907c1382d602d146eb30ecd630f8a6ede",
+  "adopted_amendment_sha256": "ec07c0133224fb10f535fc9ac4d0816d12fb10acc683c09043de717cc089c0b8",
+  "authority_files": {
+    "docs/TaskCognition_CR01_APPROVED.md": "463fa03de2604218524e74afc246d4e907c1382d602d146eb30ecd630f8a6ede",
+    "docs/TaskCognition_CR01_feasibility_DRAFT.md": "b2243c1503eac46a75430e31d9bb61895e91741b9a6d178c842810dc8ef90673",
+    "docs/P02B_coordinator_review.md": "0ef56f8af848b7bc40d6082886b587c129b469acb4424d9004f0251643cf6d73",
+    "docs/prompts/P02C_adopt_CR01_prompt.md": "54ea89a8342d952d6bf72bd460a66ed2622a70d7aa0ada7f8d004db1ff7d2d5e"
+  },
+  "previous_state_sha256": "eb2ce25958c7eedcc8dee5a19e479d6b5bbe7f592a95ba94c73a154d007c9069",
+  "real_dispatch_enabled": false,
+  "p02_complete": false,
+  "p02_sealed": false
+}

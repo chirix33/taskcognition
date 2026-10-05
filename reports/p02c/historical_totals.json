@@ -1,0 +1,410 @@
+{
+  "evidence_kind": "development_observation",
+  "new_encoder_forwards": 0,
+  "new_gate_training": 0,
+  "new_gpu_measurements": 0,
+  "new_model_generations": 0,
+  "new_model_loads": 0,
+  "operation": "offline_reconciliation_only",
+  "p01_deliberate_interruption": "Third P01 request, retained separate diagnostic; not a completion-certification or final-label denominator",
+  "runs": [
+    {
+      "admitted": 3,
+      "generated_tokens": 567,
+      "rows": [
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 17,
+          "request_id": "initial_D"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 548,
+          "request_id": "initial_R"
+        },
+        {
+          "finish_reason": "controlled_interruption",
+          "generated_tokens": 2,
+          "request_id": "interrupt_R"
+        }
+      ],
+      "run": "p01-windows-5090-20260928-v2"
+    },
+    {
+      "admitted": 24,
+      "generated_tokens": 11298,
+      "rows": [
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 44,
+          "request_id": "00_number_sorting_D_0"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 634,
+          "request_id": "01_number_sorting_R_0"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 22,
+          "request_id": "02_number_format_D_0"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 836,
+          "request_id": "03_number_format_R_0"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 8,
+          "request_id": "04_letter_counting_D_0"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 750,
+          "request_id": "05_letter_counting_R_0"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 61,
+          "request_id": "06_graph_color_D_0"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 843,
+          "request_id": "07_graph_color_R_0"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 251,
+          "request_id": "08_shortest_path_D_0"
+        },
+        {
+          "finish_reason": "cap",
+          "generated_tokens": 1024,
+          "request_id": "09_shortest_path_R_0"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 327,
+          "request_id": "10_knights_knaves_D_0"
+        },
+        {
+          "finish_reason": "cap",
+          "generated_tokens": 1024,
+          "request_id": "11_knights_knaves_R_0"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 44,
+          "request_id": "12_number_sorting_D_1"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 583,
+          "request_id": "13_number_sorting_R_1"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 22,
+          "request_id": "14_number_format_D_1"
+        },
+        {
+          "finish_reason": "cap",
+          "generated_tokens": 1024,
+          "request_id": "15_number_format_R_1"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 8,
+          "request_id": "16_letter_counting_D_1"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 814,
+          "request_id": "17_letter_counting_R_1"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 61,
+          "request_id": "18_graph_color_D_1"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 510,
+          "request_id": "19_graph_color_R_1"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 23,
+          "request_id": "20_shortest_path_D_1"
+        },
+        {
+          "finish_reason": "cap",
+          "generated_tokens": 1024,
+          "request_id": "21_shortest_path_R_1"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 536,
+          "request_id": "22_knights_knaves_D_1"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 825,
+          "request_id": "23_knights_knaves_R_1"
+        }
+      ],
+      "run": "p02a-six-family"
+    },
+    {
+      "admitted": 48,
+      "generated_tokens": 28690,
+      "rows": [
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 20,
+          "request_id": "00_number_sorting_D_1024_0"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 478,
+          "request_id": "01_number_sorting_R_1024_0"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 20,
+          "request_id": "02_number_sorting_D_2048_0"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 586,
+          "request_id": "03_number_sorting_R_2048_0"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 23,
+          "request_id": "04_number_format_D_2048_0"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 946,
+          "request_id": "05_number_format_R_2048_0"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 23,
+          "request_id": "06_number_format_D_1024_0"
+        },
+        {
+          "finish_reason": "cap",
+          "generated_tokens": 1024,
+          "request_id": "07_number_format_R_1024_0"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 8,
+          "request_id": "08_letter_counting_D_1024_0"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 677,
+          "request_id": "09_letter_counting_R_1024_0"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 8,
+          "request_id": "10_letter_counting_D_2048_0"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 791,
+          "request_id": "11_letter_counting_R_2048_0"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 61,
+          "request_id": "12_graph_color_D_2048_0"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 2048,
+          "request_id": "13_graph_color_R_2048_0"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 61,
+          "request_id": "14_graph_color_D_1024_0"
+        },
+        {
+          "finish_reason": "cap",
+          "generated_tokens": 1024,
+          "request_id": "15_graph_color_R_1024_0"
+        },
+        {
+          "finish_reason": "cap",
+          "generated_tokens": 1024,
+          "request_id": "16_shortest_path_D_1024_0"
+        },
+        {
+          "finish_reason": "cap",
+          "generated_tokens": 1024,
+          "request_id": "17_shortest_path_R_1024_0"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 20,
+          "request_id": "18_shortest_path_D_2048_0"
+        },
+        {
+          "finish_reason": "cap",
+          "generated_tokens": 2048,
+          "request_id": "19_shortest_path_R_2048_0"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 18,
+          "request_id": "20_knights_knaves_D_2048_0"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 555,
+          "request_id": "21_knights_knaves_R_2048_0"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 18,
+          "request_id": "22_knights_knaves_D_1024_0"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 819,
+          "request_id": "23_knights_knaves_R_1024_0"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 444,
+          "request_id": "24_number_sorting_R_2048_1"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 20,
+          "request_id": "25_number_sorting_D_2048_1"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 528,
+          "request_id": "26_number_sorting_R_1024_1"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 20,
+          "request_id": "27_number_sorting_D_1024_1"
+        },
+        {
+          "finish_reason": "cap",
+          "generated_tokens": 1024,
+          "request_id": "28_number_format_R_1024_1"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 23,
+          "request_id": "29_number_format_D_1024_1"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 1867,
+          "request_id": "30_number_format_R_2048_1"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 23,
+          "request_id": "31_number_format_D_2048_1"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 806,
+          "request_id": "32_letter_counting_R_2048_1"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 8,
+          "request_id": "33_letter_counting_D_2048_1"
+        },
+        {
+          "finish_reason": "cap",
+          "generated_tokens": 1024,
+          "request_id": "34_letter_counting_R_1024_1"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 8,
+          "request_id": "35_letter_counting_D_1024_1"
+        },
+        {
+          "finish_reason": "cap",
+          "generated_tokens": 1024,
+          "request_id": "36_graph_color_R_1024_1"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 61,
+          "request_id": "37_graph_color_D_1024_1"
+        },
+        {
+          "finish_reason": "cap",
+          "generated_tokens": 2048,
+          "request_id": "38_graph_color_R_2048_1"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 61,
+          "request_id": "39_graph_color_D_2048_1"
+        },
+        {
+          "finish_reason": "cap",
+          "generated_tokens": 2048,
+          "request_id": "40_shortest_path_R_2048_1"
+        },
+        {
+          "finish_reason": "cap",
+          "generated_tokens": 2048,
+          "request_id": "41_shortest_path_D_2048_1"
+        },
+        {
+          "finish_reason": "cap",
+          "generated_tokens": 1024,
+          "request_id": "42_shortest_path_R_1024_1"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 20,
+          "request_id": "43_shortest_path_D_1024_1"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 615,
+          "request_id": "44_knights_knaves_R_1024_1"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 18,
+          "request_id": "45_knights_knaves_D_1024_1"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 586,
+          "request_id": "46_knights_knaves_R_2048_1"
+        },
+        {
+          "finish_reason": "eos",
+          "generated_tokens": 18,
+          "request_id": "47_knights_knaves_D_2048_1"
+        }
+      ],
+      "run": "p02b-two-cap"
+    }
+  ],
+  "total_admitted": 75,
+  "total_output_tokens": 40555
+}

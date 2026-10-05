@@ -1,0 +1,12 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-10-05T23:25:05.080069+00:00",
+  "argv": [
+    ".venv/Scripts/python.exe",
+    "scripts/p02c_verify.py"
+  ],
+  "exit": 0,
+  "seconds": 0.61141370000405,
+  "stdout": "PASS: CR01 consistency, 598 historical packet files, original sources, unchanged execution code/equations; historical 75 calls/40,555 tokens; zero new model work.\n",
+  "stderr": ""
+}

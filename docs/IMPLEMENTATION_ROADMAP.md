@@ -1,12 +1,14 @@
 # Vertical phase roadmap
 
+Active authority: original reference PDF + approved `TaskCognition-CR01-2026-10-05-v1` + C01-C03. This document does not authorize a new phase or live run.
+
 Every phase produces an executable slice, tests for its scientific risks, a completion report, and a review decision. This is not a license to execute all phases in one Codex session.
 
 | Phase | Usable result at completion | Main evidence | Progression condition |
 |---|---|---|---|
 | P00 | Repository, workstation inventory, contracts, offline fixture pipeline | Source hashes, environment inventory, fixture provenance, scope checks | Bootstrap reviewed |
 | P01 | One real local Qwen D/R request path | Raw outputs, serialized modes, parser and interruption evidence, measured memory | Same checkpoint works in both modes |
-| P02 | Six-family development pilot with labels and costs | 12-cell completion report, cap decision, high-repeat estimates, workload estimate | Cap feasible and measurements trustworthy |
+| P02 | Six-family development pilot with labels and costs | 12-cell descriptive completion at fixed 2,048 cap, repeat estimates, workload estimate | Measurements trustworthy; remaining feature/cost/design requirements reviewed |
 | P03 | End-to-end development simulation and study design | Power/false-enable/fallback reports, cost-bound derivation, locked decision proposal | Scientifically feasible design within user resources |
 | P04 | Frozen study plus complete TRAIN/TUNE rollout tables | Immutable manifests, disjointness and completeness checks, collection report | Final datasets valid; held-out outcomes untouched |
 | P05 | Three trained, calibrated, tune-selected candidate artifacts | Resource parity table, candidate hashes, selection trace | One frozen candidate per learned method |
@@ -24,7 +26,7 @@ Proposed statuses: `NOT_STARTED`, `IN_PROGRESS`, `READY_FOR_REVIEW`, `SEALED`, `
 ## How phases stop
 
 - P01 hardware incompatibility: report concrete requirements and available alternatives consistent with scope; no model replacement or cloud fallback.
-- P02 cap failure at 2,048: confirmatory route stops. Preserve the evidence and prepare a feasibility report; do not start final data collection.
+- P02 under CR01: low completion at the fixed 2,048 cap is reported, not an automatic eligibility stop. Integrity failures, unresolved required contracts and resource exhaustion still stop the affected work. Final labels await P03 design review and P04 freeze.
 - P03 no adequately informative affordable design: report attainable precision/power and a resource decision. Do not label an underpowered run confirmatory by default.
 - P06 audit failure: that method deploys always-direct. This is an expected branch, not a reason to tune again. P07 remains useful if the study can validly continue; the primary superiority claim cannot succeed if TC deploys always-direct.
 - P07 any required contrast fails: primary claim is not established. Complete prespecified reporting; do not search for a favorable replacement endpoint.

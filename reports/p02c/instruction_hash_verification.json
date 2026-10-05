@@ -1,0 +1,10 @@
+{
+  "evidence_kind": "development_observation",
+  "operation": "offline_exact_instruction_check",
+  "status": "PASS",
+  "historical_canonical_json_sha256": "34f703e83c58853a9b912bbf2754952c9d86aefea36bd729971c5e85587140cb",
+  "raw_utf8_sha256": "f20d1d5387261359968930804c62915c6f76aee54e48ff2da49aa31ca99e6295",
+  "exact_text_matches_accepted_P02B": true,
+  "earlier_failed_check": "Compared raw UTF-8 SHA with the historical canonical-JSON SHA. Inspection of p02b_prepare.py explained the encoding mismatch; no text or historical hash changed.",
+  "configuration_sha256": "484977350ff251b108a2307d8acb5cf8e530043d36efed5e022b6064f3c1397c"
+}
