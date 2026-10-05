@@ -1,0 +1,15 @@
+{
+  "adopted_amendment_sha256": "ec07c0133224fb10f535fc9ac4d0816d12fb10acc683c09043de717cc089c0b8",
+  "baseline_commit": "123a43ff198b2e1a450b98b6be226a2cbea896e9",
+  "branch": "codex/p02c-cr01-adoption",
+  "evidence_commit": "4b0c2003a1adafa97058f1f4e05e54cf4a6e9233",
+  "evidence_kind": "development_observation",
+  "executable_study_source_changed": false,
+  "new_live_compute": 0,
+  "operation": "offline_source_provenance",
+  "original_reference_sha256": "9eed0fe74f46c3acbc200183cf11693f1bec66a1180568087aeb775c97d8f6c8",
+  "packet_commit": "Separate descendant commit containing packet/index/receipt and these provenance files; discover using git log -- reports/p02c/P02C_review_packet.zip",
+  "push_or_merge": false,
+  "source_diff_sha256": "cd44e83d7179af2e7348af625017ba6db5a45bdf5fb458a96228c0b7c202f579",
+  "unrelated_user_files_committed": false
+}
