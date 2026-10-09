@@ -1,0 +1,19 @@
+{
+  "R1_partial_IPC_publication": {
+    "visible_bytes_while_write_in_progress": 0,
+    "production_reader_error": "JSONDecodeError",
+    "same_file_valid_after_writer_finishes": true,
+    "no_worker_process_or_model_started": true
+  },
+  "R2_clean_budget_stop_mislabeled": {
+    "stop_reason": "feature time reservation",
+    "safely_stopped": true,
+    "completed_feature_slots": 1,
+    "report_status": "INTEGRITY_INCIDENT",
+    "incident_events": [
+      "incident",
+      "incident_artifact"
+    ],
+    "real_model_work": 0
+  }
+}

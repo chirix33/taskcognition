@@ -6,11 +6,12 @@ It blocks recovery/admission until investigated; there is no automatic replay.
 """
 import math
 from datetime import datetime, timezone
-from .artifacts import read_json, write_new, child_path
+from .artifacts import read_json, child_path
+from .p02d_publication import write_new
 from .contracts import IntegrityError, file_hash, number
 
 def scan(run, tolerant=False):
-    sessions={};slots={};events=[];incidents=[];previous=None
+    sessions={};slots={};events=[];incidents=[];stops=[];previous=None
     for ix,path in enumerate(sorted((run/'ledger').glob('*.json'))):
         try:
             e=read_json(path)
@@ -44,6 +45,22 @@ def scan(run, tolerant=False):
                 s=sessions[sid];number(e['seconds']);number(e['cleanup_seconds'])
                 if s['ended'] or e['seconds']<s['lower_bound_seconds']:raise IntegrityError('cost duplicate/under-report')
                 s.update(ended=True,seconds=e['seconds'],safe_stopped=e['safe_stopped'],cleanup_seconds=e['cleanup_seconds'],exit_code=e['exit_code'])
+                if 'resource_path' in e:
+                    resource=child_path(run,e['resource_path'])
+                    if file_hash(resource)!=e['resource_sha256']:raise IntegrityError('resource missing/corrupt')
+                    r=read_json(resource)
+                    if any(r[k]!=e[k] for k in ('session_id','seconds','cleanup_seconds','safe_stopped','exit_code')):raise IntegrityError('resource identity/cost mismatch')
+            elif kind=='operational_stop':
+                s=sessions[sid]
+                if not s['ended'] or not s['safe_stopped']:raise IntegrityError('unsafe operational stop')
+                p=child_path(run,e['path'])
+                if file_hash(p)!=e['sha256']:raise IntegrityError('stop missing/corrupt')
+                r=read_json(p)
+                if r['session_id']!=sid or r['classification']!='OPERATIONAL_STOP':raise IntegrityError('stop identity/classification')
+                stops.append(e)
+                for slot in slots.values():
+                    if slot['session_id']==sid and slot['state']!='COMPLETE':
+                        slot.update(state='STOPPED_UNSCORED',stop_reason=r['error'])
             elif kind=='incident':incidents.append(e)
             else:raise IntegrityError('unknown ledger event')
             events.append(e)
@@ -54,12 +71,13 @@ def scan(run, tolerant=False):
     # Independent supervisor diagnostic survives broken ledger publication.
     for p in (run/'incidents').glob('*.json'):
         incidents.append(dict(event='incident_artifact',path=p.relative_to(run).as_posix(),sha256=file_hash(p)))
-    return dict(sessions=sessions,slots=slots,events=events,incidents=incidents,
+    return dict(sessions=sessions,slots=slots,events=events,incidents=incidents,operational_stops=stops,
+        operational_stop_artifacts=[p.relative_to(run).as_posix() for p in (run/'operational_stops').glob('*.json')],
         measured_residency_seconds=sum(s['seconds'] if s['ended'] else s['lower_bound_seconds'] for s in sessions.values()),
         unknown_residency=any(not s['ended'] or not s['safe_stopped'] for s in sessions.values()))
 
 def append(run,event,**fields):
-    # Validate previous evidence before extending; x-mode makes concurrent writers fail.
+    # Validate previous evidence before extending; atomic no-clobber publication.
     state=scan(run);paths=sorted((run/'ledger').glob('*.json'))
     sid=fields.get('session_id')
     if event=='session_start' and (sid in state['sessions'] or any(not s['ended'] for s in state['sessions'].values())):
@@ -75,7 +93,7 @@ def append(run,event,**fields):
 
 def recover(run):
     state=scan(run)
-    if state['incidents'] or state['unknown_residency'] or any(r['state']!='COMPLETE' for r in state['slots'].values()):
+    if state['incidents'] or state['operational_stop_artifacts'] or state['unknown_residency'] or any(r['state']!='COMPLETE' for r in state['slots'].values()):
         raise IntegrityError('unresolved interrupted/unknown work; no automatic replay or recharge')
     return state
 
@@ -98,7 +116,7 @@ def dispatch(run,plan,slot,session_id):
     state=scan(run);slots=state['slots'];schedule=plan['feature_schedule'] if slot['stage']=='feature' else plan['requests']
     prior=[v for v in slots.values() if v['stage']==slot['stage']]
     if slot['slot_id'] in slots or len(prior)>=len(schedule) or schedule[len(prior)]!=slot:raise IntegrityError('not next unchanged slot; no replay')
-    if state['incidents'] or any(r['state']!='COMPLETE' for r in slots.values()):raise IntegrityError('unresolved preceding slot')
+    if state['incidents'] or state['operational_stop_artifacts'] or any(r['state']!='COMPLETE' for r in slots.values()):raise IntegrityError('unresolved or stopped preceding work')
     if slot['stage']=='answer':
         feature=[r for r in slots.values() if r['stage']=='feature']
         if len(feature)!=50 or any(r['result'].get('status')!='OK' for r in feature):raise IntegrityError('feature stage incomplete/invalid')

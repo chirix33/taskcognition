@@ -1,0 +1,76 @@
+{
+  "common": [
+    "evidence_kind",
+    "event",
+    "timestamp_utc",
+    "previous_sha256"
+  ],
+  "cost_once": "only session_end.seconds contributes a completed session residency charge; nested timings are not added again",
+  "events": {
+    "admitted": [
+      "session_id",
+      "slot_id"
+    ],
+    "dispatch": [
+      "session_id",
+      "slot_id",
+      "request_hash",
+      "output_reservation",
+      "input_positions"
+    ],
+    "heartbeat": [
+      "session_id",
+      "seconds"
+    ],
+    "incident": [
+      "session_id",
+      "error",
+      "cleanup_error",
+      "scored=false"
+    ],
+    "result": [
+      "session_id",
+      "slot_id",
+      "path",
+      "sha256"
+    ],
+    "session_end": [
+      "session_id",
+      "seconds",
+      "cleanup_seconds",
+      "safe_stopped",
+      "exit_code",
+      "resource_path",
+      "resource_sha256"
+    ],
+    "session_start": [
+      "session_id",
+      "stage"
+    ],
+    "operational_stop": [
+      "session_id",
+      "path",
+      "sha256"
+    ]
+  },
+  "evidence_kind": "development_observation",
+  "hard_support_bound_claimed": false,
+  "implementation": "src/taskcognition/p02d_ledger.py",
+  "reference_tariff_adopted": false,
+  "restart": "no automatic replay or restart; consumed slot and charged session identities never reused",
+  "scalar_cost_approved": false,
+  "schema": "P02D-unified-research-ledger-v3",
+  "states": [
+    "UNKNOWN_ADMISSION",
+    "ADMITTED",
+    "COMPLETE",
+    "STOPPED_UNSCORED"
+  ],
+  "unknown_cost": "unfinished session has heartbeat lower bound and unknown remainder; unsafe cleanup stays unresolved even with a measured session_end",
+  "publication": "fsynced .pending file then same-filesystem atomic no-overwrite hard-link",
+  "classification": [
+    "COMPLETE",
+    "OPERATIONAL_STOP",
+    "INTEGRITY_INCIDENT"
+  ]
+}

@@ -4,7 +4,7 @@ Active specification: **TaskCognition-CR01-2026-10-05-v1**, approved 2026-10-05.
 
 Start with [adopted CR01](docs/amendments/CR01_2026-10-05_v1.md), [active protocol](docs/PROTOCOL_SOURCE_OF_TRUTH.md), [active manuscript source](paper/cr01-2026-10-05-v1/taskcognition.tex), and [P02C report](reports/phases/P02C_completion.md). Primary D/R cap is fixed at 2,048 total tokens; completion is descriptive, with no eligibility threshold. Historical bootstrap instructions below are retained for provenance, not current authorization.
 
-Current preparation: [P02D runner contract](docs/P02D_RUNNER_CONTRACT.md), [preflight report](reports/phases/P02D_preflight_completion.md), and [pending execution request](reports/p02d/execution_request.md). The 192 answer slots and 50 feature forwards require a separate conveyed execution authorization; a plan file or CLI flag does not enable them.
+Current preparation: [P02D runner contract](docs/P02D_RUNNER_CONTRACT.md), [preflight report](reports/phases/P02D_corrected_preflight_completion.md), and [pending execution request](reports/p02d_correction_v4/execution_request.md). The 192 answer slots and 50 feature forwards require a separate conveyed execution authorization; a plan file or CLI flag does not enable them.
 
 ## Historical initial handoff (2026-09-28)
 

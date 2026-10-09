@@ -1,0 +1,16 @@
+{
+  "platform": "Windows-11-10.0.26200-SP0",
+  "os": "Windows",
+  "tests": "actual host filesystem outside sandbox; CPU only",
+  "failures_retained": [
+    "Initial sandboxed hard-link tests: WinError 5; unchanged tests passed outside sandbox.",
+    "Optional Get-Volume -DriveLetter C CIM metadata query denied in sandbox; no filesystem type claimed from that query.",
+    "A report-maintenance helper encountered the Windows default text-decoder UnicodeDecodeError; rerun with PYTHONUTF8=1; v3 source reconstruction already hash-verified, no historical evidence edited.",
+    "rg using a Windows wildcard as a literal path failed once; rerun with -g p02d*.py.",
+    "Plain git diff --check flags CRLF as trailing whitespace under this byte-preserving repository; git -c core.whitespace=cr-at-eol diff --check passed."
+  ],
+  "live_calls": 0,
+  "downloads": 0,
+  "external_transfers": 0,
+  "remote_queries": 0
+}

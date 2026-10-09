@@ -7,10 +7,11 @@ import argparse
 import time
 import traceback
 from pathlib import Path
-from .artifacts import read_json,write_new
+from .artifacts import read_json
+from .p02d_publication import write_new, read_optional, control_present
 from .contracts import IntegrityError,digest,file_hash
 from .p02d_plan import RUN,PLAN_DIR,require_authorization
-from .p02d_ledger import scan
+from .p02d_ledger import scan, BudgetStop
 from .p02d_features import validate_gate_input,decoder_feature,gate_vector
 
 def generate_answer(model,tokenizer,request,cancel,torch,GenerationConfig,StoppingCriteria,StoppingCriteriaList):
@@ -40,7 +41,7 @@ def generate_answer(model,tokenizer,request,cancel,torch,GenerationConfig,Stoppi
         @checked
         def __call__(self,input_ids,scores,**kwargs):
             nonlocal reason
-            if cancel.exists() or time.perf_counter()-start>=120:reason='timeout'
+            if control_present(cancel,{'reason':'timeout'}) or time.perf_counter()-start>=120:reason='timeout'
             return reason is not None
     try:
         with torch.inference_mode(),sdpa_kernel([SDPBackend.MATH]):
@@ -98,11 +99,11 @@ def main():
         write_new(directory/'ready.json',dict(load_seconds=load_seconds,hidden_width=model.config.hidden_size,attention='sdpa forced MATH',dtype='bfloat16'))
         for slot in slots:
             command=directory/'commands'/f'{slot["slot_id"]}.json';wait_start=time.perf_counter()
-            while not command.exists():
-                if (directory/'finish.json').exists():return
+            while (command_value:=read_optional(command)) is None:
+                if control_present(directory/'finish.json',{'stop':True}):return
                 if time.perf_counter()-wait_start>150:raise IntegrityError('supervisor command absent; finite child exit')
                 time.sleep(.02)
-            if read_json(command)!=slot:raise IntegrityError('changed worker command')
+            if command_value!=slot:raise IntegrityError('changed worker command')
             ledger=scan(root/RUN)['slots'][slot['slot_id']]
             if ledger['state']!='ADMITTED' or ledger['request_hash']!=slot['request_hash']:raise IntegrityError('durable admission mismatch')
             torch.cuda.reset_peak_memory_stats()
@@ -114,7 +115,7 @@ def main():
                 torch.cuda.synchronize();start=time.perf_counter()
                 with sdpa_kernel([SDPBackend.MATH]):vector=decoder_feature(model,ids,mask,plan['feature_specification']['hidden_width'])
                 torch.cuda.synchronize();seconds=time.perf_counter()-start
-                if seconds>120:raise IntegrityError('feature forward exceeded deadline; tranche stops')
+                if seconds>120:raise BudgetStop('feature forward exceeded deadline; tranche stops')
                 cpu_start=time.perf_counter();gate=gate_vector(row,vector.cpu().tolist());cpu_seconds=cheap_seconds+time.perf_counter()-cpu_start
                 result=dict(evidence_kind='development_observation',split='DEVELOPMENT',slot_id=slot['slot_id'],request_hash=slot['request_hash'],
                     status='OK',dtype='float32',gate=gate,input_positions=len(row['token_ids']),forward_seconds=seconds,
@@ -128,11 +129,11 @@ def main():
             write_new(directory/'results'/f'{slot["slot_id"]}.json',result)
         # Normal parent stop; finite wait prevents abandoned idle residency.
         start=time.perf_counter()
-        while not (directory/'finish.json').exists():
+        while not control_present(directory/'finish.json',{'stop':True}):
             if time.perf_counter()-start>30:raise IntegrityError('finish handshake missing')
             time.sleep(.02)
     except BaseException as exc:
-        write_new(directory/'incident.json',dict(evidence_kind='development_observation',scored=False,error=repr(exc),traceback=traceback.format_exc(),
+        write_new(directory/('operational_stop.json' if isinstance(exc,BudgetStop) else 'incident.json'),dict(evidence_kind='development_observation',scored=False,error=repr(exc),traceback=traceback.format_exc(),
             partial_token_ids=getattr(exc,'partial_token_ids',None),partial_tokens_unscored=True,elapsed_since_loader_start=time.perf_counter()-load_start))
         raise
 

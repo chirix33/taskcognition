@@ -1,0 +1,8 @@
+{
+  "note": "Exact prior bytes reconstructed by reversing only the documented v4 edit, independently matched against the immutable v3 plan hashes; never historical empirical evidence.",
+  "files": {
+    "docs/P02D_RUNNER_CONTRACT.md": "9e4bfa1ad74b38bba40fd8e3fc5555b7f8f3c79e710cf0cd8067e5391ce0c9b6",
+    "src/taskcognition/p02d_plan.py": "b4360536ab971b60f21e1ec03446cd924d8f4dc51835e7ff6ea300e0af883e64",
+    "src/taskcognition/p02d_runner.py": "6f6d146b7fb344b19a6dba1fde960cbe4de797434391d04c5940320647cba267"
+  }
+}

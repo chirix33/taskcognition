@@ -1,0 +1,10 @@
+{
+  "command": [
+    "C:\\Users\\aashraf\\Desktop\\Work\\TaskCognition\\implementation\\.venv\\Scripts\\python.exe",
+    "C:\\Users\\aashraf\\Desktop\\Work\\TaskCognition\\implementation\\reports\\p02d_correction_v3\\coordinator\\p02d_review_reproductions.py",
+    "C:\\Users\\aashraf\\Desktop\\Work\\TaskCognition\\implementation"
+  ],
+  "exit_code": 0,
+  "stdout": "{\n  \"R1_partial_IPC_publication\": {\n    \"visible_bytes_while_write_in_progress\": 0,\n    \"production_reader_error\": \"JSONDecodeError\",\n    \"same_file_valid_after_writer_finishes\": true,\n    \"no_worker_process_or_model_started\": true\n  },\n  \"R2_clean_budget_stop_mislabeled\": {\n    \"stop_reason\": \"feature time reservation\",\n    \"safely_stopped\": true,\n    \"completed_feature_slots\": 1,\n    \"report_status\": \"INTEGRITY_INCIDENT\",\n    \"incident_events\": [\n      \"incident\",\n      \"incident_artifact\"\n    ],\n    \"real_model_work\": 0\n  }\n}\n",
+  "stderr": ""
+}

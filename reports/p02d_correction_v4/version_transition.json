@@ -1,0 +1,19 @@
+{
+  "plans": {
+    "v1": "662597e9610a2ef4951e9a0027756148d73a80ef4372b09b16168dd62c232ad0",
+    "v2": "67c3f5ee03ee25f077356e7ef27cb2d870d54caef12318dbe9bfab0b6688ab3d",
+    "v3": "c036e7cce4237f637eb366941f87734575404b5876da636174186844a2f4e414",
+    "v4": "c46977bfc0de1040965f08df8acbd55b9b063b386ccfb97f247a280ae2472365"
+  },
+  "active": "v4",
+  "superseded": [
+    "v1",
+    "v2",
+    "v3"
+  ],
+  "model_work_all_correction_versions": 0,
+  "materialized_files_identical": 256,
+  "reason_v3_to_v4": "Final offline review broadened the same operational-stop classification to safe loader deadlines; source and contract changed, so v3 was preserved and v4 published.",
+  "v3_changed_source_recovery": "reports/p02d_correction_v3/source_snapshot_receipt.json",
+  "no_request_identity_randomness_feature_or_experiment_change": true
+}

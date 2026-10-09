@@ -7,7 +7,8 @@ import time
 import traceback
 from datetime import datetime, timezone
 from pathlib import Path
-from .artifacts import read_json, write_new
+from .artifacts import read_json
+from .p02d_publication import write_new, read_optional, replace_state
 from .contracts import IntegrityError, canonical, digest, file_hash, number, integer
 from .p02d_plan import RUN, PLAN_DIR, require_authorization
 from .p02d_ledger import append, scan, recover, dispatch, check_envelope, BudgetStop
@@ -55,12 +56,17 @@ class ProcessWorker:
     def poll(self):return self.process.poll()
     def ready(self):
         p=self.directory/'ready.json'
-        return read_json(p) if p.exists() else None
+        return read_optional(p)
     def incident(self):return (self.directory/'incident.json').exists()
+    def operational_stop(self):
+        value=read_optional(self.directory/'operational_stop.json')
+        if value is not None:
+            if value.get('scored') is not False or not isinstance(value.get('error'),str):raise IntegrityError('invalid worker stop')
+        return value
     def send(self,slot):write_new(self.directory/'commands'/f'{slot["slot_id"]}.json',slot)
     def result(self,slot):
         p=self.directory/'results'/f'{slot["slot_id"]}.json'
-        return read_json(p) if p.exists() else None
+        return read_optional(p)
     def cancel(self,slot):write_new(self.directory/'cancel'/f'{slot["slot_id"]}.json',{'reason':'timeout'})
     def finish(self):write_new(self.directory/'finish.json',{'stop':True})
     def kill(self):
@@ -85,6 +91,8 @@ def supervise_session(root,plan,slots,plan_hash,execution_start,*,worker_factory
         now=clock()
         if monitor is not None:monitor(worker)
         if worker.incident():raise IntegrityError('worker software/evidence incident')
+        stop=getattr(worker,'operational_stop',lambda:None)()
+        if stop is not None:raise BudgetStop('worker deadline: '+stop['error'])
         if now-last_heartbeat>=1:
             append(run,'heartbeat',session_id=sid,seconds=now-started);last_heartbeat=now
         if now-execution_start>=L['wall_seconds']-L['cleanup_seconds']:raise BudgetStop('execution wall termination')
@@ -100,7 +108,7 @@ def supervise_session(root,plan,slots,plan_hash,execution_start,*,worker_factory
         while (ready:=worker.ready()) is None:
             tick()
             if worker.poll() is not None:raise IntegrityError('worker exited before readiness')
-            if clock()-started>=L['load_deadline_seconds']:raise IntegrityError('loader deadline; unscored incident')
+            if clock()-started>=L['load_deadline_seconds']:raise BudgetStop('loader deadline; no further admission')
             sleep(.02)
         number(ready['load_seconds'])
         for ix,slot in enumerate(slots):
@@ -143,27 +151,51 @@ def supervise_session(root,plan,slots,plan_hash,execution_start,*,worker_factory
             if worker is not None:
                 if worker.poll() is None:worker.kill()
                 exit_code=worker.wait(L['cleanup_seconds']);safe=worker.poll() is not None
+                worker.close()
             else:safe=True  # factory failed before returning child; production constructor has no post-spawn operations
         except BaseException as exc:
             cleanup_error=exc;safe=False
+            if worker is not None:
+                try:worker.close()
+                except BaseException:pass  # original cleanup failure remains dominant
         finally:
             elapsed=clock()-started;cleanup=clock()-cleanup_start
+            # Check evidence again after stopping the child: a budget trigger must
+            # never conceal an incident/result committed during cancellation.
+            evidence_error=None
+            try:
+                scan(run)
+                if worker is not None:
+                    if worker.incident():raise IntegrityError('worker incident during cleanup')
+                    if isinstance(worker,ProcessWorker):
+                        worker.operational_stop()  # malformed committed stop is an incident
+                        allowed={s['slot_id']:s for s in slots}
+                        for p in (worker.directory/'results').glob('*.json'):
+                            if p.stem not in allowed:raise IntegrityError('unknown worker result')
+                            validate_result(root,plan,allowed[p.stem],read_json(p))
+            except BaseException as exc:evidence_error=exc
+            operational=isinstance(error,BudgetStop) and safe and cleanup_error is None and evidence_error is None
+            classification='OPERATIONAL_STOP' if operational else 'INTEGRITY_INCIDENT' if error or cleanup_error or evidence_error else 'COMPLETE'
             value=ready.get('load_seconds') if isinstance(ready,dict) else None
             recorded_load=value if type(value) in (int,float) and math.isfinite(value) and value>=0 else None
             record=dict(evidence_kind='development_observation',session_id=sid,stage=stage,seconds=elapsed,
                 cleanup_seconds=cleanup,safe_stopped=safe,exit_code=exit_code,load_seconds=recorded_load,
                 clock='perf_counter from before process creation through final wait; conservative residency, not GPU kernel time',
-                error=None if error is None else repr(error),cleanup_error=None if cleanup_error is None else repr(cleanup_error),scored=False)
+                error=None if error is None else repr(error),cleanup_error=None if cleanup_error is None else repr(cleanup_error),
+                evidence_error=None if evidence_error is None else repr(evidence_error),classification=classification,scored=False)
             # Independent cost record is written first, even if the main ledger is corrupt.
-            try:
-                write_new(run/'session_resources'/f'{sid}.json',record)
-                append(run,'session_end',session_id=sid,seconds=elapsed,cleanup_seconds=cleanup,safe_stopped=safe,exit_code=exit_code)
-                if error or cleanup_error:
-                    write_new(run/'incidents'/f'{sid}.json',record)
-                    append(run,'incident',session_id=sid,error=record['error'],cleanup_error=record['cleanup_error'],scored=False)
-            finally:
-                if worker is not None:worker.close()
+            resource=run/'session_resources'/f'{sid}.json';write_new(resource,record)
+            # Independent classification survives a corrupt/unappendable ledger.
+            terminal=run/('operational_stops' if operational else 'incidents')/f'{sid}.json'
+            if classification!='COMPLETE':write_new(terminal,record)
+            append(run,'session_end',session_id=sid,seconds=elapsed,cleanup_seconds=cleanup,safe_stopped=safe,exit_code=exit_code,
+                resource_path=resource.relative_to(run).as_posix(),resource_sha256=file_hash(resource))
+            if operational:
+                append(run,'operational_stop',session_id=sid,path=terminal.relative_to(run).as_posix(),sha256=file_hash(terminal))
+            elif classification=='INTEGRITY_INCIDENT':
+                append(run,'incident',session_id=sid,error=record['error'],cleanup_error=record['cleanup_error'],scored=False)
             if cleanup_error is not None:raise IntegrityError('cleanup did not establish stopped state') from cleanup_error
+            if evidence_error is not None:raise IntegrityError('cleanup evidence integrity failure') from evidence_error
     return scan(run)
 
 def execute(root,expected_hash,*,worker_factory=ProcessWorker):
@@ -191,14 +223,15 @@ def execute(root,expected_hash,*,worker_factory=ProcessWorker):
     except BaseException as exc:
         if began:
             write_new(run/'supervisor_stop.json',dict(evidence_kind='development_observation',scored=False,
-                error_type=type(exc).__name__,error=str(exc),traceback=traceback.format_exc(),resource_stop=isinstance(exc,BudgetStop)))
+                error_type=type(exc).__name__,error=str(exc),traceback=traceback.format_exc(),resource_stop=isinstance(exc,BudgetStop),
+                classification='OPERATIONAL_STOP' if isinstance(exc,BudgetStop) else 'INTEGRITY_INCIDENT'))
         raise
     finally:
         # Close dispatch before reporting, including on evidence/cleanup exceptions.
         state=read_json(root/'configs/phase_state.json')
         if state.get('active_phase')=='P02D' and (state.get('real_dispatch_enabled') is True or began):
             state.update(real_dispatch_enabled=False,status='EXECUTION_RECORDED' if complete else 'BLOCKED')
-            (root/'configs/phase_state.json').write_bytes(canonical(state)+b'\n')
+            replace_state(root/'configs/phase_state.json',state)
         if began:
             write_new(run/'execution_end.json',dict(evidence_kind='development_observation',all_planned_executed=complete,
                 wall_seconds=time.perf_counter()-started,real_dispatch_enabled=False))

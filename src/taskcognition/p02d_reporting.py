@@ -15,6 +15,18 @@ def report(root,plan):
     validate_plan(plan)
     run=root/RUN;state=scan(run,tolerant=True);observations=[];incidents=list(state['incidents'])
     stop=None
+    if state['unknown_residency']:
+        incidents.append(dict(event='unresolved_process_or_cost',scored=False))
+    unresolved=[k for k,v in state['slots'].items() if v['state'] in ('UNKNOWN_ADMISSION','ADMITTED')]
+    if unresolved:incidents.append(dict(event='unresolved_consumed_slots',slot_ids=unresolved,scored=False))
+    # Final reporting, unlike a live ledger-prefix scan, requires independently
+    # published resource/stop records to have their matching committed events.
+    linked_resources={e['resource_path'] for e in state['events'] if e['event']=='session_end' and 'resource_path' in e}
+    linked_stops={e['path'] for e in state['operational_stops']}
+    for directory,linked in [('session_resources',linked_resources),('operational_stops',linked_stops)]:
+        for p in (run/directory).glob('*.json'):
+            if p.relative_to(run).as_posix() not in linked:
+                incidents.append(dict(event='unresolved_publication',path=p.relative_to(run).as_posix(),scored=False))
     if (run/'supervisor_stop.json').exists():
         try:
             stop=read_json(run/'supervisor_stop.json')
@@ -85,9 +97,10 @@ def report(root,plan):
             values=result['gate']['embedding'];first=vectors.setdefault(slot['input_id'],values)
             feature_stability.append(dict(slot_id=slot['slot_id'],input_id=slot['input_id'],max_abs_difference_from_first=max(abs(a-b) for a,b in zip(first,values)),new_independent_input=False))
         except Exception as exc:incidents.append(dict(slot_id=slot['slot_id'],error=str(exc),scored=False))
-    return dict(evidence_kind='development_observation',phase='P02D',status='INTEGRITY_INCIDENT' if incidents else 'INCOMPLETE' if len(observations)!=192 else 'COMPLETE_DEVELOPMENT',
+    stopped=bool(state['operational_stops'] or (stop and stop.get('resource_stop')))
+    return dict(evidence_kind='development_observation',phase='P02D',status='INTEGRITY_INCIDENT' if incidents else 'STOPPED_INCOMPLETE' if stopped else 'INCOMPLETE' if len(observations)!=192 else 'COMPLETE_DEVELOPMENT',
         cells=cells,clusters=clusters,observations=observations,incidents=incidents,equal_family_summary=summaries,
-        supervisor_stop=stop,
+        supervisor_stop=stop,operational_stops=state['operational_stops'],consumed_slots={k:v['state'] for k,v in state['slots'].items()},
         feature_measurements=feature_measurements,feature_stability=feature_stability,ledger_integrity_complete=not any(i.get('event')=='ledger_integrity_incident' for i in incidents),
         research_resources=dict(sessions=state['sessions'],measured_residency_seconds=state['measured_residency_seconds'],unknown_residency=state['unknown_residency'],
             output_tokens_observed=sum(o['output_tokens'] or 0 for o in observations),output_tokens_unknown=sum(o['output_tokens'] is None for o in observations)),

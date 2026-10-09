@@ -1,0 +1,916 @@
+diff --git a/README.md b/README.md
+index 6b7eca2..78fe0c7 100644
+--- a/README.md
++++ b/README.md
+@@ -4,7 +4,7 @@ Active specification: **TaskCognition-CR01-2026-10-05-v1**, approved 2026-10-05.
+ 
+ Start with [adopted CR01](docs/amendments/CR01_2026-10-05_v1.md), [active protocol](docs/PROTOCOL_SOURCE_OF_TRUTH.md), [active manuscript source](paper/cr01-2026-10-05-v1/taskcognition.tex), and [P02C report](reports/phases/P02C_completion.md). Primary D/R cap is fixed at 2,048 total tokens; completion is descriptive, with no eligibility threshold. Historical bootstrap instructions below are retained for provenance, not current authorization.
+ 
+-Current preparation: [P02D runner contract](docs/P02D_RUNNER_CONTRACT.md), [preflight report](reports/phases/P02D_preflight_completion.md), and [pending execution request](reports/p02d/execution_request.md). The 192 answer slots and 50 feature forwards require a separate conveyed execution authorization; a plan file or CLI flag does not enable them.
++Current preparation: [P02D runner contract](docs/P02D_RUNNER_CONTRACT.md), [preflight report](reports/phases/P02D_corrected_preflight_completion.md), and [pending execution request](reports/p02d_correction_v4/execution_request.md). The 192 answer slots and 50 feature forwards require a separate conveyed execution authorization; a plan file or CLI flag does not enable them.
+ 
+ ## Historical initial handoff (2026-09-28)
+ 
+diff --git a/docs/P02D_RUNNER_CONTRACT.md b/docs/P02D_RUNNER_CONTRACT.md
+index 43b162b..2522a24 100644
+--- a/docs/P02D_RUNNER_CONTRACT.md
++++ b/docs/P02D_RUNNER_CONTRACT.md
+@@ -4,7 +4,7 @@ Authority: original reference PDF, CR01 v1, C01–C03, and the archived P02D pro
+ 
+ ## Entry and immutable plan
+ 
+-The active candidate lives in `artifacts/development/p02d-cr01-plan-v2`; v1 remains preserved and superseded before any execution because a final offline review found a malformed-readiness cost-persistence defect. The inputs and schedules are unchanged. The distinct future result root is `artifacts/development/p02d-cr01-tranche`. `reports/p02d/plan_receipt.json` identifies the active immutable plan's SHA-256. Source fingerprints, installed Transformers source hashes, key dependency RECORD hashes, full effective sampler, native source closure, original questions, all three tokenizations, metadata/gold outcome stores, gate-only inputs and every request are bound by that plan.
++The active candidate lives in `artifacts/development/p02d-cr01-plan-v4`; v1/v2/v3 remain preserved and superseded before any execution. v2 fixed malformed-readiness cost persistence; v3 fixes concurrent publication and operational-stop classification; v4 also classifies a safely terminated loader deadline as an operational stop. The inputs and schedules are unchanged. The distinct future result root is `artifacts/development/p02d-cr01-tranche`. `reports/p02d_correction_v4/plan_receipt.json` identifies the active immutable plan's SHA-256. Source fingerprints, installed Transformers source hashes, key dependency RECORD hashes, full effective sampler, native source closure, original questions, all three tokenizations, metadata/gold outcome stores, gate-only inputs and every request are bound by that plan.
+ 
+ The production entry is `.venv-inference/Scripts/python.exe -m taskcognition.p02d_runner --plan-hash <reviewed SHA>` with `PYTHONPATH=src`. It rejects now. There is no `--force`/`--live` override. A subsequent conveyed execution authorization must bind the exact plan hash in a separate `configs/p02d_execution_authorization.json` record, its own file hash in phase state, explicit user-message reference, exact limits, active P02D, `EXECUTION_AUTHORIZED` and dispatch true. Neither that record nor that state is created in preflight. Both parent and child check before loading a model; a workflow guard is not a security boundary against someone deliberately rewriting all authorization files.
+ 
+@@ -20,7 +20,7 @@ Cached Qwen config has hidden width 4,096. Installed `Qwen3Model.forward` applie
+ 
+ ## Clocks, admission and accounting
+ 
+-One append-only, SHA-linked ledger covers both stages. A single supervisor owns writes; exclusive file creation prevents a duplicate event from overwriting evidence. A durable dispatch consumes its slot before child startup for the first slot, and before any subsequent feature command. Durable admission precedes the command permitting computation. Unknown dispatch/admission consumes the slot. Feature input-position and answer output-cap reservations are cumulative and never returned for failures.
++One append-only, SHA-linked ledger covers both stages. A single supervisor owns writes; same-directory hard-link publication of fully serialized, closed, fsynced temporary bytes prevents a duplicate event from overwriting evidence. The P02D-only helper uses os.link with no overwrite fallback. Pending files end in .pending and never match committed ledger JSON names; readers only consume final names. Historical writers and evidence are unchanged. A durable dispatch consumes its slot before child startup for the first slot, and before any subsequent feature command. Durable admission precedes the command permitting computation. Unknown dispatch/admission consumes the slot. Feature input-position and answer output-cap reservations are cumulative and never returned for failures.
+ 
+ Residency is conservative **worker lifetime**, from just before process creation through final wait; it includes cached-file verification, load, idle handshake, warm-ups, CPU work, serialization, synchronization, cancellation and cleanup. Session-end elapsed seconds are charged once. Nested load/forward/generation timings are descriptive components, never added again to that charge. Warm-ups are explicitly charged passes. GPU memory values will be descriptive worker measurements, not a scalar tariff.
+ 
+@@ -28,7 +28,7 @@ Execution wall time is `perf_counter` from the one authorized supervisor invocat
+ 
+ Before an answer, reserve 300 seconds (150 load/startup, 120 generation, 30 cleanup), 2,048 output tokens, and evidence headroom. Before feature-worker startup reserve 300 seconds; before every later forward reserve 150 seconds (120 forward + 30 cleanup) within the feature sublimits and combined budget. Actual feature-worker elapsed time is included when reserving its next forward. This is an admission policy, not a mathematical hard service-time support bound.
+ 
+-Loader/readiness deadline is 150 seconds. Answer timeout is 120 seconds, with up to ten additional seconds to observe cooperative return, then kill/wait; finite cleanup waits are 30 seconds. Thus cancellation overhead may exceed the initial 300-second reservation: it is measured, never clipped, and future admission uses actual elapsed costs. A known answer timeout may retain a valid parsed result; known forced generation termination is an explicit retained zero with unknown output-token count, never fabricated raw output. A loader failure, callback error, unexpected child exit, corrupt result or evidence/monitor error is unscored and stops. A feature timeout, partial stage or invalid vector stops before all answers. Watchdogs reserve cleanup headroom against the combined/feature ceilings and persist overshoot. Failed kill/wait leaves unsafe/unknown residency and blocks continuation.
++Loader/readiness deadline is 150 seconds; a safely terminated deadline is an operational stop, not a software failure. Answer timeout is 120 seconds, with up to ten additional seconds to observe cooperative return, then kill/wait; finite cleanup waits are 30 seconds. Thus cancellation overhead may exceed the initial 300-second reservation: it is measured, never clipped, and future admission uses actual elapsed costs. A known answer timeout may retain a valid parsed result; known forced generation termination is an explicit retained zero with unknown output-token count, never fabricated raw output. An unexpected loader failure, callback error, unexpected child exit, corrupt result or evidence/monitor error is unscored and stops. A feature timeout, partial stage or invalid vector stops before all answers. Watchdogs reserve cleanup headroom against the combined/feature ceilings and persist overshoot. Failed kill/wait leaves unsafe/unknown residency and blocks continuation.
+ 
+ The supervisor's `finally` attempts child stop/wait even after monitoring/evidence errors and independently writes a session resource record before extending the main ledger. If storage is itself unwritable, ordinary persistence cannot be guaranteed: existing ledger and worker stderr remain evidence, the invocation fails, and dispatch closes; absence is an integrity incident. No implementation can turn a total storage failure into a valid scored record.
+ 
+@@ -39,3 +39,13 @@ The operational ceiling is 0.5 GiB additional **execution** evidence, including
+ The report uses 12 cells with planned denominator 16 and 24 input clusters. Known model failures retain strict primary scores; unexpected software/missing evidence is listed separately. Only complete four-D/four-R clusters use the existing target aggregator for T_b, T_h, direct redraw and 0.10/0.25 declines. A partial input has achieved counts/score lists/variance, no filled K=4 target. Equal-family means are descriptive over observed subsets; any missing family leaves the six-family mean undefined. Cross-pairs are never independent rows. Invalid evidence is prominently labeled even when earlier valid rows can still be inspected.
+ 
+ No routing, fitting, significance test or P03 simulation is implemented. One-query deployment remains one live feature forward, cheap features/MLP/calibration, one selected answer, and an explicitly reviewed initialization policy. Research's 50 feature passes and 192 answers are collection costs. Cached vectors do not make future live features free. No dollar tariff, beta, hardware support bound or final allocation is selected.
++
++## v3 publication and stop corrections
++
++`p02d_publication.write_new` publishes immutable IPC, ledger and resource records by atomic same-filesystem hard-link creation after preparation. Duplicate destinations fail. A pre-commit crash leaves at most an ignored `.pending` file; a post-commit crash leaves a complete committed record, with a possible extra temporary link. File fsync is not a claim of directory metadata durability through sudden power loss. Recovery still treats missing/corrupt committed evidence as integrity failure. This implementation was exercised with real Windows threads and a small abruptly exiting CPU-only subprocess. A filesystem that disallows hard links fails closed; it must not fall back to overwrite publication.
++
++Ready/result readers and the child's command/control readers see a complete object or absence. Null, malformed JSON, changed command identity, invalid cancellation/finish bodies and corrupt hashes fail closed. All first session/dispatch/admission records use the same helper. stdout/stderr remain appendable diagnostic streams, never completion or authorization records. Static plan/input/auth files are hash-bound and not concurrently mutated; future authorization must be prepared using this publication protocol before enabling dispatch. The only mutable file, phase state, uses prepared atomic replacement and is not an immutable evidence record.
++
++After stopping/waiting for a child, the supervisor validates the ledger and any committed worker results/incidents again. A safe BudgetStop writes a hash-linked `operational_stop` and independent resource/stop record. Already complete observations remain available; any dispatched slot without a result becomes `STOPPED_UNSCORED`, with its request identity and reservations retained. This is a known terminated attempt, not a successful forward, score zero, or reusable slot. Any stop blocks automatic recovery and further admission, even if interrupted before linking the independent stop artifact into the ledger. A stop before the next slot's dispatch does not consume that unexecuted slot.
++
++An unsafe kill/wait, unknown residency, software/evidence error or corrupt/missing committed record remains an integrity incident even if a budget trigger initiated stopping. Session resource records are hash-bound from session-end events. Reports distinguish `STOPPED_INCOMPLETE` from dominant `INTEGRITY_INCIDENT`, preserve valid earlier outcomes, show achieved counts, and never synthesize missing K=4 clusters. Final reporting also detects independently published resource/stop records without their completed ledger links. No replay or continuation authority is inferred from safe cleanup.
+diff --git a/scripts/p02d_correct_baseline.py b/scripts/p02d_correct_baseline.py
+new file mode 100644
+index 0000000..f8dd15f
+--- /dev/null
++++ b/scripts/p02d_correct_baseline.py
+@@ -0,0 +1,37 @@
++"""Verify and archive the submitted snapshot before correction; no model imports."""
++from pathlib import Path
++import hashlib, json, shutil, zipfile, subprocess, os
++from datetime import datetime, timezone
++
++root=Path(__file__).resolve().parents[1]
++out=root/'reports/p02d_correction_v3';out.mkdir(exist_ok=False)
++sha=lambda b:hashlib.sha256(b).hexdigest()
++expected={
++ 'artifacts/development/p02d-cr01-plan-v2/run_plan.json':'67c3f5ee03ee25f077356e7ef27cb2d870d54caef12318dbe9bfab0b6688ab3d',
++ 'reports/p02d/P02D_preflight_review_packet.zip':'4a2c8a6834fbbebdd77ce1659bf9819aa61f152a82230fb282d57c916ba7f91b',
++ 'reports/p02d/P02D_evidence_index.json':'a05958cf01a877a9510c7b85bb2d40d6008c6e1014ca2509e1a06370bc35d993'}
++for n,h in expected.items():assert sha((root/n).read_bytes())==h,n
++index=json.loads((root/'reports/p02d/P02D_evidence_index.json').read_text())['files']
++assert len(index)==400
++with zipfile.ZipFile(root/'reports/p02d/P02D_preflight_review_packet.zip') as z:
++ assert z.testzip() is None
++ for n,h in index.items():
++  assert sha(z.read(n))==h,n
++  assert sha((root/n).read_bytes())==h,n
++archive=out/'coordinator';archive.mkdir()
++for n in ['docs/P02D_coordinator_reproductions.zip','docs/prompts/P02D_preflight_correction_prompt.md']:
++ shutil.copyfile(root/n,archive/Path(n).name)
++with zipfile.ZipFile(archive/'P02D_coordinator_reproductions.zip') as z:
++ for n in z.namelist():
++  assert '/' not in n and '\\' not in n
++  (archive/n).write_bytes(z.read(n))
++tmp=root/'tmp/p02d-tests';tmp.mkdir(parents=True,exist_ok=True)
++env=os.environ.copy();env.update(TEMP=str(tmp),TMP=str(tmp))
++command=[str(root/'.venv/Scripts/python.exe'),str(archive/'p02d_review_reproductions.py'),str(root)]
++p=subprocess.run(command,env=env,capture_output=True,text=True)
++(out/'baseline_reproductions.json').write_text(json.dumps(dict(command=command,exit_code=p.returncode,stdout=p.stdout,stderr=p.stderr),indent=2)+'\n')
++assert p.returncode==0,p.stderr
++(out/'baseline_verification.json').write_text(json.dumps(dict(timestamp_utc=datetime.now(timezone.utc).isoformat(),accepted_hashes=expected,
++ indexed_zip_and_current_files_verified=len(index),head=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
++ archive_hashes={p.name:sha(p.read_bytes()) for p in archive.iterdir()},model_work=0),indent=2)+'\n')
++print('PASS: 400 snapshot/current files; both old-source defects reproduced CPU-only.')
+diff --git a/scripts/p02d_correct_close.py b/scripts/p02d_correct_close.py
+new file mode 100644
+index 0000000..5dc609b
+--- /dev/null
++++ b/scripts/p02d_correct_close.py
+@@ -0,0 +1,35 @@
++"""Append the offline correction checkpoint; never execution authorization."""
++from pathlib import Path
++from datetime import datetime,timezone
++import subprocess
++from taskcognition.artifacts import read_json,write_new
++from taskcognition.contracts import file_hash,canonical
++
++root=Path(__file__).resolve().parents[1];out=root/'reports/p02d_correction_v3'
++stamp=datetime.now(timezone.utc).isoformat();statepath=root/'configs/phase_state.json'
++state=read_json(statepath);assert not state['real_dispatch_enabled'] and state['active_phase']=='P02D'
++sha=read_json(out/'plan_receipt.json')['sha256']
++snapshot=root/'configs/state_snapshots/P02D_preflight_v2_before_v3.json'
++with snapshot.open('xb') as f:f.write(statepath.read_bytes())
++eventpath='configs/state_events/018_P02D_corrected_preflight_v3_review_checkpoint.json'
++write_new(root/eventpath,dict(evidence_kind='development_observation',event='P02D_CORRECTED_PREFLIGHT_READY_FOR_REVIEW',
++ timestamp_utc=stamp,previous_state_sha256=file_hash(snapshot),superseded_plan_sha256=state['p02d_plan_sha256'],active_plan_sha256=sha,
++ authority='user-conveyed P02D correction instructions; not execution acceptance',prompt_sha256=file_hash(out/'coordinator/P02D_preflight_correction_prompt.md'),
++ reproduction_bundle_sha256=file_hash(out/'coordinator/P02D_coordinator_reproductions.zip'),real_dispatch_enabled=False,
++ new_model_work=0,p02_sealed=False,p03_started=False,identical_materialized_files=256))
++state.update(status='READY_FOR_REVIEW',checkpoint='CORRECTED_PREFLIGHT',latest_event=eventpath,p02d_plan_sha256=sha)
++statepath.write_bytes(canonical(state)+b'\n')
++tracking=subprocess.check_output(['git','rev-parse','refs/remotes/origin/codex/p02c-cr01-adoption'],text=True).strip()
++ancestry={c:subprocess.run(['git','merge-base','--is-ancestor',c,tracking]).returncode==0 for c in ('4b0c200','53129ba')}
++note=f'''# P02D v3 provenance correction
++
++Recorded {stamp}. The user's latest correction is **“nothing pushed.”** This supersedes the user's earlier pushed handoff. Earlier P02C/P02D reports, indexes, receipts and ZIPs remain unchanged as historical records; their push-related interpretation is not a current backup claim.
++
++Read-only local Git evidence: refs/remotes/origin/codex/p02c-cr01-adoption = {tracking}; local ancestry checks: {ancestry}. This is cached local tracking state only. It establishes neither a current push nor current remote contents nor verified remote backup. No remote query, push, merge, external transfer or history rewrite occurred in this correction. Local packets remain verified; off-machine coverage is unverified. No new backup purchase requirement is imposed.
++
++The P02C external packet receipt remains included through the preserved v2 packet and its original reports/p02d/P02C_external_packet_receipt.json. No new coordinator GPU verification is claimed. Original reference PDF and historical source snapshots remain unchanged.
++'''
++(out/'provenance_correction.md').write_text(note,encoding='utf-8')
++with (root/'reports/decision_ledger.md').open('a',encoding='utf-8') as f:f.write(f'''\n## P02D offline v3 correction ({stamp})
++User authorizes only R1 complete no-overwrite publication and R2 operational-stop classification. v2 {read_json(snapshot)['p02d_plan_sha256']} remains preserved; v3 {sha} binds corrected source with all 256 materialized files unchanged. No P02D execution acceptance or authorization exists. User corrected the earlier push handoff to **“nothing pushed.”** Local remote-tracking ancestry is separate and cannot establish a push or verified remote backup. See reports/p02d_correction_v3/provenance_correction.md. Zero model/GPU work; dispatch false; P02 incomplete/unsealed; P03 unstarted.\n''')
++print(sha)
+diff --git a/scripts/p02d_correct_close_v4.py b/scripts/p02d_correct_close_v4.py
+new file mode 100644
+index 0000000..d023895
+--- /dev/null
++++ b/scripts/p02d_correct_close_v4.py
+@@ -0,0 +1,35 @@
++"""Append the offline correction checkpoint; never execution authorization."""
++from pathlib import Path
++from datetime import datetime,timezone
++import subprocess
++from taskcognition.artifacts import read_json,write_new
++from taskcognition.contracts import file_hash,canonical
++
++root=Path(__file__).resolve().parents[1];out=root/'reports/p02d_correction_v4'
++stamp=datetime.now(timezone.utc).isoformat();statepath=root/'configs/phase_state.json'
++state=read_json(statepath);assert not state['real_dispatch_enabled'] and state['active_phase']=='P02D'
++sha=read_json(out/'plan_receipt.json')['sha256']
++snapshot=root/'configs/state_snapshots/P02D_preflight_v3_before_v4.json'
++with snapshot.open('xb') as f:f.write(statepath.read_bytes())
++eventpath='configs/state_events/019_P02D_corrected_preflight_v4_review_checkpoint.json'
++write_new(root/eventpath,dict(evidence_kind='development_observation',event='P02D_CORRECTED_PREFLIGHT_READY_FOR_REVIEW',
++ timestamp_utc=stamp,previous_state_sha256=file_hash(snapshot),superseded_plan_sha256=state['p02d_plan_sha256'],active_plan_sha256=sha,
++ authority='same offline R1/R2 correction authorization; safe loader deadline classified operational; not execution acceptance',prompt_sha256=file_hash(out/'coordinator/P02D_preflight_correction_prompt.md'),
++ reproduction_bundle_sha256=file_hash(out/'coordinator/P02D_coordinator_reproductions.zip'),real_dispatch_enabled=False,
++ new_model_work=0,p02_sealed=False,p03_started=False,identical_materialized_files=256))
++state.update(status='READY_FOR_REVIEW',checkpoint='CORRECTED_PREFLIGHT',latest_event=eventpath,p02d_plan_sha256=sha)
++statepath.write_bytes(canonical(state)+b'\n')
++tracking=subprocess.check_output(['git','rev-parse','refs/remotes/origin/codex/p02c-cr01-adoption'],text=True).strip()
++ancestry={c:subprocess.run(['git','merge-base','--is-ancestor',c,tracking]).returncode==0 for c in ('4b0c200','53129ba')}
++note=f'''# P02D v4 provenance correction
++
++Recorded {stamp}. The user's latest correction is **“nothing pushed.”** This supersedes the user's earlier pushed handoff. Earlier P02C/P02D reports, indexes, receipts and ZIPs remain unchanged as historical records; their push-related interpretation is not a current backup claim.
++
++Read-only local Git evidence: refs/remotes/origin/codex/p02c-cr01-adoption = {tracking}; local ancestry checks: {ancestry}. This is cached local tracking state only. It establishes neither a current push nor current remote contents nor verified remote backup. No remote query, push, merge, external transfer or history rewrite occurred in this correction. Local packets remain verified; off-machine coverage is unverified. No new backup purchase requirement is imposed.
++
++The P02C external packet receipt remains included through the preserved v2 packet and its original reports/p02d/P02C_external_packet_receipt.json. No new coordinator GPU verification is claimed. Original reference PDF and historical source snapshots remain unchanged.
++'''
++(out/'provenance_correction.md').write_text(note,encoding='utf-8')
++with (root/'reports/decision_ledger.md').open('a',encoding='utf-8') as f:f.write(f'''\n## P02D offline v4 correction ({stamp})
++User authorizes only R1 complete no-overwrite publication and R2 operational-stop classification. v3 {read_json(snapshot)['p02d_plan_sha256']} remains preserved; v4 {sha} binds corrected source with all 256 materialized files unchanged. No P02D execution acceptance or authorization exists. User corrected the earlier push handoff to **“nothing pushed.”** Local remote-tracking ancestry is separate and cannot establish a push or verified remote backup. See reports/p02d_correction_v3/provenance_correction.md. Zero model/GPU work; dispatch false; P02 incomplete/unsealed; P03 unstarted.\n''')
++print(sha)
+diff --git a/scripts/p02d_correct_packet.py b/scripts/p02d_correct_packet.py
+new file mode 100644
+index 0000000..06e5e33
+--- /dev/null
++++ b/scripts/p02d_correct_packet.py
+@@ -0,0 +1,61 @@
++"""Package the corrected pending preflight; receipt remains outside the ZIP."""
++from pathlib import Path
++import hashlib,json,subprocess,zipfile
++from taskcognition.artifacts import read_json,write_new
++from taskcognition.contracts import file_hash,canonical
++from taskcognition.p02d_plan import PLAN_DIR,RUN,verify_plan
++
++root=Path(__file__).resolve().parents[1];out=root/'reports/p02d_correction_v4'
++receipt=read_json(out/'plan_receipt.json');verify_plan(root,root/receipt['plan_path'],receipt['sha256'])
++state=read_json(root/'configs/phase_state.json')
++assert state['checkpoint']=='CORRECTED_PREFLIGHT' and state['status']=='READY_FOR_REVIEW'
++assert not state['real_dispatch_enabled'] and not state['p02_sealed'] and not state['p03_started']
++assert not (root/RUN).exists() and not (root/'configs/p02d_execution_authorization.json').exists()
++paths=set()
++for base in [out,root/'reports/p02d_correction_v3',root/PLAN_DIR,root/'artifacts/development/p02d-cr01-plan-v3',
++             root/'src/taskcognition',root/'tests',root/'vendor/reasoning_gym_p02a']:
++ paths.update(p for p in base.rglob('*') if p.is_file() and '__pycache__' not in p.parts and p.suffix!='.pyc')
++paths.update(root.glob('scripts/p02d_*.py'))
++for n in ['AGENTS.md','README.md','.gitattributes','pyproject.toml','configs/p01_requirements.lock','scripts/p01_command.py',
++ 'docs/P02D_RUNNER_CONTRACT.md','docs/PROTOCOL_SOURCE_OF_TRUTH.md','docs/STATISTICAL_CONTRACT.md','docs/ARCHITECTURE_AND_DATA.md',
++ 'docs/DECISIONS_AND_GAPS.md','docs/EVIDENCE_AND_MANUSCRIPT.md','docs/amendments/CR01_2026-10-05_v1.md',
++ 'reports/decision_ledger.md','configs/phase_state.json',
++ 'configs/state_events/018_P02D_corrected_preflight_v3_review_checkpoint.json','configs/state_events/019_P02D_corrected_preflight_v4_review_checkpoint.json',
++ 'configs/state_snapshots/P02D_preflight_v2_before_v3.json','configs/state_snapshots/P02D_preflight_v3_before_v4.json',
++ 'reports/phases/P02D_corrected_preflight_completion.md','reports/phases/P02D_preflight_completion.md',
++ 'reports/p02d/P02D_preflight_review_packet.zip','reports/p02d/P02D_evidence_index.json','reports/p02d/P02D_packet_receipt.json',
++ 'reports/p02d/P02C_external_packet_receipt.json','reports/p02d/execution_request.md','reports/p02c/next_development_proposal.md',
++ 'reports/p01/model_download.json','artifacts/development/p02b-two-cap/package_base.json',
++ 'artifacts/development/p02d-cr01-plan-v2/run_plan.json']:
++ paths.add(root/n)
++exclude={'P02D_corrected_preflight_review_packet.zip','P02D_evidence_index.json','P02D_packet_receipt.json'}
++paths={p for p in paths if not (p.parent==out and p.name in exclude)}
++assert all('.venv' not in p.parts and '.venv-inference' not in p.parts and not p.name.endswith('.safetensors') for p in paths)
++files={p.relative_to(root).as_posix():file_hash(p) for p in sorted(paths)}
++source_commit=read_json(out/'source_commits.json')['correction_source_evidence_commit']
++idx=out/'P02D_evidence_index.json'
++write_new(idx,dict(evidence_kind='development_observation',status='P02D_CORRECTED_PREFLIGHT_READY_FOR_REVIEW',files=files,
++ source_commit=source_commit,plan_sha256=receipt['sha256'],
++ exclusions='Index, ZIP, external receipt excluded from child hashes to avoid cycles. No weights/environments/secrets/unrelated material. Preserved v2 ZIP includes historical v1/P02C/P02B provenance.'))
++packet=out/'P02D_corrected_preflight_review_packet.zip'
++with zipfile.ZipFile(packet,'x',zipfile.ZIP_DEFLATED,compresslevel=9) as z:
++ for n in files:z.write(root/n,n)
++ z.write(idx,idx.relative_to(root).as_posix())
++with zipfile.ZipFile(packet) as z:
++ assert z.testzip() is None and len(z.namelist())==len(files)+1
++ for n,h in files.items():assert hashlib.sha256(z.read(n)).hexdigest()==h,n
++result=dict(status='PASS',checkpoint='P02D_CORRECTED_PREFLIGHT_READY_FOR_REVIEW',indexed_files=len(files),all_zip_members_verified=True,
++ zip_sha256=file_hash(packet),zip_bytes=packet.stat().st_size,index_sha256=file_hash(idx),
++ report_sha256=file_hash(root/'reports/phases/P02D_corrected_preflight_completion.md'),plan_sha256=receipt['sha256'],
++ execution_request_sha256=file_hash(out/'execution_request.md'),source_diff_sha256=file_hash(out/'source_diff.patch'),
++ source_commit=source_commit,baseline_packet_sha256=file_hash(root/'reports/p02d/P02D_preflight_review_packet.zip'),
++ prior_external_P02C_receipt_sha256=file_hash(root/'reports/p02d/P02C_external_packet_receipt.json'),
++ real_dispatch_enabled=False,p02_sealed=False,p03_started=False,execution_authorization_exists=False,
++ new_model_loads=0,new_gpu_calls=0,new_feature_forwards=0,new_answer_generations=0,new_simulations=0,
++ historical_admitted=75,historical_output_tokens=40555,
++ backup='Verified local packet only. User corrected prior pushed claim to nothing pushed. Local tracking ancestry is not proof of a current push or remote backup; no remote query or transfer.',
++ receipt_location='outside ZIP on the same workstation; external does not mean off-machine',preparation_bytes=0)
++base=sum(p.stat().st_size for b in (out,root/'reports/p02d_correction_v3',root/PLAN_DIR,root/'artifacts/development/p02d-cr01-plan-v3') for p in b.rglob('*') if p.is_file())
++for _ in range(5):result['preparation_bytes']=base+len(canonical(result))+1
++write_new(out/'P02D_packet_receipt.json',result)
++print(json.dumps(result,indent=2))
+diff --git a/scripts/p02d_correct_verify.py b/scripts/p02d_correct_verify.py
+new file mode 100644
+index 0000000..077592e
+--- /dev/null
++++ b/scripts/p02d_correct_verify.py
+@@ -0,0 +1,49 @@
++"""Final v4 preservation/authority checks; no model imports or model work."""
++from pathlib import Path
++from datetime import datetime,timezone
++import hashlib,json,zipfile,subprocess
++from taskcognition.artifacts import read_json,write_new
++from taskcognition.contracts import file_hash,IntegrityError,canonical
++from taskcognition.p02d_plan import PLAN_DIR,RUN,verify_plan
++from taskcognition.p02d_runner import execute
++from taskcognition.p02d_reporting import report
++
++root=Path(__file__).resolve().parents[1];out=root/'reports/p02d_correction_v4'
++receipt=read_json(out/'plan_receipt.json');plan=verify_plan(root,root/receipt['plan_path'],receipt['sha256'])
++baseline=read_json(out/'baseline_verification.json')
++for n,h in baseline['accepted_hashes'].items():assert file_hash(root/n)==h,n
++old=root/'artifacts/development/p02d-cr01-plan-v2';new=root/PLAN_DIR
++same={p.relative_to(old).as_posix():file_hash(p) for p in old.rglob('*') if p.is_file() and p.name!='run_plan.json'}
++assert len(same)==256
++assert {p.relative_to(new).as_posix() for p in new.rglob('*') if p.is_file() and p.name!='run_plan.json'}==set(same)
++for n,h in same.items():assert file_hash(new/n)==h,n
++oldplan=read_json(old/'run_plan.json')
++for key in ('package','inputs','requests','feature_schedule','feature_specification','environment','caps','limits','initial_counters','clocks','stop_rules','unresolved'):
++ assert plan[key]==oldplan[key],key
++allowed={'README.md','docs/P02D_RUNNER_CONTRACT.md','scripts/p02d_publish.py','configs/phase_state.json','reports/decision_ledger.md',
++ *['src/taskcognition/p02d_'+n+'.py' for n in ('ledger','plan','reporting','runner','worker')]}
++changed={}
++index=read_json(root/'reports/p02d/P02D_evidence_index.json')['files']
++with zipfile.ZipFile(root/'reports/p02d/P02D_preflight_review_packet.zip') as z:
++ for n,h in index.items():
++  assert hashlib.sha256(z.read(n)).hexdigest()==h,n
++  if file_hash(root/n)!=h:
++   assert n in allowed,n
++   changed[n]=dict(v2=h,v3=file_hash(root/n))
++for n,h in read_json(root/'reports/p02b/P02B_evidence_index.json')['files'].items():
++ if n.startswith(('src/','tests/','artifacts/')):assert file_hash(root/n)==h,n
++for n,h in read_json(root/'reports/source_inventory.json')['preserved_original_files'].items():assert file_hash(root/n)==h,n
++assert file_hash(root/'reference/TaskCognition_Revised_Verified.pdf')=='9eed0fe74f46c3acbc200183cf11693f1bec66a1180568087aeb775c97d8f6c8'
++assert not (root/RUN).exists() and not (root/'configs/p02d_execution_authorization.json').exists()
++try:execute(root,receipt['sha256'])
++except IntegrityError as e:assert 'pending' in str(e);rejection=str(e)
++else:raise AssertionError('pending plan accepted')
++state=read_json(root/'configs/phase_state.json');assert not state['real_dispatch_enabled'] and not state['p02_sealed'] and not state['p03_started']
++empty=report(root,plan);assert empty['status']=='INCOMPLETE'
++assert all(c['executed']==c['retained']==0 for c in empty['cells'])
++write_new(out/'unexecuted_plan_report.json',dict(empty,report_role='unexecuted plan only; no observations'))
++write_new(out/'preservation_verification.json',dict(status='PASS',plan_sha256=receipt['sha256'],bound_files_verified=len(plan['bound_files']),
++ baseline_zip_files_verified=len(index),materialized_files_identical=same,version_linking_changes='run_plan.json only; directory binding/source hashes/timestamp/plan_version. No request, input, package, stream, schedule, environment or feature file changes.',
++ baseline_current_changes=changed,historical_source_tests_and_original_pdf_preserved=True,pending_rejection=rejection,
++ new_model_loads=0,new_gpu_calls=0,new_forwards=0,new_answer_generations=0,new_simulations=0,historical_admitted=75,historical_output_tokens=40555))
++print(json.dumps(dict(status='PASS',plan_sha256=receipt['sha256'],materialized_identical=len(same),bound_files=len(plan['bound_files']),baseline_snapshot=len(index))))
+diff --git a/scripts/p02d_publish.py b/scripts/p02d_publish.py
+index e0a4ee9..1dd7936 100644
+--- a/scripts/p02d_publish.py
++++ b/scripts/p02d_publish.py
+@@ -24,7 +24,7 @@ def candidate(root):
+             if str(f).endswith('.dist-info/RECORD'):
+                 p=Path(dist.locate_file(f));bound[p.relative_to(root).as_posix()]=file_hash(p)
+     return dict(evidence_kind='development_observation',split='DEVELOPMENT',phase='P02D',specification_version=VERSION,
+-        plan_version='P02D-offline-v2',authorization='PENDING_SEPARATE_RECORD',scientific_freeze=False,completion_policy='descriptive',
++        plan_version='P02D-offline-v4',authorization='PENDING_SEPARATE_RECORD',scientific_freeze=False,completion_policy='descriptive',
+         timestamp_utc=datetime.now(timezone.utc).isoformat(),output_directory=RUN,package=read_json(directory/'package.json'),
+         inputs=read_json(directory/'inputs.json'),requests=read_json(directory/'answer_schedule.json'),feature_schedule=read_json(directory/'feature_schedule.json'),
+         feature_specification=FEATURE_SPEC,environment=env,caps={'D':2048,'R':2048},limits=LIMITS,bound_files=bound,
+@@ -40,5 +40,5 @@ def candidate(root):
+ if __name__=='__main__':
+     root=Path(__file__).resolve().parents[1]
+     plan=validate_plan(candidate(root));path=root/PLAN_DIR/'run_plan.json';write_new(path,plan)
+-    write_new(root/'reports/p02d/plan_receipt.json',dict(evidence_kind='development_observation',plan_path=PLAN_DIR+'/run_plan.json',sha256=file_hash(path),authorization='PENDING',live_dispatch=False))
+-    print(json.dumps(read_json(root/'reports/p02d/plan_receipt.json')))
++    write_new(root/'reports/p02d_correction_v4/plan_receipt.json',dict(evidence_kind='development_observation',plan_path=PLAN_DIR+'/run_plan.json',sha256=file_hash(path),authorization='PENDING',live_dispatch=False))
++    print(json.dumps(read_json(root/'reports/p02d_correction_v4/plan_receipt.json')))
+diff --git a/src/taskcognition/p02d_ledger.py b/src/taskcognition/p02d_ledger.py
+index c88344c..a98c61d 100644
+--- a/src/taskcognition/p02d_ledger.py
++++ b/src/taskcognition/p02d_ledger.py
+@@ -6,11 +6,12 @@ It blocks recovery/admission until investigated; there is no automatic replay.
+ """
+ import math
+ from datetime import datetime, timezone
+-from .artifacts import read_json, write_new, child_path
++from .artifacts import read_json, child_path
++from .p02d_publication import write_new
+ from .contracts import IntegrityError, file_hash, number
+ 
+ def scan(run, tolerant=False):
+-    sessions={};slots={};events=[];incidents=[];previous=None
++    sessions={};slots={};events=[];incidents=[];stops=[];previous=None
+     for ix,path in enumerate(sorted((run/'ledger').glob('*.json'))):
+         try:
+             e=read_json(path)
+@@ -44,6 +45,22 @@ def scan(run, tolerant=False):
+                 s=sessions[sid];number(e['seconds']);number(e['cleanup_seconds'])
+                 if s['ended'] or e['seconds']<s['lower_bound_seconds']:raise IntegrityError('cost duplicate/under-report')
+                 s.update(ended=True,seconds=e['seconds'],safe_stopped=e['safe_stopped'],cleanup_seconds=e['cleanup_seconds'],exit_code=e['exit_code'])
++                if 'resource_path' in e:
++                    resource=child_path(run,e['resource_path'])
++                    if file_hash(resource)!=e['resource_sha256']:raise IntegrityError('resource missing/corrupt')
++                    r=read_json(resource)
++                    if any(r[k]!=e[k] for k in ('session_id','seconds','cleanup_seconds','safe_stopped','exit_code')):raise IntegrityError('resource identity/cost mismatch')
++            elif kind=='operational_stop':
++                s=sessions[sid]
++                if not s['ended'] or not s['safe_stopped']:raise IntegrityError('unsafe operational stop')
++                p=child_path(run,e['path'])
++                if file_hash(p)!=e['sha256']:raise IntegrityError('stop missing/corrupt')
++                r=read_json(p)
++                if r['session_id']!=sid or r['classification']!='OPERATIONAL_STOP':raise IntegrityError('stop identity/classification')
++                stops.append(e)
++                for slot in slots.values():
++                    if slot['session_id']==sid and slot['state']!='COMPLETE':
++                        slot.update(state='STOPPED_UNSCORED',stop_reason=r['error'])
+             elif kind=='incident':incidents.append(e)
+             else:raise IntegrityError('unknown ledger event')
+             events.append(e)
+@@ -54,12 +71,13 @@ def scan(run, tolerant=False):
+     # Independent supervisor diagnostic survives broken ledger publication.
+     for p in (run/'incidents').glob('*.json'):
+         incidents.append(dict(event='incident_artifact',path=p.relative_to(run).as_posix(),sha256=file_hash(p)))
+-    return dict(sessions=sessions,slots=slots,events=events,incidents=incidents,
++    return dict(sessions=sessions,slots=slots,events=events,incidents=incidents,operational_stops=stops,
++        operational_stop_artifacts=[p.relative_to(run).as_posix() for p in (run/'operational_stops').glob('*.json')],
+         measured_residency_seconds=sum(s['seconds'] if s['ended'] else s['lower_bound_seconds'] for s in sessions.values()),
+         unknown_residency=any(not s['ended'] or not s['safe_stopped'] for s in sessions.values()))
+ 
+ def append(run,event,**fields):
+-    # Validate previous evidence before extending; x-mode makes concurrent writers fail.
++    # Validate previous evidence before extending; atomic no-clobber publication.
+     state=scan(run);paths=sorted((run/'ledger').glob('*.json'))
+     sid=fields.get('session_id')
+     if event=='session_start' and (sid in state['sessions'] or any(not s['ended'] for s in state['sessions'].values())):
+@@ -75,7 +93,7 @@ def append(run,event,**fields):
+ 
+ def recover(run):
+     state=scan(run)
+-    if state['incidents'] or state['unknown_residency'] or any(r['state']!='COMPLETE' for r in state['slots'].values()):
++    if state['incidents'] or state['operational_stop_artifacts'] or state['unknown_residency'] or any(r['state']!='COMPLETE' for r in state['slots'].values()):
+         raise IntegrityError('unresolved interrupted/unknown work; no automatic replay or recharge')
+     return state
+ 
+@@ -98,7 +116,7 @@ def dispatch(run,plan,slot,session_id):
+     state=scan(run);slots=state['slots'];schedule=plan['feature_schedule'] if slot['stage']=='feature' else plan['requests']
+     prior=[v for v in slots.values() if v['stage']==slot['stage']]
+     if slot['slot_id'] in slots or len(prior)>=len(schedule) or schedule[len(prior)]!=slot:raise IntegrityError('not next unchanged slot; no replay')
+-    if state['incidents'] or any(r['state']!='COMPLETE' for r in slots.values()):raise IntegrityError('unresolved preceding slot')
++    if state['incidents'] or state['operational_stop_artifacts'] or any(r['state']!='COMPLETE' for r in slots.values()):raise IntegrityError('unresolved or stopped preceding work')
+     if slot['stage']=='answer':
+         feature=[r for r in slots.values() if r['stage']=='feature']
+         if len(feature)!=50 or any(r['result'].get('status')!='OK' for r in feature):raise IntegrityError('feature stage incomplete/invalid')
+diff --git a/src/taskcognition/p02d_plan.py b/src/taskcognition/p02d_plan.py
+index 7d53eae..e6d6c0c 100644
+--- a/src/taskcognition/p02d_plan.py
++++ b/src/taskcognition/p02d_plan.py
+@@ -9,7 +9,7 @@ from .p02d_features import FEATURE_SPEC, forward_schedule, validate_gate_input
+ 
+ VERSION='TaskCognition-CR01-2026-10-05-v1'
+ RUN='artifacts/development/p02d-cr01-tranche'
+-PLAN_DIR='artifacts/development/p02d-cr01-plan-v2'
++PLAN_DIR='artifacts/development/p02d-cr01-plan-v4'
+ MODEL_REVISION='b968826d9c46dd6066d109eabc6255188de91218'
+ ROOT_SEED=930261005
+ LIMITS=dict(answer_slots=192,output_tokens=393216,feature_forwards=50,feature_input_positions=102400,
+@@ -67,6 +67,7 @@ def validate_plan(plan):
+ def verify_plan(root, plan_path, expected_hash):
+     if file_hash(plan_path)!=expected_hash:raise IntegrityError('reviewed plan hash mismatch')
+     plan=validate_plan(read_json(plan_path))
++    if plan.get('plan_version')!='P02D-offline-v4':raise IntegrityError('superseded prospective plan version')
+     prior=read_json(root/'artifacts/development/p02b-two-cap/package_base.json')['generation_config']
+     if plan['package']['generation_config']!=dict(prior,max_new_tokens=2048):raise IntegrityError('effective defaults changed')
+     for name,sha in plan['bound_files'].items():
+diff --git a/src/taskcognition/p02d_publication.py b/src/taskcognition/p02d_publication.py
+new file mode 100644
+index 0000000..1e13705
+--- /dev/null
++++ b/src/taskcognition/p02d_publication.py
+@@ -0,0 +1,51 @@
++"""P02D v3 file protocol: durable bytes, then atomic no-clobber publication.
++
++Same-directory hard-link creation on the workstation filesystem is the commit.
++The .pending name is never a reader/ledger name. No overwrite fallback exists.
++fsync prepares file contents; this is not a power-loss guarantee for directories.
++Single supervisor owns ledger ordering. Concurrent readers see committed prefixes.
++"""
++import os
++import tempfile
++from pathlib import Path
++from .artifacts import read_json
++from .contracts import canonical, IntegrityError
++
++def _prepare(path, value):
++    data=canonical(value)+b'\n'  # serialization failure cannot expose a final path
++    path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
++    fd,name=tempfile.mkstemp(prefix='.'+path.name+'.',suffix='.pending',dir=path.parent)
++    temporary=Path(name)
++    try:
++        with os.fdopen(fd,'wb') as stream:
++            stream.write(data);stream.flush();os.fsync(stream.fileno())
++    except BaseException:
++        temporary.unlink(missing_ok=True)
++        raise
++    return temporary
++
++def write_new(path,value):
++    path=Path(path);temporary=_prepare(path,value)
++    try:
++        os.link(temporary,path)  # atomic create, fails if destination already exists
++    finally:
++        temporary.unlink(missing_ok=True)
++
++def replace_state(path,value):
++    """Only mutable phase state uses replacement; never immutable evidence/IPC."""
++    temporary=_prepare(path,value)
++    try:os.replace(temporary,path)
++    finally:temporary.unlink(missing_ok=True)
++
++def read_optional(path):
++    # Only absence is pending. Committed syntax/IO errors propagate immediately.
++    try:value=read_json(path)
++    except FileNotFoundError:return None
++    if not isinstance(value,dict):raise IntegrityError('committed record must be an object')
++    return value
++
++def control_present(path,expected):
++    value=read_optional(path)
++    if value is None:return False
++    if value!=expected:raise IntegrityError('invalid committed control record')
++    return True
+diff --git a/src/taskcognition/p02d_reporting.py b/src/taskcognition/p02d_reporting.py
+index 3bb52c5..765a6f9 100644
+--- a/src/taskcognition/p02d_reporting.py
++++ b/src/taskcognition/p02d_reporting.py
+@@ -15,6 +15,18 @@ def report(root,plan):
+     validate_plan(plan)
+     run=root/RUN;state=scan(run,tolerant=True);observations=[];incidents=list(state['incidents'])
+     stop=None
++    if state['unknown_residency']:
++        incidents.append(dict(event='unresolved_process_or_cost',scored=False))
++    unresolved=[k for k,v in state['slots'].items() if v['state'] in ('UNKNOWN_ADMISSION','ADMITTED')]
++    if unresolved:incidents.append(dict(event='unresolved_consumed_slots',slot_ids=unresolved,scored=False))
++    # Final reporting, unlike a live ledger-prefix scan, requires independently
++    # published resource/stop records to have their matching committed events.
++    linked_resources={e['resource_path'] for e in state['events'] if e['event']=='session_end' and 'resource_path' in e}
++    linked_stops={e['path'] for e in state['operational_stops']}
++    for directory,linked in [('session_resources',linked_resources),('operational_stops',linked_stops)]:
++        for p in (run/directory).glob('*.json'):
++            if p.relative_to(run).as_posix() not in linked:
++                incidents.append(dict(event='unresolved_publication',path=p.relative_to(run).as_posix(),scored=False))
+     if (run/'supervisor_stop.json').exists():
+         try:
+             stop=read_json(run/'supervisor_stop.json')
+@@ -85,9 +97,10 @@ def report(root,plan):
+             values=result['gate']['embedding'];first=vectors.setdefault(slot['input_id'],values)
+             feature_stability.append(dict(slot_id=slot['slot_id'],input_id=slot['input_id'],max_abs_difference_from_first=max(abs(a-b) for a,b in zip(first,values)),new_independent_input=False))
+         except Exception as exc:incidents.append(dict(slot_id=slot['slot_id'],error=str(exc),scored=False))
+-    return dict(evidence_kind='development_observation',phase='P02D',status='INTEGRITY_INCIDENT' if incidents else 'INCOMPLETE' if len(observations)!=192 else 'COMPLETE_DEVELOPMENT',
++    stopped=bool(state['operational_stops'] or (stop and stop.get('resource_stop')))
++    return dict(evidence_kind='development_observation',phase='P02D',status='INTEGRITY_INCIDENT' if incidents else 'STOPPED_INCOMPLETE' if stopped else 'INCOMPLETE' if len(observations)!=192 else 'COMPLETE_DEVELOPMENT',
+         cells=cells,clusters=clusters,observations=observations,incidents=incidents,equal_family_summary=summaries,
+-        supervisor_stop=stop,
++        supervisor_stop=stop,operational_stops=state['operational_stops'],consumed_slots={k:v['state'] for k,v in state['slots'].items()},
+         feature_measurements=feature_measurements,feature_stability=feature_stability,ledger_integrity_complete=not any(i.get('event')=='ledger_integrity_incident' for i in incidents),
+         research_resources=dict(sessions=state['sessions'],measured_residency_seconds=state['measured_residency_seconds'],unknown_residency=state['unknown_residency'],
+             output_tokens_observed=sum(o['output_tokens'] or 0 for o in observations),output_tokens_unknown=sum(o['output_tokens'] is None for o in observations)),
+diff --git a/src/taskcognition/p02d_runner.py b/src/taskcognition/p02d_runner.py
+index bbca384..9c7bd7b 100644
+--- a/src/taskcognition/p02d_runner.py
++++ b/src/taskcognition/p02d_runner.py
+@@ -7,7 +7,8 @@ import time
+ import traceback
+ from datetime import datetime, timezone
+ from pathlib import Path
+-from .artifacts import read_json, write_new
++from .artifacts import read_json
++from .p02d_publication import write_new, read_optional, replace_state
+ from .contracts import IntegrityError, canonical, digest, file_hash, number, integer
+ from .p02d_plan import RUN, PLAN_DIR, require_authorization
+ from .p02d_ledger import append, scan, recover, dispatch, check_envelope, BudgetStop
+@@ -55,12 +56,17 @@ class ProcessWorker:
+     def poll(self):return self.process.poll()
+     def ready(self):
+         p=self.directory/'ready.json'
+-        return read_json(p) if p.exists() else None
++        return read_optional(p)
+     def incident(self):return (self.directory/'incident.json').exists()
++    def operational_stop(self):
++        value=read_optional(self.directory/'operational_stop.json')
++        if value is not None:
++            if value.get('scored') is not False or not isinstance(value.get('error'),str):raise IntegrityError('invalid worker stop')
++        return value
+     def send(self,slot):write_new(self.directory/'commands'/f'{slot["slot_id"]}.json',slot)
+     def result(self,slot):
+         p=self.directory/'results'/f'{slot["slot_id"]}.json'
+-        return read_json(p) if p.exists() else None
++        return read_optional(p)
+     def cancel(self,slot):write_new(self.directory/'cancel'/f'{slot["slot_id"]}.json',{'reason':'timeout'})
+     def finish(self):write_new(self.directory/'finish.json',{'stop':True})
+     def kill(self):
+@@ -85,6 +91,8 @@ def supervise_session(root,plan,slots,plan_hash,execution_start,*,worker_factory
+         now=clock()
+         if monitor is not None:monitor(worker)
+         if worker.incident():raise IntegrityError('worker software/evidence incident')
++        stop=getattr(worker,'operational_stop',lambda:None)()
++        if stop is not None:raise BudgetStop('worker deadline: '+stop['error'])
+         if now-last_heartbeat>=1:
+             append(run,'heartbeat',session_id=sid,seconds=now-started);last_heartbeat=now
+         if now-execution_start>=L['wall_seconds']-L['cleanup_seconds']:raise BudgetStop('execution wall termination')
+@@ -100,7 +108,7 @@ def supervise_session(root,plan,slots,plan_hash,execution_start,*,worker_factory
+         while (ready:=worker.ready()) is None:
+             tick()
+             if worker.poll() is not None:raise IntegrityError('worker exited before readiness')
+-            if clock()-started>=L['load_deadline_seconds']:raise IntegrityError('loader deadline; unscored incident')
++            if clock()-started>=L['load_deadline_seconds']:raise BudgetStop('loader deadline; no further admission')
+             sleep(.02)
+         number(ready['load_seconds'])
+         for ix,slot in enumerate(slots):
+@@ -143,27 +151,51 @@ def supervise_session(root,plan,slots,plan_hash,execution_start,*,worker_factory
+             if worker is not None:
+                 if worker.poll() is None:worker.kill()
+                 exit_code=worker.wait(L['cleanup_seconds']);safe=worker.poll() is not None
++                worker.close()
+             else:safe=True  # factory failed before returning child; production constructor has no post-spawn operations
+         except BaseException as exc:
+             cleanup_error=exc;safe=False
++            if worker is not None:
++                try:worker.close()
++                except BaseException:pass  # original cleanup failure remains dominant
+         finally:
+             elapsed=clock()-started;cleanup=clock()-cleanup_start
++            # Check evidence again after stopping the child: a budget trigger must
++            # never conceal an incident/result committed during cancellation.
++            evidence_error=None
++            try:
++                scan(run)
++                if worker is not None:
++                    if worker.incident():raise IntegrityError('worker incident during cleanup')
++                    if isinstance(worker,ProcessWorker):
++                        worker.operational_stop()  # malformed committed stop is an incident
++                        allowed={s['slot_id']:s for s in slots}
++                        for p in (worker.directory/'results').glob('*.json'):
++                            if p.stem not in allowed:raise IntegrityError('unknown worker result')
++                            validate_result(root,plan,allowed[p.stem],read_json(p))
++            except BaseException as exc:evidence_error=exc
++            operational=isinstance(error,BudgetStop) and safe and cleanup_error is None and evidence_error is None
++            classification='OPERATIONAL_STOP' if operational else 'INTEGRITY_INCIDENT' if error or cleanup_error or evidence_error else 'COMPLETE'
+             value=ready.get('load_seconds') if isinstance(ready,dict) else None
+             recorded_load=value if type(value) in (int,float) and math.isfinite(value) and value>=0 else None
+             record=dict(evidence_kind='development_observation',session_id=sid,stage=stage,seconds=elapsed,
+                 cleanup_seconds=cleanup,safe_stopped=safe,exit_code=exit_code,load_seconds=recorded_load,
+                 clock='perf_counter from before process creation through final wait; conservative residency, not GPU kernel time',
+-                error=None if error is None else repr(error),cleanup_error=None if cleanup_error is None else repr(cleanup_error),scored=False)
++                error=None if error is None else repr(error),cleanup_error=None if cleanup_error is None else repr(cleanup_error),
++                evidence_error=None if evidence_error is None else repr(evidence_error),classification=classification,scored=False)
+             # Independent cost record is written first, even if the main ledger is corrupt.
+-            try:
+-                write_new(run/'session_resources'/f'{sid}.json',record)
+-                append(run,'session_end',session_id=sid,seconds=elapsed,cleanup_seconds=cleanup,safe_stopped=safe,exit_code=exit_code)
+-                if error or cleanup_error:
+-                    write_new(run/'incidents'/f'{sid}.json',record)
+-                    append(run,'incident',session_id=sid,error=record['error'],cleanup_error=record['cleanup_error'],scored=False)
+-            finally:
+-                if worker is not None:worker.close()
++            resource=run/'session_resources'/f'{sid}.json';write_new(resource,record)
++            # Independent classification survives a corrupt/unappendable ledger.
++            terminal=run/('operational_stops' if operational else 'incidents')/f'{sid}.json'
++            if classification!='COMPLETE':write_new(terminal,record)
++            append(run,'session_end',session_id=sid,seconds=elapsed,cleanup_seconds=cleanup,safe_stopped=safe,exit_code=exit_code,
++                resource_path=resource.relative_to(run).as_posix(),resource_sha256=file_hash(resource))
++            if operational:
++                append(run,'operational_stop',session_id=sid,path=terminal.relative_to(run).as_posix(),sha256=file_hash(terminal))
++            elif classification=='INTEGRITY_INCIDENT':
++                append(run,'incident',session_id=sid,error=record['error'],cleanup_error=record['cleanup_error'],scored=False)
+             if cleanup_error is not None:raise IntegrityError('cleanup did not establish stopped state') from cleanup_error
++            if evidence_error is not None:raise IntegrityError('cleanup evidence integrity failure') from evidence_error
+     return scan(run)
+ 
+ def execute(root,expected_hash,*,worker_factory=ProcessWorker):
+@@ -191,14 +223,15 @@ def execute(root,expected_hash,*,worker_factory=ProcessWorker):
+     except BaseException as exc:
+         if began:
+             write_new(run/'supervisor_stop.json',dict(evidence_kind='development_observation',scored=False,
+-                error_type=type(exc).__name__,error=str(exc),traceback=traceback.format_exc(),resource_stop=isinstance(exc,BudgetStop)))
++                error_type=type(exc).__name__,error=str(exc),traceback=traceback.format_exc(),resource_stop=isinstance(exc,BudgetStop),
++                classification='OPERATIONAL_STOP' if isinstance(exc,BudgetStop) else 'INTEGRITY_INCIDENT'))
+         raise
+     finally:
+         # Close dispatch before reporting, including on evidence/cleanup exceptions.
+         state=read_json(root/'configs/phase_state.json')
+         if state.get('active_phase')=='P02D' and (state.get('real_dispatch_enabled') is True or began):
+             state.update(real_dispatch_enabled=False,status='EXECUTION_RECORDED' if complete else 'BLOCKED')
+-            (root/'configs/phase_state.json').write_bytes(canonical(state)+b'\n')
++            replace_state(root/'configs/phase_state.json',state)
+         if began:
+             write_new(run/'execution_end.json',dict(evidence_kind='development_observation',all_planned_executed=complete,
+                 wall_seconds=time.perf_counter()-started,real_dispatch_enabled=False))
+diff --git a/src/taskcognition/p02d_worker.py b/src/taskcognition/p02d_worker.py
+index 018daf7..39a7900 100644
+--- a/src/taskcognition/p02d_worker.py
++++ b/src/taskcognition/p02d_worker.py
+@@ -7,10 +7,11 @@ import argparse
+ import time
+ import traceback
+ from pathlib import Path
+-from .artifacts import read_json,write_new
++from .artifacts import read_json
++from .p02d_publication import write_new, read_optional, control_present
+ from .contracts import IntegrityError,digest,file_hash
+ from .p02d_plan import RUN,PLAN_DIR,require_authorization
+-from .p02d_ledger import scan
++from .p02d_ledger import scan, BudgetStop
+ from .p02d_features import validate_gate_input,decoder_feature,gate_vector
+ 
+ def generate_answer(model,tokenizer,request,cancel,torch,GenerationConfig,StoppingCriteria,StoppingCriteriaList):
+@@ -40,7 +41,7 @@ def generate_answer(model,tokenizer,request,cancel,torch,GenerationConfig,Stoppi
+         @checked
+         def __call__(self,input_ids,scores,**kwargs):
+             nonlocal reason
+-            if cancel.exists() or time.perf_counter()-start>=120:reason='timeout'
++            if control_present(cancel,{'reason':'timeout'}) or time.perf_counter()-start>=120:reason='timeout'
+             return reason is not None
+     try:
+         with torch.inference_mode(),sdpa_kernel([SDPBackend.MATH]):
+@@ -98,11 +99,11 @@ def main():
+         write_new(directory/'ready.json',dict(load_seconds=load_seconds,hidden_width=model.config.hidden_size,attention='sdpa forced MATH',dtype='bfloat16'))
+         for slot in slots:
+             command=directory/'commands'/f'{slot["slot_id"]}.json';wait_start=time.perf_counter()
+-            while not command.exists():
+-                if (directory/'finish.json').exists():return
++            while (command_value:=read_optional(command)) is None:
++                if control_present(directory/'finish.json',{'stop':True}):return
+                 if time.perf_counter()-wait_start>150:raise IntegrityError('supervisor command absent; finite child exit')
+                 time.sleep(.02)
+-            if read_json(command)!=slot:raise IntegrityError('changed worker command')
++            if command_value!=slot:raise IntegrityError('changed worker command')
+             ledger=scan(root/RUN)['slots'][slot['slot_id']]
+             if ledger['state']!='ADMITTED' or ledger['request_hash']!=slot['request_hash']:raise IntegrityError('durable admission mismatch')
+             torch.cuda.reset_peak_memory_stats()
+@@ -114,7 +115,7 @@ def main():
+                 torch.cuda.synchronize();start=time.perf_counter()
+                 with sdpa_kernel([SDPBackend.MATH]):vector=decoder_feature(model,ids,mask,plan['feature_specification']['hidden_width'])
+                 torch.cuda.synchronize();seconds=time.perf_counter()-start
+-                if seconds>120:raise IntegrityError('feature forward exceeded deadline; tranche stops')
++                if seconds>120:raise BudgetStop('feature forward exceeded deadline; tranche stops')
+                 cpu_start=time.perf_counter();gate=gate_vector(row,vector.cpu().tolist());cpu_seconds=cheap_seconds+time.perf_counter()-cpu_start
+                 result=dict(evidence_kind='development_observation',split='DEVELOPMENT',slot_id=slot['slot_id'],request_hash=slot['request_hash'],
+                     status='OK',dtype='float32',gate=gate,input_positions=len(row['token_ids']),forward_seconds=seconds,
+@@ -128,11 +129,11 @@ def main():
+             write_new(directory/'results'/f'{slot["slot_id"]}.json',result)
+         # Normal parent stop; finite wait prevents abandoned idle residency.
+         start=time.perf_counter()
+-        while not (directory/'finish.json').exists():
++        while not control_present(directory/'finish.json',{'stop':True}):
+             if time.perf_counter()-start>30:raise IntegrityError('finish handshake missing')
+             time.sleep(.02)
+     except BaseException as exc:
+-        write_new(directory/'incident.json',dict(evidence_kind='development_observation',scored=False,error=repr(exc),traceback=traceback.format_exc(),
++        write_new(directory/('operational_stop.json' if isinstance(exc,BudgetStop) else 'incident.json'),dict(evidence_kind='development_observation',scored=False,error=repr(exc),traceback=traceback.format_exc(),
+             partial_token_ids=getattr(exc,'partial_token_ids',None),partial_tokens_unscored=True,elapsed_since_loader_start=time.perf_counter()-load_start))
+         raise
+ 
+diff --git a/tests/test_p02d_corrections.py b/tests/test_p02d_corrections.py
+new file mode 100644
+index 0000000..8ae6812
+--- /dev/null
++++ b/tests/test_p02d_corrections.py
+@@ -0,0 +1,198 @@
++"""Deterministic real-filesystem publication and production stop/report tests."""
++import os
++import shutil
++import subprocess
++import sys
++import tempfile
++import threading
++import unittest
++from pathlib import Path
++from unittest.mock import patch
++from taskcognition import p02d_publication as pub
++from taskcognition.artifacts import read_json
++from taskcognition.contracts import IntegrityError
++from taskcognition.p02d_runner import ProcessWorker,supervise_session,execute
++from taskcognition.p02d_ledger import append,scan,dispatch,recover,BudgetStop
++from taskcognition.p02d_reporting import report
++from taskcognition.p02d_plan import PLAN_DIR,RUN,verify_plan
++from taskcognition.contracts import file_hash
++from test_p02d import ROOT,Clock,FakeWorker,module
++
++class Publication(unittest.TestCase):
++    def setUp(self):
++        self.tmp=tempfile.TemporaryDirectory();self.root=Path(self.tmp.name)
++    def tearDown(self):self.tmp.cleanup()
++    def paused(self,writer,reader,before,after):
++        entered=threading.Event();release=threading.Event();errors=[];link=os.link
++        def commit(src,dst):
++            # File is closed and fsynced; actual final namespace still absent.
++            self.assertTrue(Path(src).name.endswith('.pending'))
++            read_json(src)
++            entered.set()
++            if not release.wait(10):raise TimeoutError('test synchronization')
++            link(src,dst)
++        def run():
++            try:writer()
++            except BaseException as e:errors.append(e)
++        with patch.object(pub.os,'link',commit):
++            thread=threading.Thread(target=run);thread.start()
++            try:
++                self.assertTrue(entered.wait(10))
++                for _ in range(3):before(reader())
++            finally:release.set();thread.join(10)
++        self.assertFalse(thread.is_alive());self.assertEqual(errors,[])
++        after(reader())
++    def test_ready_result_and_command_visibility(self):
++        worker=ProcessWorker.__new__(ProcessWorker);worker.directory=self.root
++        slot={'slot_id':'feature_000','request_hash':'a'*64}
++        for name,writer,reader,value in (
++            ('ready',lambda:pub.write_new(self.root/'ready.json',{'load_seconds':2}),worker.ready,{'load_seconds':2}),
++            ('command',lambda:worker.send(slot),lambda:pub.read_optional(self.root/'commands/feature_000.json'),slot),
++            ('result',lambda:pub.write_new(self.root/'results/feature_000.json',slot),lambda:worker.result(slot),slot)):
++            with self.subTest(channel=name):
++                self.paused(writer,reader,lambda x:self.assertIsNone(x),lambda x:self.assertEqual(x,value))
++    def test_first_ledger_and_admission_visible_as_complete_prefix(self):
++        self.paused(lambda:append(self.root,'session_start',session_id='s',stage='feature'),lambda:scan(self.root),
++            lambda x:self.assertEqual(len(x['events']),0),lambda x:self.assertEqual(len(x['events']),1))
++        self.paused(lambda:append(self.root,'dispatch',session_id='s',slot_id='f',request_hash='h',output_reservation=0,input_positions=1),lambda:scan(self.root),
++            lambda x:self.assertEqual(len(x['slots']),0),lambda x:self.assertEqual(x['slots']['f']['state'],'UNKNOWN_ADMISSION'))
++        self.paused(lambda:append(self.root,'admitted',session_id='s',slot_id='f'),lambda:scan(self.root),
++            lambda x:self.assertEqual(x['slots']['f']['state'],'UNKNOWN_ADMISSION'),lambda x:self.assertEqual(x['slots']['f']['state'],'ADMITTED'))
++    def test_controls_incident_resource_and_finish_publication(self):
++        worker=ProcessWorker.__new__(ProcessWorker);worker.directory=self.root
++        slot={'slot_id':'f'}
++        for path,writer,value in [
++            ('cancel/f.json',lambda:worker.cancel(slot),{'reason':'timeout'}),
++            ('finish.json',worker.finish,{'stop':True}),
++            ('incident.json',lambda:pub.write_new(self.root/'incident.json',{'scored':False}),{'scored':False}),
++            ('session_resources/s.json',lambda:pub.write_new(self.root/'session_resources/s.json',{'seconds':2}),{'seconds':2})]:
++            self.paused(writer,lambda:pub.read_optional(self.root/path),lambda x:self.assertIsNone(x),lambda x:self.assertEqual(x,value))
++    def test_no_clobber_interruption_and_committed_corruption(self):
++        p=self.root/'ready.json';pub.write_new(p,{'load_seconds':2});old=p.read_bytes()
++        with self.assertRaises(FileExistsError):pub.write_new(p,{'load_seconds':99})
++        self.assertEqual(p.read_bytes(),old)
++        append(self.root,'session_start',session_id='s',stage='feature')
++        append(self.root,'dispatch',session_id='s',slot_id='f',request_hash='h',output_reservation=0,input_positions=1)
++        with patch.object(pub.os,'link',side_effect=InterruptedError('before commit')):
++            with self.assertRaises(InterruptedError):append(self.root,'admitted',session_id='s',slot_id='f')
++        self.assertEqual(scan(self.root)['slots']['f']['state'],'UNKNOWN_ADMISSION')
++        with self.assertRaises(IntegrityError):recover(self.root)
++        # Abandoned pre-commit file is not a ledger member.
++        (self.root/'ledger/.000002.json.abandoned.pending').write_text('{')
++        self.assertEqual(len(scan(self.root)['events']),2)
++        worker=ProcessWorker.__new__(ProcessWorker);worker.directory=self.root
++        for bad in ('{','null'):
++            p.write_text(bad)
++            with self.assertRaises((ValueError,IntegrityError)):worker.ready()
++        (self.root/'ledger/000002.json').write_text('{')
++        with self.assertRaises(IntegrityError):scan(self.root)
++    def test_process_crash_before_commit_does_not_publish(self):
++        # Actual lightweight child exits with prepared file still present. No model.
++        code="from pathlib import Path; import os; from taskcognition.p02d_publication import _prepare; _prepare(Path(__import__('sys').argv[1]),{'ok':True}); os._exit(23)"
++        p=subprocess.run([sys.executable,'-c',code,str(self.root/'ready.json')],capture_output=True)
++        self.assertEqual(p.returncode,23,p.stderr)
++        self.assertIsNone(pub.read_optional(self.root/'ready.json'))
++        self.assertEqual(len(list(self.root.glob('*.pending'))),1)
++
++class StopClassification(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls):cls.plan=module.candidate(ROOT)
++    def setUp(self):
++        self.tmp=tempfile.TemporaryDirectory();self.root=Path(self.tmp.name);self.run=self.root/RUN;self.clock=Clock()
++        shutil.copytree(ROOT/PLAN_DIR,self.root/PLAN_DIR)
++    def tearDown(self):self.tmp.cleanup()
++    def run_worker(self,kind,monitor=None):
++        return supervise_session(self.root,self.plan,self.plan['feature_schedule'],'a'*64,0,
++            worker_factory=lambda *a:kind(*a,clock=self.clock),clock=self.clock,sleep=self.clock.sleep,monitor=monitor)
++    def assert_stopped(self,completed):
++        state=scan(self.run);r=report(self.root,self.plan)
++        self.assertEqual(r['status'],'STOPPED_INCOMPLETE');self.assertEqual(r['incidents'],[])
++        self.assertFalse(state['unknown_residency']);self.assertEqual(len(state['operational_stops']),1)
++        self.assertEqual(len(r['feature_measurements']),completed)
++        self.assertEqual(read_json(self.run/'session_resources/features.json')['classification'],'OPERATIONAL_STOP')
++        self.assertTrue(all(c['targets'] is None for c in r['clusters']))
++        before=state['measured_residency_seconds']
++        with self.assertRaises(IntegrityError):recover(self.run)
++        with self.assertRaises(IntegrityError):dispatch(self.run,self.plan,self.plan['requests'][0],'features')
++        self.assertEqual(scan(self.run)['measured_residency_seconds'],before)
++    def test_within_session_reservation_stop_keeps_valid_first_measurement(self):
++        class Costly(FakeWorker):
++            def result(self,slot):self.clock.t+=751;return super().result(slot)
++        with self.assertRaises(BudgetStop):self.run_worker(Costly)
++        self.assert_stopped(1)
++    def test_monitored_deadline_known_stopped_slot_is_unscored(self):
++        class Slow(FakeWorker):
++            def result(self,slot):self.clock.t+=121;return None
++        with self.assertRaises(BudgetStop):self.run_worker(Slow)
++        self.assert_stopped(0)
++        self.assertEqual(set(report(self.root,self.plan)['consumed_slots'].values()),{'STOPPED_UNSCORED'})
++    def test_safe_loader_deadline_is_operational_not_software_failure(self):
++        class Loading(FakeWorker):
++            def ready(self):self.clock.t+=151;return None
++        with self.assertRaisesRegex(BudgetStop,'loader deadline'):self.run_worker(Loading)
++        self.assert_stopped(0)
++        self.assertEqual(set(report(self.root,self.plan)['consumed_slots'].values()),{'STOPPED_UNSCORED'})
++    def test_monitored_resource_stop_and_corrupt_resource_dominance(self):
++        def monitor(worker):raise BudgetStop('fixture measured resource stop')
++        with self.assertRaises(BudgetStop):self.run_worker(FakeWorker,monitor)
++        self.assert_stopped(0)
++        (self.run/'session_resources/features.json').write_text('{}')
++        self.assertEqual(report(self.root,self.plan)['status'],'INTEGRITY_INCIDENT')
++    def test_budget_with_unsafe_cleanup_is_integrity_incident(self):
++        class Unsafe(FakeWorker):
++            def result(self,slot):self.clock.t+=121;return None
++            def kill(self):self.clock.t+=30
++            def wait(self,timeout):self.clock.t+=timeout;raise TimeoutError('still active')
++        with self.assertRaisesRegex(IntegrityError,'cleanup'):self.run_worker(Unsafe)
++        self.assertEqual(report(self.root,self.plan)['status'],'INTEGRITY_INCIDENT')
++        resource=read_json(self.run/'session_resources/features.json')
++        self.assertEqual(resource['classification'],'INTEGRITY_INCIDENT');self.assertFalse(resource['safe_stopped'])
++    def test_budget_with_corrupt_ledger_retains_independent_cost_incident(self):
++        def monitor(worker):
++            (self.run/'ledger/000000.json').write_text('{')
++            raise BudgetStop('resource stop concurrent with corrupt evidence')
++        with self.assertRaises(IntegrityError):self.run_worker(FakeWorker,monitor)
++        self.assertEqual(report(self.root,self.plan)['status'],'INTEGRITY_INCIDENT')
++        self.assertGreater(read_json(self.run/'session_resources/features.json')['seconds'],0)
++        self.assertTrue((self.run/'incidents/features.json').exists())
++    def test_orphan_stop_after_crash_blocks_recovery_without_recharge(self):
++        pub.write_new(self.run/'operational_stops/features.json',{'classification':'OPERATIONAL_STOP'})
++        with self.assertRaises(IntegrityError):recover(self.run)
++        with self.assertRaises(IntegrityError):dispatch(self.run,self.plan,self.plan['requests'][0],'features')
++        r=report(self.root,self.plan)
++        self.assertEqual(r['status'],'INTEGRITY_INCIDENT')
++        self.assertEqual(r['research_resources']['measured_residency_seconds'],0)
++    def test_outer_stop_closes_dispatch_and_never_starts_answers(self):
++        class Slow(FakeWorker):
++            def result(self,slot):self.clock.t+=121;return None
++        pub.write_new(self.root/'configs/phase_state.json',dict(active_phase='P02D',status='EXECUTION_AUTHORIZED',real_dispatch_enabled=True))
++        def supervised(root,plan,slots,sha,start,**kw):
++            return supervise_session(root,plan,slots,sha,0,worker_factory=lambda *a:Slow(*a,clock=self.clock),clock=self.clock,sleep=self.clock.sleep)
++        with patch('taskcognition.p02d_runner.require_authorization',return_value=self.plan),patch('taskcognition.p02d_runner.supervise_session',side_effect=supervised) as run:
++            with self.assertRaises(BudgetStop):execute(self.root,'a'*64)
++            self.assertEqual(run.call_count,1)
++        self.assert_stopped(0)
++        self.assertFalse(read_json(self.root/'configs/phase_state.json')['real_dispatch_enabled'])
++        self.assertEqual(read_json(self.run/'supervisor_stop.json')['classification'],'OPERATIONAL_STOP')
++        self.assertFalse(read_json(self.run/'execution_end.json')['all_planned_executed'])
++
++class PendingEntrypoints(unittest.TestCase):
++    def test_superseded_v2_plan_rejected_by_prospective_verifier(self):
++        for version in ('v2','v3'):
++            path=ROOT/f'artifacts/development/p02d-cr01-plan-{version}/run_plan.json'
++            with self.assertRaisesRegex(IntegrityError,'superseded'):verify_plan(ROOT,path,file_hash(path))
++    def test_parent_and_child_reject_before_model_library_import(self):
++        code="""import sys,runpy
++class RejectModels:
++ def find_spec(self,fullname,path=None,target=None):
++  if fullname.split('.')[0] in ('torch','transformers'):raise AssertionError('MODEL IMPORT REACHED')
++sys.meta_path.insert(0,RejectModels())
++module=sys.argv.pop(1)
++runpy.run_module(module,run_name='__main__')
++"""
++        for module_name,extra in [('taskcognition.p02d_runner',[]),('taskcognition.p02d_worker',['--session','features','--stage','feature'])]:
++            p=subprocess.run([sys.executable,'-c',code,module_name,'--root',str(ROOT),'--plan-hash','0'*64,*extra],capture_output=True,text=True)
++            self.assertNotEqual(p.returncode,0);self.assertIn('pending',p.stderr);self.assertNotIn('MODEL IMPORT REACHED',p.stderr)
++        self.assertFalse((ROOT/RUN).exists())
++
++if __name__=='__main__':unittest.main()

@@ -24,7 +24,7 @@ def candidate(root):
             if str(f).endswith('.dist-info/RECORD'):
                 p=Path(dist.locate_file(f));bound[p.relative_to(root).as_posix()]=file_hash(p)
     return dict(evidence_kind='development_observation',split='DEVELOPMENT',phase='P02D',specification_version=VERSION,
-        plan_version='P02D-offline-v2',authorization='PENDING_SEPARATE_RECORD',scientific_freeze=False,completion_policy='descriptive',
+        plan_version='P02D-offline-v4',authorization='PENDING_SEPARATE_RECORD',scientific_freeze=False,completion_policy='descriptive',
         timestamp_utc=datetime.now(timezone.utc).isoformat(),output_directory=RUN,package=read_json(directory/'package.json'),
         inputs=read_json(directory/'inputs.json'),requests=read_json(directory/'answer_schedule.json'),feature_schedule=read_json(directory/'feature_schedule.json'),
         feature_specification=FEATURE_SPEC,environment=env,caps={'D':2048,'R':2048},limits=LIMITS,bound_files=bound,
@@ -40,5 +40,5 @@ def candidate(root):
 if __name__=='__main__':
     root=Path(__file__).resolve().parents[1]
     plan=validate_plan(candidate(root));path=root/PLAN_DIR/'run_plan.json';write_new(path,plan)
-    write_new(root/'reports/p02d/plan_receipt.json',dict(evidence_kind='development_observation',plan_path=PLAN_DIR+'/run_plan.json',sha256=file_hash(path),authorization='PENDING',live_dispatch=False))
-    print(json.dumps(read_json(root/'reports/p02d/plan_receipt.json')))
+    write_new(root/'reports/p02d_correction_v4/plan_receipt.json',dict(evidence_kind='development_observation',plan_path=PLAN_DIR+'/run_plan.json',sha256=file_hash(path),authorization='PENDING',live_dispatch=False))
+    print(json.dumps(read_json(root/'reports/p02d_correction_v4/plan_receipt.json')))

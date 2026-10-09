@@ -1,0 +1,12 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-10-09T17:29:47.125524+00:00",
+  "argv": [
+    ".venv-inference/Scripts/python.exe",
+    "scripts/p02d_correct_verify.py"
+  ],
+  "exit": 0,
+  "seconds": 22.178997200000595,
+  "stdout": "{\"status\": \"PASS\", \"plan_sha256\": \"c46977bfc0de1040965f08df8acbd55b9b063b386ccfb97f247a280ae2472365\", \"materialized_identical\": 256, \"bound_files\": 2530, \"baseline_snapshot\": 400}\n",
+  "stderr": ""
+}

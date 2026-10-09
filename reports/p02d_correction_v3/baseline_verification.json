@@ -1,0 +1,18 @@
+{
+  "timestamp_utc": "2026-10-09T17:18:05.219647+00:00",
+  "accepted_hashes": {
+    "artifacts/development/p02d-cr01-plan-v2/run_plan.json": "67c3f5ee03ee25f077356e7ef27cb2d870d54caef12318dbe9bfab0b6688ab3d",
+    "reports/p02d/P02D_preflight_review_packet.zip": "4a2c8a6834fbbebdd77ce1659bf9819aa61f152a82230fb282d57c916ba7f91b",
+    "reports/p02d/P02D_evidence_index.json": "a05958cf01a877a9510c7b85bb2d40d6008c6e1014ca2509e1a06370bc35d993"
+  },
+  "indexed_zip_and_current_files_verified": 400,
+  "head": "27e7358cc0ad58c9fb50f7b6b18c0e190347997e",
+  "archive_hashes": {
+    "P02D_coordinator_reproductions.zip": "21e4e5c6a0cf68e3b9f0e92b97b307cd7de2c825949d51d29f99470166ee8930",
+    "P02D_preflight_correction_prompt.md": "ee152daf01354ee9d71488bc37f9c80e842cbebfcb4530b6b38a5dd5270ef87f",
+    "P02D_reproduction_results.json": "40028062b578c962b477bba560a88c6b1d6f717f1951d4accd522f7563af6f96",
+    "p02d_review_reproductions.py": "677ba29686799c4591905218a511db82798cc4fbcc0afb72a7c89651f1b8552f",
+    "review_context.json": "7832d8600e28bff401811116f580695ab2c6883fcc813d330d0d3ab89a5ddc5d"
+  },
+  "model_work": 0
+}

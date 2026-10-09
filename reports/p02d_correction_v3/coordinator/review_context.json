@@ -1,0 +1,9 @@
+{
+  "date": "2026-10-09",
+  "new_model_work": 0,
+  "packet_sha256": "4a2c8a6834fbbebdd77ce1659bf9819aa61f152a82230fb282d57c916ba7f91b",
+  "indexed_files_verified": 400,
+  "reviewed_plan_sha256": "67c3f5ee03ee25f077356e7ef27cb2d870d54caef12318dbe9bfab0b6688ab3d",
+  "reported_suite_rerun": false,
+  "suite_limitation": "Coordinator system Python lacks torch; no dependencies installed. Reproductions need only standard library plus supplied project source."
+}

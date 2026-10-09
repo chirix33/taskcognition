@@ -1,0 +1,15 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-10-09T17:21:13.017834+00:00",
+  "argv": [
+    ".venv-inference/Scripts/python.exe",
+    "-m",
+    "unittest",
+    "test_p02d_corrections",
+    "-v"
+  ],
+  "exit": 0,
+  "seconds": 11.142315700002655,
+  "stdout": "",
+  "stderr": "test_parent_and_child_reject_before_model_library_import (test_p02d_corrections.PendingEntrypoints.test_parent_and_child_reject_before_model_library_import) ... ok\ntest_controls_incident_resource_and_finish_publication (test_p02d_corrections.Publication.test_controls_incident_resource_and_finish_publication) ... ok\ntest_first_ledger_and_admission_visible_as_complete_prefix (test_p02d_corrections.Publication.test_first_ledger_and_admission_visible_as_complete_prefix) ... ok\ntest_no_clobber_interruption_and_committed_corruption (test_p02d_corrections.Publication.test_no_clobber_interruption_and_committed_corruption) ... ok\ntest_process_crash_before_commit_does_not_publish (test_p02d_corrections.Publication.test_process_crash_before_commit_does_not_publish) ... ok\ntest_ready_result_and_command_visibility (test_p02d_corrections.Publication.test_ready_result_and_command_visibility) ... ok\ntest_budget_with_corrupt_ledger_retains_independent_cost_incident (test_p02d_corrections.StopClassification.test_budget_with_corrupt_ledger_retains_independent_cost_incident) ... ok\ntest_budget_with_unsafe_cleanup_is_integrity_incident (test_p02d_corrections.StopClassification.test_budget_with_unsafe_cleanup_is_integrity_incident) ... ok\ntest_monitored_deadline_known_stopped_slot_is_unscored (test_p02d_corrections.StopClassification.test_monitored_deadline_known_stopped_slot_is_unscored) ... ok\ntest_monitored_resource_stop_and_corrupt_resource_dominance (test_p02d_corrections.StopClassification.test_monitored_resource_stop_and_corrupt_resource_dominance) ... ok\ntest_within_session_reservation_stop_keeps_valid_first_measurement (test_p02d_corrections.StopClassification.test_within_session_reservation_stop_keeps_valid_first_measurement) ... ok\n\n----------------------------------------------------------------------\nRan 11 tests in 8.551s\n\nOK\n"
+}
