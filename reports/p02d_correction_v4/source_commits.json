@@ -1,0 +1,11 @@
+{
+  "baseline_packet_commit": "27e7358cc0ad58c9fb50f7b6b18c0e190347997e",
+  "baseline_evidence_commit": "f7e2e9b03039adeaceac3221ff067db5d9a429ee",
+  "correction_source_evidence_commit": "b5c6abd5edf6e1d8032d68567dd2f8e9c23bd7a4",
+  "branch": "codex/p02d-offline-preflight",
+  "source_patch_sha256": "f4ec48c9aa70f1b8d34557af04d069f85b657d8a960303ce3995f0258fe460cd",
+  "push": false,
+  "merge": false,
+  "history_rewrite": false,
+  "packet_commit": "subsequent local commit; recorded by Git, not self-referenced in packet"
+}
