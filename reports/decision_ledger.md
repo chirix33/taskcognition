@@ -41,3 +41,6 @@ P02C accepted once via docs/P02C_coordinator_review.md; verified 115 indexed fil
 
 ## P02D preflight checkpoint (2026-10-09T16:26:48.623224+00:00)
 Fixed 24-input selection eligible; 192 unique answer streams and 50 feature slots prepared, zero executed. Plan 662597e9610a2ef4951e9a0027756148d73a80ef4372b09b16168dd62c232ad0. One input-only post-norm masked-mean recipe and exact cheap observables implemented for this prospective diagnostic only. Physical cumulative ledger implemented; no reference tariff/beta/hard support/final feature or sample freeze adopted. Remaining decisions unchanged. Dispatch false; P02 incomplete/unsealed; P03 unstarted. See reports/phases/P02D_preflight_completion.md.
+
+## P02D pre-execution v2 correction (2026-10-09T16:37:07.785365+00:00)
+Malformed readiness could cause an additional error while persisting load/cost evidence. Corrected optional load metric handling and outer supervisor incident reporting; all 21 new checks rerun. Immutable v1 plan 662597e9610a2ef4951e9a0027756148d73a80ef4372b09b16168dd62c232ad0, v1 source commit fc2b8d4963e4e3473c2804d4d9ca79a75315d867 and v1 draft packet preserved. Active v2 plan 67c3f5ee03ee25f077356e7ef27cb2d870d54caef12318dbe9bfab0b6688ab3d; all 256 input/package/schedule files are byte-identical. No model work, retry or new selection. Dispatch false, no execution authorization.

@@ -1,5 +1,6 @@
 """Authorized-only sequential supervisor; all preparation/tests stay offline."""
 import os
+import math
 import subprocess
 import sys
 import time
@@ -147,8 +148,10 @@ def supervise_session(root,plan,slots,plan_hash,execution_start,*,worker_factory
             cleanup_error=exc;safe=False
         finally:
             elapsed=clock()-started;cleanup=clock()-cleanup_start
+            value=ready.get('load_seconds') if isinstance(ready,dict) else None
+            recorded_load=value if type(value) in (int,float) and math.isfinite(value) and value>=0 else None
             record=dict(evidence_kind='development_observation',session_id=sid,stage=stage,seconds=elapsed,
-                cleanup_seconds=cleanup,safe_stopped=safe,exit_code=exit_code,load_seconds=None if ready is None else ready['load_seconds'],
+                cleanup_seconds=cleanup,safe_stopped=safe,exit_code=exit_code,load_seconds=recorded_load,
                 clock='perf_counter from before process creation through final wait; conservative residency, not GPU kernel time',
                 error=None if error is None else repr(error),cleanup_error=None if cleanup_error is None else repr(cleanup_error),scored=False)
             # Independent cost record is written first, even if the main ledger is corrupt.
@@ -185,6 +188,11 @@ def execute(root,expected_hash,*,worker_factory=ProcessWorker):
             require_authorization(root,planpath,expected_hash)
             supervise_session(root,plan,[slot],expected_hash,started,worker_factory=worker_factory)
         complete=True
+    except BaseException as exc:
+        if began:
+            write_new(run/'supervisor_stop.json',dict(evidence_kind='development_observation',scored=False,
+                error_type=type(exc).__name__,error=str(exc),traceback=traceback.format_exc(),resource_stop=isinstance(exc,BudgetStop)))
+        raise
     finally:
         # Close dispatch before reporting, including on evidence/cleanup exceptions.
         state=read_json(root/'configs/phase_state.json')

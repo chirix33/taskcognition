@@ -1,0 +1,14 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-10-09T16:36:00.176505+00:00",
+  "argv": [
+    ".venv-inference/Scripts/python.exe",
+    "scripts/p02d_verify.py",
+    "--suffix",
+    "_v2"
+  ],
+  "exit": 0,
+  "seconds": 20.49104929999885,
+  "stdout": "{\"P01_interruption\": \"separate historical diagnostic\", \"P02C_snapshot_files_verified\": 115, \"accepted_hashes_preserved\": true, \"answer_slots\": 192, \"authorization_record_absent\": true, \"bound_files_verified\": 2529, \"documented_current_changes\": [\"README.md\", \"configs/phase_state.json\", \"reports/decision_ledger.md\"], \"evidence_kind\": \"development_observation\", \"feature_slots\": 50, \"historical_admitted_generations\": 75, \"historical_output_tokens\": 40555, \"historical_source_tests_raw_unchanged\": true, \"input_count\": 24, \"new_forwards\": 0, \"new_generations\": 0, \"new_gpu_measurements\": 0, \"new_model_loads\": 0, \"new_simulations\": 0, \"original_pdf_and_manuscript_preserved\": true, \"plan_sha256\": \"67c3f5ee03ee25f077356e7ef27cb2d870d54caef12318dbe9bfab0b6688ab3d\", \"production_pending_rejection\": \"P02D live execution pending separate authorization\", \"run_directory_absent\": true, \"runtime\": \".venv-inference/Scripts/python.exe with PYTHONPATH=src\", \"source_import\": \"src/taskcognition/p02d_plan.py\", \"status\": \"PASS\", \"strictly_unique_streams\": 192}\n",
+  "stderr": ""
+}

@@ -148,6 +148,19 @@ class LedgerAndSupervisor(unittest.TestCase):
         self.assertEqual(len(state['slots']),1);self.assertIsNone(next(iter(state['slots'].values()))['result'])
         self.assertGreater(state['measured_residency_seconds'],0)
         with self.assertRaises(IntegrityError):recover(self.run)
+    def test_malformed_readiness_preserves_cost_and_kills_child(self):
+        class Malformed(FakeWorker):
+            def ready(self):return {'unexpected':'missing load_seconds'}
+        workers=[]
+        def factory(*a):
+            w=Malformed(*a,clock=self.clock);workers.append(w);return w
+        with self.assertRaises(KeyError):supervise_session(self.root,self.plan,self.plan['feature_schedule'],'a'*64,0,
+            worker_factory=factory,clock=self.clock,sleep=self.clock.sleep)
+        state=scan(self.run);self.assertTrue(workers[0].killed and workers[0].waited)
+        self.assertEqual(state['measured_residency_seconds'],2)
+        self.assertIsNone(read_json(self.run/'session_resources/features.json')['load_seconds'])
+        self.assertIsNone(next(iter(state['slots'].values()))['result'])
+        with self.assertRaises(IntegrityError):recover(self.run)
     def test_unknown_dispatch_recovery_and_corruption_fail_closed(self):
         append(self.run,'session_start',session_id='features',stage='feature')
         dispatch(self.run,self.plan,self.plan['feature_schedule'][0],'features')

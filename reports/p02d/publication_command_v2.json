@@ -1,0 +1,12 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-10-09T16:35:57.828004+00:00",
+  "argv": [
+    ".venv-inference/Scripts/python.exe",
+    "scripts/p02d_publish.py"
+  ],
+  "exit": 0,
+  "seconds": 2.2353082000008726,
+  "stdout": "{\"authorization\": \"PENDING\", \"evidence_kind\": \"development_observation\", \"live_dispatch\": false, \"plan_path\": \"artifacts/development/p02d-cr01-plan-v2/run_plan.json\", \"sha256\": \"67c3f5ee03ee25f077356e7ef27cb2d870d54caef12318dbe9bfab0b6688ab3d\"}\n",
+  "stderr": ""
+}

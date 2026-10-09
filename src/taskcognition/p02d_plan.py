@@ -9,7 +9,7 @@ from .p02d_features import FEATURE_SPEC, forward_schedule, validate_gate_input
 
 VERSION='TaskCognition-CR01-2026-10-05-v1'
 RUN='artifacts/development/p02d-cr01-tranche'
-PLAN_DIR='artifacts/development/p02d-cr01-plan-v1'
+PLAN_DIR='artifacts/development/p02d-cr01-plan-v2'
 MODEL_REVISION='b968826d9c46dd6066d109eabc6255188de91218'
 ROOT_SEED=930261005
 LIMITS=dict(answer_slots=192,output_tokens=393216,feature_forwards=50,feature_input_positions=102400,

@@ -1,6 +1,6 @@
 """Read-only production plan checks and preservation checks; no model work."""
 from pathlib import Path
-import hashlib,json,zipfile,subprocess
+import hashlib,json,zipfile,subprocess,argparse
 from taskcognition.artifacts import read_json,write_new
 from taskcognition.contracts import file_hash,digest,IntegrityError
 from taskcognition.p02d_plan import PLAN_DIR,RUN,verify_plan
@@ -8,6 +8,7 @@ from taskcognition.p02d_runner import execute
 from taskcognition.p02d_reporting import report
 
 root=Path(__file__).resolve().parents[1];out=root/'reports/p02d'
+parser=argparse.ArgumentParser();parser.add_argument('--suffix',default='');suffix=parser.parse_args().suffix
 receipt=read_json(out/'plan_receipt.json');plan=verify_plan(root,root/receipt['plan_path'],receipt['sha256'])
 assert not (root/RUN).exists(),'no actual run directory permitted in preflight'
 try:execute(root,receipt['sha256'])
@@ -37,8 +38,8 @@ assert not (root/'configs/p02d_execution_authorization.json').exists()
 empty=report(root,plan)
 assert len(empty['cells'])==12 and all(c['executed']==c['retained']==0 for c in empty['cells'])
 assert len(empty['clusters'])==24 and all(c['targets'] is None for c in empty['clusters'])
-write_new(out/'unexecuted_plan_report.json',dict(empty,report_role='pre-dispatch planned denominators only; no empirical outputs'))
-write_new(out/'verification.json',dict(evidence_kind='development_observation',status='PASS',plan_sha256=receipt['sha256'],
+write_new(out/('unexecuted_plan_report'+suffix+'.json'),dict(empty,report_role='pre-dispatch planned denominators only; no empirical outputs'))
+write_new(out/('verification'+suffix+'.json'),dict(evidence_kind='development_observation',status='PASS',plan_sha256=receipt['sha256'],
     bound_files_verified=len(plan['bound_files']),P02C_snapshot_files_verified=len(old),accepted_hashes_preserved=True,
     documented_current_changes=changes,original_pdf_and_manuscript_preserved=True,historical_source_tests_raw_unchanged=True,
     production_pending_rejection=rejection,run_directory_absent=True,authorization_record_absent=True,
@@ -46,4 +47,4 @@ write_new(out/'verification.json',dict(evidence_kind='development_observation',s
     new_model_loads=0,new_forwards=0,new_generations=0,new_gpu_measurements=0,new_simulations=0,
     historical_admitted_generations=75,historical_output_tokens=40555,P01_interruption='separate historical diagnostic',
     source_import='src/taskcognition/p02d_plan.py',runtime='.venv-inference/Scripts/python.exe with PYTHONPATH=src'))
-print(json.dumps(read_json(out/'verification.json')))
+print(json.dumps(read_json(out/('verification'+suffix+'.json'))))

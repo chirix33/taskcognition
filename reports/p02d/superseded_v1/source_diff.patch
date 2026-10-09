@@ -1,0 +1,1769 @@
+diff --git a/README.md b/README.md
+index aa6615d..6b7eca2 100644
+--- a/README.md
++++ b/README.md
+@@ -1,87 +1,89 @@
+-# TaskCognition implementation handoff
+-
+-Active specification: **TaskCognition-CR01-2026-10-05-v1**, approved 2026-10-05. P01 is sealed; P02A/P02B are accepted DEVELOPMENT checkpoints. P02C is offline adoption only; P02 remains incomplete/unsealed and live dispatch is disabled. There are no final gate/audit/test results.
+-
+-Start with [adopted CR01](docs/amendments/CR01_2026-10-05_v1.md), [active protocol](docs/PROTOCOL_SOURCE_OF_TRUTH.md), [active manuscript source](paper/cr01-2026-10-05-v1/taskcognition.tex), and [P02C report](reports/phases/P02C_completion.md). Primary D/R cap is fixed at 2,048 total tokens; completion is descriptive, with no eligibility threshold. Historical bootstrap instructions below are retained for provenance, not current authorization.
+-
+-## Historical initial handoff (2026-09-28)
+-
+-1. Extract this bundle into a dedicated TaskCognition repository. If a repository already exists, merge the files deliberately; never overwrite existing instructions, code, or user changes without examining them.
+-2. Keep `AGENTS.md` at the repository root and the supplied `docs/` and `reference/` directories beside it.
+-3. Open Codex in that repository on the workstation that will run Qwen.
+-4. Send Codex the entire contents of [P00](docs/prompts/P00_bootstrap.md).
+-5. Send the coordinating research assistant Codex's summary and `reports/phases/P00_completion.md`, including its linked evidence and any unresolved decisions. Do not start P01 until the P00 review is accepted.
+-
+-Only P00 is initially authorized. The later prompts are staged instructions, not permission to run the whole study. The coordinator may replace a later prompt after reviewing actual evidence.
+-
+-## What this study tests
+-
+-Whether directly learning continuous reasoning benefit and independent-draw direct-correct/reasoning-imperfect spoilage gives a better constrained deployment than equally resourced winner and factorized outcome routers. One frozen Qwen3-8B answer checkpoint; two fixed packages; one input-only gate; one admitted answer generation per deployed query.
+-
+-The objective is to evaluate this claim honestly. A positive finding requires the prespecified evidence. Null, negative, underpowered, frequent-fallback, and infeasible outcomes must remain visible. Completing an implementation phase does not imply that the scientific claim passed.
+-
+-## Reading map
+-
+-| File | Purpose |
+-|---|---|
+-| [AGENTS.md](AGENTS.md) | Codex's non-negotiable operating instructions |
+-| [Protocol](docs/PROTOCOL_SOURCE_OF_TRUTH.md) | Paper equations, scope, and decision contracts |
+-| [Roadmap](docs/IMPLEMENTATION_ROADMAP.md) | Vertical phases, dependencies, and review gates |
+-| [Architecture](docs/ARCHITECTURE_AND_DATA.md) | CLI, state machine, schemas, provenance, and resumption |
+-| [Statistics](docs/STATISTICAL_CONTRACT.md) | Estimation, auditing, power, and final claim test |
+-| [Decisions](docs/DECISIONS_AND_GAPS.md) | Choices to resolve during development; no invented final values |
+-| [Evidence](docs/EVIDENCE_AND_MANUSCRIPT.md) | Required reports, claim ledger, and paper completion |
+-| [Sources](docs/SOURCE_REGISTER.md) | Authoritative PDF fingerprint and external references |
+-| [Review template](docs/templates/PHASE_COMPLETION_TEMPLATE.md) | Codex completion report |
+-| [Seal template](docs/templates/PHASE_SEAL_TEMPLATE.md) | Review acceptance and evidence hash record |
+-| [Change template](docs/templates/CHANGE_REQUEST_TEMPLATE.md) | Changes and their consequences for validity |
+-
+-The PDF is included as `reference/TaskCognition_Revised_Verified.pdf`. It is the unchanged revised paper, renamed only for portability. Verify its SHA-256 against the source register.
+-
+-## Roles
+-
+-- User: research owner, phase progression, resource limits, and scientific redirections.
+-- Coordinating assistant: reviews reports, identifies corrections, recommends seals, and provides the next Codex prompt.
+-- Codex: implements and verifies only the active phase, reports evidence, and stops at the phase boundary.
+-
+-No external services, Jev integration, paid inference, manuscript submission, or remote publication are authorized by this handoff. Local Qwen implementation proceeds in the appropriate phase. A phase's bounded run plan authorizes routine execution within that phase without repeated permission questions.
+-
+-## What to send back after each phase
+-
+-Send the completion report, changed-file summary, commit or patch identity, commands and outcomes, failed checks, decision requests, run manifest, and relevant compact JSON/CSV evidence. Large raw generations remain in the repository's artifact store, addressed by hashes. A narrative saying "all tests passed" alone cannot seal a research phase.
+-
+-The original TeX and bibliography are not included. Their recovery is tracked; it does not block bootstrap. They are needed before editing the original manuscript in P09.
+-
+-## P00 implementation addendum (2026-09-28 UTC)
+-
+-The sentence above describes the supplied handoff. Repository inspection found the original
+-`docs/iclr2027/taskcognition.tex`, `taskcognition.bib`, and protocol. They remain unchanged
+-and ignored under the existing archive rule. Their verified PDF matches the governing
+-reference byte for byte. See `reports/source_inventory.json` and `reports/decision_ledger.md`.
+-
+-P00 provides an offline package, not an inference backend. Run from this repository root:
+-
+-```powershell
+-.venv/Scripts/python.exe -m taskcognition doctor
+-.venv/Scripts/python.exe -m taskcognition fixture-run --output artifacts/fixtures/my-check --dry-run
+-.venv/Scripts/python.exe -m taskcognition fixture-run --output artifacts/fixtures/my-check
+-.venv/Scripts/python.exe -m taskcognition verify-artifacts --run artifacts/fixtures/my-check
+-.venv/Scripts/python.exe -m taskcognition fixture-run --output artifacts/fixtures/my-check --resume
+-.venv/Scripts/python.exe -m unittest discover -s tests -v
+-```
+-
+-`--resume` verifies complete evidence without rewriting it; partial evidence is retained
+-and rejected. The `collect` command is a rejection-only guard. No model loading,
+-downloads, generation, training, audit, test analysis, or phase advancement is implemented.
+-The fixture's family names label six copies of an analytical example, not six real tasks.
+-All synthetic records are explicitly `fixture`, including their synthetic cost units.
+-
+-For a fresh environment, use Python 3.12.14 (tested), create a project-local venv, install
+-`requirements-build.lock` into it, and run `python -m pip install --no-build-isolation .`.
+-Runtime and tests have no third-party dependencies. This workstation's offline installation
+-instead built a wheel using the already bundled pinned build tools, then installed that
+-wheel into `.venv` with `--no-index --no-deps`. Exact commands and limits are in the P00 report.
+-
+-The manifest class is an explicitly UNFROZEN bootstrap schema. Real freeze completeness,
+-native parsing/admission/cost accounting, and held-out readers need their authorized later
+-phases. Guard tests exercise synthetic rows only; they do not establish a security boundary.
++# TaskCognition implementation handoff
++
++Active specification: **TaskCognition-CR01-2026-10-05-v1**, approved 2026-10-05. P01 is sealed; P02A/P02B/P02C are accepted DEVELOPMENT checkpoints. P02D prepares an offline runner and pending plan; P02 remains incomplete/unsealed and live dispatch is disabled. There are no final gate/audit/test results.
++
++Start with [adopted CR01](docs/amendments/CR01_2026-10-05_v1.md), [active protocol](docs/PROTOCOL_SOURCE_OF_TRUTH.md), [active manuscript source](paper/cr01-2026-10-05-v1/taskcognition.tex), and [P02C report](reports/phases/P02C_completion.md). Primary D/R cap is fixed at 2,048 total tokens; completion is descriptive, with no eligibility threshold. Historical bootstrap instructions below are retained for provenance, not current authorization.
++
++Current preparation: [P02D runner contract](docs/P02D_RUNNER_CONTRACT.md), [preflight report](reports/phases/P02D_preflight_completion.md), and [pending execution request](reports/p02d/execution_request.md). The 192 answer slots and 50 feature forwards require a separate conveyed execution authorization; a plan file or CLI flag does not enable them.
++
++## Historical initial handoff (2026-09-28)
++
++1. Extract this bundle into a dedicated TaskCognition repository. If a repository already exists, merge the files deliberately; never overwrite existing instructions, code, or user changes without examining them.
++2. Keep `AGENTS.md` at the repository root and the supplied `docs/` and `reference/` directories beside it.
++3. Open Codex in that repository on the workstation that will run Qwen.
++4. Send Codex the entire contents of [P00](docs/prompts/P00_bootstrap.md).
++5. Send the coordinating research assistant Codex's summary and `reports/phases/P00_completion.md`, including its linked evidence and any unresolved decisions. Do not start P01 until the P00 review is accepted.
++
++Only P00 is initially authorized. The later prompts are staged instructions, not permission to run the whole study. The coordinator may replace a later prompt after reviewing actual evidence.
++
++## What this study tests
++
++Whether directly learning continuous reasoning benefit and independent-draw direct-correct/reasoning-imperfect spoilage gives a better constrained deployment than equally resourced winner and factorized outcome routers. One frozen Qwen3-8B answer checkpoint; two fixed packages; one input-only gate; one admitted answer generation per deployed query.
++
++The objective is to evaluate this claim honestly. A positive finding requires the prespecified evidence. Null, negative, underpowered, frequent-fallback, and infeasible outcomes must remain visible. Completing an implementation phase does not imply that the scientific claim passed.
++
++## Reading map
++
++| File | Purpose |
++|---|---|
++| [AGENTS.md](AGENTS.md) | Codex's non-negotiable operating instructions |
++| [Protocol](docs/PROTOCOL_SOURCE_OF_TRUTH.md) | Paper equations, scope, and decision contracts |
++| [Roadmap](docs/IMPLEMENTATION_ROADMAP.md) | Vertical phases, dependencies, and review gates |
++| [Architecture](docs/ARCHITECTURE_AND_DATA.md) | CLI, state machine, schemas, provenance, and resumption |
++| [Statistics](docs/STATISTICAL_CONTRACT.md) | Estimation, auditing, power, and final claim test |
++| [Decisions](docs/DECISIONS_AND_GAPS.md) | Choices to resolve during development; no invented final values |
++| [Evidence](docs/EVIDENCE_AND_MANUSCRIPT.md) | Required reports, claim ledger, and paper completion |
++| [Sources](docs/SOURCE_REGISTER.md) | Authoritative PDF fingerprint and external references |
++| [Review template](docs/templates/PHASE_COMPLETION_TEMPLATE.md) | Codex completion report |
++| [Seal template](docs/templates/PHASE_SEAL_TEMPLATE.md) | Review acceptance and evidence hash record |
++| [Change template](docs/templates/CHANGE_REQUEST_TEMPLATE.md) | Changes and their consequences for validity |
++
++The PDF is included as `reference/TaskCognition_Revised_Verified.pdf`. It is the unchanged revised paper, renamed only for portability. Verify its SHA-256 against the source register.
++
++## Roles
++
++- User: research owner, phase progression, resource limits, and scientific redirections.
++- Coordinating assistant: reviews reports, identifies corrections, recommends seals, and provides the next Codex prompt.
++- Codex: implements and verifies only the active phase, reports evidence, and stops at the phase boundary.
++
++No external services, Jev integration, paid inference, manuscript submission, or remote publication are authorized by this handoff. Local Qwen implementation proceeds in the appropriate phase. Execution requires the conveyed phase authorization; a proposed run plan alone does not authorize model work.
++
++## What to send back after each phase
++
++Send the completion report, changed-file summary, commit or patch identity, commands and outcomes, failed checks, decision requests, run manifest, and relevant compact JSON/CSV evidence. Large raw generations remain in the repository's artifact store, addressed by hashes. A narrative saying "all tests passed" alone cannot seal a research phase.
++
++The original TeX and bibliography are not included. Their recovery is tracked; it does not block bootstrap. They are needed before editing the original manuscript in P09.
++
++## P00 implementation addendum (2026-09-28 UTC)
++
++The sentence above describes the supplied handoff. Repository inspection found the original
++`docs/iclr2027/taskcognition.tex`, `taskcognition.bib`, and protocol. They remain unchanged
++and ignored under the existing archive rule. Their verified PDF matches the governing
++reference byte for byte. See `reports/source_inventory.json` and `reports/decision_ledger.md`.
++
++P00 provides an offline package, not an inference backend. Run from this repository root:
++
++```powershell
++.venv/Scripts/python.exe -m taskcognition doctor
++.venv/Scripts/python.exe -m taskcognition fixture-run --output artifacts/fixtures/my-check --dry-run
++.venv/Scripts/python.exe -m taskcognition fixture-run --output artifacts/fixtures/my-check
++.venv/Scripts/python.exe -m taskcognition verify-artifacts --run artifacts/fixtures/my-check
++.venv/Scripts/python.exe -m taskcognition fixture-run --output artifacts/fixtures/my-check --resume
++.venv/Scripts/python.exe -m unittest discover -s tests -v
++```
++
++`--resume` verifies complete evidence without rewriting it; partial evidence is retained
++and rejected. The `collect` command is a rejection-only guard. No model loading,
++downloads, generation, training, audit, test analysis, or phase advancement is implemented.
++The fixture's family names label six copies of an analytical example, not six real tasks.
++All synthetic records are explicitly `fixture`, including their synthetic cost units.
++
++For a fresh environment, use Python 3.12.14 (tested), create a project-local venv, install
++`requirements-build.lock` into it, and run `python -m pip install --no-build-isolation .`.
++Runtime and tests have no third-party dependencies. This workstation's offline installation
++instead built a wheel using the already bundled pinned build tools, then installed that
++wheel into `.venv` with `--no-index --no-deps`. Exact commands and limits are in the P00 report.
++
++The manifest class is an explicitly UNFROZEN bootstrap schema. Real freeze completeness,
++native parsing/admission/cost accounting, and held-out readers need their authorized later
++phases. Guard tests exercise synthetic rows only; they do not establish a security boundary.
+diff --git a/configs/phase_state.json b/configs/phase_state.json
+index ee0f6db..6c983a4 100644
+--- a/configs/phase_state.json
++++ b/configs/phase_state.json
+@@ -1 +1 @@
+-{"accepted_previous_checkpoint":"P02B","accepted_previous_checkpoint_record":"reports/phases/P02B_accepted_checkpoint.md","accepted_previous_phase":"P01","accepted_previous_seal":"reports/phases/P01_accepted_seal.md","active_phase":"P02C","amendment_sha256":"ec07c0133224fb10f535fc9ac4d0816d12fb10acc683c09043de717cc089c0b8","authorized_next_phase":null,"latest_event":"configs/state_events/014_P02C_review_checkpoint.json","p02b_plan_sha256":"9afcea3b3fe41aa39cfbf44e30f81514128f077ecdb42a18f13fb25f8f2eff36","parent_phase":"P02","real_dispatch_enabled":false,"specification_version":"TaskCognition-CR01-2026-10-05-v1","status":"READY_FOR_REVIEW","study_freeze":null}
++{"accepted_previous_checkpoint":"P02C","accepted_previous_checkpoint_record":"reports/phases/P02C_accepted_checkpoint.md","accepted_previous_phase":"P01","accepted_previous_seal":"reports/phases/P01_accepted_seal.md","active_phase":"P02D","amendment_sha256":"ec07c0133224fb10f535fc9ac4d0816d12fb10acc683c09043de717cc089c0b8","authorized_next_phase":null,"checkpoint":"PREFLIGHT","latest_event":"configs/state_events/016_P02D_preflight_review_checkpoint.json","p02_sealed":false,"p02b_plan_sha256":"9afcea3b3fe41aa39cfbf44e30f81514128f077ecdb42a18f13fb25f8f2eff36","p02d_plan_sha256":"662597e9610a2ef4951e9a0027756148d73a80ef4372b09b16168dd62c232ad0","p03_started":false,"parent_phase":"P02","real_dispatch_enabled":false,"specification_version":"TaskCognition-CR01-2026-10-05-v1","status":"READY_FOR_REVIEW","study_freeze":null}
+diff --git a/configs/state_events/015_P02C_accept_P02D_offline.json b/configs/state_events/015_P02C_accept_P02D_offline.json
+new file mode 100644
+index 0000000..32fc292
+--- /dev/null
++++ b/configs/state_events/015_P02C_accept_P02D_offline.json
+@@ -0,0 +1 @@
++{"acceptance_hash":"4c7a5f926c7d7e90ea97cfb5e60e3935d82d7b5ca57a3161a4025b0070fcdf74","acceptance_reference":"docs/P02C_coordinator_review.md","answer_slots_authorized":0,"event":"P02C_accepted_P02D_offline_authorized","evidence_kind":"development_observation","feature_forwards_authorized":0,"p01_sealed":true,"p02_sealed":false,"p02a_accepted":true,"p02b_accepted":true,"p02c_accepted":true,"p03_started":false,"previous_state_sha256":"c7195e28971f68210224b0c0d5115e04ce561fd6ceac94e11791b27840f9fa0a","real_dispatch_enabled":false,"timestamp_utc":"2026-10-09T16:00:26.979673+00:00"}
+diff --git a/configs/state_events/016_P02D_preflight_review_checkpoint.json b/configs/state_events/016_P02D_preflight_review_checkpoint.json
+new file mode 100644
+index 0000000..f9de55a
+--- /dev/null
++++ b/configs/state_events/016_P02D_preflight_review_checkpoint.json
+@@ -0,0 +1 @@
++{"authorized_answer_slots":0,"authorized_feature_forwards":0,"event":"P02D_PREFLIGHT_READY_FOR_REVIEW","evidence_kind":"development_observation","new_model_work":0,"p02_sealed":false,"p03_started":false,"plan_sha256":"662597e9610a2ef4951e9a0027756148d73a80ef4372b09b16168dd62c232ad0","previous_state_sha256":"f5d4221eb830ee44205874d01ff6ed013ac66ee500400e74bda6b1087f282f36","real_dispatch_enabled":false,"timestamp_utc":"2026-10-09T16:26:48.623224+00:00"}
+diff --git a/configs/state_snapshots/P02C_accepted_before_P02D.json b/configs/state_snapshots/P02C_accepted_before_P02D.json
+new file mode 100644
+index 0000000..ee0f6db
+--- /dev/null
++++ b/configs/state_snapshots/P02C_accepted_before_P02D.json
+@@ -0,0 +1 @@
++{"accepted_previous_checkpoint":"P02B","accepted_previous_checkpoint_record":"reports/phases/P02B_accepted_checkpoint.md","accepted_previous_phase":"P01","accepted_previous_seal":"reports/phases/P01_accepted_seal.md","active_phase":"P02C","amendment_sha256":"ec07c0133224fb10f535fc9ac4d0816d12fb10acc683c09043de717cc089c0b8","authorized_next_phase":null,"latest_event":"configs/state_events/014_P02C_review_checkpoint.json","p02b_plan_sha256":"9afcea3b3fe41aa39cfbf44e30f81514128f077ecdb42a18f13fb25f8f2eff36","parent_phase":"P02","real_dispatch_enabled":false,"specification_version":"TaskCognition-CR01-2026-10-05-v1","status":"READY_FOR_REVIEW","study_freeze":null}
+diff --git a/configs/state_snapshots/P02D_before_preflight_checkpoint.json b/configs/state_snapshots/P02D_before_preflight_checkpoint.json
+new file mode 100644
+index 0000000..26834b0
+--- /dev/null
++++ b/configs/state_snapshots/P02D_before_preflight_checkpoint.json
+@@ -0,0 +1 @@
++{"accepted_previous_checkpoint":"P02C","accepted_previous_checkpoint_record":"reports/phases/P02C_accepted_checkpoint.md","accepted_previous_phase":"P01","accepted_previous_seal":"reports/phases/P01_accepted_seal.md","active_phase":"P02D","amendment_sha256":"ec07c0133224fb10f535fc9ac4d0816d12fb10acc683c09043de717cc089c0b8","authorized_next_phase":null,"latest_event":"configs/state_events/015_P02C_accept_P02D_offline.json","p02b_plan_sha256":"9afcea3b3fe41aa39cfbf44e30f81514128f077ecdb42a18f13fb25f8f2eff36","parent_phase":"P02","real_dispatch_enabled":false,"specification_version":"TaskCognition-CR01-2026-10-05-v1","status":"IN_PROGRESS","study_freeze":null}
+diff --git a/docs/P02D_RUNNER_CONTRACT.md b/docs/P02D_RUNNER_CONTRACT.md
+new file mode 100644
+index 0000000..0314ec9
+--- /dev/null
++++ b/docs/P02D_RUNNER_CONTRACT.md
+@@ -0,0 +1,41 @@
++# P02D prospective development runner — offline preparation
++
++Authority: original reference PDF, CR01 v1, C01–C03, and the archived P02D prompt/review. This is a specific DEVELOPMENT plan, not a final feature/study/candidate/deployment freeze. P02 remains incomplete/unsealed. P03 is unstarted. No execution is authorized by this document.
++
++## Entry and immutable plan
++
++The candidate lives in `artifacts/development/p02d-cr01-plan-v1`; the distinct future result root is `artifacts/development/p02d-cr01-tranche`. `reports/p02d/plan_receipt.json` identifies the immutable plan's SHA-256. Source fingerprints, installed Transformers source hashes, key dependency RECORD hashes, full effective sampler, native source closure, original questions, all three tokenizations, metadata/gold outcome stores, gate-only inputs and every request are bound by that plan.
++
++The production entry is `.venv-inference/Scripts/python.exe -m taskcognition.p02d_runner --plan-hash <reviewed SHA>` with `PYTHONPATH=src`. It rejects now. There is no `--force`/`--live` override. A subsequent conveyed execution authorization must bind the exact plan hash in a separate `configs/p02d_execution_authorization.json` record, its own file hash in phase state, explicit user-message reference, exact limits, active P02D, `EXECUTION_AUTHORIZED` and dispatch true. Neither that record nor that state is created in preflight. Both parent and child check before loading a model; a workflow guard is not a security boundary against someone deliberately rewriting all authorization files.
++
++The old P01/P02A/P02B source and cap semantics are untouched. Real final-label guards remain closed. The installed historical 0.1.1 wheel is not used: source import path is checked, and child `PYTHONPATH` is explicit.
++
++## Fixed selection, schedule and input boundary
++
++Native seed `930261005 + 10000*f`, size four, indices 0–3, in established six-family order. Input listing is family-major. Answer loop is draw 0–3 outermost, native index 0–3 next, family innermost; the mode pair is D,R for even `(index+draw)`, otherwise R,D. This provides 192 independent streams/seeds, eight per input, with no same-seed D/R pairing, no replacement or autoregressive warm-up. Every cap is 2,048 including thinking and final. The exact P02B common instruction and generation defaults are unchanged except the authorized prospective cap.
++
++Feature slots are two warm-ups on the first two family-major inputs, one pass over all 24, then two consecutive extra measurements for indices 0 and 1 within each family: 50 total, 48 measured. Actual fixed input positions total 6,597; the ceiling is 102,400. The embedding receives only raw question IDs, not chat tokens, family, gold, filenames, answers or traces. Gate payloads have exact key allowlists; `input_id` is join metadata, not a learned value. The nine cheap features and Unicode/line conventions are fully specified in `p02d_features.FEATURE_SPEC`. No normalization is fitted.
++
++Cached Qwen config has hidden width 4,096. Installed `Qwen3Model.forward` applies `self.norm(hidden_states)` immediately before returning `last_hidden_state`; its source snapshot and hash are included. `decoder_feature` calls `model.model` in eval/inference mode with no past keys, `use_cache=False`, and mask-weighted float32 mean. No alternate layer/pooling or separate encoder is implemented. CPU tests use fake decoder outputs; no real decoder ran.
++
++## Clocks, admission and accounting
++
++One append-only, SHA-linked ledger covers both stages. A single supervisor owns writes; exclusive file creation prevents a duplicate event from overwriting evidence. A durable dispatch consumes its slot before child startup for the first slot, and before any subsequent feature command. Durable admission precedes the command permitting computation. Unknown dispatch/admission consumes the slot. Feature input-position and answer output-cap reservations are cumulative and never returned for failures.
++
++Residency is conservative **worker lifetime**, from just before process creation through final wait; it includes cached-file verification, load, idle handshake, warm-ups, CPU work, serialization, synchronization, cancellation and cleanup. Session-end elapsed seconds are charged once. Nested load/forward/generation timings are descriptive components, never added again to that charge. Warm-ups are explicitly charged passes. GPU memory values will be descriptive worker measurements, not a scalar tariff.
++
++Execution wall time is `perf_counter` from the one authorized supervisor invocation through end reporting; it includes between-worker validation. Offline code preparation/initial plan validation is separate. No automatic restart is supported. An unfinished session reports its last durable heartbeat as a measured lower bound, with the remainder unknown. An interrupted or corrupt ledger, unresolved slot, prior incident, or unsafe cleanup rejects more dispatch. Re-reading completed events never recharges them. Any later recovery decision needs review; it cannot reopen consumed slots.
++
++Before an answer, reserve 300 seconds (150 load/startup, 120 generation, 30 cleanup), 2,048 output tokens, and evidence headroom. Before feature-worker startup reserve 300 seconds; before every later forward reserve 150 seconds (120 forward + 30 cleanup) within the feature sublimits and combined budget. Actual feature-worker elapsed time is included when reserving its next forward. This is an admission policy, not a mathematical hard service-time support bound.
++
++Loader/readiness deadline is 150 seconds. Answer timeout is 120 seconds, with up to ten additional seconds to observe cooperative return, then kill/wait; finite cleanup waits are 30 seconds. Thus cancellation overhead may exceed the initial 300-second reservation: it is measured, never clipped, and future admission uses actual elapsed costs. A known answer timeout may retain a valid parsed result; known forced generation termination is an explicit retained zero with unknown output-token count, never fabricated raw output. A loader failure, callback error, unexpected child exit, corrupt result or evidence/monitor error is unscored and stops. A feature timeout, partial stage or invalid vector stops before all answers. Watchdogs reserve cleanup headroom against the combined/feature ceilings and persist overshoot. Failed kill/wait leaves unsafe/unknown residency and blocks continuation.
++
++The supervisor's `finally` attempts child stop/wait even after monitoring/evidence errors and independently writes a session resource record before extending the main ledger. If storage is itself unwritable, ordinary persistence cannot be guaranteed: existing ledger and worker stderr remain evidence, the invocation fails, and dispatch closes; absence is an integrity incident. No implementation can turn a total storage failure into a valid scored record.
++
++## Evidence and analysis
++
++The operational ceiling is 0.5 GiB additional **execution** evidence, including vectors and eventual packet. Admission reserves `2 * current execution/report bytes + 16 MiB`, allowing a second local copy plus next-event headroom. The monitor stops at that reserve boundary. Actual final sizes and any overshoot must still be reported; this is not permission to hide a packaging overrun. Preflight source/review artifacts are preparation, separately measured.
++
++The report uses 12 cells with planned denominator 16 and 24 input clusters. Known model failures retain strict primary scores; unexpected software/missing evidence is listed separately. Only complete four-D/four-R clusters use the existing target aggregator for T_b, T_h, direct redraw and 0.10/0.25 declines. A partial input has achieved counts/score lists/variance, no filled K=4 target. Equal-family means are descriptive over observed subsets; any missing family leaves the six-family mean undefined. Cross-pairs are never independent rows. Invalid evidence is prominently labeled even when earlier valid rows can still be inspected.
++
++No routing, fitting, significance test or P03 simulation is implemented. One-query deployment remains one live feature forward, cheap features/MLP/calibration, one selected answer, and an explicitly reviewed initialization policy. Research's 50 feature passes and 192 answers are collection costs. Cached vectors do not make future live features free. No dollar tariff, beta, hardware support bound or final allocation is selected.
+diff --git a/reports/decision_ledger.md b/reports/decision_ledger.md
+index d3c0278..32dfbfe 100644
+--- a/reports/decision_ledger.md
++++ b/reports/decision_ledger.md
+@@ -35,3 +35,9 @@ Approval date: **2026-10-05**, America/Chicago. Verbatim user approval: **“Und
+ P02B accepted once in event 012 after four-artifact/598-file verification; the later supplied coordinator review confirms it. P01 remains sealed and P02A/P02B accepted. CR01 resolves the scientific-choice pause only: fixed 2,048 primary D/R total tokens, descriptive completion, no 99% eligibility or automatic threshold stop. P02 remains incomplete/unsealed; P03 unstarted; real dispatch false.
+ 
+ Affected artifacts: root AGENTS/README; active protocol, statistical scope annotation, decisions, roadmap, architecture/evidence/source guidance; future P02-P09 prompts; completion/freeze templates; versioned development design template; revised manuscript/figure in `paper/cr01-2026-10-05-v1`. Exact path/hash inventory: `reports/p02c/changed_artifacts.json`. Original sources and all diagnostic scores remain unchanged. C01-C03, method/comparators, audit inequalities and all primary superiority criteria continue to govern. D05/D06/D08-D17 remain unresolved where not already accepted; no final values or resource authority are inferred. No new generations or features were measured.
++
++## P02D offline authorization (2026-10-09T16:00:26.979673+00:00)
++P02C accepted once via docs/P02C_coordinator_review.md; verified 115 indexed files and four accepted hashes. CR01 approval unchanged. P02D preparation only; dispatch false, no live slots/forwards authorized. P02 incomplete/unsealed; P03 unstarted. See reports/p02d/acceptance_verification.json and provenance_followup.md.
++
++## P02D preflight checkpoint (2026-10-09T16:26:48.623224+00:00)
++Fixed 24-input selection eligible; 192 unique answer streams and 50 feature slots prepared, zero executed. Plan 662597e9610a2ef4951e9a0027756148d73a80ef4372b09b16168dd62c232ad0. One input-only post-norm masked-mean recipe and exact cheap observables implemented for this prospective diagnostic only. Physical cumulative ledger implemented; no reference tariff/beta/hard support/final feature or sample freeze adopted. Remaining decisions unchanged. Dispatch false; P02 incomplete/unsealed; P03 unstarted. See reports/phases/P02D_preflight_completion.md.
+diff --git a/scripts/p02d_accept.py b/scripts/p02d_accept.py
+new file mode 100644
+index 0000000..213c94f
+--- /dev/null
++++ b/scripts/p02d_accept.py
+@@ -0,0 +1,75 @@
++"""Verify P02C and record the single conveyed offline acceptance."""
++from pathlib import Path
++from datetime import datetime, timezone
++import hashlib, json, shutil, subprocess, zipfile
++from taskcognition.artifacts import read_json, write_new
++from taskcognition.contracts import file_hash, canonical
++
++root = Path(__file__).resolve().parents[1]
++out = root / 'reports/p02d'
++expected = {
++ 'reports/p02c/P02C_review_packet.zip':'287e8032566d2d284e8856b84eb9f9a53cf9b35064b6c9e94e98a6a684308407',
++ 'reports/p02c/P02C_evidence_index.json':'3daef8e6d92b50ed25ec44d16d19788c848c7bffa09dc83048c2ba22a5c42b0e',
++ 'reports/phases/P02C_completion.md':'cf601dcc2ee336e427825a9236898d1d8a2fa9fa2d82c5fc9c7a14eaa7af6a12',
++ 'reports/p02c/next_development_proposal.md':'c4dabc27a0871ee0675e39cc33b0b14c06d6a36a043e65387d688f0818ee14b9'}
++for n, h in expected.items(): assert file_hash(root/n) == h, n
++index = read_json(root/'reports/p02c/P02C_evidence_index.json')['files']
++with zipfile.ZipFile(root/'reports/p02c/P02C_review_packet.zip') as z:
++    assert z.testzip() is None
++    for n,h in index.items():
++        assert hashlib.sha256(z.read(n)).hexdigest() == h == file_hash(root/n), n
++statepath = root/'configs/phase_state.json'
++state = read_json(statepath)
++assert state['active_phase'] == 'P02C' and not state['real_dispatch_enabled']
++now = datetime.now(timezone.utc).isoformat()
++out.mkdir(exist_ok=True)
++for src, dest in [('docs/prompts/P02D_offline_preflight_prompt.md','authorization_prompt.md'),
++                  ('docs/P02C_coordinator_review.md','P02C_coordinator_review.md'),
++                  ('reports/p02c/P02C_packet_receipt.json','P02C_external_packet_receipt.json')]:
++    target=out/dest
++    with target.open('xb') as f: f.write((root/src).read_bytes())
++refs = subprocess.check_output(['git','for-each-ref','--format=%(refname:short) %(objectname)','refs/remotes'],text=True)
++commits = {}
++for short in ('4b0c200','53129ba'):
++    commit=subprocess.check_output(['git','rev-parse',short],text=True).strip()
++    assert subprocess.run(['git','merge-base','--is-ancestor',commit,'origin/codex/p02c-cr01-adoption']).returncode==0
++    commits[short]=commit
++build=root/'docs/P02C_coordinator_build_evidence.zip'
++derivative={'supplied':build.exists(),'coordinator_claimed_pdf_sha256':'a97b04ac1bf319abef5f10b93630b01ea31d3f9798977509e60efc019eef9859',
++            'compiled_by':'coordinator external environment, not Codex workstation','reported_pages':13}
++if build.exists():
++    shutil.copyfile(build,out/'P02C_coordinator_build_evidence.zip')
++    with zipfile.ZipFile(build) as z:
++        assert z.testzip() is None
++        derivative.update(archive_sha256=file_hash(build),members={n:hashlib.sha256(z.read(n)).hexdigest() for n in z.namelist()},
++                          pdf_supplied=any(n.lower().endswith('.pdf') for n in z.namelist()))
++        for name in ['P02C_coordinator_verification.json','build/build_commands.json']:
++            derivative[name]=json.loads(z.read(name))
++write_new(out/'acceptance_verification.json',dict(evidence_kind='development_observation',timestamp_utc=now,
++    accepted_hashes=expected,indexed_files_verified=len(index),current_files_match=True,commits=commits,
++    source_head=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
++    prompt_sha256=file_hash(out/'authorization_prompt.md'),review_sha256=file_hash(out/'P02C_coordinator_review.md'),
++    prior_receipt_sha256=file_hash(out/'P02C_external_packet_receipt.json'),local_tracking_refs=refs,external_derivative=derivative))
++note=f'''# P02C acceptance and provenance follow-up — 2026-10-09
++
++Actual record time: {now}. The user conveys `docs/P02C_coordinator_review.md`: **accept P02C as the completed offline CR01-adoption checkpoint**. The four accepted hashes and all 115 indexed ZIP/current files passed before source changes. See `acceptance_verification.json`. This is one checkpoint acceptance, not a P02 seal.
++
++The earlier P02C report's no-push statement describes Codex's work at that checkpoint. The user's later handoff reports commits 4b0c200 and 53129ba pushed on codex/p02c-cr01-adoption. Local origin/codex/p02c-cr01-adoption points to 55e8fbde2f43b43cfbf0b8cfaf840d3ed0998b22 and contains both commits. This is consistent with a subsequent push. No fetch, remote inspection, push, transfer or remote restore was performed here; current remote contents and complete off-machine coverage are unverified. Those commits include source and local review packets (the P02C packet nests accepted P02B evidence); ignored weights/environments and any other ignored raw files are not thereby proven backed up. Durable final-study backup remains open, not a precondition imposed on this offline diagnostic.
++
++The supplied coordinator build archive is preserved with member hashes and external attribution. It contains logs/renders/build metadata, but no PDF member. The claimed 13-page PDF hash is recorded as coordinator-supplied, not locally verified PDF bytes. No derivative PDF is substituted for the governing reference. The workstation's historical unavailable-build statement remains true. The existing external P02C receipt is included in this handoff, not claimed independently checked by the earlier coordinator review.
++'''
++(out/'provenance_followup.md').write_text(note,encoding='utf-8')
++(root/'reports/phases/P02C_accepted_checkpoint.md').write_text(note.split('The earlier')[0],encoding='utf-8')
++snapshot=root/'configs/state_snapshots/P02C_accepted_before_P02D.json'
++with snapshot.open('xb') as f:f.write(statepath.read_bytes())
++event='configs/state_events/015_P02C_accept_P02D_offline.json'
++write_new(root/event,dict(evidence_kind='development_observation',timestamp_utc=now,event='P02C_accepted_P02D_offline_authorized',
++    acceptance_reference='docs/P02C_coordinator_review.md',acceptance_hash=file_hash(out/'P02C_coordinator_review.md'),
++    previous_state_sha256=file_hash(snapshot),p01_sealed=True,p02a_accepted=True,p02b_accepted=True,p02c_accepted=True,
++    p02_sealed=False,p03_started=False,real_dispatch_enabled=False,answer_slots_authorized=0,feature_forwards_authorized=0))
++state.update(active_phase='P02D',status='IN_PROGRESS',real_dispatch_enabled=False,accepted_previous_checkpoint='P02C',
++    accepted_previous_checkpoint_record='reports/phases/P02C_accepted_checkpoint.md',latest_event=event)
++statepath.write_bytes(canonical(state)+b'\n')
++with (root/'reports/decision_ledger.md').open('a',encoding='utf-8') as f:
++    f.write(f'\n## P02D offline authorization ({now})\nP02C accepted once via docs/P02C_coordinator_review.md; verified 115 indexed files and four accepted hashes. CR01 approval unchanged. P02D preparation only; dispatch false, no live slots/forwards authorized. P02 incomplete/unsealed; P03 unstarted. See reports/p02d/acceptance_verification.json and provenance_followup.md.\n')
++print('PASS: accepted P02C once; offline P02D active, dispatch false')
+diff --git a/scripts/p02d_finish.py b/scripts/p02d_finish.py
+new file mode 100644
+index 0000000..d317e18
+--- /dev/null
++++ b/scripts/p02d_finish.py
+@@ -0,0 +1,121 @@
++"""Close offline preflight; no live authorization is created."""
++from pathlib import Path
++from datetime import datetime,timezone
++import json
++from taskcognition.artifacts import read_json,write_new
++from taskcognition.contracts import file_hash,canonical
++from taskcognition.p02d_plan import PLAN_DIR,RUN
++
++root=Path(__file__).resolve().parents[1];out=root/'reports/p02d';now=datetime.now(timezone.utc).isoformat()
++verification=read_json(out/'verification.json');assert verification['status']=='PASS'
++for n in ['regression_suite.json','focused_tests_final.json','authorization_followup_tests.json','feature_wall_test.json','verification_command.json']:
++    assert read_json(out/n)['exit']==0,n
++assert not (root/RUN).exists() and not (root/'configs/p02d_execution_authorization.json').exists()
++statepath=root/'configs/phase_state.json';state=read_json(statepath)
++assert state['active_phase']=='P02D' and state['real_dispatch_enabled'] is False
++snapshot=root/'configs/state_snapshots/P02D_before_preflight_checkpoint.json'
++with snapshot.open('xb') as f:f.write(statepath.read_bytes())
++event='configs/state_events/016_P02D_preflight_review_checkpoint.json'
++write_new(root/event,dict(evidence_kind='development_observation',timestamp_utc=now,event='P02D_PREFLIGHT_READY_FOR_REVIEW',
++    previous_state_sha256=file_hash(snapshot),plan_sha256=verification['plan_sha256'],real_dispatch_enabled=False,
++    authorized_answer_slots=0,authorized_feature_forwards=0,p02_sealed=False,p03_started=False,new_model_work=0))
++state.update(status='READY_FOR_REVIEW',checkpoint='PREFLIGHT',real_dispatch_enabled=False,latest_event=event,
++    p02d_plan_sha256=verification['plan_sha256'],p02_sealed=False,p03_started=False)
++statepath.write_bytes(canonical(state)+b'\n')
++with (root/'reports/decision_ledger.md').open('a',encoding='utf-8') as f:
++    f.write(f'\n## P02D preflight checkpoint ({now})\nFixed 24-input selection eligible; 192 unique answer streams and 50 feature slots prepared, zero executed. Plan {verification["plan_sha256"]}. One input-only post-norm masked-mean recipe and exact cheap observables implemented for this prospective diagnostic only. Physical cumulative ledger implemented; no reference tariff/beta/hard support/final feature or sample freeze adopted. Remaining decisions unchanged. Dispatch false; P02 incomplete/unsealed; P03 unstarted. See reports/phases/P02D_preflight_completion.md.\n')
++commands=[]
++for p in sorted(out.glob('*command.json')):
++    v=read_json(p);commands.append(dict(log=p.name,argv=v['argv'],exit=v['exit'],seconds=v['seconds']))
++for n in ['focused_tests_v1.json','focused_tests_v2.json','regression_suite.json','focused_tests_final.json','authorization_followup_tests.json','feature_wall_test.json']:
++    v=read_json(out/n);commands.append(dict(log=n,argv=v['argv'],exit=v['exit'],seconds=v['seconds']))
++write_new(out/'commands_summary.json',dict(evidence_kind='development_observation',commands=commands,
++    scope='Offline preparation/test command durations only; no model execution time',
++    code_preparation_interval_utc={'acceptance':read_json(out/'acceptance_verification.json')['timestamp_utc'],'checkpoint':now},
++    new_model_loads=0,new_answer_generations=0,new_feature_forwards=0,new_gpu_measurements=0,new_simulations=0,
++    additional_failures_reference='preparation_failures.json',gpu_smoke='NOT_RUN: explicitly unauthorized',
++    temp_policy='TEMP and TMP set to resolved project-local tmp/p02d-tests for tests after initial sandbox-temp failure'))
++text=f'''# P02D preflight completion
++
++**P02D PREFLIGHT READY_FOR_REVIEW.** Recorded {now}. Real dispatch is false. P02 remains incomplete/unsealed; P03 is unstarted. The 192 answer slots and 50 feature forwards are still unapproved for execution.
++
++## Scope and authority
++
++The archived `reports/p02d/authorization_prompt.md` and `P02C_coordinator_review.md` authorize only offline preparation. P02C acceptance was recorded once in event 015 and `P02C_accepted_checkpoint.md`, after all four accepted hashes and all 115 indexed files matched both the accepted ZIP and current files. P01 remains sealed; P02A/B/C are accepted development checkpoints. No CR01 reapproval was requested.
++
++Authority remains the original reference PDF SHA-256 `9eed0fe74f46c3acbc200183cf11693f1bec66a1180568087aeb775c97d8f6c8`, accepted C01–C03, and adopted CR01 SHA-256 `ec07c0133224fb10f535fc9ac4d0816d12fb10acc683c09043de717cc089c0b8`. CR01 approval date is 2026-10-05; its original adoption timestamp is preserved. Both caps are 2,048 total generated tokens; completion is descriptive. All strict parser/scorer/failure/target/audit/test requirements remain unchanged.
++
++Branch: `codex/p02d-offline-preflight`, baseline `55e8fbde2f43b43cfbf0b8cfaf840d3ed0998b22`. Exact local evidence/packet commits and source diff are in `reports/p02d/source_commits.json` and `source_diff.patch`. Pre-existing untracked coordinator review, build archive and P02D prompt remain untouched and are not included in task commits at their user-owned paths; exact task-owned archive copies are included. No push, merge, fetch, download, upgrade or external transfer occurred.
++
++## Delivered slice
++
++The immutable candidate plan is `{PLAN_DIR}/run_plan.json`, SHA-256 **`{verification['plan_sha256']}`**. It is a DEVELOPMENT plan with separate authorization pending, not a study/candidate/deployment manifest. Its 2,529 bound files cover source, runtime Python source/metadata fingerprints, native source, configs, all selected inputs, schedules and package information. A later authorization record can reference this hash without changing the plan. Runtime Python is the existing `.venv-inference`, with explicit `PYTHONPATH=src` and checked import paths; the old installed wheel cannot silently supply these modules.
++
++- Materialized 24 native questions/configs with exact fixed seeds, size four, indices 0–3 and original question text. Raw token lengths are 22–214, D serialized lengths 161–353, R lengths 157–349; all pass the 2,048 ceiling separately. Exact tokens/prompts/hashes are stored. No truncation, replacement or outcome screening occurred. Historical nominal/native/latent/content exclusions and future split exclusions are explicit; no final populations were invented.
++- Published 192 answer slots, four D/four R per input, 192 unique streams and sampling seeds, 393,216 output tokens reserved, J=0. The exact loop order and alternating first mode are fixed. P02B instruction and all non-cap effective generation defaults are preserved.
++- Implemented one same-checkpoint feature path: `model.model`, eval/inference, no KV cache, post-final-RMSNorm width 4,096, masked float32 mean and float32 vector. Installed Qwen source semantics and cached config were inspected without weight loading. Exact nine cheap observables and leakage allowlists are fixed prospectively. 50 feature slots comprise two charged warm-ups and 48 measurements, totaling 6,597 actual planned input positions, bounded by 102,400. No feature or normalization was fitted or measured.
++- Implemented hash-bound pending-authorization guards, a unified durable ledger, finite child supervision, measured overshoot, no replay/cost duplication, partial-run inspection and development aggregation through the existing target implementation. Old source/guards are untouched. New `p02d_*` modules do not reopen historical phases or final collection.
++- Prepared 12 cell reports with denominator 16 and 24 cluster records. `unexecuted_plan_report.json` is a pre-dispatch denominator record: every executed/retained count is zero and all empirical targets are absent. Fake test rows never populate an empirical table. Complete future K=4 clusters alone receive T_b/T_h, redraw and 0.10/0.25 diagnostics; partial/corrupt evidence remains explicitly incomplete.
++
++See `docs/P02D_RUNNER_CONTRACT.md`, `resource_ledger_schema.json`, source code and `execution_request.md` for clocks, source boundaries, reservation rules and exact stop behavior. No scalar tariff, beta, hard cost-support bound, final feature freeze or final sample allocation was adopted.
++
++## Verification
++
++All commands and durations actually logged are in `commands_summary.json`; complete output/exit logs are adjacent. Tests use CPU tensors and fake decoder/workers/clocks, never a real model load. Existing historical tests also remain offline. Relevant commands used `.venv-inference/Scripts/python.exe` and `PYTHONPATH=src` (plus `tests` for named test invocations).
++
++| Command/check | Result | Evidence |
++|---|---|---|
++| `scripts/p02d_accept.py` | PASS, exit 0; 115 snapshot/current hashes and four accepted artifacts before edits | acceptance_verification.json |
++| `scripts/p02d_prepare.py` | PASS, exit 0; all 24 eligible, no collisions, 192 unique streams/seeds, 50 planned forwards | preparation_command.json; plan preparation_checks.json |
++| First focused discovery | FAIL, exit 1; seven Windows sandbox temporary-directory access errors, before relevant fake tests could run | focused_tests_v1.json |
++| Focused discovery after project-local TEMP/TMP | PASS, 17 tests, exit 0 | focused_tests_v2.json |
++| `-m unittest discover -s tests -v` | PASS, 119 tests: 102 existing plus then-current 17 new checks, exit 0 | regression_suite.json |
++| Expanded focused discovery | PASS, 19 tests, exit 0 | focused_tests_final.json |
++| Targeted authorization/recovery/report follow-up | PASS, eight tests, exit 0 after follow-up guard changes | authorization_followup_tests.json |
++| Feature-stage wall overshoot test | PASS, one additional focused check, exit 0; overshoot retained, answer stage blocked | feature_wall_test.json |
++| `scripts/p02d_publish.py` | PASS, exit 0; immutable pending plan published | publication_command.json; plan_receipt.json |
++| `scripts/p02d_verify.py` | PASS, exit 0; 2,529 bound files; real production entry rejects pending execution; no run directory created | verification_command.json; verification.json |
++| Original reference/manuscript and historical source/tests/raw evidence | PASS, hashes unchanged; original PDF relevant contracts read with bundled pypdf | verification.json |
++| GPU/model smoke, forward, generation, simulation, fitting, final collection | NOT RUN, explicitly unauthorized | zero-work accounting |
++
++There are 20 distinct new focused checks in the final test file; the last additions were run in targeted follow-ups, not falsely presented as one final 122-test full-suite invocation. Current source and full test bytes are included for review. Offline fixtures do not validate live GPU performance or final theorem assumptions.
++
++Other preparation failures: the initial ad-hoc tokenizer command used the lightweight `.venv` and lacked Transformers; the existing inference environment worked. `pdftotext` was unavailable, and the first bundled-pypdf console print hit cp1252 math-symbol encoding; UTF-8 extraction succeeded. No dependencies were installed. Prepublication adapter-reference and P01 native-ID exclusion corrections changed no question, prompt, stream or output; they are disclosed separately. No empirical attempt exists to discard or replace.
++
++## Data, resources and provenance
++
++New model loads **0**, GPU work/measurements **0**, feature forwards **0**, answer generations **0**, gate fits **0**, simulations **0**, final labels **0**. CPU native question/tokenizer materialization and fixture validation are preparation. Historical totals remain **75 admitted generations / 40,555 output tokens**, with P01's deliberate interruption a separate diagnostic. No current GPU verification is claimed.
++
++The proposed limits are 192 slots, 393,216 output tokens, 50 forwards/102,400 feature positions, four hours cumulative conservative residency, five hours execution wall, and 0.5 GiB execution evidence including vectors/packet; feature sublimits are 15/20 minutes with 120-second forwards. Answer deadline is 120 seconds; reserve 300 seconds before each answer. Operational cancellation/cleanup can overshoot: actual costs are retained, not clipped, and unknown safe-stop state blocks work. Physical cost measurements do not settle the final scalar support problem. Preparation durations and local artifact sizes are separate from these unexecuted limits; exact packet and local directory sizes are in the external receipt.
++
++The provenance follow-up reconciles the historical no-push statement with the later user report. Local `origin/codex/p02c-cr01-adoption` at 55e8fbd contains 4b0c200 and 53129ba; no remote query or restore verified current remote contents. A source/packet push does not prove complete off-machine coverage of ignored raw artifacts. The previous external P02C packet receipt is included in this handoff.
++
++The supplied coordinator build archive is preserved with member/source hashes and attribution to external pdfTeX/BibTeX TeX Live 2023/Debian. It contains logs and renders, **no PDF bytes**. The coordinator's 13-page PDF hash `a97b04ac1bf319abef5f10b93630b01ea31d3f9798977509e60efc019eef9859` is recorded as reported, not independently verified here. Codex did not compile it; the original governing PDF and historical workstation unavailable-build statement remain unchanged. Missing derivative PDF does not block this preparation.
++
++## Findings, limitations and next request
++
++The fixed selection is eligible and the offline code paths pass the described checks. This establishes a reviewable prospective runner/plan, not successful live execution, feature throughput, routing performance or final-study feasibility. Startup hashes, supervisor/ledger work and source checks add real future overhead and are included in the applicable measured clocks. Total storage failure cannot guarantee a new evidence write; any missing record remains an integrity incident and must not be scored.
++
++`execution_request.md` requests only the exact pending 192-answer/50-forward tranche under the stated ceilings. The 2.12-hour answer estimate and 136,808-token illustration come from a tiny P02B subset; a 2x timing scenario exceeds the four-hour ceiling before features. A truthful partial run is possible. Four inputs/family and K=4 do not settle population precision, independent-sample allocation, direct-perfect audit denominator adequacy, or a hard cost bound. The reference-dollar tariff remains unapproved. No external-drive purchase or backup condition was imposed on this local diagnostic; durable backup and final-study capacity remain required review items before irreplaceable final collection.
++
++## Changes and decisions
++
++| Item | Status | Impact |
++|---|---|---|
++| P02C acceptance | Recorded once, event 015 | Offline P02D only |
++| CR01 cap/completion | Unchanged approved v1 | Fixed 2,048, descriptive completion; no old eligibility branch |
++| Feature conventions/order | Explicit candidate recipe, no search | Prospectively bound for this diagnostic, not final freeze |
++| Unified physical ledger/reservations | Implemented and offline tested | No tariff or hard mathematical support adopted |
++| Native/P02B strict pipeline | Reused unchanged components | Original primary scores/evidence untouched |
++| Scientific/resource decisions | Still open | Scalar cost/beta/support, final features/K/n/margins/backup await review |
++
++## Acceptance checklist and packet
++
++PASS: accepted history/hash preservation; fixed input/token/schedule eligibility; source/runtime binding; pending execution rejection; feature allowlist/pooling; cumulative budgets, incidents, cleanup and no replay; partial reporting and existing-contract targets; regression/focused checks; concrete pending execution request. NOT RUN: any actual model/GPU work, final freeze or P03 work. Compiled derivative PDF bytes absent, nonblocking.
++
++The verified local `P02D_preflight_review_packet.zip`, hash index and external receipt include this report, exact plan/input/schedule/config records, changed and reused source/tests, native source/license closure, cached tokenizer/config snapshots (no weights), source diff/commits, logs, P02C packet/receipt and coordinator derivative build evidence. They exclude environments, weights, secrets and unrelated user material. Source/dependency manifests identify any runtime dependencies requiring the existing pinned environment for execution; this is not a claim to bundle a complete inference environment.
++
++**P02D PREFLIGHT READY_FOR_REVIEW. Dispatch false. P02 incomplete/unsealed. P03 unstarted.** A separate conveyed execution authorization must bind the exact plan before any live work. No next phase or run starts automatically.
++'''
++(root/'reports/phases/P02D_preflight_completion.md').write_text(text,encoding='utf-8')
++print('P02D PREFLIGHT READY_FOR_REVIEW; dispatch false; zero model work')
+diff --git a/scripts/p02d_packet.py b/scripts/p02d_packet.py
+new file mode 100644
+index 0000000..71dbc7e
+--- /dev/null
++++ b/scripts/p02d_packet.py
+@@ -0,0 +1,53 @@
++"""Compact local review packet; excludes actual inference environment/weights."""
++from pathlib import Path
++import hashlib,subprocess,zipfile,json
++from taskcognition.artifacts import read_json,write_new
++from taskcognition.contracts import file_hash,canonical
++from taskcognition.p02d_plan import PLAN_DIR,RUN
++
++root=Path(__file__).resolve().parents[1];out=root/'reports/p02d'
++state=read_json(root/'configs/phase_state.json')
++assert state['active_phase']=='P02D' and state['status']=='READY_FOR_REVIEW' and not state['real_dispatch_enabled']
++assert not (root/RUN).exists()
++paths=set()
++for base in [out,root/PLAN_DIR,root/'src/taskcognition',root/'tests',root/'vendor/reasoning_gym_p02a']:
++    paths.update(p for p in base.rglob('*') if p.is_file() and '__pycache__' not in p.parts and p.suffix!='.pyc')
++paths.update(root.glob('scripts/p02d_*.py'))
++for n in ['.gitattributes','AGENTS.md','README.md','pyproject.toml','configs/p01_requirements.lock','configs/p01_resource_plan.json',
++    'docs/P02D_RUNNER_CONTRACT.md','docs/PROTOCOL_SOURCE_OF_TRUTH.md','docs/ARCHITECTURE_AND_DATA.md','docs/STATISTICAL_CONTRACT.md',
++    'docs/DECISIONS_AND_GAPS.md','docs/EVIDENCE_AND_MANUSCRIPT.md','docs/amendments/CR01_2026-10-05_v1.md',
++    'configs/phase_state.json','configs/state_events/015_P02C_accept_P02D_offline.json','configs/state_events/016_P02D_preflight_review_checkpoint.json',
++    'configs/state_snapshots/P02C_accepted_before_P02D.json','configs/state_snapshots/P02D_before_preflight_checkpoint.json',
++    'reports/phases/P02C_accepted_checkpoint.md','reports/phases/P02D_preflight_completion.md','reports/decision_ledger.md',
++    'reports/p02c/P02C_review_packet.zip','reports/p02c/P02C_evidence_index.json','reports/p02c/P02C_packet_receipt.json',
++    'reports/phases/P02C_completion.md','reports/p02c/next_development_proposal.md','reports/p02a/adapter_contracts.md',
++    'reports/p02b/runtime_preflight.json','reports/p01/model_download.json','artifacts/development/p02b-two-cap/package_base.json','scripts/p01_command.py']:
++    paths.add(root/n)
++exclude={'P02D_preflight_review_packet.zip','P02D_evidence_index.json','P02D_packet_receipt.json'}
++paths={p for p in paths if p.name not in exclude}
++assert all('.venv' not in p.parts and '.venv-inference' not in p.parts and not p.name.endswith('.safetensors') for p in paths)
++index={p.relative_to(root).as_posix():file_hash(p) for p in sorted(paths)}
++idx=out/'P02D_evidence_index.json'
++write_new(idx,dict(evidence_kind='development_observation',phase='P02D',status='PREFLIGHT_READY_FOR_REVIEW',files=index,
++    evidence_commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
++    plan_sha256=read_json(out/'plan_receipt.json')['sha256'],
++    exclusions='This index, packet, external receipt excluded from child index to avoid cycles; weights/environments/secrets/unrelated user material excluded. Installed runtime source hashes are bound in plan; Qwen source/tokenizer and native source snapshots plus exact dependencies suffice for source review, not a full inference environment.'))
++packet=out/'P02D_preflight_review_packet.zip'
++with zipfile.ZipFile(packet,'x',zipfile.ZIP_DEFLATED,compresslevel=9) as z:
++    for n in index:z.write(root/n,n)
++    z.write(idx,idx.relative_to(root).as_posix())
++with zipfile.ZipFile(packet) as z:
++    assert z.testzip() is None and len(z.namelist())==len(index)+1
++    for n,h in index.items():assert hashlib.sha256(z.read(n)).hexdigest()==h,n
++receipt=dict(evidence_kind='development_observation',status='PASS',phase='P02D_PREFLIGHT',indexed_files=len(index),
++    zip_sha256=file_hash(packet),zip_bytes=packet.stat().st_size,index_sha256=file_hash(idx),
++    completion_sha256=file_hash(root/'reports/phases/P02D_preflight_completion.md'),plan_sha256=read_json(out/'plan_receipt.json')['sha256'],
++    execution_request_sha256=file_hash(out/'execution_request.md'),P02C_external_receipt_sha256=file_hash(out/'P02C_external_packet_receipt.json'),
++    source_commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),verified_all_zip_members=True,
++    real_dispatch_enabled=False,new_model_loads=0,new_answer_generations=0,new_feature_forwards=0,new_gpu_measurements=0,new_simulations=0,
++    historical_admitted=75,historical_output_tokens=40555,backup='verified local packet; user-reported earlier P02C push consistent with local tracking; no remote restore or complete raw off-machine verification',
++    preparation_report_and_plan_bytes=0)
++base=sum(p.stat().st_size for b in (out,root/PLAN_DIR) for p in b.rglob('*') if p.is_file())
++for _ in range(5):receipt['preparation_report_and_plan_bytes']=base+len(canonical(receipt))+1
++write_new(out/'P02D_packet_receipt.json',receipt)
++print(json.dumps(receipt,indent=2))
+diff --git a/scripts/p02d_prepare.py b/scripts/p02d_prepare.py
+new file mode 100644
+index 0000000..aea0ac6
+--- /dev/null
++++ b/scripts/p02d_prepare.py
+@@ -0,0 +1,119 @@
++"""CPU-only fixed-selection materialization; no model loader or forward."""
++import dataclasses, importlib.metadata, json, platform, shutil, sys
++from datetime import datetime, timezone
++from pathlib import Path
++from taskcognition.artifacts import read_json,write_new
++from taskcognition.contracts import digest,file_hash
++from taskcognition.p02_native import ENTRIES,native_dataset
++from taskcognition.p02b_runner import SYSTEM
++from taskcognition.p02d_features import FEATURE_SPEC,cheap_features,validate_gate_input,forward_schedule
++from taskcognition.p02d_plan import PLAN_DIR,RUN,VERSION,MODEL_REVISION,identity
++
++root=Path(__file__).resolve().parents[1];out=root/PLAN_DIR
++assert not out.exists()
++assert read_json(root/'configs/phase_state.json')['real_dispatch_enabled'] is False
++selection=dict(evidence_kind='development_observation',split='DEVELOPMENT',namespace='P02D-CR01-DEVELOPMENT-v1',
++    seeds={f:930261005+10000*i for i,f in enumerate(ENTRIES)},size=4,indices=[0,1,2,3],
++    input_ceiling_each_path=2048,no_truncation=True,no_reselection=True,
++    answer_order='draw outer 0..3; index next 0..3; family inner established order; D,R if (index+draw)%2==0 else R,D',
++    feature_order='family-major input list; warmup first two; all 24; two extras adjacent per each family indices 0 and 1')
++write_new(out/'selection.json',selection)
++model=read_json(root/'reports/p01/model_download.json');modeldir=root/model['local_directory']
++metadata={f['name']:f['sha256'] for f in model['files'] if not f['name'].endswith('.safetensors')}
++for n,h in metadata.items():assert file_hash(modeldir/n)==h,n
++config=read_json(modeldir/'config.json');assert config['hidden_size']==FEATURE_SPEC['hidden_width']==4096
++from transformers import AutoTokenizer
++tokenizer=AutoTokenizer.from_pretrained(modeldir,local_files_only=True,trust_remote_code=False)
++environment={d.metadata['Name']:d.version for d in importlib.metadata.distributions()}
++assert environment==read_json(root/'reports/p02b/runtime_preflight.json')['distributions'],'environment changed'
++source=Path(sys.executable).parent.parent/'Lib/site-packages/transformers/models/qwen3/modeling_qwen3.py'
++text=source.read_text(encoding='utf-8');start=text.index('class Qwen3Model(');end=text.index('class Qwen3ForCausalLM(')
++assert 'hidden_states = self.norm(hidden_states)' in text[start:end] and 'last_hidden_state=hidden_states' in text[start:end]
++write_new(out/'environment.json',dict(evidence_kind='development_observation',python=sys.version,platform=platform.platform(),
++    interpreter='.venv-inference/Scripts/python.exe',distributions=environment,model_directory=model['local_directory'],
++    model_revision=MODEL_REVISION,model_files={f['name']:dict(sha256=f['sha256'],bytes=f['bytes']) for f in model['files']},
++    tokenizer_metadata_verified=metadata,hidden_width=config['hidden_size'],context_limit=config['max_position_embeddings'],
++    qwen3_installed_source_sha256=file_hash(source),source_semantics='Qwen3Model.forward calls self.norm immediately before returning last_hidden_state',
++    model_weights_loaded=False,forwards=0,new_dependencies=0,new_downloads=0,
++    disk_free_bytes=shutil.disk_usage(root).free,hardware_reference='reports/p02b/runtime_preflight.json; historical GPU/driver, no new GPU measurement'))
++(out/'source_snapshots').mkdir()
++(out/'source_snapshots/modeling_qwen3.py').write_bytes(source.read_bytes())
++write_new(out/'feature_specification.json',FEATURE_SPEC)
++oldq=set();oldid=set();oldlatent=set();nativeids=set();sources=[]
++for p in sorted((root/'artifacts/development').glob('p*/requests/*.json')):
++    q=read_json(p);oldq.add(digest(q['messages'][1]['content']));oldid.add(q['input_id']);sources.append(p.relative_to(root).as_posix())
++    if p.parent.parent.name.startswith('p01-'):
++        p01=read_json(root/'configs/p01_resource_plan.json')
++        nativeids.add(digest([p01['family'],p01['dataset_config']['seed'],q['dataset_index']]))
++for p in sorted((root/'artifacts/development').glob('p*/outcome_inputs/*.json')):
++    row=read_json(p);oldlatent.add(row['latent_hash'])
++    nativeids.add(digest([row['family'],row['effective_config'].get('seed'),row['dataset_index']]))
++reserved=read_json(root/'reports/p02a/selection_declaration.json')['reserved_namespaces']
++inputs=[];seen=set();collisions=[]
++for fi,family in enumerate(ENTRIES):
++    prior=read_json(root/'artifacts/development/p02a-six-family/outcome_inputs'/f'{family}.json')
++    cfg=dict(prior['effective_config'],seed=selection['seeds'][family],size=4)
++    ds=native_dataset(root,family,cfg);assert dataclasses.asdict(ds.config)==cfg
++    write_new(out/'adapters'/f'{family}.json',dict(family=family,revision='21e6d2a9a581b3e11aafe711abfd37402f8482d5',
++        native_source_path=prior['native_source_path'],effective_config=cfg,defaults_except_seed_size=True,
++        native_manifest_sha256=file_hash(root/'vendor/reasoning_gym_p02a/source_manifest.json'),
++        provenance_reference='reports/p02a/adapter_contracts.md; vendor/reasoning_gym_p02a/source_manifest.json'))
++    for ix in range(4):
++        entry=ds[ix];question=entry['question'];qh=digest(question)
++        latent=digest([family,cfg,ix,entry['metadata']]);nativeid=digest([family,cfg['seed'],ix])
++        iid=digest([selection['namespace'],latent,qh])
++        if qh in oldq|seen or latent in oldlatent or iid in oldid or nativeid in nativeids:collisions.append(dict(family=family,index=ix))
++        seen.add(qh)
++        raw=tokenizer.encode(question,add_special_tokens=False)
++        gate=dict(input_id=iid,text=question,token_ids=raw,observables=cheap_features(question,raw));validate_gate_input(gate)
++        write_new(out/'gate_inputs'/f'{iid}.json',gate)
++        row=dict(evidence_kind='development_observation',split='DEVELOPMENT',family=family,input_id=iid,
++            latent_hash=latent,question_hash=qh,native_identity_hash=nativeid,entry=entry,entry_hash=digest(entry),
++            effective_config=cfg,dataset_index=ix,seed=cfg['seed'],raw_tokens=len(raw),tokenizations={})
++        for mode in ('D','R'):
++            messages=[dict(role='system',content=SYSTEM),dict(role='user',content=question)]
++            rendered=tokenizer.apply_chat_template(messages,tokenize=False,add_generation_prompt=True,enable_thinking=mode=='R')
++            ids=tokenizer.encode(rendered,add_special_tokens=False)
++            assert SYSTEM in rendered and question in rendered
++            row[mode+'_tokens']=len(ids)
++            row['tokenizations'][mode]=dict(messages=messages,rendered_prompt=rendered,input_ids=ids,
++                input_ids_hash=digest(ids),rendered_prompt_hash=digest(rendered),
++                opening_in_prompt=rendered.rfind('<think>')>rendered.rfind('</think>'))
++        write_new(out/'outcome_inputs'/f'{iid}.json',row)
++        inputs.append({k:row[k] for k in ('family','input_id','latent_hash','question_hash','native_identity_hash','dataset_index','seed','raw_tokens','D_tokens','R_tokens')})
++write_new(out/'exclusion_manifest.json',dict(evidence_kind='development_observation',historical_question_hashes=sorted(oldq),
++    historical_input_ids=sorted(oldid),historical_latent_hashes=sorted(oldlatent),historical_native_identity_hashes=sorted(nativeids),
++    historical_request_files=sources,reserved_namespaces=reserved,concrete_final_partition_manifests=[],
++    future_requirement='reject all historical and these 24 content/latent/native identities; no final partitions created; P01 native IDs use accepted resource config family/seed and request index',
++    new_inputs=inputs,collisions=collisions))
++write_new(out/'inputs.json',inputs)
++blocked=[r for r in inputs if any(not 1<=r[k]<=2048 for k in ('raw_tokens','D_tokens','R_tokens'))]
++assert not collisions and not blocked, 'fixed candidate blocked, no replacement'
++old=read_json(root/'artifacts/development/p02b-two-cap/package_base.json')
++package=dict(old,checkpoint='P02D',model_revision=MODEL_REVISION,specification_version=VERSION,
++    generation_config=dict(old['generation_config'],max_new_tokens=2048))
++# Historical source map is provenance, not an override of newly bound P02D source.
++package.pop('source_files',None)
++write_new(out/'package.json',package)
++requests=[]
++for draw in range(4):
++ for ix in range(4):
++  for fi,family in enumerate(ENTRIES):
++   row=read_json(out/'outcome_inputs'/f'{inputs[fi*4+ix]["input_id"]}.json')
++   for mode in (('D','R') if (ix+draw)%2==0 else ('R','D')):
++    key=f'answer_{len(requests):03d}';p,s=identity(package,mode,row['input_id'],draw)
++    q=dict(evidence_kind='development_observation',split='DEVELOPMENT',slot_id=key,request_id=key,
++       stage='answer',family=family,mode=mode,cap=2048,max_new_tokens=2048,enable_thinking=mode=='R',
++       input_id=row['input_id'],draw_index=draw,dataset_config=row['effective_config'],dataset_index=ix,entry_hash=row['entry_hash'],
++       package_hash=p,stream_id=s,sampling_seed=int(s[:15],16),effective_generation_config=package['generation_config'],
++       model_directory=model['local_directory'],**row['tokenizations'][mode])
++    write_new(out/'requests'/f'{key}.json',q)
++    requests.append({**{k:q[k] for k in ('slot_id','stage','family','mode','cap','input_id','draw_index','package_hash','stream_id','sampling_seed')},'request_hash':digest(q)})
++features=forward_schedule(inputs)
++write_new(out/'answer_schedule.json',requests);write_new(out/'feature_schedule.json',features)
++write_new(out/'preparation_checks.json',dict(evidence_kind='development_observation',status='PASS',inputs=24,
++    answer_slots=len(requests),distinct_streams=len({q['stream_id'] for q in requests}),distinct_seeds=len({q['sampling_seed'] for q in requests}),
++    feature_forwards=len(features),actual_feature_input_positions=sum(q['input_positions'] for q in features),
++    reserved_output_tokens=192*2048,collisions=collisions,input_lengths={k:[r[k] for r in inputs] for k in ('raw_tokens','D_tokens','R_tokens')},
++    native_questions_verbatim=True,model_loads=0,forwards=0,generations=0))
++print(json.dumps(read_json(out/'preparation_checks.json')))
+diff --git a/scripts/p02d_publish.py b/scripts/p02d_publish.py
+new file mode 100644
+index 0000000..0ff784b
+--- /dev/null
++++ b/scripts/p02d_publish.py
+@@ -0,0 +1,44 @@
++"""Publish once after offline source/tests stabilize; never authorizes execution."""
++from pathlib import Path
++from datetime import datetime,timezone
++import importlib.metadata,json
++from taskcognition.artifacts import read_json,write_new
++from taskcognition.contracts import file_hash
++from taskcognition.p02d_plan import PLAN_DIR,RUN,VERSION,LIMITS,validate_plan
++from taskcognition.p02d_features import FEATURE_SPEC
++
++def candidate(root):
++    directory=root/PLAN_DIR
++    bound={p.relative_to(root).as_posix():file_hash(p) for base in (directory,root/'src/taskcognition',root/'vendor/reasoning_gym_p02a')
++           for p in base.rglob('*') if p.is_file() and '__pycache__' not in p.parts and p.name!='run_plan.json'}
++    for n in ('docs/amendments/CR01_2026-10-05_v1.md','docs/PROTOCOL_SOURCE_OF_TRUTH.md','docs/STATISTICAL_CONTRACT.md','docs/P02D_RUNNER_CONTRACT.md',
++              'reports/p02c/next_development_proposal.md','reports/p01/model_download.json','artifacts/development/p02b-two-cap/package_base.json'):
++        bound[n]=file_hash(root/n)
++    env=read_json(directory/'environment.json')
++    runtime=root/'.venv-inference/Lib/site-packages'
++    for path in (runtime/'transformers').rglob('*.py'):
++        bound[path.relative_to(root).as_posix()]=file_hash(path)
++    for name in ('torch','tokenizers','numpy','transformers'):
++        dist=importlib.metadata.distribution(name)
++        for f in dist.files or []:
++            if str(f).endswith('.dist-info/RECORD'):
++                p=Path(dist.locate_file(f));bound[p.relative_to(root).as_posix()]=file_hash(p)
++    return dict(evidence_kind='development_observation',split='DEVELOPMENT',phase='P02D',specification_version=VERSION,
++        plan_version='P02D-offline-v1',authorization='PENDING_SEPARATE_RECORD',scientific_freeze=False,completion_policy='descriptive',
++        timestamp_utc=datetime.now(timezone.utc).isoformat(),output_directory=RUN,package=read_json(directory/'package.json'),
++        inputs=read_json(directory/'inputs.json'),requests=read_json(directory/'answer_schedule.json'),feature_schedule=read_json(directory/'feature_schedule.json'),
++        feature_specification=FEATURE_SPEC,environment=env,caps={'D':2048,'R':2048},limits=LIMITS,bound_files=bound,
++        initial_counters=dict(answer_dispatches=0,feature_forwards=0,output_tokens_reserved=0,model_loads=0),
++        clocks=dict(residency='sum of isolated worker intervals from before spawn to final wait, includes load/warmup/cancellation/cleanup; perf_counter',
++            wall='single supervisor invocation perf_counter; no automatic restart; unfinished sessions stop with measured lower bound and unknown remainder',
++            packet='reserve a second copy of all raw execution/report bytes plus 16MiB next-event headroom; measure actual packet and overshoot'),
++        stop_rules=['no replacement/replay/J=0','any feature partial/timeout/invalid stops before answers','software/evidence error is unscored incident',
++            'future single authorization record binds this file SHA; pending state always rejects','reserve 300s per answer, first feature load/forward 300s and each subsequent forward 150s',
++            'unknown cleanup blocks further work; all actual overshoot retained','raw outcomes retained regardless of success; no outcome-based stop'],
++        unresolved=['final feature freeze','scalar cost choice','beta','hard cost support','final samples/repeats','durable final-study backup'])
++
++if __name__=='__main__':
++    root=Path(__file__).resolve().parents[1]
++    plan=validate_plan(candidate(root));path=root/PLAN_DIR/'run_plan.json';write_new(path,plan)
++    write_new(root/'reports/p02d/plan_receipt.json',dict(evidence_kind='development_observation',plan_path=PLAN_DIR+'/run_plan.json',sha256=file_hash(path),authorization='PENDING',live_dispatch=False))
++    print(json.dumps(read_json(root/'reports/p02d/plan_receipt.json')))
+diff --git a/scripts/p02d_verify.py b/scripts/p02d_verify.py
+new file mode 100644
+index 0000000..dcb9579
+--- /dev/null
++++ b/scripts/p02d_verify.py
+@@ -0,0 +1,49 @@
++"""Read-only production plan checks and preservation checks; no model work."""
++from pathlib import Path
++import hashlib,json,zipfile,subprocess
++from taskcognition.artifacts import read_json,write_new
++from taskcognition.contracts import file_hash,digest,IntegrityError
++from taskcognition.p02d_plan import PLAN_DIR,RUN,verify_plan
++from taskcognition.p02d_runner import execute
++from taskcognition.p02d_reporting import report
++
++root=Path(__file__).resolve().parents[1];out=root/'reports/p02d'
++receipt=read_json(out/'plan_receipt.json');plan=verify_plan(root,root/receipt['plan_path'],receipt['sha256'])
++assert not (root/RUN).exists(),'no actual run directory permitted in preflight'
++try:execute(root,receipt['sha256'])
++except IntegrityError as exc:
++    assert 'pending separate authorization' in str(exc);rejection=str(exc)
++else:raise AssertionError('pending execution accepted')
++assert not (root/RUN).exists()
++old=read_json(root/'reports/p02c/P02C_evidence_index.json')['files'];changes=[]
++allowed={'README.md','configs/phase_state.json','reports/decision_ledger.md'}
++with zipfile.ZipFile(root/'reports/p02c/P02C_review_packet.zip') as z:
++    assert z.testzip() is None
++    for n,h in old.items():
++        assert hashlib.sha256(z.read(n)).hexdigest()==h,n
++        if file_hash(root/n)!=h:
++            assert n in allowed,n
++            changes.append(n)
++accepted=read_json(out/'acceptance_verification.json')['accepted_hashes']
++for n,h in accepted.items():assert file_hash(root/n)==h,n
++for n,h in read_json(root/'reports/source_inventory.json')['preserved_original_files'].items():assert file_hash(root/n)==h,n
++assert file_hash(root/'reference/TaskCognition_Revised_Verified.pdf')=='9eed0fe74f46c3acbc200183cf11693f1bec66a1180568087aeb775c97d8f6c8'
++for n,h in read_json(root/'reports/p02b/P02B_evidence_index.json')['files'].items():
++    if n.startswith(('src/','tests/','artifacts/')):assert file_hash(root/n)==h,n
++environment=plan['environment'];modeldir=root/environment['model_directory']
++for n,h in environment['tokenizer_metadata_verified'].items():assert file_hash(modeldir/n)==h,n
++state=read_json(root/'configs/phase_state.json');assert state['active_phase']=='P02D' and state['real_dispatch_enabled'] is False
++assert not (root/'configs/p02d_execution_authorization.json').exists()
++empty=report(root,plan)
++assert len(empty['cells'])==12 and all(c['executed']==c['retained']==0 for c in empty['cells'])
++assert len(empty['clusters'])==24 and all(c['targets'] is None for c in empty['clusters'])
++write_new(out/'unexecuted_plan_report.json',dict(empty,report_role='pre-dispatch planned denominators only; no empirical outputs'))
++write_new(out/'verification.json',dict(evidence_kind='development_observation',status='PASS',plan_sha256=receipt['sha256'],
++    bound_files_verified=len(plan['bound_files']),P02C_snapshot_files_verified=len(old),accepted_hashes_preserved=True,
++    documented_current_changes=changes,original_pdf_and_manuscript_preserved=True,historical_source_tests_raw_unchanged=True,
++    production_pending_rejection=rejection,run_directory_absent=True,authorization_record_absent=True,
++    input_count=24,answer_slots=192,feature_slots=50,strictly_unique_streams=len({q['stream_id'] for q in plan['requests']}),
++    new_model_loads=0,new_forwards=0,new_generations=0,new_gpu_measurements=0,new_simulations=0,
++    historical_admitted_generations=75,historical_output_tokens=40555,P01_interruption='separate historical diagnostic',
++    source_import='src/taskcognition/p02d_plan.py',runtime='.venv-inference/Scripts/python.exe with PYTHONPATH=src'))
++print(json.dumps(read_json(out/'verification.json')))
+diff --git a/src/taskcognition/p02d_features.py b/src/taskcognition/p02d_features.py
+new file mode 100644
+index 0000000..a46e935
+--- /dev/null
++++ b/src/taskcognition/p02d_features.py
+@@ -0,0 +1,77 @@
++"""The one prospective CR01 feature recipe; no model construction at import."""
++import math
++import re
++from .contracts import IntegrityError, digest
++
++CHEAP_KEYS = ('character_count', 'token_count', 'ascii_digit_count', 'operator_count',
++              'choice_marker_count', 'has_json', 'has_list', 'has_number', 'has_text')
++FEATURE_SPEC = dict(version='p02d-input-only-v1', layer='model.model.last_hidden_state after final RMSNorm',
++    pooling='attention-mask weighted mean; float32 accumulation and output',
++    tokenization='original question only; add_special_tokens=False; no truncation',
++    use_cache=False, past_key_values=None, normalization_fit=False, hidden_width=4096,
++    character_count='Python len of original Unicode string (code points); no normalization',
++    token_count='length of cached pinned tokenizer encoding', ascii_digit_count='characters in 0123456789',
++    operator_count='characters in +-*/=<>%^',
++    choice_marker_count='sum of re.match(r"^[A-D][.)]", line) over text.splitlines(); no leading-space allowance; case sensitive',
++    format_flags='re.search(r"\\bWORD\\b", text, re.IGNORECASE), Python Unicode word boundaries; WORD=json,list,number,text',
++    learned_feature_order=list(CHEAP_KEYS), join_metadata_only=['input_id'])
++
++def cheap_features(text, token_ids):
++    if not isinstance(text,str) or not text or not token_ids:
++        raise IntegrityError('empty feature text/tokens')
++    return dict(character_count=len(text), token_count=len(token_ids),
++        ascii_digit_count=sum(c in '0123456789' for c in text),
++        operator_count=sum(c in '+-*/=<>%^' for c in text),
++        choice_marker_count=sum(bool(re.match(r'^[A-D][.)]',line)) for line in text.splitlines()),
++        **{'has_'+word:int(bool(re.search(r'\b'+word+r'\b',text,re.IGNORECASE))) for word in ('json','list','number','text')})
++
++def validate_gate_input(row):
++    if set(row)!= {'input_id','text','token_ids','observables'}:
++        raise IntegrityError('gate input allowlist')
++    if not isinstance(row['input_id'],str) or not row['input_id']:
++        raise IntegrityError('join identity required')
++    ids=row['token_ids']
++    if not isinstance(ids,list) or not 1<=len(ids)<=2048 or any(type(t)!=int or t<0 for t in ids):
++        raise IntegrityError('feature input token bounds')
++    if row['observables']!=cheap_features(row['text'],ids):
++        raise IntegrityError('cheap feature definition mismatch')
++    return row
++
++def masked_pool(hidden, mask, width=4096):
++    import torch
++    if hidden.ndim!=3 or mask.ndim!=2 or hidden.shape[:2]!=mask.shape or hidden.shape[0]!=1 or hidden.shape[-1]!=width:
++        raise IntegrityError('decoder/mask shape')
++    if not bool(torch.isfinite(hidden).all()) or not bool(torch.isfinite(mask).all()):
++        raise IntegrityError('nonfinite hidden state or mask')
++    if not bool(((mask==0)|(mask==1)).all()) or int(mask.sum())==0:
++        raise IntegrityError('invalid/empty attention mask')
++    weights=mask.to(dtype=torch.float32).unsqueeze(-1)
++    vector=(hidden.to(dtype=torch.float32)*weights).sum(dim=1)/weights.sum(dim=1)
++    if not bool(torch.isfinite(vector).all()):raise IntegrityError('nonfinite pooled vector')
++    return vector[0].to(dtype=torch.float32)
++
++def decoder_feature(model, ids, mask, width=4096):
++    """Installed Qwen3Model source verifies last_hidden_state is post-final-norm."""
++    import torch
++    model.eval()
++    with torch.inference_mode():
++        result=model.model(input_ids=ids,attention_mask=mask,use_cache=False,past_key_values=None,return_dict=True)
++        if getattr(result,'past_key_values',None) is not None:raise IntegrityError('unexpected KV cache')
++        return masked_pool(result.last_hidden_state,mask,width)
++
++def gate_vector(input_row, vector, width=4096):
++    validate_gate_input(input_row)
++    if len(vector)!=width or any(type(x) not in (int,float) or not math.isfinite(x) for x in vector):
++        raise IntegrityError('invalid float32 vector')
++    # Only values below enter a future learner; join ID must be removed at learning boundary.
++    return dict(input_id=input_row['input_id'],embedding=vector,observables=input_row['observables'])
++
++def forward_schedule(inputs):
++    if len(inputs)!=24:raise IntegrityError('24 fixed feature inputs required')
++    selected=[(inputs[0],'warmup'),(inputs[1],'warmup')]
++    selected += [(row,'measurement') for row in inputs]
++    selected += [(row,'repeat') for row in inputs if row['dataset_index']<2 for _ in range(2)]
++    if len(selected)!=50:raise IntegrityError('50 fixed feature forwards required')
++    rows=[dict(slot_id=f'feature_{i:03d}',stage='feature',input_id=row['input_id'],kind=kind,
++                 input_positions=row['raw_tokens']) for i,(row,kind) in enumerate(selected)]
++    return [dict(row,request_hash=digest(row)) for row in rows]
+diff --git a/src/taskcognition/p02d_ledger.py b/src/taskcognition/p02d_ledger.py
+new file mode 100644
+index 0000000..c88344c
+--- /dev/null
++++ b/src/taskcognition/p02d_ledger.py
+@@ -0,0 +1,110 @@
++"""Single-writer durable, hash-linked research ledger for both P02D stages.
++
++Session residency is charged once, not summed again from nested forward timings.
++An unfinished session has a measured lower bound and unknown remaining cost.
++It blocks recovery/admission until investigated; there is no automatic replay.
++"""
++import math
++from datetime import datetime, timezone
++from .artifacts import read_json, write_new, child_path
++from .contracts import IntegrityError, file_hash, number
++
++def scan(run, tolerant=False):
++    sessions={};slots={};events=[];incidents=[];previous=None
++    for ix,path in enumerate(sorted((run/'ledger').glob('*.json'))):
++        try:
++            e=read_json(path)
++            if path.name!=f'{ix:06d}.json' or e['previous_sha256']!=previous:raise IntegrityError('ledger sequence/hash')
++            previous=file_hash(path);kind=e['event'];sid=e.get('session_id')
++            if kind=='session_start':
++                if sid in sessions or any(not s.get('ended') for s in sessions.values()):raise IntegrityError('session replay/concurrency')
++                sessions[sid]=dict(stage=e['stage'],ended=False,seconds=None,lower_bound_seconds=0,safe_stopped=False)
++            elif kind=='heartbeat':
++                s=sessions[sid];number(e['seconds'])
++                if s['ended'] or e['seconds']<s['lower_bound_seconds']:raise IntegrityError('heartbeat order')
++                s['lower_bound_seconds']=e['seconds']
++            elif kind=='dispatch':
++                key=e['slot_id'];s=sessions[sid]
++                if key in slots or s['ended']:raise IntegrityError('slot replay')
++                slots[key]=dict(session_id=sid,stage=s['stage'],state='UNKNOWN_ADMISSION',result=None,
++                    output_reservation=e['output_reservation'],input_positions=e['input_positions'],request_hash=e['request_hash'])
++            elif kind=='admitted':
++                slot=slots[e['slot_id']]
++                if slot['state']!='UNKNOWN_ADMISSION':raise IntegrityError('duplicate admission')
++                slot['state']='ADMITTED'
++            elif kind=='result':
++                slot=slots[e['slot_id']]
++                if slot['state']!='ADMITTED':raise IntegrityError('terminal order')
++                p=child_path(run,e['path'])
++                if file_hash(p)!=e['sha256']:raise IntegrityError('result missing/corrupt')
++                data=read_json(p)
++                if data['slot_id']!=e['slot_id'] or data['request_hash']!=slot['request_hash']:raise IntegrityError('result binding')
++                slot.update(state='COMPLETE',result=data)
++            elif kind=='session_end':
++                s=sessions[sid];number(e['seconds']);number(e['cleanup_seconds'])
++                if s['ended'] or e['seconds']<s['lower_bound_seconds']:raise IntegrityError('cost duplicate/under-report')
++                s.update(ended=True,seconds=e['seconds'],safe_stopped=e['safe_stopped'],cleanup_seconds=e['cleanup_seconds'],exit_code=e['exit_code'])
++            elif kind=='incident':incidents.append(e)
++            else:raise IntegrityError('unknown ledger event')
++            events.append(e)
++        except Exception as exc:
++            if not tolerant:raise IntegrityError('ledger integrity: '+str(exc)) from exc
++            incidents.append(dict(event='ledger_integrity_incident',file=path.name,error=str(exc)))
++            break
++    # Independent supervisor diagnostic survives broken ledger publication.
++    for p in (run/'incidents').glob('*.json'):
++        incidents.append(dict(event='incident_artifact',path=p.relative_to(run).as_posix(),sha256=file_hash(p)))
++    return dict(sessions=sessions,slots=slots,events=events,incidents=incidents,
++        measured_residency_seconds=sum(s['seconds'] if s['ended'] else s['lower_bound_seconds'] for s in sessions.values()),
++        unknown_residency=any(not s['ended'] or not s['safe_stopped'] for s in sessions.values()))
++
++def append(run,event,**fields):
++    # Validate previous evidence before extending; x-mode makes concurrent writers fail.
++    state=scan(run);paths=sorted((run/'ledger').glob('*.json'))
++    sid=fields.get('session_id')
++    if event=='session_start' and (sid in state['sessions'] or any(not s['ended'] for s in state['sessions'].values())):
++        raise IntegrityError('session already consumed or active')
++    if event=='session_end' and (sid not in state['sessions'] or state['sessions'][sid]['ended']):
++        raise IntegrityError('session cost already charged or unknown')
++    if event=='dispatch' and fields['slot_id'] in state['slots']:raise IntegrityError('slot already consumed')
++    if event=='admitted' and state['slots'][fields['slot_id']]['state']!='UNKNOWN_ADMISSION':raise IntegrityError('already admitted')
++    if event=='result' and state['slots'][fields['slot_id']]['state']!='ADMITTED':raise IntegrityError('already terminal or not admitted')
++    record=dict(evidence_kind='development_observation',event=event,
++        timestamp_utc=datetime.now(timezone.utc).isoformat(),previous_sha256=file_hash(paths[-1]) if paths else None,**fields)
++    write_new(run/'ledger'/f'{len(paths):06d}.json',record)
++
++def recover(run):
++    state=scan(run)
++    if state['incidents'] or state['unknown_residency'] or any(r['state']!='COMPLETE' for r in state['slots'].values()):
++        raise IntegrityError('unresolved interrupted/unknown work; no automatic replay or recharge')
++    return state
++
++class BudgetStop(IntegrityError):
++    """Operational envelope exhausted; preserve partial evidence, no replacements."""
++
++def check_envelope(plan,state,stage,wall,evidence_bytes,active_seconds=0,feature_wall=0,loading=False):
++    L=plan['limits']
++    for v in (wall,evidence_bytes,active_seconds,feature_wall):number(v)
++    reserve=L['answer_reservation_seconds'] if stage=='answer' else L['feature_load_reservation_seconds'] if loading else L['feature_forward_reservation_seconds']
++    spent=sum(s['seconds'] for s in state['sessions'].values() if s['ended'])+active_seconds
++    if spent+reserve>L['residency_seconds'] or wall+reserve>L['wall_seconds']:raise BudgetStop('combined time reservation')
++    # Reserve a full second copy for the eventual local ZIP, plus next-request headroom.
++    if 2*evidence_bytes+L['evidence_reservation_bytes']>L['evidence_bytes']:raise BudgetStop('raw plus packet evidence reservation')
++    if stage=='feature':
++        fs=sum((s['seconds'] if s['ended'] else 0) for s in state['sessions'].values() if s['stage']=='feature')+active_seconds
++        if fs+reserve>L['feature_residency_seconds'] or feature_wall+reserve>L['feature_wall_seconds']:raise BudgetStop('feature time reservation')
++
++def dispatch(run,plan,slot,session_id):
++    state=scan(run);slots=state['slots'];schedule=plan['feature_schedule'] if slot['stage']=='feature' else plan['requests']
++    prior=[v for v in slots.values() if v['stage']==slot['stage']]
++    if slot['slot_id'] in slots or len(prior)>=len(schedule) or schedule[len(prior)]!=slot:raise IntegrityError('not next unchanged slot; no replay')
++    if state['incidents'] or any(r['state']!='COMPLETE' for r in slots.values()):raise IntegrityError('unresolved preceding slot')
++    if slot['stage']=='answer':
++        feature=[r for r in slots.values() if r['stage']=='feature']
++        if len(feature)!=50 or any(r['result'].get('status')!='OK' for r in feature):raise IntegrityError('feature stage incomplete/invalid')
++        if any(not s['ended'] or not s['safe_stopped'] for s in state['sessions'].values() if s['stage']=='feature'):raise IntegrityError('feature worker not safely stopped')
++        if sum(r['output_reservation'] for r in slots.values())+2048>plan['limits']['output_tokens']:raise BudgetStop('output reservation')
++    else:
++        if len(prior)>=50 or sum(r['input_positions'] for r in prior)+slot['input_positions']>plan['limits']['feature_input_positions']:raise BudgetStop('feature count/position reservation')
++    append(run,'dispatch',session_id=session_id,slot_id=slot['slot_id'],request_hash=slot['request_hash'],
++           output_reservation=2048 if slot['stage']=='answer' else 0,input_positions=slot.get('input_positions',0))
+diff --git a/src/taskcognition/p02d_plan.py b/src/taskcognition/p02d_plan.py
+new file mode 100644
+index 0000000..b74bf70
+--- /dev/null
++++ b/src/taskcognition/p02d_plan.py
+@@ -0,0 +1,102 @@
++"""Prospective development version and independent authorization boundary."""
++import importlib.metadata
++from pathlib import Path
++from .artifacts import read_json, child_path
++from .contracts import IntegrityError, digest, file_hash, stream_id
++from .p02b_runner import SYSTEM
++from .p02_native import ENTRIES
++from .p02d_features import FEATURE_SPEC, forward_schedule, validate_gate_input
++
++VERSION='TaskCognition-CR01-2026-10-05-v1'
++RUN='artifacts/development/p02d-cr01-tranche'
++PLAN_DIR='artifacts/development/p02d-cr01-plan-v1'
++MODEL_REVISION='b968826d9c46dd6066d109eabc6255188de91218'
++ROOT_SEED=930261005
++LIMITS=dict(answer_slots=192,output_tokens=393216,feature_forwards=50,feature_input_positions=102400,
++    residency_seconds=14400,wall_seconds=18000,evidence_bytes=536870912,
++    feature_residency_seconds=900,feature_wall_seconds=1200,
++    generation_deadline_seconds=120,forward_deadline_seconds=120,load_deadline_seconds=150,
++    cooperative_grace_seconds=10,cleanup_seconds=30,answer_reservation_seconds=300,
++    feature_load_reservation_seconds=300,feature_forward_reservation_seconds=150,
++    evidence_reservation_bytes=16777216,J=0,concurrency=1)
++
++def identity(package,mode,input_id,draw):
++    if mode not in ('D','R'):raise IntegrityError('mode')
++    p=digest(dict(package=package,mode=mode,enable_thinking=mode=='R',max_new_tokens=2048))
++    return p,stream_id(VERSION+'/'+RUN,ROOT_SEED,'DEVELOPMENT',input_id,p,draw)
++
++def validate_plan(plan):
++    if (plan.get('phase'),plan.get('specification_version'),plan.get('split'),plan.get('evidence_kind'))!=('P02D',VERSION,'DEVELOPMENT','development_observation'):
++        raise IntegrityError('prospective CR01 development scope')
++    if plan.get('scientific_freeze') is not False or plan.get('authorization')!='PENDING_SEPARATE_RECORD':raise IntegrityError('not a final manifest/authorization')
++    if plan.get('completion_policy')!='descriptive':raise IntegrityError('CR01 completion is descriptive')
++    if plan.get('output_directory')!=RUN or plan.get('limits')!=LIMITS or plan.get('caps')!={'D':2048,'R':2048}:
++        raise IntegrityError('exact scope/caps/limits')
++    if plan.get('feature_specification')!=FEATURE_SPEC:raise IntegrityError('feature specification')
++    package=plan['package']
++    if package['wrapper']!=SYSTEM or package['model_revision']!=MODEL_REVISION:raise IntegrityError('answer package changed')
++    if package.get('model_id')!='Qwen/Qwen3-8B' or package.get('precision')!='BF16' or package.get('attention')!='sdpa forced MATH':raise IntegrityError('checkpoint/backend/precision')
++    sampler=package['generation_config']
++    if any(sampler.get(k)!=v for k,v in dict(max_new_tokens=2048,do_sample=True,temperature=.6,top_p=.95,top_k=20,min_p=0).items()):raise IntegrityError('matched sampler')
++    inputs=plan['inputs']
++    if len(inputs)!=24 or [r['family'] for r in inputs]!=[f for f in ENTRIES for _ in range(4)]:raise IntegrityError('input population')
++    for fi,family in enumerate(ENTRIES):
++        group=inputs[fi*4:fi*4+4]
++        if [r['dataset_index'] for r in group]!=list(range(4)):raise IntegrityError('input indices')
++        for r in group:
++            if r['seed']!=ROOT_SEED+10000*fi or any(not 1<=r[k]<=2048 for k in ('raw_tokens','D_tokens','R_tokens')):raise IntegrityError('input selection/length')
++    if len({r['input_id'] for r in inputs})!=24 or len({r['question_hash'] for r in inputs})!=24:raise IntegrityError('duplicate input')
++    if plan['feature_schedule']!=forward_schedule(inputs):raise IntegrityError('forward schedule')
++    requests=plan['requests'];expected=[]
++    # Draw outer, native index next, family inner: each round covers all six families.
++    for draw in range(4):
++        for ix in range(4):
++            for fi in range(6):
++                row=inputs[fi*4+ix]
++                for mode in (('D','R') if (ix+draw)%2==0 else ('R','D')):
++                    expected.append((row['input_id'],mode,draw))
++    if [(q['input_id'],q['mode'],q['draw_index']) for q in requests]!=expected:raise IntegrityError('answer order/count')
++    for ix,q in enumerate(requests):
++        if q.get('stage')!='answer' or q['slot_id']!=f'answer_{ix:03d}':raise IntegrityError('answer slot scope')
++        p,s=identity(package,q['mode'],q['input_id'],q['draw_index'])
++        if (q['cap'],q['package_hash'],q['stream_id'],q['sampling_seed'])!=(2048,p,s,int(s[:15],16)):raise IntegrityError('package/cap/stream')
++    for key in ('slot_id','stream_id','sampling_seed'):
++        if len({q[key] for q in requests})!=192:raise IntegrityError('duplicate '+key)
++    return plan
++
++def verify_plan(root, plan_path, expected_hash):
++    if file_hash(plan_path)!=expected_hash:raise IntegrityError('reviewed plan hash mismatch')
++    plan=validate_plan(read_json(plan_path))
++    prior=read_json(root/'artifacts/development/p02b-two-cap/package_base.json')['generation_config']
++    if plan['package']['generation_config']!=dict(prior,max_new_tokens=2048):raise IntegrityError('effective defaults changed')
++    for name,sha in plan['bound_files'].items():
++        if file_hash(child_path(root,name))!=sha:raise IntegrityError('bound source/input/config changed: '+name)
++    current={d.metadata['Name']:d.version for d in importlib.metadata.distributions()}
++    if current!=plan['environment']['distributions']:raise IntegrityError('runtime distribution mismatch')
++    for q in plan['requests']:
++        request=read_json(root/PLAN_DIR/'requests'/f'{q["slot_id"]}.json')
++        if digest(request)!=q['request_hash'] or request['effective_generation_config']!=plan['package']['generation_config']:
++            raise IntegrityError('request/sampler binding')
++        if request['split']!='DEVELOPMENT' or request['evidence_kind']!='development_observation':raise IntegrityError('request development scope')
++        if request['max_new_tokens']!=2048 or request['enable_thinking']!=(q['mode']=='R'):raise IntegrityError('request cap/native mode')
++        if any(request[k]!=q[k] for k in ('slot_id','input_id','mode','cap','package_hash','stream_id','sampling_seed','draw_index')):raise IntegrityError('schedule/request identity')
++    for item in plan['inputs']:
++        gate=validate_gate_input(read_json(root/PLAN_DIR/'gate_inputs'/f'{item["input_id"]}.json'))
++        if gate['input_id']!=item['input_id'] or len(gate['token_ids'])!=item['raw_tokens'] or digest(gate['text'])!=item['question_hash']:raise IntegrityError('gate input binding')
++    if Path(__file__).resolve()!=root.resolve()/'src/taskcognition/p02d_plan.py':raise IntegrityError('wrong source import')
++    return plan
++
++def require_authorization(root,plan_path,expected_hash):
++    """Called by supervisor AND child, before any model loader imports or work."""
++    state=read_json(root/'configs/phase_state.json')
++    if state.get('active_phase')!='P02D' or state.get('status')!='EXECUTION_AUTHORIZED' or state.get('real_dispatch_enabled') is not True:
++        raise IntegrityError('P02D live execution pending separate authorization')
++    auth_path=root/'configs/p02d_execution_authorization.json'
++    if not auth_path.is_file():raise IntegrityError('missing authorization record')
++    if file_hash(auth_path)!=state.get('p02d_authorization_sha256'):raise IntegrityError('authorization state binding')
++    auth=read_json(auth_path)
++    if auth.get('plan_sha256')!=expected_hash or state.get('p02d_plan_sha256')!=expected_hash or auth.get('authorized') is not True:
++        raise IntegrityError('authorization plan binding')
++    if not auth.get('user_message_reference') or auth.get('phase')!='P02D' or auth.get('limits')!=LIMITS:
++        raise IntegrityError('authorization scope/reference')
++    return verify_plan(root,plan_path,expected_hash)
+diff --git a/src/taskcognition/p02d_reporting.py b/src/taskcognition/p02d_reporting.py
+new file mode 100644
+index 0000000..71b7e90
+--- /dev/null
++++ b/src/taskcognition/p02d_reporting.py
+@@ -0,0 +1,88 @@
++"""Development-only cell/cluster inspection; missing evidence is never imputed."""
++from collections import Counter
++from dataclasses import asdict
++from statistics import fmean,variance
++from .artifacts import read_json
++from .contracts import InputRecord,DrawRecord,IntegrityError,digest,file_hash
++from .targets import aggregate
++from .p02_native import ENTRIES
++from .p02b_reporting import primary_record
++from .p02d_plan import PLAN_DIR,RUN,validate_plan
++from .p02d_ledger import scan
++from .p02d_runner import validate_result
++
++def report(root,plan):
++    validate_plan(plan)
++    run=root/RUN;state=scan(run,tolerant=True);observations=[];incidents=list(state['incidents'])
++    for q in plan['requests']:
++        row=state['slots'].get(q['slot_id'])
++        if row is None or row['result'] is None:continue
++        try:
++            validate_result(root,plan,q,row['result'])
++            request=read_json(root/PLAN_DIR/'requests'/f'{q["slot_id"]}.json')
++            value=primary_record(request,row)
++            session=state['sessions'][row['session_id']]
++            if not session['ended'] or not session['safe_stopped']:raise IntegrityError('result has unresolved worker residency/cleanup')
++            observations.append(dict(q,**value,worker_seconds=session['seconds'],
++                max_allocated_bytes=row['result'].get('max_allocated_bytes'),max_reserved_bytes=row['result'].get('max_reserved_bytes')))
++        except Exception as exc:incidents.append(dict(slot_id=q['slot_id'],error=str(exc),scored=False))
++    cells=[];clusters=[]
++    for family in ENTRIES:
++        for mode in ('D','R'):
++            planned=[q for q in plan['requests'] if q['family']==family and q['mode']==mode]
++            retained=[o for o in observations if o['family']==family and o['mode']==mode]
++            executed=[q for q in planned if q['slot_id'] in state['slots']]
++            cells.append(dict(family=family,mode=mode,planned=16,executed=len(executed),retained=len(retained),
++                executed_is_lower_bound=any(i.get('event')=='ledger_integrity_incident' for i in incidents),
++                missing_or_unscored=[q['slot_id'] for q in planned if q['slot_id'] not in {o['slot_id'] for o in retained}],
++                strict_valid_final=sum(o['strict_valid_final'] for o in retained),perfect_correct=sum(o['perfect_correct'] for o in retained),
++                native_scores=[o['native_score'] for o in retained],wrapper_subtypes=dict(Counter(o['wrapper_subtype'] for o in retained if o['wrapper_subtype'])),
++                failures=dict(Counter(f for o in retained for f in o['failure_flags'])),timeouts=sum(o['timeout'] for o in retained),
++                output_tokens=[o['output_tokens'] for o in retained],generation_seconds=[o['generation_seconds'] for o in retained],
++                worker_seconds=[o['worker_seconds'] for o in retained],peak_allocated_bytes=[o['max_allocated_bytes'] for o in retained]))
++    for item in plan['inputs']:
++        selected=[o for o in observations if o['input_id']==item['input_id']]
++        counts={m:sum(o['mode']==m for o in selected) for m in ('D','R')}
++        cluster=dict(input_id=item['input_id'],family=item['family'],achieved=counts,planned_per_mode=4,
++            direct_perfect_count=sum(o['perfect_correct'] for o in selected if o['mode']=='D'),
++            complete_K4=counts=={'D':4,'R':4},targets=None,
++            within_input={m:dict(scores=[o['native_score'] for o in selected if o['mode']==m],
++                sample_variance=variance([o['native_score'] for o in selected if o['mode']==m]) if counts[m]>=2 else None) for m in ('D','R')})
++        if cluster['complete_K4']:
++            native=read_json(root/PLAN_DIR/'outcome_inputs'/f'{item["input_id"]}.json')
++            inp=InputRecord('development_observation',item['input_id'],'DEVELOPMENT',item['family'],item['latent_hash'],
++                native['entry']['question'],item['raw_tokens'],item['seed'],digest(native['effective_config']),'pinned native scorer','outcome-only entry')
++            draws=[]
++            for o in selected:
++                score=o['native_score'];status='perfect' if score==1 else 'partial' if score>0 else 'admitted_failure' if o['failure_flags'] else 'wrong'
++                p=run/'results'/f'{o["slot_id"]}.json'
++                draws.append(DrawRecord('development_observation',digest([o['input_id'],o['package_hash'],o['draw_index']]),
++                    o['input_id'],'DEVELOPMENT',o['mode'],o['package_hash'],o['draw_index'],o['stream_id'],str(p.relative_to(root)),file_hash(p),
++                    score,o['perfect_correct'],o['worker_seconds'],'descriptive_answer_worker_seconds_not_final_scalar_cost',status))
++            agg=asdict(aggregate(inp,draws,4,{m:next(o['package_hash'] for o in selected if o['mode']==m) for m in ('D','R')}))
++            cluster['targets']={k:agg[k] for k in ('benefit','joint_spoilage','direct_redraw','decline_010','decline_025','mean_score_D','mean_score_R','perfect_rate_D','perfect_rate_R')}
++        clusters.append(cluster)
++    summaries={}
++    for mode in ('D','R'):
++        family_means={f:fmean(o['native_score'] for o in observations if o['family']==f and o['mode']==mode)
++                      for f in ENTRIES if any(o['family']==f and o['mode']==mode for o in observations)}
++        summaries[mode]=dict(family_means=family_means,equal_family_mean=fmean(family_means.values()) if len(family_means)==6 else None,
++            complete_population=len(observations)==192,warning='Available retained draws only; partial missingness changes the observed subset. No six-family mean if a family is missing.')
++    feature_measurements=[];vectors={};feature_stability=[]
++    for slot in plan['feature_schedule']:
++        row=state['slots'].get(slot['slot_id'])
++        if row is None or row['result'] is None:continue
++        try:
++            result=validate_result(root,plan,slot,row['result'])
++            feature_measurements.append(dict(slot_id=slot['slot_id'],input_id=slot['input_id'],kind=slot['kind'],
++                **{field:result.get(field) for field in ('forward_seconds','cpu_feature_seconds','load_seconds','input_positions','max_allocated_bytes','max_reserved_bytes')}))
++            values=result['gate']['embedding'];first=vectors.setdefault(slot['input_id'],values)
++            feature_stability.append(dict(slot_id=slot['slot_id'],input_id=slot['input_id'],max_abs_difference_from_first=max(abs(a-b) for a,b in zip(first,values)),new_independent_input=False))
++        except Exception as exc:incidents.append(dict(slot_id=slot['slot_id'],error=str(exc),scored=False))
++    return dict(evidence_kind='development_observation',phase='P02D',status='INTEGRITY_INCIDENT' if incidents else 'INCOMPLETE' if len(observations)!=192 else 'COMPLETE_DEVELOPMENT',
++        cells=cells,clusters=clusters,observations=observations,incidents=incidents,equal_family_summary=summaries,
++        feature_measurements=feature_measurements,feature_stability=feature_stability,ledger_integrity_complete=not any(i.get('event')=='ledger_integrity_incident' for i in incidents),
++        research_resources=dict(sessions=state['sessions'],measured_residency_seconds=state['measured_residency_seconds'],unknown_residency=state['unknown_residency'],
++            output_tokens_observed=sum(o['output_tokens'] or 0 for o in observations),output_tokens_unknown=sum(o['output_tokens'] is None for o in observations)),
++        deployment_projection='One live feature forward plus CPU gate plus one selected answer and reviewed initialization allocation per routed query. Research repeats/warmups are collection costs, not 50 passes per query. No tariff, beta or hard support bound adopted.',
++        missingness='Unexecuted, admitted unknown, software incidents and corrupt results are missing/unresolved, not score zero. K-squared cross-pairs are dependent diagnostics within each of 24 input clusters.')
+diff --git a/src/taskcognition/p02d_runner.py b/src/taskcognition/p02d_runner.py
+new file mode 100644
+index 0000000..d023b07
+--- /dev/null
++++ b/src/taskcognition/p02d_runner.py
+@@ -0,0 +1,201 @@
++"""Authorized-only sequential supervisor; all preparation/tests stay offline."""
++import os
++import subprocess
++import sys
++import time
++import traceback
++from datetime import datetime, timezone
++from pathlib import Path
++from .artifacts import read_json, write_new
++from .contracts import IntegrityError, canonical, digest, file_hash, number, integer
++from .p02d_plan import RUN, PLAN_DIR, require_authorization
++from .p02d_ledger import append, scan, recover, dispatch, check_envelope, BudgetStop
++from .p02d_features import gate_vector, validate_gate_input
++from .p02b_reporting import primary_record
++
++def evidence_size(root):
++    return sum(p.stat().st_size for base in (root/RUN,root/'reports/p02d_execution') for p in base.rglob('*') if p.is_file())
++
++def validate_result(root, plan, slot, result):
++    if result.get('slot_id')!=slot['slot_id'] or result.get('request_hash')!=slot['request_hash']:
++        raise IntegrityError('worker result identity')
++    if result.get('model_error') is not None or result.get('scored') is False:raise IntegrityError('worker incident is not a result')
++    if slot['stage']=='feature':
++        if result.get('status')!='OK' or result.get('dtype')!='float32':raise IntegrityError('invalid feature result')
++        row=read_json(root/PLAN_DIR/'gate_inputs'/f'{slot["input_id"]}.json')
++        expected=gate_vector(row,result['gate']['embedding'],plan['feature_specification']['hidden_width'])
++        if result['gate']!=expected:raise IntegrityError('feature boundary')
++        if result['input_positions']!=slot['input_positions']:raise IntegrityError('feature positions')
++        number(result['forward_seconds']);number(result['cpu_feature_seconds'])
++    else:
++        request=read_json(root/PLAN_DIR/'requests'/f'{slot["slot_id"]}.json')
++        if digest(request)!=slot['request_hash']:raise IntegrityError('request changed')
++        primary=primary_record(request,{'result':result})
++        number(primary['native_score'],0,1)
++        if type(primary['perfect_correct']) is not bool or type(primary['strict_valid_final']) is not bool:raise IntegrityError('boolean scoring flags required')
++        if primary['output_tokens'] is not None:integer(primary['output_tokens'])
++        if primary['perfect_correct']!=(primary['native_score']==1):raise IntegrityError('score/perfect integrity')
++    return result
++
++class ProcessWorker:
++    """File IPC with one child, bounded waits and no mutable result publication."""
++    def __init__(self,root,session_id,stage,plan_hash):
++        self.directory=root/RUN/'workers'/session_id
++        self.directory.mkdir(parents=True,exist_ok=False)
++        self.out=(self.directory/'stdout.txt').open('xb');self.err=(self.directory/'stderr.txt').open('xb')
++        env=os.environ.copy();env.update(PYTHONPATH=str(root/'src'),HF_HUB_OFFLINE='1',TRANSFORMERS_OFFLINE='1',HF_HUB_DISABLE_TELEMETRY='1',PYTHONUTF8='1')
++        self.process=None
++        try:
++            self.process=subprocess.Popen([sys.executable,'-m','taskcognition.p02d_worker','--root',str(root),
++                '--session',session_id,'--stage',stage,'--plan-hash',plan_hash],stdout=self.out,stderr=self.err,env=env,
++                creationflags=subprocess.CREATE_NO_WINDOW if os.name=='nt' else 0)
++        except BaseException:
++            self.out.close();self.err.close();raise
++    def poll(self):return self.process.poll()
++    def ready(self):
++        p=self.directory/'ready.json'
++        return read_json(p) if p.exists() else None
++    def incident(self):return (self.directory/'incident.json').exists()
++    def send(self,slot):write_new(self.directory/'commands'/f'{slot["slot_id"]}.json',slot)
++    def result(self,slot):
++        p=self.directory/'results'/f'{slot["slot_id"]}.json'
++        return read_json(p) if p.exists() else None
++    def cancel(self,slot):write_new(self.directory/'cancel'/f'{slot["slot_id"]}.json',{'reason':'timeout'})
++    def finish(self):write_new(self.directory/'finish.json',{'stop':True})
++    def kill(self):
++        if self.poll() is None:self.process.kill()
++    def wait(self,timeout):return self.process.wait(timeout=timeout)
++    def close(self):self.out.close();self.err.close()
++
++def supervise_session(root,plan,slots,plan_hash,execution_start,*,worker_factory=ProcessWorker,
++                      clock=time.perf_counter,sleep=time.sleep,monitor=None,size_fn=evidence_size):
++    """Persist costs even when load, callbacks, monitor, evidence, or cleanup fail.
++
++    Fake-worker tests exercise this same supervisor. No factory is reached before
++    the public execute() authorization boundary in real execution.
++    """
++    run=root/RUN;stage=slots[0]['stage'];sid='features' if stage=='feature' else slots[0]['slot_id']
++    state=recover(run);L=plan['limits'];started=clock();worker=None;error=None;ready=None
++    check_envelope(plan,state,stage,started-execution_start,size_fn(root),loading=True)
++    append(run,'session_start',session_id=sid,stage=stage)
++    last_heartbeat=started;safe=False;exit_code=None;cleanup_start=None
++    def tick():
++        nonlocal last_heartbeat
++        now=clock()
++        if monitor is not None:monitor(worker)
++        if worker.incident():raise IntegrityError('worker software/evidence incident')
++        if now-last_heartbeat>=1:
++            append(run,'heartbeat',session_id=sid,seconds=now-started);last_heartbeat=now
++        if now-execution_start>=L['wall_seconds']-L['cleanup_seconds']:raise BudgetStop('execution wall termination')
++        if 2*size_fn(root)>=L['evidence_bytes']-L['evidence_reservation_bytes']:raise BudgetStop('evidence termination')
++        elapsed=now-started
++        prior=sum(s['seconds'] for s in state['sessions'].values() if s['ended'])
++        if prior+elapsed>=L['residency_seconds']-L['cleanup_seconds']:raise BudgetStop('residency termination')
++        if stage=='feature' and elapsed>=L['feature_residency_seconds']-L['cleanup_seconds']:raise BudgetStop('feature residency termination')
++    try:
++        # First slot is durably consumed even if startup/load has an unknown outcome.
++        dispatch(run,plan,slots[0],sid)
++        worker=worker_factory(root,sid,stage,plan_hash)
++        while (ready:=worker.ready()) is None:
++            tick()
++            if worker.poll() is not None:raise IntegrityError('worker exited before readiness')
++            if clock()-started>=L['load_deadline_seconds']:raise IntegrityError('loader deadline; unscored incident')
++            sleep(.02)
++        number(ready['load_seconds'])
++        for ix,slot in enumerate(slots):
++            tick()
++            if ix:
++                current=scan(run)
++                check_envelope(plan,current,stage,clock()-execution_start,size_fn(root),active_seconds=clock()-started,feature_wall=clock()-started)
++                dispatch(run,plan,slot,sid)
++            append(run,'admitted',session_id=sid,slot_id=slot['slot_id'])
++            worker.send(slot);forward_start=clock();cancelled=False;forced=False
++            while (result:=worker.result(slot)) is None:
++                tick()
++                if worker.poll() is not None:raise IntegrityError('worker exited without result')
++                elapsed=clock()-forward_start
++                if elapsed>=120 and not cancelled:
++                    if stage=='feature':raise BudgetStop('feature forward timeout; no answer admission')
++                    worker.cancel(slot);cancelled=True
++                if elapsed>=130 and stage=='answer':
++                    # Known deadline, no reported software incident: explicit retained failure.
++                    worker.kill();exit_code=worker.wait(L['cleanup_seconds']);forced=True
++                    result=dict(evidence_kind='development_observation',split='DEVELOPMENT',slot_id=slot['slot_id'],
++                        request_id=slot['slot_id'],request_hash=slot['request_hash'],finish_reason='supervisor_forced_termination',
++                        forced_termination=True,native_score=0,valid_retainable_output=False,
++                        output_tokens_unknown=True,reason='known generation deadline followed by finite cancellation grace')
++                    break
++                sleep(.02)
++            validate_result(root,plan,slot,result)
++            path=run/'results'/f'{slot["slot_id"]}.json';write_new(path,result)
++            append(run,'result',session_id=sid,slot_id=slot['slot_id'],path=path.relative_to(run).as_posix(),sha256=file_hash(path))
++            if forced:break
++        if worker.poll() is None:worker.finish()
++        exit_code=worker.wait(L['cleanup_seconds'])
++        if exit_code!=0 and not forced:raise IntegrityError('worker nonzero exit after result')
++    except BaseException as exc:
++        error=exc
++        raise
++    finally:
++        cleanup_start=clock();cleanup_error=None
++        try:
++            if worker is not None:
++                if worker.poll() is None:worker.kill()
++                exit_code=worker.wait(L['cleanup_seconds']);safe=worker.poll() is not None
++            else:safe=True  # factory failed before returning child; production constructor has no post-spawn operations
++        except BaseException as exc:
++            cleanup_error=exc;safe=False
++        finally:
++            elapsed=clock()-started;cleanup=clock()-cleanup_start
++            record=dict(evidence_kind='development_observation',session_id=sid,stage=stage,seconds=elapsed,
++                cleanup_seconds=cleanup,safe_stopped=safe,exit_code=exit_code,load_seconds=None if ready is None else ready['load_seconds'],
++                clock='perf_counter from before process creation through final wait; conservative residency, not GPU kernel time',
++                error=None if error is None else repr(error),cleanup_error=None if cleanup_error is None else repr(cleanup_error),scored=False)
++            # Independent cost record is written first, even if the main ledger is corrupt.
++            try:
++                write_new(run/'session_resources'/f'{sid}.json',record)
++                append(run,'session_end',session_id=sid,seconds=elapsed,cleanup_seconds=cleanup,safe_stopped=safe,exit_code=exit_code)
++                if error or cleanup_error:
++                    write_new(run/'incidents'/f'{sid}.json',record)
++                    append(run,'incident',session_id=sid,error=record['error'],cleanup_error=record['cleanup_error'],scored=False)
++            finally:
++                if worker is not None:worker.close()
++            if cleanup_error is not None:raise IntegrityError('cleanup did not establish stopped state') from cleanup_error
++    return scan(run)
++
++def execute(root,expected_hash,*,worker_factory=ProcessWorker):
++    root=root.resolve();planpath=root/PLAN_DIR/'run_plan.json'
++    run=root/RUN
++    started=time.perf_counter();complete=False;began=False
++    try:
++        plan=require_authorization(root,planpath,expected_hash)
++        recover(run)
++        if (run/'execution_start.json').exists():raise IntegrityError('single invocation; no automatic restart/replay')
++        write_new(run/'execution_start.json',dict(evidence_kind='development_observation',timestamp_utc=datetime.now(timezone.utc).isoformat(),plan_sha256=expected_hash))
++        began=True
++        feature_started=time.perf_counter()
++        try:
++            supervise_session(root,plan,plan['feature_schedule'],expected_hash,started,worker_factory=worker_factory)
++        finally:
++            feature_wall=time.perf_counter()-feature_started
++            write_new(run/'feature_stage_wall.json',dict(evidence_kind='development_observation',seconds=feature_wall,
++                includes_supervisor_recording=True,ceiling_seconds=plan['limits']['feature_wall_seconds'],overshoot_seconds=max(0,feature_wall-plan['limits']['feature_wall_seconds'])))
++        if feature_wall>plan['limits']['feature_wall_seconds']:raise BudgetStop('feature stage wall exceeded; answers blocked')
++        for slot in plan['requests']:
++            require_authorization(root,planpath,expected_hash)
++            supervise_session(root,plan,[slot],expected_hash,started,worker_factory=worker_factory)
++        complete=True
++    finally:
++        # Close dispatch before reporting, including on evidence/cleanup exceptions.
++        state=read_json(root/'configs/phase_state.json')
++        if state.get('active_phase')=='P02D' and (state.get('real_dispatch_enabled') is True or began):
++            state.update(real_dispatch_enabled=False,status='EXECUTION_RECORDED' if complete else 'BLOCKED')
++            (root/'configs/phase_state.json').write_bytes(canonical(state)+b'\n')
++        if began:
++            write_new(run/'execution_end.json',dict(evidence_kind='development_observation',all_planned_executed=complete,
++                wall_seconds=time.perf_counter()-started,real_dispatch_enabled=False))
++
++if __name__=='__main__':
++    import argparse
++    p=argparse.ArgumentParser();p.add_argument('--root',type=Path,default=Path.cwd());p.add_argument('--plan-hash',required=True)
++    a=p.parse_args();execute(a.root,a.plan_hash)
+diff --git a/src/taskcognition/p02d_worker.py b/src/taskcognition/p02d_worker.py
+new file mode 100644
+index 0000000..018daf7
+--- /dev/null
++++ b/src/taskcognition/p02d_worker.py
+@@ -0,0 +1,139 @@
++"""Isolated same-checkpoint worker; authorization checked before importing torch.
++
++No invocation is authorized in P02D preflight. File commands are accepted only
++after durable supervisor admission and bound to the immutable pending plan.
++"""
++import argparse
++import time
++import traceback
++from pathlib import Path
++from .artifacts import read_json,write_new
++from .contracts import IntegrityError,digest,file_hash
++from .p02d_plan import RUN,PLAN_DIR,require_authorization
++from .p02d_ledger import scan
++from .p02d_features import validate_gate_input,decoder_feature,gate_vector
++
++def generate_answer(model,tokenizer,request,cancel,torch,GenerationConfig,StoppingCriteria,StoppingCriteriaList):
++    """Original native-channel/scorer pipeline; no repair or callback swallowing."""
++    from torch.nn.attention import sdpa_kernel,SDPBackend
++    from .p02b_runner import finish_reason
++    from .p02_native import native_dataset,syntax
++    from .p01_parsing import parse_and_score
++    ids=torch.tensor([request['input_ids']],device='cuda:0',dtype=torch.long);mask=torch.ones_like(ids)
++    config=GenerationConfig.from_dict(request['effective_generation_config'])
++    torch.manual_seed(request['sampling_seed']);torch.cuda.manual_seed_all(request['sampling_seed'])
++    token_ids=[];first=True;callback_error=None;reason=None;start=time.perf_counter()
++    def checked(fn):
++        def wrapped(*a,**k):
++            nonlocal callback_error
++            try:return fn(*a,**k)
++            except BaseException as exc:callback_error=exc;raise
++        return wrapped
++    class Stream:
++        @checked
++        def put(self,value):
++            nonlocal first
++            if first:first=False;return
++            token_ids.extend(value.reshape(-1).tolist())
++        def end(self):pass
++    class Stop(StoppingCriteria):
++        @checked
++        def __call__(self,input_ids,scores,**kwargs):
++            nonlocal reason
++            if cancel.exists() or time.perf_counter()-start>=120:reason='timeout'
++            return reason is not None
++    try:
++        with torch.inference_mode(),sdpa_kernel([SDPBackend.MATH]):
++            returned=model.generate(input_ids=ids,attention_mask=mask,generation_config=config,streamer=Stream(),stopping_criteria=StoppingCriteriaList([Stop()]))
++        if callback_error is not None:raise callback_error
++        if returned[0,ids.shape[1]:].tolist()!=token_ids:raise IntegrityError('streamed/returned token mismatch')
++        sync_start=time.perf_counter();torch.cuda.synchronize();sync_seconds=time.perf_counter()-sync_start
++    except BaseException as exc:
++        # Caller persists the incident; attach partial tokens without scoring them.
++        exc.partial_token_ids=list(token_ids)
++        raise
++    generation_seconds=time.perf_counter()-start
++    raw=tokenizer.decode(token_ids,skip_special_tokens=False);parse_ids=list(token_ids)
++    eos=config.eos_token_id if isinstance(config.eos_token_id,list) else [config.eos_token_id]
++    terminal=parse_ids[-1] if parse_ids and parse_ids[-1] in eos else None
++    if terminal is not None:parse_ids.pop()
++    finish=finish_reason(reason,terminal,len(token_ids),2048)
++    root=Path(request['_root']);native=native_dataset(root,request['family'],request['dataset_config']);entry=native[request['dataset_index']]
++    if digest(entry)!=request['entry_hash']:raise IntegrityError('native entry changed')
++    parsed=parse_and_score(tokenizer.decode(parse_ids,skip_special_tokens=False),request['mode'],request['opening_in_prompt'],finish,
++        lambda payload:native.score_answer(payload,entry),syntax_fn=lambda payload:syntax(request['family'],payload))
++    if finish=='timeout':
++        parsed['failure_flags'].append('timeout')
++        if not parsed['strict_valid_final']:parsed['status']='admitted_execution_failure'
++    original={k:v for k,v in request.items() if k!='_root'}
++    return dict(evidence_kind='development_observation',split='DEVELOPMENT',slot_id=request['slot_id'],request_id=request['slot_id'],
++        request_hash=digest(original),package_hash=request['package_hash'],stream_id=request['stream_id'],
++        raw_token_ids=token_ids,raw_decoded_text=raw,removed_terminal_eos_id=terminal,generated_tokens=len(token_ids),
++        parsed=parsed,finish_reason=finish,model_error=None,generation_seconds=generation_seconds,synchronization_seconds=sync_seconds,
++        cancellation_observation='generate returned and CUDA synchronized',automatic_retry=False)
++
++def main():
++    parser=argparse.ArgumentParser();parser.add_argument('--root',type=Path,required=True)
++    parser.add_argument('--session',required=True);parser.add_argument('--stage',choices=['feature','answer'],required=True);parser.add_argument('--plan-hash',required=True)
++    args=parser.parse_args();root=args.root.resolve();directory=root/RUN/'workers'/args.session
++    plan=require_authorization(root,root/PLAN_DIR/'run_plan.json',args.plan_hash)
++    if Path(__file__).resolve()!=root/'src/taskcognition/p02d_worker.py':raise IntegrityError('wrong worker source')
++    slots=plan['feature_schedule'] if args.stage=='feature' else [q for q in plan['requests'] if q['slot_id']==args.session]
++    initial=scan(root/RUN)
++    if not slots or initial['slots'].get(slots[0]['slot_id'],{}).get('state')!='UNKNOWN_ADMISSION':raise IntegrityError('worker requires unique consumed dispatch')
++    load_start=time.perf_counter()
++    try:
++        # All cache bytes verified inside the metered loader interval, before load.
++        modeldir=root/plan['environment']['model_directory']
++        for name,info in plan['environment']['model_files'].items():
++            if file_hash(modeldir/name)!=info['sha256']:raise IntegrityError('cached checkpoint bytes changed')
++        import torch
++        from torch.nn.attention import sdpa_kernel,SDPBackend
++        from transformers import AutoModelForCausalLM,AutoTokenizer,GenerationConfig,StoppingCriteria,StoppingCriteriaList
++        model=AutoModelForCausalLM.from_pretrained(modeldir,dtype=torch.bfloat16,attn_implementation='sdpa',local_files_only=True,trust_remote_code=False).to('cuda:0')
++        model.eval()
++        if not all(p.device.type=='cuda' and p.dtype==torch.bfloat16 for p in model.parameters()):raise IntegrityError('precision/device')
++        tokenizer=AutoTokenizer.from_pretrained(modeldir,local_files_only=True,trust_remote_code=False) if args.stage=='answer' else None
++        torch.cuda.synchronize();load_seconds=time.perf_counter()-load_start
++        write_new(directory/'ready.json',dict(load_seconds=load_seconds,hidden_width=model.config.hidden_size,attention='sdpa forced MATH',dtype='bfloat16'))
++        for slot in slots:
++            command=directory/'commands'/f'{slot["slot_id"]}.json';wait_start=time.perf_counter()
++            while not command.exists():
++                if (directory/'finish.json').exists():return
++                if time.perf_counter()-wait_start>150:raise IntegrityError('supervisor command absent; finite child exit')
++                time.sleep(.02)
++            if read_json(command)!=slot:raise IntegrityError('changed worker command')
++            ledger=scan(root/RUN)['slots'][slot['slot_id']]
++            if ledger['state']!='ADMITTED' or ledger['request_hash']!=slot['request_hash']:raise IntegrityError('durable admission mismatch')
++            torch.cuda.reset_peak_memory_stats()
++            if args.stage=='feature':
++                cpu_start=time.perf_counter()
++                row=validate_gate_input(read_json(root/PLAN_DIR/'gate_inputs'/f'{slot["input_id"]}.json'))
++                cheap_seconds=time.perf_counter()-cpu_start
++                ids=torch.tensor([row['token_ids']],device='cuda:0',dtype=torch.long);mask=torch.ones_like(ids)
++                torch.cuda.synchronize();start=time.perf_counter()
++                with sdpa_kernel([SDPBackend.MATH]):vector=decoder_feature(model,ids,mask,plan['feature_specification']['hidden_width'])
++                torch.cuda.synchronize();seconds=time.perf_counter()-start
++                if seconds>120:raise IntegrityError('feature forward exceeded deadline; tranche stops')
++                cpu_start=time.perf_counter();gate=gate_vector(row,vector.cpu().tolist());cpu_seconds=cheap_seconds+time.perf_counter()-cpu_start
++                result=dict(evidence_kind='development_observation',split='DEVELOPMENT',slot_id=slot['slot_id'],request_hash=slot['request_hash'],
++                    status='OK',dtype='float32',gate=gate,input_positions=len(row['token_ids']),forward_seconds=seconds,
++                    cpu_feature_seconds=cpu_seconds,kind=slot['kind'],use_cache=False)
++            else:
++                request=read_json(root/PLAN_DIR/'requests'/f'{slot["slot_id"]}.json')
++                if digest(request)!=slot['request_hash']:raise IntegrityError('worker request hash')
++                request['_root']=str(root)
++                result=generate_answer(model,tokenizer,request,directory/'cancel'/f'{slot["slot_id"]}.json',torch,GenerationConfig,StoppingCriteria,StoppingCriteriaList)
++            result.update(load_seconds=load_seconds,max_allocated_bytes=torch.cuda.max_memory_allocated(),max_reserved_bytes=torch.cuda.max_memory_reserved())
++            write_new(directory/'results'/f'{slot["slot_id"]}.json',result)
++        # Normal parent stop; finite wait prevents abandoned idle residency.
++        start=time.perf_counter()
++        while not (directory/'finish.json').exists():
++            if time.perf_counter()-start>30:raise IntegrityError('finish handshake missing')
++            time.sleep(.02)
++    except BaseException as exc:
++        write_new(directory/'incident.json',dict(evidence_kind='development_observation',scored=False,error=repr(exc),traceback=traceback.format_exc(),
++            partial_token_ids=getattr(exc,'partial_token_ids',None),partial_tokens_unscored=True,elapsed_since_loader_start=time.perf_counter()-load_start))
++        raise
++
++if __name__=='__main__':main()
+diff --git a/tests/test_p02d.py b/tests/test_p02d.py
+new file mode 100644
+index 0000000..4abbfd4
+--- /dev/null
++++ b/tests/test_p02d.py
+@@ -0,0 +1,236 @@
++"""Production preflight/worker boundaries with CPU tensors, fake workers/clocks."""
++import copy
++import importlib.util
++import tempfile
++import unittest
++from pathlib import Path
++from types import SimpleNamespace
++from unittest.mock import patch
++import torch
++from taskcognition.artifacts import read_json,write_new
++from taskcognition.contracts import IntegrityError,digest,file_hash
++from taskcognition.p02d_features import cheap_features,masked_pool,decoder_feature,validate_gate_input,forward_schedule,gate_vector
++from taskcognition.p02d_plan import PLAN_DIR,RUN,LIMITS,validate_plan,require_authorization,verify_plan
++from taskcognition.p02d_ledger import append,scan,recover,dispatch,check_envelope,BudgetStop
++from taskcognition.p02d_runner import execute,supervise_session,validate_result
++from taskcognition.p02d_reporting import report
++
++ROOT=Path(__file__).resolve().parents[1]
++spec=importlib.util.spec_from_file_location('publish',ROOT/'scripts/p02d_publish.py');module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
++
++class Features(unittest.TestCase):
++    def test_swallowed_generation_callback_error_propagates_unscored(self):
++        from taskcognition.p02d_worker import generate_answer
++        class Backend:
++            def generate(self,**kwargs):
++                kwargs['streamer'].put(torch.tensor([[1]]))
++                try:kwargs['streamer'].put(object())
++                except AttributeError:pass  # Simulate a backend swallowing a broken callback.
++                return torch.tensor([[1,2]])
++        cpu_torch=SimpleNamespace(tensor=lambda data,**kw:torch.tensor(data,dtype=kw['dtype']),long=torch.long,
++            ones_like=torch.ones_like,manual_seed=lambda _:None,cuda=SimpleNamespace(manual_seed_all=lambda _:None),inference_mode=torch.inference_mode)
++        cfg=SimpleNamespace(from_dict=lambda _:object())
++        request={'input_ids':[1],'effective_generation_config':{},'sampling_seed':1}
++        with self.assertRaises(AttributeError):generate_answer(Backend(),None,request,Path('absent'),cpu_torch,cfg,object,list)
++    def test_post_norm_decoder_and_masked_float32_pool(self):
++        class Fake:
++            def eval(self):self.evaluating=True
++            def model(self,**kwargs):
++                assert kwargs['use_cache'] is False and kwargs['past_key_values'] is None
++                assert not torch.is_grad_enabled()
++                # These are post-norm output values; masked padded token cannot leak.
++                return SimpleNamespace(last_hidden_state=torch.tensor([[[1.,3.],[3.,7.],[99.,99.]]],dtype=torch.bfloat16),past_key_values=None)
++        model=Fake();out=decoder_feature(model,torch.tensor([[1,2,0]]),torch.tensor([[1,1,0]]),2)
++        self.assertTrue(model.evaluating);self.assertEqual(out.dtype,torch.float32);self.assertEqual(out.tolist(),[2.,5.])
++    def test_shape_nonfinite_empty_mask_rejected(self):
++        cases=[(torch.zeros(1,2,3),torch.ones(1,2),2),(torch.tensor([[[float('nan')]]]),torch.ones(1,1),1),
++               (torch.ones(1,2,2),torch.zeros(1,2),2),(torch.ones(1,2,2),torch.tensor([[1.,.5]]),2)]
++        for hidden,mask,width in cases:
++            with self.subTest(width=width),self.assertRaises(IntegrityError):masked_pool(hidden,mask,width)
++    def test_cheap_unicode_line_rules_and_allowlist(self):
++        text='A) JSON 12\r\n B. text\u2028C. list number\nD) ٣ + ='
++        row=dict(input_id='join',text=text,token_ids=[1,2],observables=cheap_features(text,[1,2]))
++        self.assertEqual(row['observables']['choice_marker_count'],3)
++        self.assertEqual(row['observables']['ascii_digit_count'],2)
++        self.assertEqual(row['observables']['operator_count'],2)
++        validate_gate_input(row)
++        for key in ('family','gold','filename','trace','score','latent'):
++            with self.assertRaises(IntegrityError):validate_gate_input(dict(row,**{key:'forbidden'}))
++        with self.assertRaises(IntegrityError):gate_vector(row,[float('inf')],1)
++
++class Plan(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls):cls.plan=module.candidate(ROOT)
++    def test_fixed_selection_counts_streams_and_three_lengths(self):
++        validate_plan(self.plan)
++        self.assertEqual(sum(q['cap'] for q in self.plan['requests']),393216)
++        fs=forward_schedule(self.plan['inputs']);self.assertEqual(len(fs),50)
++        self.assertEqual(sum(q['kind']=='warmup' for q in fs),2)
++        self.assertEqual(sum(q['input_positions'] for q in fs),6597)
++    def test_bad_cap_scope_schedule_or_recipe_rejected(self):
++        for mutate in (lambda p:p['caps'].update(D=1024),lambda p:p.update(phase='P02B'),
++                       lambda p:p['requests'].pop(),lambda p:p['feature_schedule'].pop(),
++                       lambda p:p['feature_specification'].update(pooling='last token')):
++            p=copy.deepcopy(self.plan);mutate(p)
++            with self.assertRaises(IntegrityError):validate_plan(p)
++    def test_pending_authorization_rejects_before_worker(self):
++        with patch('taskcognition.p02d_runner.ProcessWorker') as factory:
++            with self.assertRaisesRegex(IntegrityError,'pending'):execute(ROOT,'0'*64,worker_factory=factory)
++            factory.assert_not_called()
++    def test_hash_and_authorization_binding(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            root=Path(tmp);path=root/'plan.json';write_new(path,self.plan)
++            with self.assertRaisesRegex(IntegrityError,'hash'):verify_plan(root,path,'0'*64)
++            write_new(root/'configs/phase_state.json',dict(active_phase='P02D',status='EXECUTION_AUTHORIZED',real_dispatch_enabled=True))
++            with self.assertRaisesRegex(IntegrityError,'missing authorization'):require_authorization(root,path,file_hash(path))
++            write_new(root/'configs/p02d_execution_authorization.json',dict(authorized=True))
++            with self.assertRaisesRegex(IntegrityError,'state binding'):require_authorization(root,path,file_hash(path))
++    def test_authorized_but_wrong_cap_rejected_before_factory(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            root=Path(tmp);plan=copy.deepcopy(self.plan);plan['caps']['R']=1024
++            path=root/PLAN_DIR/'run_plan.json';write_new(path,plan);sha=file_hash(path)
++            auth=root/'configs/p02d_execution_authorization.json'
++            write_new(auth,dict(phase='P02D',plan_sha256=sha,authorized=True,user_message_reference='FIXTURE ONLY',limits=LIMITS))
++            write_new(root/'configs/phase_state.json',dict(active_phase='P02D',status='EXECUTION_AUTHORIZED',real_dispatch_enabled=True,
++                p02d_plan_sha256=sha,p02d_authorization_sha256=file_hash(auth)))
++            with patch('taskcognition.p02d_runner.ProcessWorker') as factory:
++                with self.assertRaisesRegex(IntegrityError,'caps'):execute(root,sha,worker_factory=factory)
++                factory.assert_not_called()
++
++class Clock:
++    def __init__(self):self.t=0.
++    def __call__(self):return self.t
++    def sleep(self,s):self.t+=s
++
++class FakeWorker:
++    def __init__(self,root,sid,stage,plan_hash,clock,fail=False):
++        self.root=root;self.clock=clock;self.code=None;self.current=None;self.fail=fail;self.killed=False;self.waited=False
++        clock.t+=2
++    def poll(self):return self.code
++    def ready(self):return {'load_seconds':2}
++    def incident(self):return False
++    def send(self,slot):self.current=slot;self.clock.t+=.1
++    def result(self,slot):
++        if self.fail:raise RuntimeError('injected evidence monitor error')
++        row=read_json(self.root/PLAN_DIR/'gate_inputs'/f'{slot["input_id"]}.json')
++        return dict(slot_id=slot['slot_id'],request_hash=slot['request_hash'],status='OK',dtype='float32',
++            gate=gate_vector(row,[0.]*4096),input_positions=slot['input_positions'],forward_seconds=.1,cpu_feature_seconds=.001)
++    def finish(self):self.code=0
++    def kill(self):self.killed=True;self.code=-1
++    def wait(self,timeout):self.waited=True;return self.code
++    def close(self):pass
++
++class LedgerAndSupervisor(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls):cls.plan=module.candidate(ROOT)
++    def setUp(self):
++        self.temp=tempfile.TemporaryDirectory();self.root=Path(self.temp.name);self.run=self.root/RUN;self.clock=Clock()
++        import shutil
++        shutil.copytree(ROOT/PLAN_DIR,self.root/PLAN_DIR)
++    def tearDown(self):self.temp.cleanup()
++    def test_feature_stage_all_50_one_cost_and_no_replay(self):
++        workers=[]
++        def factory(*args):
++            w=FakeWorker(*args,clock=self.clock);workers.append(w);return w
++        state=supervise_session(self.root,self.plan,self.plan['feature_schedule'],'a'*64,0,worker_factory=factory,clock=self.clock,sleep=self.clock.sleep)
++        self.assertEqual(len(state['slots']),50);self.assertEqual(len(state['sessions']),1)
++        self.assertAlmostEqual(state['measured_residency_seconds'],7)
++        self.assertTrue(workers[0].waited)
++        recover(self.run)
++        with self.assertRaises(IntegrityError):dispatch(self.run,self.plan,self.plan['feature_schedule'][0],'features')
++        before=scan(self.run)['measured_residency_seconds'];recover(self.run);self.assertEqual(scan(self.run)['measured_residency_seconds'],before)
++    def test_monitor_error_stops_child_and_preserves_cost_without_score(self):
++        workers=[]
++        def factory(*args):
++            w=FakeWorker(*args,clock=self.clock,fail=True);workers.append(w);return w
++        with self.assertRaises(RuntimeError):supervise_session(self.root,self.plan,self.plan['feature_schedule'],'a'*64,0,worker_factory=factory,clock=self.clock,sleep=self.clock.sleep)
++        state=scan(self.run);self.assertTrue(workers[0].killed and workers[0].waited)
++        self.assertEqual(len(state['slots']),1);self.assertIsNone(next(iter(state['slots'].values()))['result'])
++        self.assertGreater(state['measured_residency_seconds'],0)
++        with self.assertRaises(IntegrityError):recover(self.run)
++    def test_unknown_dispatch_recovery_and_corruption_fail_closed(self):
++        append(self.run,'session_start',session_id='features',stage='feature')
++        dispatch(self.run,self.plan,self.plan['feature_schedule'][0],'features')
++        append(self.run,'heartbeat',session_id='features',seconds=4)
++        with self.assertRaises(IntegrityError):recover(self.run)
++        self.assertEqual(scan(self.run)['measured_residency_seconds'],4)
++        (self.run/'ledger/000001.json').write_text('{}')
++        with self.assertRaises(IntegrityError):recover(self.run)
++        self.assertTrue(scan(self.run,tolerant=True)['incidents'])
++    def test_rejected_restart_closes_authorized_state_without_recharge(self):
++        write_new(self.root/'configs/phase_state.json',dict(active_phase='P02D',status='EXECUTION_AUTHORIZED',real_dispatch_enabled=True))
++        append(self.run,'session_start',session_id='features',stage='feature')
++        dispatch(self.run,self.plan,self.plan['feature_schedule'][0],'features')
++        append(self.run,'heartbeat',session_id='features',seconds=3)
++        with patch('taskcognition.p02d_runner.require_authorization',return_value=self.plan):
++            with self.assertRaises(IntegrityError):execute(self.root,'a'*64)
++        self.assertFalse(read_json(self.root/'configs/phase_state.json')['real_dispatch_enabled'])
++        self.assertEqual(scan(self.run)['measured_residency_seconds'],3)
++    def test_feature_stage_wall_overshoot_persisted_and_blocks_answers(self):
++        write_new(self.root/'configs/phase_state.json',dict(active_phase='P02D',status='EXECUTION_AUTHORIZED',real_dispatch_enabled=True))
++        with patch('taskcognition.p02d_runner.require_authorization',return_value=self.plan), \
++             patch('taskcognition.p02d_runner.supervise_session') as supervisor, \
++             patch('taskcognition.p02d_runner.time.perf_counter',side_effect=[0,1,1302,1303]):
++            with self.assertRaises(BudgetStop):execute(self.root,'a'*64)
++            self.assertEqual(supervisor.call_count,1)
++        wall=read_json(self.run/'feature_stage_wall.json')
++        self.assertEqual(wall['seconds'],1301);self.assertEqual(wall['overshoot_seconds'],101)
++        self.assertFalse(read_json(self.root/'configs/phase_state.json')['real_dispatch_enabled'])
++    def test_cumulative_and_feature_sublimits(self):
++        state=dict(sessions={'prior':dict(ended=True,seconds=14000,stage='answer')})
++        with self.assertRaises(BudgetStop):check_envelope(self.plan,state,'answer',0,0,active_seconds=101)
++        with self.assertRaises(BudgetStop):check_envelope(self.plan,dict(sessions={}), 'feature',0,0,active_seconds=751)
++        with self.assertRaises(BudgetStop):check_envelope(self.plan,dict(sessions={}), 'answer',17800,0)
++        with self.assertRaises(BudgetStop):check_envelope(self.plan,dict(sessions={}), 'answer',0,260*1024**2)
++    def test_partial_feature_blocks_answers(self):
++        append(self.run,'session_start',session_id='answer_000',stage='answer')
++        with self.assertRaisesRegex(IntegrityError,'feature stage'):dispatch(self.run,self.plan,self.plan['requests'][0],'answer_000')
++    def test_feature_timeout_and_cleanup_failure_never_admit_answers(self):
++        class Slow(FakeWorker):
++            def result(self,slot):self.clock.t+=121;return None
++        with self.assertRaises(BudgetStop):
++            supervise_session(self.root,self.plan,self.plan['feature_schedule'],'a'*64,0,
++                worker_factory=lambda *a:Slow(*a,clock=self.clock),clock=self.clock,sleep=self.clock.sleep)
++        state=scan(self.run);self.assertEqual(len(state['slots']),1);self.assertGreater(state['measured_residency_seconds'],120)
++        with self.assertRaises(IntegrityError):recover(self.run)
++    def test_cleanup_failure_keeps_unknown_cost_and_stops(self):
++        class Unstoppable(FakeWorker):
++            def result(self,slot):raise RuntimeError('monitor failed')
++            def kill(self):self.clock.t+=30
++            def wait(self,timeout):self.clock.t+=timeout;raise TimeoutError('cannot establish stopped state')
++        with self.assertRaisesRegex(IntegrityError,'cleanup'):
++            supervise_session(self.root,self.plan,self.plan['feature_schedule'],'a'*64,0,
++                worker_factory=lambda *a:Unstoppable(*a,clock=self.clock),clock=self.clock,sleep=self.clock.sleep)
++        state=scan(self.run);self.assertTrue(state['unknown_residency']);self.assertGreater(state['measured_residency_seconds'],60)
++        with self.assertRaises(IntegrityError):recover(self.run)
++    def test_complete_cluster_uses_existing_targets_partial_is_not_filled(self):
++        # Synthetic ledger records only: no worker/model is invoked.
++        iid=self.plan['inputs'][0]['input_id'];group=[q for q in self.plan['requests'] if q['input_id']==iid]
++        scores={'D':[1,1,1,0],'R':[1,1,0,0]}
++        for q in group:
++            sid=q['slot_id'];append(self.run,'session_start',session_id=sid,stage='answer')
++            append(self.run,'dispatch',session_id=sid,slot_id=sid,request_hash=q['request_hash'],output_reservation=2048,input_positions=0)
++            append(self.run,'admitted',session_id=sid,slot_id=sid)
++            score=scores[q['mode']][q['draw_index']]
++            value=dict(slot_id=sid,request_id=sid,request_hash=q['request_hash'],package_hash=q['package_hash'],stream_id=q['stream_id'],
++                generated_tokens=1,raw_token_ids=[1],generation_seconds=1,finish_reason='eos',
++                parsed=dict(native_score=score,perfect_correct=score==1,strict_valid_final=True,status='perfect' if score else 'wrong',failure_flags=[]))
++            p=self.run/'results'/f'{sid}.json';write_new(p,value)
++            append(self.run,'result',session_id=sid,slot_id=sid,path=p.relative_to(self.run).as_posix(),sha256=file_hash(p))
++            append(self.run,'session_end',session_id=sid,seconds=2,cleanup_seconds=.1,safe_stopped=True,exit_code=0)
++        r=report(self.root,self.plan);c=r['clusters'][0];self.assertTrue(c['complete_K4'])
++        self.assertEqual(c['targets']['benefit'],-.25);self.assertEqual(c['targets']['joint_spoilage'],.375)
++        self.assertEqual(c['targets']['direct_redraw'],.25);self.assertEqual(c['targets']['decline_010'],.375)
++        self.assertIsNone(r['clusters'][1]['targets'])
++        # A corrupted last result must not turn into a ninth fabricated draw/zero.
++        p.write_text('{}');r=report(self.root,self.plan)
++        self.assertFalse(r['clusters'][0]['complete_K4']);self.assertTrue(r['incidents'])
++    def test_empty_and_corrupt_partial_report_has_no_fabricated_targets(self):
++        r=report(self.root,self.plan);self.assertEqual(len(r['cells']),12);self.assertEqual(len(r['clusters']),24)
++        self.assertTrue(all(c['targets'] is None for c in r['clusters']))
++        append(self.run,'session_start',session_id='features',stage='feature')
++        dispatch(self.run,self.plan,self.plan['feature_schedule'][0],'features')
++        r=report(self.root,self.plan);self.assertTrue(r['research_resources']['unknown_residency'])
++        self.assertEqual(sum(c['retained'] for c in r['cells']),0)
++
++if __name__=='__main__':unittest.main()

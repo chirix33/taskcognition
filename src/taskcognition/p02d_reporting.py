@@ -14,6 +14,12 @@ from .p02d_runner import validate_result
 def report(root,plan):
     validate_plan(plan)
     run=root/RUN;state=scan(run,tolerant=True);observations=[];incidents=list(state['incidents'])
+    stop=None
+    if (run/'supervisor_stop.json').exists():
+        try:
+            stop=read_json(run/'supervisor_stop.json')
+            if not stop.get('resource_stop'):incidents.append(dict(event='supervisor_stop',record=stop))
+        except Exception as exc:incidents.append(dict(event='supervisor_stop_integrity',error=str(exc)))
     for q in plan['requests']:
         row=state['slots'].get(q['slot_id'])
         if row is None or row['result'] is None:continue
@@ -81,6 +87,7 @@ def report(root,plan):
         except Exception as exc:incidents.append(dict(slot_id=slot['slot_id'],error=str(exc),scored=False))
     return dict(evidence_kind='development_observation',phase='P02D',status='INTEGRITY_INCIDENT' if incidents else 'INCOMPLETE' if len(observations)!=192 else 'COMPLETE_DEVELOPMENT',
         cells=cells,clusters=clusters,observations=observations,incidents=incidents,equal_family_summary=summaries,
+        supervisor_stop=stop,
         feature_measurements=feature_measurements,feature_stability=feature_stability,ledger_integrity_complete=not any(i.get('event')=='ledger_integrity_incident' for i in incidents),
         research_resources=dict(sessions=state['sessions'],measured_residency_seconds=state['measured_residency_seconds'],unknown_residency=state['unknown_residency'],
             output_tokens_observed=sum(o['output_tokens'] or 0 for o in observations),output_tokens_unknown=sum(o['output_tokens'] is None for o in observations)),

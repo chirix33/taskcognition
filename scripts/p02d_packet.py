@@ -18,13 +18,14 @@ for n in ['.gitattributes','AGENTS.md','README.md','pyproject.toml','configs/p01
     'docs/DECISIONS_AND_GAPS.md','docs/EVIDENCE_AND_MANUSCRIPT.md','docs/amendments/CR01_2026-10-05_v1.md',
     'configs/phase_state.json','configs/state_events/015_P02C_accept_P02D_offline.json','configs/state_events/016_P02D_preflight_review_checkpoint.json',
     'configs/state_snapshots/P02C_accepted_before_P02D.json','configs/state_snapshots/P02D_before_preflight_checkpoint.json',
+    'configs/state_events/017_P02D_preflight_v2_review_checkpoint.json','configs/state_snapshots/P02D_preflight_v1_before_v2.json',
     'reports/phases/P02C_accepted_checkpoint.md','reports/phases/P02D_preflight_completion.md','reports/decision_ledger.md',
     'reports/p02c/P02C_review_packet.zip','reports/p02c/P02C_evidence_index.json','reports/p02c/P02C_packet_receipt.json',
     'reports/phases/P02C_completion.md','reports/p02c/next_development_proposal.md','reports/p02a/adapter_contracts.md',
     'reports/p02b/runtime_preflight.json','reports/p01/model_download.json','artifacts/development/p02b-two-cap/package_base.json','scripts/p01_command.py']:
     paths.add(root/n)
 exclude={'P02D_preflight_review_packet.zip','P02D_evidence_index.json','P02D_packet_receipt.json'}
-paths={p for p in paths if p.name not in exclude}
+paths={p for p in paths if not (p.parent==out and p.name in exclude)}
 assert all('.venv' not in p.parts and '.venv-inference' not in p.parts and not p.name.endswith('.safetensors') for p in paths)
 index={p.relative_to(root).as_posix():file_hash(p) for p in sorted(paths)}
 idx=out/'P02D_evidence_index.json'
