@@ -1,0 +1,18 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-10-09T16:20:45.559948+00:00",
+  "argv": [
+    ".venv-inference/Scripts/python.exe",
+    "-m",
+    "unittest",
+    "test_p02d.Plan",
+    "test_p02d.LedgerAndSupervisor.test_rejected_restart_closes_authorized_state_without_recharge",
+    "test_p02d.LedgerAndSupervisor.test_empty_and_corrupt_partial_report_has_no_fabricated_targets",
+    "test_p02d.LedgerAndSupervisor.test_complete_cluster_uses_existing_targets_partial_is_not_filled",
+    "-v"
+  ],
+  "exit": 0,
+  "seconds": 16.47194479999962,
+  "stdout": "",
+  "stderr": "test_authorized_but_wrong_cap_rejected_before_factory (test_p02d.Plan.test_authorized_but_wrong_cap_rejected_before_factory) ... ok\ntest_bad_cap_scope_schedule_or_recipe_rejected (test_p02d.Plan.test_bad_cap_scope_schedule_or_recipe_rejected) ... ok\ntest_fixed_selection_counts_streams_and_three_lengths (test_p02d.Plan.test_fixed_selection_counts_streams_and_three_lengths) ... ok\ntest_hash_and_authorization_binding (test_p02d.Plan.test_hash_and_authorization_binding) ... ok\ntest_pending_authorization_rejects_before_worker (test_p02d.Plan.test_pending_authorization_rejects_before_worker) ... ok\ntest_rejected_restart_closes_authorized_state_without_recharge (test_p02d.LedgerAndSupervisor.test_rejected_restart_closes_authorized_state_without_recharge) ... ok\ntest_empty_and_corrupt_partial_report_has_no_fabricated_targets (test_p02d.LedgerAndSupervisor.test_empty_and_corrupt_partial_report_has_no_fabricated_targets) ... ok\ntest_complete_cluster_uses_existing_targets_partial_is_not_filled (test_p02d.LedgerAndSupervisor.test_complete_cluster_uses_existing_targets_partial_is_not_filled) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 12.839s\n\nOK\n"
+}

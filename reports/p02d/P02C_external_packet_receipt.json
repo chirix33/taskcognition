@@ -1,0 +1,21 @@
+{
+  "adopted_amendment_sha256": "ec07c0133224fb10f535fc9ac4d0816d12fb10acc683c09043de717cc089c0b8",
+  "backup": "local only; no off-machine backup",
+  "completion_sha256": "cf601dcc2ee336e427825a9236898d1d8a2fa9fa2d82c5fc9c7a14eaa7af6a12",
+  "evidence_kind": "development_observation",
+  "historical_admitted": 75,
+  "historical_output_tokens": 40555,
+  "index_sha256": "3daef8e6d92b50ed25ec44d16d19788c848c7bffa09dc83048c2ba22a5c42b0e",
+  "indexed_files": 115,
+  "manuscript_compiled": false,
+  "new_answer_generations": 0,
+  "new_encoder_forwards": 0,
+  "new_gpu_measurements": 0,
+  "new_model_loads": 0,
+  "operation": "offline_review_receipt",
+  "p02c_report_and_manuscript_directory_bytes": 7554012,
+  "status": "PASS",
+  "verified_zip_members": true,
+  "zip_bytes": 4259703,
+  "zip_sha256": "287e8032566d2d284e8856b84eb9f9a53cf9b35064b6c9e94e98a6a684308407"
+}

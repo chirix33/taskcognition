@@ -1,0 +1,12 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-10-09T16:04:19.503473+00:00",
+  "argv": [
+    ".venv-inference/Scripts/python.exe",
+    "scripts/p02d_prepare.py"
+  ],
+  "exit": 0,
+  "seconds": 12.85355410000193,
+  "stdout": "{\"actual_feature_input_positions\": 6597, \"answer_slots\": 192, \"collisions\": [], \"distinct_seeds\": 192, \"distinct_streams\": 192, \"evidence_kind\": \"development_observation\", \"feature_forwards\": 50, \"forwards\": 0, \"generations\": 0, \"input_lengths\": {\"D_tokens\": [332, 312, 338, 325, 236, 229, 254, 270, 162, 161, 165, 166, 260, 308, 314, 278, 353, 353, 342, 341, 245, 249, 266, 244], \"R_tokens\": [328, 308, 334, 321, 232, 225, 250, 266, 158, 157, 161, 162, 256, 304, 310, 274, 349, 349, 338, 337, 241, 245, 262, 240], \"raw_tokens\": [193, 173, 199, 186, 97, 90, 115, 131, 23, 22, 26, 27, 121, 169, 175, 139, 214, 214, 203, 202, 106, 110, 127, 105]}, \"inputs\": 24, \"model_loads\": 0, \"native_questions_verbatim\": true, \"reserved_output_tokens\": 393216, \"status\": \"PASS\"}\n",
+  "stderr": ""
+}

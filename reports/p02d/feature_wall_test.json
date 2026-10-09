@@ -1,0 +1,15 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-10-09T16:22:26.300531+00:00",
+  "argv": [
+    ".venv-inference/Scripts/python.exe",
+    "-m",
+    "unittest",
+    "test_p02d.LedgerAndSupervisor.test_feature_stage_wall_overshoot_persisted_and_blocks_answers",
+    "-v"
+  ],
+  "exit": 0,
+  "seconds": 8.101020400001289,
+  "stdout": "",
+  "stderr": "test_feature_stage_wall_overshoot_persisted_and_blocks_answers (test_p02d.LedgerAndSupervisor.test_feature_stage_wall_overshoot_persisted_and_blocks_answers) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 4.479s\n\nOK\n"
+}

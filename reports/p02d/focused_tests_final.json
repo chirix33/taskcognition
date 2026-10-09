@@ -1,0 +1,19 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-10-09T16:18:10.116540+00:00",
+  "argv": [
+    ".venv-inference/Scripts/python.exe",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-p",
+    "test_p02d.py",
+    "-v"
+  ],
+  "exit": 0,
+  "seconds": 115.44366249999803,
+  "stdout": "",
+  "stderr": "test_cheap_unicode_line_rules_and_allowlist (test_p02d.Features.test_cheap_unicode_line_rules_and_allowlist) ... ok\ntest_post_norm_decoder_and_masked_float32_pool (test_p02d.Features.test_post_norm_decoder_and_masked_float32_pool) ... ok\ntest_shape_nonfinite_empty_mask_rejected (test_p02d.Features.test_shape_nonfinite_empty_mask_rejected) ... ok\ntest_swallowed_generation_callback_error_propagates_unscored (test_p02d.Features.test_swallowed_generation_callback_error_propagates_unscored) ... ok\ntest_cleanup_failure_keeps_unknown_cost_and_stops (test_p02d.LedgerAndSupervisor.test_cleanup_failure_keeps_unknown_cost_and_stops) ... ok\ntest_complete_cluster_uses_existing_targets_partial_is_not_filled (test_p02d.LedgerAndSupervisor.test_complete_cluster_uses_existing_targets_partial_is_not_filled) ... ok\ntest_cumulative_and_feature_sublimits (test_p02d.LedgerAndSupervisor.test_cumulative_and_feature_sublimits) ... ok\ntest_empty_and_corrupt_partial_report_has_no_fabricated_targets (test_p02d.LedgerAndSupervisor.test_empty_and_corrupt_partial_report_has_no_fabricated_targets) ... ok\ntest_feature_stage_all_50_one_cost_and_no_replay (test_p02d.LedgerAndSupervisor.test_feature_stage_all_50_one_cost_and_no_replay) ... ok\ntest_feature_timeout_and_cleanup_failure_never_admit_answers (test_p02d.LedgerAndSupervisor.test_feature_timeout_and_cleanup_failure_never_admit_answers) ... ok\ntest_monitor_error_stops_child_and_preserves_cost_without_score (test_p02d.LedgerAndSupervisor.test_monitor_error_stops_child_and_preserves_cost_without_score) ... ok\ntest_partial_feature_blocks_answers (test_p02d.LedgerAndSupervisor.test_partial_feature_blocks_answers) ... ok\ntest_rejected_restart_closes_authorized_state_without_recharge (test_p02d.LedgerAndSupervisor.test_rejected_restart_closes_authorized_state_without_recharge) ... ok\ntest_unknown_dispatch_recovery_and_corruption_fail_closed (test_p02d.LedgerAndSupervisor.test_unknown_dispatch_recovery_and_corruption_fail_closed) ... ok\ntest_authorized_but_wrong_cap_rejected_before_factory (test_p02d.Plan.test_authorized_but_wrong_cap_rejected_before_factory) ... ok\ntest_bad_cap_scope_schedule_or_recipe_rejected (test_p02d.Plan.test_bad_cap_scope_schedule_or_recipe_rejected) ... ok\ntest_fixed_selection_counts_streams_and_three_lengths (test_p02d.Plan.test_fixed_selection_counts_streams_and_three_lengths) ... ok\ntest_hash_and_authorization_binding (test_p02d.Plan.test_hash_and_authorization_binding) ... ok\ntest_pending_authorization_rejects_before_worker (test_p02d.Plan.test_pending_authorization_rejects_before_worker) ... ok\n\n----------------------------------------------------------------------\nRan 19 tests in 111.804s\n\nOK\n"
+}

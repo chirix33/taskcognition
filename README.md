@@ -1,8 +1,10 @@
 # TaskCognition implementation handoff
 
-Active specification: **TaskCognition-CR01-2026-10-05-v1**, approved 2026-10-05. P01 is sealed; P02A/P02B are accepted DEVELOPMENT checkpoints. P02C is offline adoption only; P02 remains incomplete/unsealed and live dispatch is disabled. There are no final gate/audit/test results.
+Active specification: **TaskCognition-CR01-2026-10-05-v1**, approved 2026-10-05. P01 is sealed; P02A/P02B/P02C are accepted DEVELOPMENT checkpoints. P02D prepares an offline runner and pending plan; P02 remains incomplete/unsealed and live dispatch is disabled. There are no final gate/audit/test results.
 
 Start with [adopted CR01](docs/amendments/CR01_2026-10-05_v1.md), [active protocol](docs/PROTOCOL_SOURCE_OF_TRUTH.md), [active manuscript source](paper/cr01-2026-10-05-v1/taskcognition.tex), and [P02C report](reports/phases/P02C_completion.md). Primary D/R cap is fixed at 2,048 total tokens; completion is descriptive, with no eligibility threshold. Historical bootstrap instructions below are retained for provenance, not current authorization.
+
+Current preparation: [P02D runner contract](docs/P02D_RUNNER_CONTRACT.md), [preflight report](reports/phases/P02D_preflight_completion.md), and [pending execution request](reports/p02d/execution_request.md). The 192 answer slots and 50 feature forwards require a separate conveyed execution authorization; a plan file or CLI flag does not enable them.
 
 ## Historical initial handoff (2026-09-28)
 
@@ -44,7 +46,7 @@ The PDF is included as `reference/TaskCognition_Revised_Verified.pdf`. It is the
 - Coordinating assistant: reviews reports, identifies corrections, recommends seals, and provides the next Codex prompt.
 - Codex: implements and verifies only the active phase, reports evidence, and stops at the phase boundary.
 
-No external services, Jev integration, paid inference, manuscript submission, or remote publication are authorized by this handoff. Local Qwen implementation proceeds in the appropriate phase. A phase's bounded run plan authorizes routine execution within that phase without repeated permission questions.
+No external services, Jev integration, paid inference, manuscript submission, or remote publication are authorized by this handoff. Local Qwen implementation proceeds in the appropriate phase. Execution requires the conveyed phase authorization; a proposed run plan alone does not authorize model work.
 
 ## What to send back after each phase
 
