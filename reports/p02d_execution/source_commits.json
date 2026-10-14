@@ -1,0 +1,11 @@
+{
+  "reviewed_source_commit": "b5c6abd5edf6e1d8032d68567dd2f8e9c23bd7a4",
+  "authorization_commit": "c4aa042df58095ed8732d87614eb6770aab7342a",
+  "execution_evidence_commit": "de45085992a23a3731ea267388a84349344f4ca1",
+  "branch": "codex/p02d-offline-preflight",
+  "production_source_changed": false,
+  "push_performed": false,
+  "merge_performed": false,
+  "remote_query_performed": false,
+  "packet_commit": "Separate subsequent task-only local commit containing the index, ZIP and external receipt; resolve from local Git log for those paths."
+}
