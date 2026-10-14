@@ -1,0 +1,12 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-10-14T18:40:41.076632+00:00",
+  "argv": [
+    ".venv-inference/Scripts/python.exe",
+    "scripts/p02d_execution_authorize.py"
+  ],
+  "exit": 0,
+  "seconds": 1.324997900002927,
+  "stdout": "PASS: conveyed approval adopted, exact v4 authorization bound; no invocation started by this script.\n",
+  "stderr": ""
+}

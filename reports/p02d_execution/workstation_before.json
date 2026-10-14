@@ -1,0 +1,20 @@
+{
+  "timestamp_utc": "2026-10-14T18:40:40.0761917Z",
+  "purpose": "Read-only pre-execution inventory, not a model benchmark",
+  "p02d_processes": [],
+  "gpu_inventory": [
+    "name, driver_version, memory.total [MiB], memory.used [MiB]",
+    "NVIDIA GeForce RTX 5090, 610.60, 32607 MiB, 1780 MiB"
+  ],
+  "operating_system": {
+    "Caption": "Microsoft Windows 11 Enterprise",
+    "Version": "10.0.26200",
+    "TotalVisibleMemorySize": 66538236,
+    "FreePhysicalMemory": 41324752
+  },
+  "disk": {
+    "Name": "C",
+    "Used": 464167264256,
+    "Free": 1561573560320
+  }
+}
