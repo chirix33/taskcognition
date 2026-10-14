@@ -1,0 +1,15 @@
+{
+  "evidence_kind": "offline_check",
+  "check": "AST parse of offline reporting/packaging helpers; no production model import",
+  "files": [
+    "scripts/p02d_execution_report.py",
+    "scripts/p02d_execution_packet.py"
+  ],
+  "status": "PASS",
+  "wall_seconds": 0.002082500002870802,
+  "cpu_seconds": 0.015625,
+  "timestamp_utc": "2026-10-14T20:51:36.357657+00:00",
+  "model_loads": 0,
+  "feature_forwards": 0,
+  "answer_generations": 0
+}

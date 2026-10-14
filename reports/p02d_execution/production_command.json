@@ -1,0 +1,15 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-10-14T18:41:20.028310+00:00",
+  "argv": [
+    ".venv-inference/Scripts/python.exe",
+    "-m",
+    "taskcognition.p02d_runner",
+    "--plan-hash",
+    "c46977bfc0de1040965f08df8acbd55b9b063b386ccfb97f247a280ae2472365"
+  ],
+  "exit": 0,
+  "seconds": 12837.002749700001,
+  "stdout": "",
+  "stderr": ""
+}

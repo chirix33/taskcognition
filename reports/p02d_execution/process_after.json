@@ -1,0 +1,8 @@
+{
+  "timestamp_utc": "2026-10-14T22:15:34.6778312Z",
+  "p02d_processes": [],
+  "gpu_inventory": [
+    "name, driver_version, memory.total [MiB], memory.used [MiB]",
+    "NVIDIA GeForce RTX 5090, 610.60, 32607 MiB, 2192 MiB"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-10-14T22:15:39.972009+00:00",
+  "argv": [
+    ".venv-inference/Scripts/python.exe",
+    "scripts/p02d_execution_report.py"
+  ],
+  "exit": 0,
+  "seconds": 31.065825399993628,
+  "stdout": "{\"status\": \"COMPLETE_DEVELOPMENT\", \"counts\": {\"feature\": {\"planned\": 50, \"dispatched\": 50, \"admitted_logged\": 50, \"retained\": 50, \"unexecuted\": 0, \"consumed_unscored\": 0, \"reserved_before_load_without_logged_admission\": 0, \"unexecuted_slots\": [], \"unscored_consumed_slots\": [], \"slots_reserved_without_admission\": [], \"recorded_completed_forwards\": 50, \"completed_warmups\": 2, \"actual_work_note\": \"Completed result records establish performed forwards. Admission means a command was authorized, not proof of a completed forward; a pre-load reservation alone is not a forward.\"}, \"answer\": {\"planned\": 192, \"dispatched\": 192, \"admitted_logged\": 192, \"retained\": 192, \"unexecuted\": 0, \"consumed_unscored\": 0, \"reserved_before_load_without_logged_admission\": 0, \"unexecuted_slots\": [], \"unscored_consumed_slots\": [], \"slots_reserved_without_admission\": [], \"known_output_tokens\": 129371, \"retained_unknown_token_count\": 0, \"planned_output_reservation\": 393216, \"consumed_output_reservation\": 393216, \"unscored_partial_tokens\": []}}, \"worker_seconds\": 11560.221741299993, \"complete_clusters\": 24}\n",
+  "stderr": ""
+}
