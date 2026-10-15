@@ -1,0 +1,10 @@
+{
+  "analysis_evidence_commit": "2bc0131eb8cb70a314d6a8fcfe31f277aadf45b1",
+  "source_diff": "reports/p02e/source_changes.diff",
+  "accepted_source_commit": "b5c6abd5edf6e1d8032d68567dd2f8e9c23bd7a4",
+  "accepted_execution_evidence_commit": "de45085992a23a3731ea267388a84349344f4ca1",
+  "accepted_packet_commit": "32897ffcf99d0e950dd4ffec43b3adf94307a9bb",
+  "new_packet_commit_lookup": "git log -1 -- reports/p02e/P02E_review_packet.zip",
+  "no_push": true,
+  "production_sources_unchanged": true
+}
