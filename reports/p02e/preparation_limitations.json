@@ -1,0 +1,6 @@
+{
+  "default_git_diff_check": "Reported Windows CRLF as trailing whitespace; cr-at-eol check passes without rewriting bytes.",
+  "git_staging": "Initial sandbox denied index.lock; authorized task-only staging succeeded after tool sandbox escalation.",
+  "temp_fixture": "System-temp ACL failed; workspace disposable directory verified within repository before cleanup; offline reproduction passed.",
+  "model_work": 0
+}

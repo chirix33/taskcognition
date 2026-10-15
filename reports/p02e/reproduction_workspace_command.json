@@ -1,0 +1,12 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-10-15T20:54:16.139502+00:00",
+  "argv": [
+    ".venv/Scripts/python.exe",
+    "scripts/p02e_reproduce.py"
+  ],
+  "exit": 0,
+  "seconds": 3.2225008999957936,
+  "stdout": "{\n  \"status\": \"PASS\",\n  \"compared_files\": {\n    \"acceptance_verification.json\": \"1a70f81c63553537f3698cc0f9cc042b5b7b9e6c4d296b556318b20b34969dda\",\n    \"analytical_constraints.json\": \"6fc2cba1b05c80930544da5d2f26c902b4e2bbab4af55e5b25a2ab21c3fb1f25\",\n    \"analytical_declaration.json\": \"5590add41dd6f637dfce6949b397d8a386b91fbd3e73be42760da7260679bca1\",\n    \"analytical_scenarios.csv\": \"74c9970ee0f224f7f7dc79d6883c8c9070a2e1fe470398118c6c13337bad3f0c\",\n    \"cluster_rows.csv\": \"cab182f22d5bb4249d0918c20754823f690f28801199b5dd4ab9340bacdd69bb\",\n    \"cluster_rows.json\": \"942caececacc9e82897d11da4d390c066cc44ae9613c8268e1517774cdb56a5f\",\n    \"cost_reconciliation.json\": \"104eac66f7ad7b9b9074397ee3c611fb45383674da0554bb14a0eccacfc12c7a\",\n    \"cost_round_mode.csv\": \"03897d830178fa3866ca45e734d18d9941dc04b043792bb0a39fa187e32233f5\",\n    \"cost_sessions.csv\": \"0e95920cd012b182a25fc42ed867d8bc332bd42b87882cd590f7666a7e296d56\",\n    \"diagnostic_rules.csv\": \"efb4aeac157a20930a6c810f727a7bddd5a76ca5a5328dd0c7209df0a73ca055\",\n    \"diagnostic_rules.json\": \"6983388b2623c9802a3fa0d949728a6eac954326342fa667b73e8e20d4a8d113\",\n    \"longer_study_resource_scenarios.csv\": \"b3a995d4eb0bf6c771104ab60178c3e5518cafcfc8b333128535e163fde7d2df\",\n    \"next_step_proposal.json\": \"0e1d8f46ae1dd0577f5d51ff853567ac9628cc9c995cdab538995574d6486bf8\",\n    \"next_step_proposal.md\": \"3220410a1d3a0f8e9194e3114d05ef4ae779860b27179da4b604de34b2770546\",\n    \"offline_design_report.md\": \"62bd6de18f851239e5833684f818072d1965a5f7da302320e258b7b610db4d24\",\n    \"source_bindings.json\": \"58f71ae989d3de897f81ac725b79f71d0363170941ab13d72e18317493ec283f\",\n    \"summary.json\": \"2729e32e0346f85563f62f717477be4db7b765fd05354831e8d9c389a6f6f082\"\n  },\n  \"count\": 17,\n  \"wall_seconds\": 3.0788511999999173,\n  \"cpu_seconds\": 3.0625,\n  \"model_work\": 0,\n  \"source_sha256\": \"e73a05689fe3cee9e11bdc8b3459800347eb255add850b4b3e7b643d491b18f1\"\n}\n",
+  "stderr": ""
+}

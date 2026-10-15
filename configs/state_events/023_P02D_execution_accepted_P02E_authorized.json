@@ -1,0 +1,18 @@
+{
+  "evidence_kind": "development_observation",
+  "event": "P02D_EXECUTION_ACCEPTED_P02E_OFFLINE_AUTHORIZED",
+  "timestamp_utc": "2026-10-15T20:40:22.410173+00:00",
+  "user_conveyed_date": "2026-10-15",
+  "timezone": "America/Chicago",
+  "review": "reports/p02e/provenance/P02D_execution_acceptance_review.md",
+  "review_sha256": "a332bdd5566d66cd800261771986de54632ac54cf24485253e9b7050f2fcb13f",
+  "acceptance_verbatim": "Decision: ACCEPTED as completed DEVELOPMENT evidence.",
+  "accepted_plan_sha256": "c46977bfc0de1040965f08df8acbd55b9b063b386ccfb97f247a280ae2472365",
+  "verification": "reports/p02e/acceptance_verification.json",
+  "real_dispatch_enabled": false,
+  "p02_sealed": false,
+  "p03_started": false,
+  "study_frozen": false,
+  "previous_state_sha256": "67d5acd83c4649892fd43f7e3da4b3f607267d06ac0716d97976ff147d7d90b6",
+  "scope": "Offline denominator/cost design only; P02D single-run authorization consumed; no new model work."
+}

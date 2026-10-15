@@ -1,0 +1,15 @@
+{
+  "event": "P02E_OFFLINE_DESIGN_READY_FOR_REVIEW",
+  "timestamp_utc": "2026-10-15T20:58:21.403185+00:00",
+  "evidence_kind": "development_observation",
+  "completion_sha256": "368854ff7f688ef7bd5534486470615a547d8c6256c62e72061cb929ef639e97",
+  "report_sha256": "62bd6de18f851239e5833684f818072d1965a5f7da302320e258b7b610db4d24",
+  "analysis_receipt_sha256": "e03f3eb3fc89d2751d7c0e1fb8c8682d205e4850531f53b2734c8801a1db8e7d",
+  "previous_state_sha256": "762656762725fe2f0450a1a421f85244d9bb4ee6362385aaaeacc98c14bbf248",
+  "real_dispatch_enabled": false,
+  "new_model_work": 0,
+  "p02_sealed": false,
+  "p03_started": false,
+  "study_frozen": false,
+  "no_next_phase_authorized": true
+}

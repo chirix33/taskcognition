@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "wall_seconds": 0.005599700001766905,
+  "cpu_seconds": 0.015625,
+  "model_work": 0,
+  "source_sha256": "22df88891ab151f8737a6d68ae30b2647e8d1f22ab00bcdd7807f6e2f61f964c",
+  "rendered": [
+    "offline_design_report.md",
+    "next_step_proposal.md",
+    "next_step_proposal.json"
+  ]
+}

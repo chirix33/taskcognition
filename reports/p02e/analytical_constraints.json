@@ -1,0 +1,378 @@
+{
+  "evidence_kind": "development_observation",
+  "analysis_kind": "analytical_not_audit",
+  "declaration_sha256": "5590add41dd6f637dfce6949b397d8a386b91fbd3e73be42760da7260679bca1",
+  "log40": 3.6888794541139363,
+  "A": 8.607385392932517,
+  "anchor_range_term": 0.3742341475188051,
+  "max_available_B": 0.3125,
+  "anchor_best_range_only_B_lower": -0.06173414751880513,
+  "necessary_conditions": [
+    {
+      "rule": "always_D",
+      "alpha": 0.01,
+      "b_min": 0.01,
+      "zero_harm_range_only_n_min": null,
+      "zero_harm_range_only_balanced_n_min": null,
+      "denominator_range_only_n_min": null,
+      "denominator_range_only_balanced_n_min": null,
+      "null_meaning": "no finite solution to that necessary condition",
+      "sufficient_or_power": false
+    },
+    {
+      "rule": "always_D",
+      "alpha": 0.01,
+      "b_min": 0.05,
+      "zero_harm_range_only_n_min": null,
+      "zero_harm_range_only_balanced_n_min": null,
+      "denominator_range_only_n_min": null,
+      "denominator_range_only_balanced_n_min": null,
+      "null_meaning": "no finite solution to that necessary condition",
+      "sufficient_or_power": false
+    },
+    {
+      "rule": "always_D",
+      "alpha": 0.05,
+      "b_min": 0.01,
+      "zero_harm_range_only_n_min": null,
+      "zero_harm_range_only_balanced_n_min": null,
+      "denominator_range_only_n_min": null,
+      "denominator_range_only_balanced_n_min": null,
+      "null_meaning": "no finite solution to that necessary condition",
+      "sufficient_or_power": false
+    },
+    {
+      "rule": "always_D",
+      "alpha": 0.05,
+      "b_min": 0.05,
+      "zero_harm_range_only_n_min": null,
+      "zero_harm_range_only_balanced_n_min": null,
+      "denominator_range_only_n_min": null,
+      "denominator_range_only_balanced_n_min": null,
+      "null_meaning": "no finite solution to that necessary condition",
+      "sufficient_or_power": false
+    },
+    {
+      "rule": "always_D",
+      "alpha": 0.1,
+      "b_min": 0.01,
+      "zero_harm_range_only_n_min": null,
+      "zero_harm_range_only_balanced_n_min": null,
+      "denominator_range_only_n_min": null,
+      "denominator_range_only_balanced_n_min": null,
+      "null_meaning": "no finite solution to that necessary condition",
+      "sufficient_or_power": false
+    },
+    {
+      "rule": "always_D",
+      "alpha": 0.1,
+      "b_min": 0.05,
+      "zero_harm_range_only_n_min": null,
+      "zero_harm_range_only_balanced_n_min": null,
+      "denominator_range_only_n_min": null,
+      "denominator_range_only_balanced_n_min": null,
+      "null_meaning": "no finite solution to that necessary condition",
+      "sufficient_or_power": false
+    },
+    {
+      "rule": "always_R",
+      "alpha": 0.01,
+      "b_min": 0.01,
+      "zero_harm_range_only_n_min": 2755.3633257384054,
+      "zero_harm_range_only_balanced_n_min": 2760,
+      "denominator_range_only_n_min": 29.45416658820667,
+      "denominator_range_only_balanced_n_min": 30,
+      "null_meaning": "no finite solution to that necessary condition",
+      "sufficient_or_power": false
+    },
+    {
+      "rule": "always_R",
+      "alpha": 0.01,
+      "b_min": 0.05,
+      "zero_harm_range_only_n_min": 2755.3633257384054,
+      "zero_harm_range_only_balanced_n_min": 2760,
+      "denominator_range_only_n_min": 33.790039592123875,
+      "denominator_range_only_balanced_n_min": 36,
+      "null_meaning": "no finite solution to that necessary condition",
+      "sufficient_or_power": false
+    },
+    {
+      "rule": "always_R",
+      "alpha": 0.05,
+      "b_min": 0.01,
+      "zero_harm_range_only_n_min": 551.8726651476811,
+      "zero_harm_range_only_balanced_n_min": 552,
+      "denominator_range_only_n_min": 29.45416658820667,
+      "denominator_range_only_balanced_n_min": 30,
+      "null_meaning": "no finite solution to that necessary condition",
+      "sufficient_or_power": false
+    },
+    {
+      "rule": "always_R",
+      "alpha": 0.05,
+      "b_min": 0.05,
+      "zero_harm_range_only_n_min": 551.8726651476811,
+      "zero_harm_range_only_balanced_n_min": 552,
+      "denominator_range_only_n_min": 33.790039592123875,
+      "denominator_range_only_balanced_n_min": 36,
+      "null_meaning": "no finite solution to that necessary condition",
+      "sufficient_or_power": false
+    },
+    {
+      "rule": "always_R",
+      "alpha": 0.1,
+      "b_min": 0.01,
+      "zero_harm_range_only_n_min": 276.43633257384056,
+      "zero_harm_range_only_balanced_n_min": 282,
+      "denominator_range_only_n_min": 29.45416658820667,
+      "denominator_range_only_balanced_n_min": 30,
+      "null_meaning": "no finite solution to that necessary condition",
+      "sufficient_or_power": false
+    },
+    {
+      "rule": "always_R",
+      "alpha": 0.1,
+      "b_min": 0.05,
+      "zero_harm_range_only_n_min": 276.43633257384056,
+      "zero_harm_range_only_balanced_n_min": 282,
+      "denominator_range_only_n_min": 33.790039592123875,
+      "denominator_range_only_balanced_n_min": 36,
+      "null_meaning": "no finite solution to that necessary condition",
+      "sufficient_or_power": false
+    },
+    {
+      "rule": "observed_positive_benefit",
+      "alpha": 0.01,
+      "b_min": 0.01,
+      "zero_harm_range_only_n_min": 13772.816628692028,
+      "zero_harm_range_only_balanced_n_min": 13776,
+      "denominator_range_only_n_min": 164.9501979606194,
+      "denominator_range_only_balanced_n_min": 168,
+      "null_meaning": "no finite solution to that necessary condition",
+      "sufficient_or_power": false
+    },
+    {
+      "rule": "observed_positive_benefit",
+      "alpha": 0.01,
+      "b_min": 0.05,
+      "zero_harm_range_only_n_min": 13772.816628692028,
+      "zero_harm_range_only_balanced_n_min": 13776,
+      "denominator_range_only_n_min": 689.5908314346016,
+      "denominator_range_only_balanced_n_min": 690,
+      "null_meaning": "no finite solution to that necessary condition",
+      "sufficient_or_power": false
+    },
+    {
+      "rule": "observed_positive_benefit",
+      "alpha": 0.05,
+      "b_min": 0.01,
+      "zero_harm_range_only_n_min": 2755.3633257384054,
+      "zero_harm_range_only_balanced_n_min": 2760,
+      "denominator_range_only_n_min": 164.9501979606194,
+      "denominator_range_only_balanced_n_min": 168,
+      "null_meaning": "no finite solution to that necessary condition",
+      "sufficient_or_power": false
+    },
+    {
+      "rule": "observed_positive_benefit",
+      "alpha": 0.05,
+      "b_min": 0.05,
+      "zero_harm_range_only_n_min": 2755.3633257384054,
+      "zero_harm_range_only_balanced_n_min": 2760,
+      "denominator_range_only_n_min": 689.5908314346016,
+      "denominator_range_only_balanced_n_min": 690,
+      "null_meaning": "no finite solution to that necessary condition",
+      "sufficient_or_power": false
+    },
+    {
+      "rule": "observed_positive_benefit",
+      "alpha": 0.1,
+      "b_min": 0.01,
+      "zero_harm_range_only_n_min": 1378.1816628692027,
+      "zero_harm_range_only_balanced_n_min": 1380,
+      "denominator_range_only_n_min": 164.9501979606194,
+      "denominator_range_only_balanced_n_min": 168,
+      "null_meaning": "no finite solution to that necessary condition",
+      "sufficient_or_power": false
+    },
+    {
+      "rule": "observed_positive_benefit",
+      "alpha": 0.1,
+      "b_min": 0.05,
+      "zero_harm_range_only_n_min": 1378.1816628692027,
+      "zero_harm_range_only_balanced_n_min": 1380,
+      "denominator_range_only_n_min": 689.5908314346016,
+      "denominator_range_only_balanced_n_min": 690,
+      "null_meaning": "no finite solution to that necessary condition",
+      "sufficient_or_power": false
+    },
+    {
+      "rule": "complement_positive_benefit",
+      "alpha": 0.01,
+      "b_min": 0.01,
+      "zero_harm_range_only_n_min": 3443.954157173007,
+      "zero_harm_range_only_balanced_n_min": 3444,
+      "denominator_range_only_n_min": 36.864105803885494,
+      "denominator_range_only_balanced_n_min": 42,
+      "null_meaning": "no finite solution to that necessary condition",
+      "sufficient_or_power": false
+    },
+    {
+      "rule": "complement_positive_benefit",
+      "alpha": 0.01,
+      "b_min": 0.05,
+      "zero_harm_range_only_n_min": 3443.954157173007,
+      "zero_harm_range_only_balanced_n_min": 3444,
+      "denominator_range_only_n_min": 44.036926964662584,
+      "denominator_range_only_balanced_n_min": 48,
+      "null_meaning": "no finite solution to that necessary condition",
+      "sufficient_or_power": false
+    },
+    {
+      "rule": "complement_positive_benefit",
+      "alpha": 0.05,
+      "b_min": 0.01,
+      "zero_harm_range_only_n_min": 689.5908314346013,
+      "zero_harm_range_only_balanced_n_min": 690,
+      "denominator_range_only_n_min": 36.864105803885494,
+      "denominator_range_only_balanced_n_min": 42,
+      "null_meaning": "no finite solution to that necessary condition",
+      "sufficient_or_power": false
+    },
+    {
+      "rule": "complement_positive_benefit",
+      "alpha": 0.05,
+      "b_min": 0.05,
+      "zero_harm_range_only_n_min": 689.5908314346013,
+      "zero_harm_range_only_balanced_n_min": 690,
+      "denominator_range_only_n_min": 44.036926964662584,
+      "denominator_range_only_balanced_n_min": 48,
+      "null_meaning": "no finite solution to that necessary condition",
+      "sufficient_or_power": false
+    },
+    {
+      "rule": "complement_positive_benefit",
+      "alpha": 0.1,
+      "b_min": 0.01,
+      "zero_harm_range_only_n_min": 345.29541571730067,
+      "zero_harm_range_only_balanced_n_min": 348,
+      "denominator_range_only_n_min": 36.864105803885494,
+      "denominator_range_only_balanced_n_min": 42,
+      "null_meaning": "no finite solution to that necessary condition",
+      "sufficient_or_power": false
+    },
+    {
+      "rule": "complement_positive_benefit",
+      "alpha": 0.1,
+      "b_min": 0.05,
+      "zero_harm_range_only_n_min": 345.29541571730067,
+      "zero_harm_range_only_balanced_n_min": 348,
+      "denominator_range_only_n_min": 44.036926964662584,
+      "denominator_range_only_balanced_n_min": 48,
+      "null_meaning": "no finite solution to that necessary condition",
+      "sufficient_or_power": false
+    }
+  ],
+  "rare_event_examples": [
+    {
+      "p_D": 0.1,
+      "p_R": 0.95,
+      "K": 4,
+      "true_harm": 0.0050000000000000044,
+      "probability_empirical_harm_zero": 0.936208699375,
+      "illustrative_unadopted": true
+    },
+    {
+      "p_D": 0.1,
+      "p_R": 0.95,
+      "K": 8,
+      "true_harm": 0.0050000000000000044,
+      "probability_empirical_harm_zero": 0.8083068991750629,
+      "illustrative_unadopted": true
+    },
+    {
+      "p_D": 0.1,
+      "p_R": 0.95,
+      "K": 16,
+      "true_harm": 0.0050000000000000044,
+      "probability_empirical_harm_zero": 0.5438723272705669,
+      "illustrative_unadopted": true
+    },
+    {
+      "p_D": 0.1,
+      "p_R": 0.99,
+      "K": 4,
+      "true_harm": 0.0010000000000000009,
+      "probability_empirical_harm_zero": 0.986448967839,
+      "illustrative_unadopted": true
+    },
+    {
+      "p_D": 0.1,
+      "p_R": 0.99,
+      "K": 8,
+      "true_harm": 0.0010000000000000009,
+      "probability_empirical_harm_zero": 0.9560005702752307,
+      "illustrative_unadopted": true
+    },
+    {
+      "p_D": 0.1,
+      "p_R": 0.99,
+      "K": 16,
+      "true_harm": 0.0010000000000000009,
+      "probability_empirical_harm_zero": 0.8789829460007001,
+      "illustrative_unadopted": true
+    },
+    {
+      "p_D": 0.5,
+      "p_R": 0.95,
+      "K": 4,
+      "true_harm": 0.025000000000000022,
+      "probability_empirical_harm_zero": 0.8260996093749999,
+      "illustrative_unadopted": true
+    },
+    {
+      "p_D": 0.5,
+      "p_R": 0.95,
+      "K": 8,
+      "true_harm": 0.025000000000000022,
+      "probability_empirical_harm_zero": 0.6647351952293393,
+      "illustrative_unadopted": true
+    },
+    {
+      "p_D": 0.5,
+      "p_R": 0.95,
+      "K": 16,
+      "true_harm": 0.025000000000000022,
+      "probability_empirical_harm_zero": 0.44013521164083014,
+      "illustrative_unadopted": true
+    },
+    {
+      "p_D": 0.5,
+      "p_R": 0.99,
+      "K": 4,
+      "true_harm": 0.0050000000000000044,
+      "probability_empirical_harm_zero": 0.963058759375,
+      "illustrative_unadopted": true
+    },
+    {
+      "p_D": 0.5,
+      "p_R": 0.99,
+      "K": 8,
+      "true_harm": 0.0050000000000000044,
+      "probability_empirical_harm_zero": 0.923046472965311,
+      "illustrative_unadopted": true
+    },
+    {
+      "p_D": 0.5,
+      "p_R": 0.99,
+      "K": 16,
+      "true_harm": 0.0050000000000000044,
+      "probability_empirical_harm_zero": 0.8514600376694132,
+      "illustrative_unadopted": true
+    }
+  ],
+  "no_theorem_validation": true,
+  "no_final_audit_import": true,
+  "cost_width": "symbolic W_C",
+  "delta_score": "symbolic test-only margin"
+}

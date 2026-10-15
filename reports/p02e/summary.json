@@ -1,0 +1,27 @@
+{
+  "evidence_kind": "development_observation",
+  "analysis_kind": "offline_design",
+  "outcomes": 192,
+  "clusters": 24,
+  "K": 4,
+  "perfect_D": 30,
+  "perfect_R": 64,
+  "strict_D": 66,
+  "strict_R": 64,
+  "positive_benefit": 11,
+  "zero_benefit": 13,
+  "negative_benefit": 0,
+  "zero_harm_targets": 24,
+  "inputs_with_D_success": 8,
+  "all_scores_binary": true,
+  "historical_draws_pooled": false,
+  "allround_answer_worker_mean": 59.93415316614581,
+  "last_round_answer_worker_mean": 66.4907632770831,
+  "breadth_vs_depth": {
+    "equal_answer_budget": 192,
+    "fresh_24_K4": "24 new clusters; historical 24 remain a separate tranche",
+    "existing_24_extra_K4": "same 24 clusters at K8; never increases independent n"
+  },
+  "scalar_ledger_adopted": false,
+  "alpha_bmin_beta_delta_n_K_frozen": false
+}

@@ -1,0 +1,52 @@
+{
+  "evidence_kind": "development_observation",
+  "analysis_kind": "offline_provenance",
+  "status": "PASS",
+  "timestamp_utc": "2026-10-15T20:40:20.907668+00:00",
+  "accepted_hashes": {
+    "artifacts/development/p02d-cr01-plan-v4/run_plan.json": "c46977bfc0de1040965f08df8acbd55b9b063b386ccfb97f247a280ae2472365",
+    "reports/p02d_execution/P02D_execution_review_packet.zip": "8b487fdbd321e997683e014a86caedf9bd006323544f03972e65d06239c8faa9",
+    "reports/p02d_execution/production_execution_report.json": "9a5f6c7cf713941284b1c125570b3e174c641e685e01284b6bf86f0f95ff4dab",
+    "reports/p02d_execution/execution_accounting.json": "0dda412d334389fc5278e8e05c48667a151120f67dbc6d7dfed06ebb4af0ef03",
+    "reports/p02d_execution/P02D_execution_evidence_index.json": "89d0ec3b67123b7a46fdfbd688a7875a0911fa2a969ba6cdaeb4db9a41944521",
+    "reports/p02d_execution/P02D_execution_packet_receipt.json": "c5e68413663dad2e426a7426edd4b287f0d0bd7826fec10c576d9b4222a0ab71",
+    "reference/TaskCognition_Revised_Verified.pdf": "9eed0fe74f46c3acbc200183cf11693f1bec66a1180568087aeb775c97d8f6c8",
+    "docs/amendments/CR01_2026-10-05_v1.md": "ec07c0133224fb10f535fc9ac4d0816d12fb10acc683c09043de717cc089c0b8"
+  },
+  "indexed_zip_and_current_files_verified": 8997,
+  "archived_authority_hashes": {
+    "docs/P02D_execution_acceptance_review.md": "a332bdd5566d66cd800261771986de54632ac54cf24485253e9b7050f2fcb13f",
+    "docs/prompts/P02E_offline_design_prompt.md": "e2bb5a79a9490300f13dbb880ea3e33eca425da64ce56293c1ee9b9e142588de",
+    "docs/P02D_execution_coordinator_checks.zip": "c817ccf4c3e3e65c29e30f2e0bb2319d03597eb85b7fff2b5b86fc0ccb9a717b"
+  },
+  "authority_hashes": {
+    "AGENTS.md": "6543904d6ec6bba7e14c7da768e3753dfd06e497fa82ffeefec08b122ed2fbf5",
+    "docs/PROTOCOL_SOURCE_OF_TRUTH.md": "42f7467f3e05e09f39426c3618db9f7b6b94009074718c821708069fd9548cbe",
+    "docs/STATISTICAL_CONTRACT.md": "80687664d57fd36a5491709841536b940a24747f407b086e5ec75feb374f2dc3",
+    "docs/ARCHITECTURE_AND_DATA.md": "147a17a2c5cd725f7817caa2217677d7a12ab561770ef28f94551fa0b2e2c865",
+    "docs/DECISIONS_AND_GAPS.md": "ce41af2031542b33d27c58925c46b2820573c6bcb01a10f95dcaddfd246e46bc",
+    "docs/EVIDENCE_AND_MANUSCRIPT.md": "40877e76dc98d70486555a8ae9cebb036f25b0577632fde927a13300df02e355",
+    "docs/TaskCognition_CR01_APPROVED.md": "463fa03de2604218524e74afc246d4e907c1382d602d146eb30ecd630f8a6ede",
+    "paper/cr01-2026-10-05-v1/taskcognition.tex": "2abe9ab497224af77da372ff16c140afd4d27b82b2f841d4b42d2f631b0c92d8",
+    "reports/phases/P02D_execution_completion.md": "20757575a09fad3424fdfcf2ce509fef2e947a4f30d94c6bc432571799e72f83",
+    "docs/P02D_RUNNER_CONTRACT.md": "4520283b95d9058f6d4c709277616a1c385dc2e45a96c1e834f31774aa50f659"
+  },
+  "source_hashes": {
+    "src/taskcognition/p02d_runner.py": "1f357150287fbe7941257a7bb48cdb4e177bbd6d7759a97e9cfb0aa379d088ed",
+    "src/taskcognition/p02d_worker.py": "e8d441c1f674263264b27538c459b1af23dbc02f09b3dda4cf3b33227584fb36",
+    "src/taskcognition/p02d_ledger.py": "ea166694fbc2832e5a3a0828fa4f680de1e5921f19f358861f01642f02db003e",
+    "src/taskcognition/p02d_plan.py": "d0cb2702f2ee593fa5636ad8a4f5941dd61488029b4aa7ece65300ab6845738d",
+    "src/taskcognition/p02d_features.py": "51f81a839dfab735f4f6a18009a30039933d4f62a85c6f1458f70534c2cc29ea",
+    "src/taskcognition/p02d_reporting.py": "4224f7772bc7806ed3b456accaf601c5d1cfd0cc8dae00355469fcaa01d48c49",
+    "src/taskcognition/p02_native.py": "e4b09fd6357af6ac02e0d262e0ccaf7aafdd552ddd007001dff407f4bb06185b"
+  },
+  "source_commit": "b5c6abd5edf6e1d8032d68567dd2f8e9c23bd7a4",
+  "evidence_commit": "de45085992a23a3731ea267388a84349344f4ca1",
+  "packet_commit": "32897ffcf99d0e950dd4ffec43b3adf94307a9bb",
+  "head_before": "34c03ac39c111648537e529a4c7b5d38855a9850",
+  "coordinator_qualification": "Offline reproduction only; not independent workstation/GPU/weight verification.",
+  "prior_pdf_console_display_failure": "PDF extraction succeeded; console printing exited 1 under cp1252. UTF-8 read of saved extraction succeeded; no PDF bytes changed.",
+  "seconds": 1.4978314000036335,
+  "cpu_seconds": 1.453125,
+  "model_work": 0
+}

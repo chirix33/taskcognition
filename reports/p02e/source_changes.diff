@@ -1,0 +1,983 @@
+diff --git a/configs/phase_state.json b/configs/phase_state.json
+index badfb2f..c4e4941 100644
+--- a/configs/phase_state.json
++++ b/configs/phase_state.json
+@@ -1 +1,21 @@
+-{"accepted_previous_checkpoint":"P02D_V4_PREFLIGHT","accepted_previous_checkpoint_record":"configs/state_events/020_P02D_v4_preflight_accepted.json","accepted_previous_phase":"P01","accepted_previous_seal":"reports/phases/P01_accepted_seal.md","active_phase":"P02D","amendment_sha256":"ec07c0133224fb10f535fc9ac4d0816d12fb10acc683c09043de717cc089c0b8","authorized_next_phase":null,"checkpoint":"P02D_EXECUTION","latest_event":"configs/state_events/022_P02D_v4_execution_review_checkpoint.json","p02_sealed":false,"p02b_plan_sha256":"9afcea3b3fe41aa39cfbf44e30f81514128f077ecdb42a18f13fb25f8f2eff36","p02d_authorization_sha256":"db66a4d9dde575496c66587f7d2cf1fcaf68f933c8851e53d6c6ed3bf30de2e0","p02d_plan_sha256":"c46977bfc0de1040965f08df8acbd55b9b063b386ccfb97f247a280ae2472365","p03_started":false,"parent_phase":"P02","real_dispatch_enabled":false,"specification_version":"TaskCognition-CR01-2026-10-05-v1","status":"READY_FOR_REVIEW","study_freeze":null}
++{
++  "accepted_previous_checkpoint": "P02D_EXECUTION",
++  "accepted_previous_checkpoint_record": "configs/state_events/023_P02D_execution_accepted_P02E_authorized.json",
++  "accepted_previous_phase": "P01",
++  "accepted_previous_seal": "reports/phases/P01_accepted_seal.md",
++  "active_phase": "P02E",
++  "amendment_sha256": "ec07c0133224fb10f535fc9ac4d0816d12fb10acc683c09043de717cc089c0b8",
++  "authorized_next_phase": null,
++  "checkpoint": "OFFLINE_DESIGN_REVIEW",
++  "latest_event": "configs/state_events/024_P02E_offline_design_review_checkpoint.json",
++  "p02_sealed": false,
++  "p02b_plan_sha256": "9afcea3b3fe41aa39cfbf44e30f81514128f077ecdb42a18f13fb25f8f2eff36",
++  "p02d_authorization_sha256": "db66a4d9dde575496c66587f7d2cf1fcaf68f933c8851e53d6c6ed3bf30de2e0",
++  "p02d_plan_sha256": "c46977bfc0de1040965f08df8acbd55b9b063b386ccfb97f247a280ae2472365",
++  "p03_started": false,
++  "parent_phase": "P02",
++  "real_dispatch_enabled": false,
++  "specification_version": "TaskCognition-CR01-2026-10-05-v1",
++  "status": "READY_FOR_REVIEW",
++  "study_freeze": null
++}
+diff --git a/configs/state_events/023_P02D_execution_accepted_P02E_authorized.json b/configs/state_events/023_P02D_execution_accepted_P02E_authorized.json
+new file mode 100644
+index 0000000..b89b6c8
+--- /dev/null
++++ b/configs/state_events/023_P02D_execution_accepted_P02E_authorized.json
+@@ -0,0 +1,18 @@
++{
++  "evidence_kind": "development_observation",
++  "event": "P02D_EXECUTION_ACCEPTED_P02E_OFFLINE_AUTHORIZED",
++  "timestamp_utc": "2026-10-15T20:40:22.410173+00:00",
++  "user_conveyed_date": "2026-10-15",
++  "timezone": "America/Chicago",
++  "review": "reports/p02e/provenance/P02D_execution_acceptance_review.md",
++  "review_sha256": "a332bdd5566d66cd800261771986de54632ac54cf24485253e9b7050f2fcb13f",
++  "acceptance_verbatim": "Decision: ACCEPTED as completed DEVELOPMENT evidence.",
++  "accepted_plan_sha256": "c46977bfc0de1040965f08df8acbd55b9b063b386ccfb97f247a280ae2472365",
++  "verification": "reports/p02e/acceptance_verification.json",
++  "real_dispatch_enabled": false,
++  "p02_sealed": false,
++  "p03_started": false,
++  "study_frozen": false,
++  "previous_state_sha256": "67d5acd83c4649892fd43f7e3da4b3f607267d06ac0716d97976ff147d7d90b6",
++  "scope": "Offline denominator/cost design only; P02D single-run authorization consumed; no new model work."
++}
+diff --git a/configs/state_events/024_P02E_offline_design_review_checkpoint.json b/configs/state_events/024_P02E_offline_design_review_checkpoint.json
+new file mode 100644
+index 0000000..3f4d903
+--- /dev/null
++++ b/configs/state_events/024_P02E_offline_design_review_checkpoint.json
+@@ -0,0 +1,15 @@
++{
++  "event": "P02E_OFFLINE_DESIGN_READY_FOR_REVIEW",
++  "timestamp_utc": "2026-10-15T20:58:21.403185+00:00",
++  "evidence_kind": "development_observation",
++  "completion_sha256": "368854ff7f688ef7bd5534486470615a547d8c6256c62e72061cb929ef639e97",
++  "report_sha256": "62bd6de18f851239e5833684f818072d1965a5f7da302320e258b7b610db4d24",
++  "analysis_receipt_sha256": "e03f3eb3fc89d2751d7c0e1fb8c8682d205e4850531f53b2734c8801a1db8e7d",
++  "previous_state_sha256": "762656762725fe2f0450a1a421f85244d9bb4ee6362385aaaeacc98c14bbf248",
++  "real_dispatch_enabled": false,
++  "new_model_work": 0,
++  "p02_sealed": false,
++  "p03_started": false,
++  "study_frozen": false,
++  "no_next_phase_authorized": true
++}
+diff --git a/reports/decision_ledger.md b/reports/decision_ledger.md
+index 205c97a..3f5d17f 100644
+--- a/reports/decision_ledger.md
++++ b/reports/decision_ledger.md
+@@ -50,3 +50,19 @@ User authorizes only R1 complete no-overwrite publication and R2 operational-sto
+ 
+ ## P02D offline v4 correction (2026-10-09T17:29:46.874215+00:00)
+ User authorizes only R1 complete no-overwrite publication and R2 operational-stop classification. v3 c036e7cce4237f637eb366941f87734575404b5876da636174186844a2f4e414 remains preserved; v4 c46977bfc0de1040965f08df8acbd55b9b063b386ccfb97f247a280ae2472365 binds corrected source with all 256 materialized files unchanged. No P02D execution acceptance or authorization exists. User corrected the earlier push handoff to **“nothing pushed.”** Local remote-tracking ancestry is separate and cannot establish a push or verified remote backup. See reports/p02d_correction_v3/provenance_correction.md. Zero model/GPU work; dispatch false; P02 incomplete/unsealed; P03 unstarted.
++
++## P02E offline design review (2026-10-15T20:58:21.403185+00:00)
++
++P02D execution accepted once in event 023, user-conveyed coordinator decision **“Decision: ACCEPTED as completed DEVELOPMENT evidence.”** Archived review SHA-256 `a332bdd5566d66cd800261771986de54632ac54cf24485253e9b7050f2fcb13f`. All 8,997 accepted indexed members verified against ZIP and current bytes before state transition. The consumed single-run authorization remains unchanged and unusable for P02E. Dispatch false; no new model/GPU work. P02 incomplete/unsealed, P03 unstarted, study unfrozen.
++
++| Entry | Evidence or proposed resolution | Status and consequence |
++|---|---|---|
++| P02E signal | D 30/96 perfect, R 64/96; strict FINAL D 66/96 and R 64/96; 24 clusters, all primary scores binary. Eleven positive benefits, thirteen zero; all harm estimates zero. | Descriptive DEVELOPMENT only; no advantage over required routers established; no positive harm supervision. All outcomes retained. |
++| P02E denominator | Positive-benefit oracle B=0.0625 from six nested successes/two inputs; always-R B=0.3125. Range penalty at n=24 is 0.3742341475, already above maximum B. | Analytical limitation under existing formula, not an audit, power estimate or whole-study infeasibility. No risk tolerance, b_min or n selected. |
++| D08/D09 | Prefer investigating a cold isolated all-in hardware service boundary; physical support still unproved. A token/call tariff is an explicit alternative needing rate/count review. | **UNRESOLVED.** Deadline/reservation/observed maximum is not c_max. No scalar ledger, rates, hard support or overflow policy adopted. |
++| D05/D16 | Full gate/calibration cost and consistent startup/failure reference policy still needed. Keep beta=c_D_ref+0.5(c_R_ref-c_D_ref). | **UNRESOLVED.** No free cached features, TC-specific budget, normalization fit, gate freeze or beta adoption. |
++| D10/D11/D12 | Compare breadth and repeats; cost scales to hundreds/thousands of worker hours under explicit uncertain assumptions. | **UNRESOLVED.** No final allocation, K, alpha, b_min, delta_score or resource ceiling adopted. |
++| D14/D17 | Theorem checks/simulation remain P03; local packets do not establish off-machine backup. | **UNRESOLVED.** No P03 work; durable backup/capacity before final collection. No upload/purchase requested here. |
++| P02E next proposal | Next separately authorized offline cost-boundary/calibration preflight; contingent 12-existing-input, K=1/mode, 24-answer/26-feature diagnostic under 90-minute worker/120-minute wall/128-MiB ceilings. | **PROPOSAL ONLY / EXECUTION UNAPPROVED.** No new plan, seed or dispatch schedule materialized. Needs source/guard review and separate one-run authority. |
++
++Detailed evidence: `reports/p02e/offline_design_report.md`, machine-readable tables and `next_step_proposal.md`. Historical P02A/P02B are not pooled. Native questions/scoring, runner, manuscript conclusions and old reports are unchanged. Residency interval starts before some process setup and ends before some terminal scans: this is a reporting-boundary clarification, not a change to the accepted 11,560.2217413 seconds. Growing ledger scans plausibly contribute to residual drift but lack isolated timing attribution. Earlier “pushed” statement remains corrected to **“nothing pushed”**; no new push or remote backup is inferred.
+diff --git a/scripts/p02e_analyze.py b/scripts/p02e_analyze.py
+new file mode 100644
+index 0000000..431eae0
+--- /dev/null
++++ b/scripts/p02e_analyze.py
+@@ -0,0 +1,205 @@
++"""Reproducible DEVELOPMENT algebra on accepted P02D data; standard library only.
++
++No model libraries, scorer changes, audit implementation, gate fitting or simulation.
++"""
++from pathlib import Path
++from datetime import datetime,timezone
++from collections import Counter
++from statistics import mean,variance
++import csv,hashlib,json,math,sys,time
++
++ROOT=Path(__file__).resolve().parents[1]; OUT=ROOT/'reports/p02e'
++L=math.log(40); A=7*L/3
++def read(p):return json.loads(p.read_text(encoding='utf-8-sig'))
++def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
++def write(p,v):
++ with p.open('x',encoding='utf-8',newline='\n') as f:json.dump(v,f,indent=2,allow_nan=False);f.write('\n')
++def table(path,rows):
++ with path.open('x',encoding='utf-8',newline='') as f:
++  w=csv.DictWriter(f,fieldnames=list(rows[0]));w.writeheader()
++  for row in rows:w.writerow({k:json.dumps(v,ensure_ascii=False) if isinstance(v,(dict,list)) else v for k,v in row.items()})
++def assert_close(x,y):
++ if not math.isclose(x,y,rel_tol=1e-11,abs_tol=1e-9):raise ValueError(f'reconciliation mismatch {x} != {y}')
++def radius(n,v,width=1):
++ if n<2 or v<0 or width<0 or not all(math.isfinite(x) for x in (n,v,width)):raise ValueError('invalid algebra input')
++ return math.sqrt(2*v*L/n)+width*A/(n-1)
++def summarize_cluster(item,obs):
++ ds={m:sorted([o for o in obs if o['mode']==m],key=lambda o:o['draw_index']) for m in ('D','R')}
++ if any(len(ds[m])!=4 or [o['draw_index'] for o in ds[m]]!=[0,1,2,3] for m in ds):raise ValueError('incomplete K4 cluster')
++ scores={m:[o['native_score'] for o in ds[m]] for m in ds}
++ if any(type(s) not in (int,float) or not math.isfinite(s) or not 0<=s<=1 for vals in scores.values() for s in vals):raise ValueError('invalid score')
++ p={m:mean(s==1 for s in scores[m]) for m in ds};mu={m:mean(scores[m]) for m in ds}
++ return dict(input_id=item['input_id'],family=item['family'],dataset_index=item['dataset_index'],K_D=4,K_R=4,weight=1/24,
++  scores_D=scores['D'],scores_R=scores['R'],mean_D=mu['D'],mean_R=mu['R'],perfect_rate_D=p['D'],perfect_rate_R=p['R'],
++  variance_D=variance(scores['D']),variance_R=variance(scores['R']),benefit=mu['R']-mu['D'],joint_spoilage=p['D']*(1-p['R']),
++  direct_redraw=4/3*p['D']*(1-p['D']),decline_010=sum(d-r>=.1 for d in scores['D'] for r in scores['R'])/16,
++  decline_025=sum(d-r>=.25 for d in scores['D'] for r in scores['R'])/16,direct_perfect_count=sum(s==1 for s in scores['D']),
++  strict_final_D=sum(o['strict_valid_final'] for o in ds['D']),strict_final_R=sum(o['strict_valid_final'] for o in ds['R']),
++  worker_mean_D=mean(o['worker_seconds'] for o in ds['D']),worker_mean_R=mean(o['worker_seconds'] for o in ds['R']),
++  generation_mean_D=mean(o['generation_seconds'] for o in ds['D']),generation_mean_R=mean(o['generation_seconds'] for o in ds['R']))
++def diagnostic_rule(name,clusters):
++ funcs={'always_D':lambda c:0,'always_R':lambda c:1,'observed_positive_benefit':lambda c:int(c['benefit']>0),
++        'complement_positive_benefit':lambda c:int(c['benefit']<=0)}
++ action=[funcs[name](c) for c in clusters];B=[g*c['perfect_rate_D'] for g,c in zip(action,clusters)]
++ H=[g*c['joint_spoilage'] for g,c in zip(action,clusters)];delta=[g*c['benefit'] for g,c in zip(action,clusters)]
++ weights=[c['weight'] for c in clusters];exposure=sum(w*b for w,b in zip(weights,B));numerator=sum(w*h for w,h in zip(weights,H))
++ aw=[w*b for w,b in zip(weights,B)];kden=sum(v*v for v in aw)
++ per_family={f:sum(c['weight']*b for c,b in zip(clusters,B) if c['family']==f) for f in sorted({c['family'] for c in clusters})}
++ return dict(rule=name,interpretation='Fixed prompt diagnostic; outcome-informed for benefit/complement; no deployable candidate',
++  selected_input_count=sum(action),weighted_routing_rate=sum(w*g for w,g in zip(weights,action)),
++  weighted_spoilage_numerator=numerator,weighted_exposure_B=exposure,conditional_spoilage=None if exposure==0 else numerator/exposure,
++  risk_status='undefined/no exposure' if exposure==0 else 'descriptive ratio only',
++  raw_nested_direct_successes=sum(g*c['direct_perfect_count'] for g,c in zip(action,clusters)),
++  selected_inputs_with_direct_success=sum(g and c['direct_perfect_count']>0 for g,c in zip(action,clusters)),
++  exposure_by_family=per_family,families_contributing_exposure=[f for f,x in per_family.items() if x>0],
++  kish_concentration=None if kden==0 else sum(aw)**2/kden,variance_B=variance(B),mean_delta=mean(delta),variance_delta=variance(delta),
++  mean_selected_primary_score=sum(w*((1-g)*c['mean_D']+g*c['mean_R']) for c,w,g in zip(clusters,weights,action)),
++  selected_answer_worker_proxy_seconds=sum(w*((1-g)*c['worker_mean_D']+g*c['worker_mean_R']) for c,w,g in zip(clusters,weights,action)),
++  selected_generation_component_seconds=sum(w*((1-g)*c['generation_mean_D']+g*c['generation_mean_R']) for c,w,g in zip(clusters,weights,action)),
++  gate_cost='unmeasured additive per query if active, including routed-D queries; bypassed for always-D fallback',
++  input_actions=[dict(input_id=c['input_id'],g=g) for c,g in zip(clusters,action)])
++def cost_partition(worker,load,work,cpu_feature,cleanup,wall):
++ residual=worker-load-work-cpu_feature-cleanup;outside=wall-worker
++ if residual < -1e-9 or outside < -1e-9:raise ValueError('overlapping or invalid costs')
++ return dict(load_components=load,generation_and_forward_components=work,cpu_feature_component=cpu_feature,
++  cleanup_components=cleanup,unallocated_within_residency=residual,outside_residency_in_execution_wall=outside,
++  summed_residency=worker,execution_wall=wall)
++def balanced_ceiling(x):return 6*math.ceil(x/6)
++def main():
++ start=time.perf_counter();cpu=time.process_time();verification=read(OUT/'acceptance_verification.json')
++ # No final audit or production runner is imported. Re-bind every empirical source read.
++ for n,h in verification['accepted_hashes'].items():
++  if sha(ROOT/n)!=h:raise ValueError('accepted hash mismatch: '+n)
++ idx=read(ROOT/'reports/p02d_execution/P02D_execution_evidence_index.json')['files']
++ accessed={}
++ def bound(n):
++  h=sha(ROOT/n)
++  if h!=idx[n]:raise ValueError('accepted source mismatch: '+n)
++  accessed[n]=h;return read(ROOT/n)
++ report=bound('reports/p02d_execution/production_execution_report.json')
++ accounting=bound('reports/p02d_execution/execution_accounting.json')
++ plan=bound('artifacts/development/p02d-cr01-plan-v4/run_plan.json')
++ declaration=read(OUT/'analytical_declaration.json')
++ assert report['status']=='COMPLETE_DEVELOPMENT' and not report['incidents']
++ obs=report['observations'];assert len(obs)==192 and len({o['stream_id'] for o in obs})==192
++ clusters=[summarize_cluster(i,[o for o in obs if o['input_id']==i['input_id']]) for i in plan['inputs']]
++ assert Counter(c['family'] for c in clusters)=={f:4 for f in {c['family'] for c in clusters}}
++ for c,old in zip(clusters,report['clusters']):
++  assert c['input_id']==old['input_id']
++  for k in ['benefit','joint_spoilage','direct_redraw','decline_010','decline_025']:assert_close(c[k],old['targets'][k])
++ rules=[diagnostic_rule(n,clusters) for n in declaration['fixed_rules']]
++ assert [r['raw_nested_direct_successes'] for r in rules]==[0,30,6,24]
++ assert [r['selected_input_count'] for r in rules]==[0,24,11,13]
++ assert sum(c['benefit']>0 for c in clusters)==11 and sum(c['benefit']<0 for c in clusters)==0
++ assert sum(c['joint_spoilage'] for c in clusters)==0 and sum(c['direct_perfect_count']>0 for c in clusters)==8
++ table(OUT/'cluster_rows.csv',clusters);write(OUT/'cluster_rows.json',dict(evidence_kind='development_observation',analysis_kind='offline_cluster_reconciliation',rows=clusters))
++ table(OUT/'diagnostic_rules.csv',[{k:v for k,v in r.items() if k!='input_actions'} for r in rules])
++ write(OUT/'diagnostic_rules.json',dict(evidence_kind='development_observation',not_candidates=True,rules=rules))
++ events=[bound(p.relative_to(ROOT).as_posix()) for p in sorted((ROOT/'artifacts/development/p02d-cr01-tranche/ledger').glob('*.json'))]
++ previous=None
++ for ix,e in enumerate(events):
++  assert e['previous_sha256']==previous;previous=accessed[f'artifacts/development/p02d-cr01-tranche/ledger/{ix:06d}.json']
++ assert len(events)==7257
++ resources={r['session_id']:r for r in accounting['resource_records']}
++ sessions=[]
++ for o in obs:
++  sid=o['slot_id'];res=bound(f'artifacts/development/p02d-cr01-tranche/session_resources/{sid}.json')
++  assert res==resources[sid] and res['safe_stopped'] and res['exit_code']==0
++  raw=bound(f'artifacts/development/p02d-cr01-tranche/results/{sid}.json')
++  assert raw==bound(f'artifacts/development/p02d-cr01-tranche/workers/{sid}/results/{sid}.json')
++  assert len(raw['raw_token_ids'])==o['output_tokens']
++  timeline={e['event']:(j,e) for j,e in enumerate(events) if e.get('session_id')==sid and e['event'] in ['session_start','admitted','result','session_end']}
++  def gap(first,last):return (datetime.fromisoformat(timeline[last][1]['timestamp_utc'])-datetime.fromisoformat(timeline[first][1]['timestamp_utc'])).total_seconds()
++  sessions.append(dict(slot_id=sid,input_id=o['input_id'],family=o['family'],mode=o['mode'],draw_round=o['draw_index']+1,
++   output_tokens=o['output_tokens'],primary_score=o['native_score'],worker_seconds=res['seconds'],load_seconds=res['load_seconds'],
++   generation_seconds=o['generation_seconds'],sync_seconds_nested=raw['synchronization_seconds'],cleanup_seconds=res['cleanup_seconds'],
++   worker_minus_load_minus_generation=res['seconds']-res['load_seconds']-o['generation_seconds'],
++   residual_after_cleanup=res['seconds']-res['load_seconds']-o['generation_seconds']-res['cleanup_seconds'],
++   ledger_events_before_session=timeline['session_start'][0],timestamp_start_to_admitted=gap('session_start','admitted'),
++   timestamp_admitted_to_result=gap('admitted','result'),timestamp_result_to_end=gap('result','session_end'),
++   timestamp_span=gap('session_start','session_end')))
++ groups=[]
++ for round_id in range(1,5):
++  for mode in ['D','R','ALL']:
++   ss=[s for s in sessions if s['draw_round']==round_id and (mode=='ALL' or s['mode']==mode)]
++   groups.append(dict(draw_round=round_id,mode=mode,count=len(ss),output_tokens=sum(s['output_tokens'] for s in ss),
++    worker_sum=sum(s['worker_seconds'] for s in ss),worker_mean=mean(s['worker_seconds'] for s in ss),
++    load_mean=mean(s['load_seconds'] for s in ss),generation_mean=mean(s['generation_seconds'] for s in ss),
++    residual_mean=mean(s['worker_minus_load_minus_generation'] for s in ss),residual_sum=sum(s['worker_minus_load_minus_generation'] for s in ss),
++    start_to_admitted_mean=mean(s['timestamp_start_to_admitted'] for s in ss),admitted_to_result_mean=mean(s['timestamp_admitted_to_result'] for s in ss),
++    result_to_end_mean=mean(s['timestamp_result_to_end'] for s in ss),ledger_events_before_min=min(s['ledger_events_before_session'] for s in ss),ledger_events_before_max=max(s['ledger_events_before_session'] for s in ss)))
++ table(OUT/'cost_sessions.csv',sessions);table(OUT/'cost_round_mode.csv',groups)
++ f=resources['features'];features=report['feature_measurements'];fw=sum(x['forward_seconds'] for x in features);fcpu=sum(x['cpu_feature_seconds'] for x in features)
++ worker=sum(v['seconds'] for v in resources.values());load=sum(v['load_seconds'] for v in resources.values());gen=sum(o['generation_seconds'] for o in obs)
++ cleanup=sum(v['cleanup_seconds'] for v in resources.values());wall=accounting['runner_execution_end']['wall_seconds']
++ parts=cost_partition(worker,load,gen+fw,fcpu,cleanup,wall)
++ assert_close(worker,11560.2217413);assert_close(wall,12836.8229112);assert len(resources)==193
++ assert sum(s['output_tokens'] for s in sessions)==129371
++ reportcost=bound('reports/p02d_execution/offline_reporting_cost.json')
++ receipt=read(ROOT/'reports/p02d_execution/P02D_execution_packet_receipt.json')
++ cost=dict(evidence_kind='development_observation',analysis_kind='offline_cost_reconciliation',sessions=193,answer_calls=192,feature_forwards=50,
++  feature_warmups=2,known_output_tokens=129371,unknown_output_tokens=0,reserved_output_tokens=393216,partition=parts,
++  nested_detail=dict(answer_generation_seconds=gen,feature_forward_seconds=fw,feature_cpu_seconds=fcpu,feature_residency=f['seconds'],feature_load=f['load_seconds'],
++   feature_residual=f['seconds']-f['load_seconds']-fw-fcpu-f['cleanup_seconds'],answer_sync_seconds_in_generation=sum(s['sync_seconds_nested'] for s in sessions)),
++  separate_collection_costs=dict(P02D_report_wall=reportcost['wall_seconds'],P02D_report_cpu=reportcost['cpu_process_seconds'],
++   P02D_package_wall=receipt['packaging_wall_seconds'],P02D_package_cpu=receipt['packaging_cpu_process_seconds'],
++   command_wrapper_wall=accounting['command_wall_seconds'],wrapper_extra_only=accounting['command_wall_seconds']-wall,
++   other_preparation_validation_human_wall='Not comprehensively instrumented; recorded commands preserved in accepted packet; not assumed zero'),
++  round_mode=groups,unavailable=['GPU kernel busy time','CPU total during collection','separate validation/scoring/ledger-scan/evidence-enumeration timings','trained gate/calibration service time','persistent service/init allocation','hard service-time support'],
++  residual_causality='Observed arithmetic and timestamp intervals; no profiler or new benchmark. Growing scans in source are a plausible contributor, not measured attribution.',
++  units='seconds; components are nested; do not sum resource and component totals twice',raw_bytes=sum(p.stat().st_size for p in (ROOT/'artifacts/development/p02d-cr01-tranche').rglob('*') if p.is_file()))
++ write(OUT/'cost_reconciliation.json',cost)
++ scenarios=[];necessary=[]
++ for rule in rules:
++  B=rule['weighted_exposure_B'];v=rule['variance_B'];delta=rule['mean_delta'];dv=rule['variance_delta']
++  for alpha in declaration['alpha_grid']:
++   for bmin in declaration['b_min_grid']:
++    necessary.append(dict(rule=rule['rule'],alpha=alpha,b_min=bmin,
++     zero_harm_range_only_n_min=None if alpha*B==0 else 1+A/(alpha*B),
++     zero_harm_range_only_balanced_n_min=None if alpha*B==0 else balanced_ceiling(1+A/(alpha*B)),
++     denominator_range_only_n_min=None if B<=bmin else 1+A/(B-bmin),
++     denominator_range_only_balanced_n_min=None if B<=bmin else balanced_ceiling(1+A/(B-bmin)),
++     null_meaning='no finite solution to that necessary condition',sufficient_or_power=False))
++    for n in declaration['n_grid']:
++     scenarios.append(dict(rule=rule['rule'],n=n,alpha=alpha,b_min=bmin,mean_B_assumed=B,variance_B_assumed=v,
++      range_only_B_Z=A/(n-1),B_lower_expression=B-radius(n,v),Z_upper_expression=-alpha*B+radius(n,alpha*alpha*v,1),
++      Delta_lower_expression=delta-radius(n,dv,2),eligibility_or_audit_decision=None,illustrative_unadopted=True))
++ table(OUT/'analytical_scenarios.csv',scenarios)
++ rare=[]
++ for pd in declaration['rare_event_grid']['p_D']:
++  for pr in declaration['rare_event_grid']['p_R']:
++   for K in declaration['rare_event_grid']['K']:
++    rare.append(dict(p_D=pd,p_R=pr,K=K,true_harm=pd*(1-pr),probability_empirical_harm_zero=(1-pd)**K+pr**K-(1-pd)**K*pr**K,illustrative_unadopted=True))
++ write(OUT/'analytical_constraints.json',dict(evidence_kind='development_observation',analysis_kind='analytical_not_audit',
++  declaration_sha256=sha(OUT/'analytical_declaration.json'),log40=L,A=A,anchor_range_term=A/23,max_available_B=.3125,
++  anchor_best_range_only_B_lower=.3125-A/23,necessary_conditions=necessary,rare_event_examples=rare,
++  no_theorem_validation=True,no_final_audit_import=True,cost_width='symbolic W_C',delta_score='symbolic test-only margin'))
++ # Illustrative collection scale, NOT future independent data or a resource authorization.
++ allmean=mean(s['worker_seconds'] for s in sessions);lastmean=next(g['worker_mean'] for g in groups if g['draw_round']==4 and g['mode']=='ALL')
++ scale=[]
++ for n in declaration['n_grid'][2:]:
++  for K in declaration['resource_comparison']['K']:
++   total_inputs=2250+n;calls=2*K*total_inputs
++   scale.append(dict(illustrative_unadopted=True,audit_n_placeholder=n,K_placeholder=K,other_split_inputs_placeholder=2250,
++    all_split_inputs=total_inputs,answer_calls=calls,max_output_tokens=2048*calls,
++    hours_flat_allround_worker_proxy=calls*allmean/3600,hours_flat_last_round_worker_proxy=calls*lastmean/3600,
++    warning='Excludes features/gates/retries/warmups and additional supervision; growing-ledger overhead can exceed linear scaling. No approved budget or precision estimate.'))
++ table(OUT/'longer_study_resource_scenarios.csv',scale)
++ summary=dict(evidence_kind='development_observation',analysis_kind='offline_design',outcomes=192,clusters=24,K=4,
++  perfect_D=sum(c['direct_perfect_count'] for c in clusters),perfect_R=sum(o['perfect_correct'] for o in obs if o['mode']=='R'),
++  strict_D=sum(c['strict_final_D'] for c in clusters),strict_R=sum(c['strict_final_R'] for c in clusters),
++  positive_benefit=11,zero_benefit=13,negative_benefit=0,zero_harm_targets=24,inputs_with_D_success=8,
++  all_scores_binary=all(o['native_score'] in [0,1] for o in obs),historical_draws_pooled=False,
++  allround_answer_worker_mean=allmean,last_round_answer_worker_mean=lastmean,
++  breadth_vs_depth=dict(equal_answer_budget=192,fresh_24_K4='24 new clusters; historical 24 remain a separate tranche',existing_24_extra_K4='same 24 clusters at K8; never increases independent n'),
++  scalar_ledger_adopted=False,alpha_bmin_beta_delta_n_K_frozen=False)
++ write(OUT/'summary.json',summary)
++ write(OUT/'source_bindings.json',dict(accepted_packet_sha256=verification['accepted_hashes']['reports/p02d_execution/P02D_execution_review_packet.zip'],files=accessed))
++ assert not any(m in sys.modules for m in ['torch','transformers','taskcognition.audit','taskcognition.p02d_runner'])
++ write(OUT/'analysis_run_receipt.json',dict(evidence_kind='development_observation',analysis_kind='offline_design',status='PASS',
++  timestamp_utc=datetime.now(timezone.utc).isoformat(),source_sha256=sha(Path(__file__)),declaration_sha256=sha(OUT/'analytical_declaration.json'),
++  bound_records_read=len(accessed),wall_seconds=time.perf_counter()-start,cpu_seconds=time.process_time()-cpu,
++  new_model_loads=0,new_feature_forwards=0,new_answer_generations=0,new_gpu_work=0,gate_fits=0,simulations=0,final_labels=0,
++  no_model_or_final_audit_import=True,scientific_choices_adopted=False))
++ print(json.dumps(summary));print(json.dumps(parts))
++if __name__=='__main__':main()
+diff --git a/scripts/p02e_documents.py b/scripts/p02e_documents.py
+new file mode 100644
+index 0000000..6fe6664
+--- /dev/null
++++ b/scripts/p02e_documents.py
+@@ -0,0 +1,225 @@
++"""Render offline P02E review tables/proposals from checked analytical outputs."""
++from pathlib import Path
++from datetime import datetime,timezone
++import csv,json,time
++from p02e_analyze import read,write,sha,ROOT,OUT
++
++start=time.perf_counter();cpu=time.process_time()
++rows=read(OUT/'cluster_rows.json')['rows'];rules=read(OUT/'diagnostic_rules.json')['rules']
++cost=read(OUT/'cost_reconciliation.json');summary=read(OUT/'summary.json');constraints=read(OUT/'analytical_constraints.json')
++verification=read(OUT/'acceptance_verification.json')
++def md(path,text):
++ with path.open('x',encoding='utf-8',newline='\n') as f:f.write(text)
++cluster_table=['| Family / native index | K D/R | Means D/R | Perfect rates D/R | Sample variances D/R | T_b | T_h | D-redraw | D-perfect | Strict D/R |',
++ '|---|---|---|---|---|---:|---:|---:|---:|---|']
++for c in rows:
++ cluster_table.append(f"| {c['family']} / {c['dataset_index']} | 4/4 | {c['mean_D']:g}/{c['mean_R']:g} | {c['perfect_rate_D']:g}/{c['perfect_rate_R']:g} | {c['variance_D']:.6g}/{c['variance_R']:.6g} | {c['benefit']:g} | {c['joint_spoilage']:g} | {c['direct_redraw']:g} | {c['direct_perfect_count']} | {c['strict_final_D']}/{c['strict_final_R']} |")
++rule_table=['| Fixed diagnostic rule | Selected / 24 | Routing weight | Numerator H | Exposure B | H/B | Nested D successes | Exposed inputs | Kish concentration | Exposure families |',
++ '|---|---:|---:|---:|---:|---|---:|---:|---|---|']
++for r in rules:
++ rule_table.append(f"| {r['rule']} | {r['selected_input_count']} | {r['weighted_routing_rate']:.6f} | {r['weighted_spoilage_numerator']:g} | {r['weighted_exposure_B']:g} | {'undefined' if r['conditional_spoilage'] is None else '0 (observed)'} | {r['raw_nested_direct_successes']} | {r['selected_inputs_with_direct_success']} | {'undefined' if r['kish_concentration'] is None else format(r['kish_concentration'],'.6f')} | {', '.join(r['families_contributing_exposure']) or 'none'} |")
++round_table=['| Round | Mode | Calls | Tokens | Worker mean s | Load mean s | Generation mean s | Residual mean s |',
++ '|---:|---|---:|---:|---:|---:|---:|---:|']
++for r in cost['round_mode']:
++ round_table.append(f"| {r['draw_round']} | {r['mode']} | {r['count']} | {r['output_tokens']} | {r['worker_mean']:.6f} | {r['load_mean']:.6f} | {r['generation_mean']:.6f} | {r['residual_mean']:.6f} |")
++proxy_table=['| Rule | Per-input selected answer-worker proxy s | Selected generation component s | Fraction × global means approximation s |',
++ '|---|---:|---:|---:|']
++for r in rules:
++ rho=r['weighted_routing_rate'];simple=(1-rho)*rules[0]['selected_answer_worker_proxy_seconds']+rho*rules[1]['selected_answer_worker_proxy_seconds']
++ proxy_table.append(f"| {r['rule']} | {r['selected_answer_worker_proxy_seconds']:.6f} | {r['selected_generation_component_seconds']:.6f} | {simple:.6f} |")
++proposal=dict(evidence_kind='development_observation',analysis_kind='proposal_only',status='UNAPPROVED',
++ recommendation='Next coordinator handoff: offline cost-boundary/calibration preflight, then separate execution review for the contingent diagnostic below.',
++ dispatch_plan_created=False,execution_authorized=False,preflight_model_work=0,
++ contingent_calibration=dict(fresh_inputs=0,repeated_P02D_inputs=12,selection='Native indices 0 and 1 in each of six families, fixed by index rather than outcomes; not materialized here.',
++  K_per_mode=1,answer_calls_D=12,answer_calls_R=12,total_answer_calls=24,
++  feature_forwards=26,charged_feature_warmups=2,measurement_forwards=24,
++  feature_positions_max=53248,output_cap=2048,max_output_tokens=49152,
++  workers_proposed=24,worker_policy='One cold isolated worker per routed query: load same checkpoint once, fresh input-only decoder forward, CPU dispatcher, exactly one selected answer, safe shutdown. First worker also performs two charged feature warm-ups.',
++  serving_change='PROPOSED ONLY; new versioned preflight and independent source/guard review required; never reuse P02D execution authorization.',
++  streams='Fresh cost-calibration namespace and one independent stream per input/mode; no P02D stream reuse; exact seeds require later prospective plan.',
++  learned_gate='None fitted or calibrated; fixed outcome-independent action used for calibration. Real gate/calibration cost remains unmeasured until architecture/parity review.',
++  cumulative_worker_seconds=5400,execution_wall_seconds=7200,evidence_bytes=134217728,
++  load_deadline_seconds=150,feature_deadline_seconds=120,answer_deadline_seconds=120,cancellation_grace_seconds=10,cleanup_seconds=30,
++  normal_query_admission_reservation_seconds=450,first_query_reservation_seconds=690,
++  preadmission_retry_ceiling=0,replacements=0,answer_warmups=0,
++  all_ceilings_operational_not_support_bounds=True,
++  estimated_worker_seconds_current_allround_proxy=24*summary['allround_answer_worker_mean'],
++  estimated_worker_seconds_current_lastround_proxy=24*summary['last_round_answer_worker_mean'],
++  estimated_planning_window_minutes=[25,60],window_is_not_confidence_interval=True),
++ unchanged=['six families/native default configs/renderers','Qwen3-8B revision','BF16 Windows SDPA MATH','P02B system instruction','native D/R modes','matched sampler','2048 total tokens','strict parser and native scores','feature recipe'],
++ open_decisions=['cold isolated all-in service policy and gate/init charge boundary','whether hardware service time admits defensible hard support under explicit platform assumptions','future gate architecture/parity instrumentation','alpha/b_min/beta/delta_score/n/K remain unfrozen','durable backup before final collection'],
++ stop_policy='Insufficient reservation, feature invalid/partial/timed out, unsafe cleanup, unresolved admission/process/cost, missing/corrupt evidence or unexpected software error stops; no replay/retry or invented zero for incidents. No outcome-based success stop. Existing failures/costs retained.',
++ no_auto_execution=True)
++write(OUT/'next_step_proposal.json',proposal)
++md(OUT/'next_step_proposal.md',f'''# Proposed next step — UNAPPROVED
++
++Recommend **one offline cost-boundary/calibration preflight** as the next separately authorized slice. It would implement and review instrumentation for a defensible one-query hardware-service ledger before spending on more outcome labels. It would return its own review checkpoint; **zero model work** would be allowed by that preflight. P02E has not implemented it or materialized any new request, seed or dispatch schedule.
++
++The concrete target for that preflight is the following **contingent calibration diagnostic**, requiring separate source/plan review and explicit execution approval. This is a resource proposal, not an execution request already granted and not a larger study.
++
++| Proposed diagnostic field | Exact proposal |
++|---|---|
++| Fresh inputs | 0 |
++| Existing inputs | 12: native indices 0 and 1 in each family from P02D, selected by index without outcome screening |
++| Repeats | K=1 per mode on each selected input; 12 D + 12 R = **24 new independent calls** |
++| Feature forwards | **26**, including 2 charged warm-ups on the first two index-selected inputs plus one live feature pass before each of 24 answer calls |
++| Feature input positions | At most 26 × 2,048 = **53,248** |
++| Answer cap / total reservation | 2,048 total tokens / **49,152** tokens |
++| Workers | 24 sequential isolated cold workers; each loads once, extracts input-only features, uses a fixed predeclared mode, generates one answer, and stops; the first additionally performs both warm-ups |
++| Worker / wall ceilings | **90 minutes / 120 minutes** |
++| Evidence ceiling | **128 MiB**, including vectors and verified local review packet |
++| Deadlines and reservation | Load 150 s, feature 120 s, generation 120 s, cancellation grace 10 s, cleanup 30 s; reserve 450 s for an ordinary query and 690 s for the first with two warm-ups |
++| Retry/replacement / answer warm-up | J=0 / none / none |
++
++The reservation contains headroom but is not a proven worst-case stopping bound; measured overshoot remains charged. Before each admission reserve the whole next query, token cap and evidence headroom; if unavailable, stop with partial evidence. The total budget need not accommodate every query at every deadline. No request after a partial/invalid feature pass, unsafe cleanup, corruption or unresolved process/cost state. A known answer failure remains a failure under the unchanged strict scoring rule. Software/evidence failures remain unscored and stop. No replay, resumption of consumed/unknown slots, replacement or automatic budget extension; a separate one-invocation authorization must bind a new reviewed plan.
++
++This proposal uses the same cached checkpoint, tokenizer, precision/backend, native questions/default configs, P02B instruction, sampler, 2,048 cap, parser/scorer and feature recipe. It proposes a **new query lifecycle**, not a model or scientific-package improvement: the raw-question feature pass and chosen answer share the one cold load within the query, with **no KV/prefill reuse**, no answer preview and a full RNG reseed before the sole answer. This path does not exist as an authorized runner now. Preflight must check state isolation, fresh masks/IDs, seeds, no past keys, mode serialization and failure propagation for all learned-method interfaces. Existing P02D source and authorization remain closed.
++
++No learned gate or normalization is fitted. A fixed predeclared D/R action measures the service skeleton only; it cannot measure a future learned MLP/calibrator. An architecture/parameter-parity decision and CPU-only gate-cost checks would remain necessary before an all-in deployment reference. The real gate charge must be added to every active-gate query, even a D-routed query. An untrained synthetic head could be specified for a future cost-only check but is **not chosen or benchmarked here**.
++
++Existing collection-worker means project approximately **{24*summary['allround_answer_worker_mean']/60:.1f} minutes** for 24 balanced calls; using the last round gives **{24*summary['last_round_answer_worker_mean']/60:.1f} minutes**. A **25–60 minute planning window** is deliberately broad, not a confidence interval or hard support bound. New instrumentation/lifecycle may add overhead; the old growing ledger also makes linear extrapolation unreliable. Feature arithmetic (26 warm-style passes) is roughly 1.4 seconds plus cold/first-pass effects, not an all-in gate forecast. Initialization is already substantial inside the worker proxy and must not be added twice. Expect roughly 5–20 MiB of raw plus packet evidence by current record sizes, subject to the 128 MiB operational ceiling. No fee or tariff is assumed. CPU preparation/reporting is separate and must be recorded.
++
++Why this is worth doing first: another large label tranche cannot establish the missing cost support, and the present 5.9→20.5 second residual drift makes collection-worker means unsuitable as frozen deployment references. An instrumented boundary can separate mandatory serving work from growing research integrity machinery. It still cannot prove an OS/GPU termination guarantee from a successful short run. If no credible hardware support argument survives preflight, return a documented D08/D09 block and an explicit reference-tariff alternative for review rather than spending on this contingent live diagnostic.
++
++Breadth versus depth remains a separate later decision. At equal **192-call** cost, 24 fresh inputs (four/family) at K=4 add 24 new input clusters; four extra draws/mode on all existing 24 keep n=24 and yield K=8 for those same inputs. The first probes population heterogeneity/direct-success exposure; the second reduces within-input noise and can expose rare failures on those inputs. Neither guarantees harm-positive observations. Current answer-worker arithmetic is about 3.20 hours at all-round means or 3.55 hours at last-round means, before new feature/supervision overhead. **Neither option is proposed for execution now.** A future fresh pool needs disjoint deterministic identities and original native selection, with no hunt for easy or harm-positive inputs; repeated/current/historical pools stay separately labeled.
++
++Longer-study costs are consequential. With manuscript placeholders of 2,250 TRAIN/TUNE/TEST inputs plus n audit inputs, n=1,200 and K=4 already imply 27,600 answers and 56,524,800 reserved tokens: about **459–510 worker hours** under simplistic all-round/late-round proxies, excluding features, fitting, simulations, additional supervision and backup. n=6,000 gives 66,000 calls and roughly **1,099–1,219 hours**; K=8 doubles answer collection. The historical 15,000-call high-repeat suggestion alone is roughly 250–277 worker hours at these proxies and remains unapproved. Even n=450 does not establish adequacy. Full illustrative rows are in `longer_study_resource_scenarios.csv`; these are not precise forecasts or independently sampled evidence. At current total-evidence-per-call arithmetic, 27,600 calls would be about 3.46 GB including local packet copies, but growing ledgers/vectors can change this materially; model/environment, additional copies and final capacity are extra. Durable off-machine backup must be reviewed before irreplaceable final collection. No purchase or upload is requested for this offline checkpoint.
++
++Required review decisions are concrete: whether to develop the cold isolated one-query service boundary; what platform assumptions could justify service-time support (or whether an explicitly priced tariff is scientifically acceptable instead); and how to define gate/init/reference charges consistently for TC, winner and factorized methods. Alpha, b_min, beta, delta_score, final n/K and resource commitments remain unadopted. A later live approval must bind a new immutable plan; it cannot reuse the consumed P02D approval.
++''')
++md(OUT/'offline_design_report.md',f'''# P02E offline denominator and cost-design review
++
++**P02E OFFLINE DESIGN READY_FOR_REVIEW.** Analytical DEVELOPMENT review only: zero new model loads, feature forwards, answers, GPU work, gate fits, normalizer fits, simulations or final labels. Dispatch is false; P02 incomplete/unsealed, P03 unstarted, study unfrozen.
++
++## Authority and evidence
++
++The user conveyed acceptance of the P02D execution on 2026-10-15 (America/Chicago). The archived review and its SHA-256 are in `provenance/` and `acceptance_verification.json`; event 023 records acceptance once and activates only this offline slice. Actual workstation timestamps are separate UTC records. The coordinator's checks were offline and do not independently reproduce Windows/GPU behavior or establish independence merely from different seeds. No new execution authorization exists. The old P02D one-invocation authorization is consumed.
++
++Bound plan `c46977bfc0de1040965f08df8acbd55b9b063b386ccfb97f247a280ae2472365`; execution ZIP `8b487fdbd321e997683e014a86caedf9bd006323544f03972e65d06239c8faa9`; production report `9a5f6c7cf713941284b1c125570b3e174c641e685e01284b6bf86f0f95ff4dab`; accounting `0dda412d334389fc5278e8e05c48667a151120f67dbc6d7dfed06ebb4af0ef03`. All **8,997 indexed files** matched both ZIP and current bytes before state changes. Analysis subsequently bound 7,837 input/report/resource/ledger records and verified the 7,257-event chain. No answer was regenerated, decoded differently, repaired or rescored. Machine-readable cluster and diagnostic tables contain exact values; readable decimals below are display rounding only.
++
++P02A/P02B contribute no rows or moments to this analysis. Their outcome-informed development and CR01 provenance remain separate from this predeclared P02D tranche. Historical totals 75 generations / 40,555 tokens (including P01's separate deliberate interruption) remain untouched; P02D adds 192 / 129,371. None are final labels.
++
++## A. Signal and denominator reconciliation
++
++There are 24 independent-input **design units**, four per family with K=4 D and K=4 R draws; unique streams are recorded, not empirical proof of independence. Weight each family 1/6 and its four inputs 1/4, hence each row 1/24. All 192 outcomes and all zeros are retained. Strict FINAL counts are **66/96 D and 64/96 R**; perfect counts are **30/96 D and 64/96 R**. A completed strict answer can still be wrong: 36 strict D outputs were not perfect. This is package-relative scoring including compliance/truncation, not an isolated native-solving claim. No partial score appeared, although the unchanged native scorers allow partial credit.
++
++{chr(10).join(cluster_table)}
++
++`cluster_rows.json`/`.csv` preserve full input IDs, score lists and precision. There are **11 positive-benefit, 13 zero-benefit and no negative-benefit inputs**. All **24 T_h values are zero**. D succeeds at least once on only **8/24 inputs**, with 16/30 nested successes in number_format; graph_color and shortest_path have no observed D success. The direct-redraw diagnostic is 0.25 on letter_counting index 3 and knights_knaves index 2; other rows are zero. Both partial-decline diagnostics are zero everywhere. These finite-K estimates do not establish population absence of harm.
++
++The four rules below were fixed by the user prompt. Positive-benefit and complement use observed outcomes and are **nondeployable outcome-informed descriptions**, not fitted candidates or population feasibility estimates. No other action vector or threshold was searched. For B_i=g_i p̂_Di and H_i=g_i T_hi, weighted numerator/exposure are sums with row weight 1/24; risk is their ratio, not an average of family ratios.
++
++{chr(10).join(rule_table)}
++
++Positive-benefit selection keeps six D successes from just **two** inputs (letter_counting index 3 and knights_knaves index 2), giving B=(0.75+0.75)/24=0.0625. Always-R has B=0.3125; its additional exposure largely comes from benefit ties. The complement carries 24 successes across six inputs and B=0.25 but has zero observed score benefit. This is a tension between useful reasoning and denominator precision, not an instruction to route unnecessary ties to manufacture exposure. The original objective/constraints and all comparator rules remain unchanged.
++
++Kish=(Σa_i)²/Σa_i², a_i=g_i p̂_Di/24, measures **weight concentration**, not independent successful instances. Always-D has no R exposure: its conditional spoilage and Kish are undefined, not zero risk. As a candidate it cannot satisfy positive b_min; as fallback it is the specified gate-bypassing deployment, with no second answer after an R failure.
++
++Because every observed S is binary, μ̂_a=p̂_a here. The factorized targets recover both T_b and T_h exactly; TC gains no information unavailable to that required comparator. Winner labels are 11 ones and 13 zeros, discarding benefit magnitude (0.25, 0.5 or 1), but this table cannot demonstrate that learning magnitude generalizes better. With all harm labels zero, a harm loss supplies no positive example of where the harm screen should activate. Shared representations or calibration do not create missing evidence. Do not fit a gate or infer superiority from the observed R advantage. The all-three final contrasts against always-D, winner deployment and factorized deployment remain required.
++
++For hypothetical fixed input probabilities and independent draws, P(T̂_h=0)=(1-p_D)^K+p_R^K-(1-p_D)^K p_R^K: either no D success or all R successes. In the **predeclared illustrative**, unadopted p_D=0.5, p_R=0.95 example, true independent-draw harm is 0.025 yet K=4 gives an 82.61% chance of a zero empirical harm target. The saved grid shows K=8 and 16 as well, without fitting probabilities from these rows. This is algebra, not a confidence bound or a rule-of-three on dependent cross-pairs. More repeats reduce conditional noise and increase detection opportunities on existing inputs; more independent inputs explore heterogeneity and increase n. K² overlapping pairs do neither by themselves.
++
++## B. Analytical audit-design constraints — not an AUDIT or theorem check
++
++Use the current contract exactly, with L=ln(40), A=7L/3, q_n=A/(n−1), and sample variance denominator n−1:
++
++```text
++r(T) = sqrt(2 s_T² L / n) + width(T) q_n
++B = g p̂_D; H = g p̂_D(1−p̂_R); Z = H−alpha B
++Delta = g(μ̂_R−μ̂_D)
++B lower expression = mean(B) − sqrt(2 s_B² L/n) − q_n
++Z upper expression = mean(H) − alpha mean(B) + sqrt(2 s_Z² L/n) + q_n
++Delta lower expression = mean(Delta) − sqrt(2 s_Delta² L/n) − 2q_n
++Cost upper expression = mean(C) + sqrt(2 s_C² L/n) + W_C q_n
++```
++
++Widths are **B=1, Z=1, Delta=2**. W_C=c_max−c_min needs an independently justified hard support. This code evaluates symbolic/numerical expressions only and never imports or calls a final audit decision path. P03 retains theorem verification (including independent/nonidentical cluster assumptions/constants) and full-pipeline simulation. No candidate, audit, deployment or gate acceptance is produced.
++
++At n=24, q_n=**0.3742341475188051**. The largest observed B achievable from these rows under any 0≤g≤1 is 0.3125, so even the variance-free upper envelope for its lower bound is **−0.06173414751880513**. It cannot reach any b_min>0. This proves an algebraic limitation of these 24 descriptive rows under the specified formula, not whole-study infeasibility or a formal audit result. No arbitrary action search is needed for this argument.
++
++With observed H_i=0, Z_i=−alpha B_i and s_Z²=alpha² s_B². For alpha>0, the zero-harm expression requires
++
++```text
++mean(B) >= sqrt(2 s_B² L/n) + A/[alpha(n−1)].
++Necessary (not sufficient): n >= 1 + A/[alpha mean(B)].
++Denominator necessary: mean(B)>b_min and n >= 1 + A/[mean(B)−b_min].
++```
++
++The variance terms still have to fit, along with score and cost constraints. At alpha=0 no finite n can remove the positive range term even with empirical H=0. At B=0 the conditional risk is undefined and positive-denominator adequacy fails. **Never reduce Z width to alpha** because the sample contains no harm. Future H may be positive; generally s_Z²=s_H²+alpha²s_B²−2alpha Cov(H,B), so the zero-harm algebra need not describe future data.
++
++The scenario declaration was saved and hashed before computing all combinations: n∈{{24,120,450,1200,2400,6000,15000}}, alpha∈{{0.01,0.05,0.10}}, b_min∈{{0.01,0.05}}, four fixed rules. Every scenario is illustrative/unadopted; none selects a tolerance or a favored result. Future-n expressions hold observed means/sample variances fixed as an explicit assumption; rows are not duplicated and labeled new evidence. Range-only balanced-n necessary conditions for alpha=0.05 are **552** at B=0.3125 and **2,760** at B=0.0625. At alpha=0.01 they become 2,760 and 13,776; at alpha=0.10, 282 and 1,380. These ignore variance, cost, score and randomness of future moments, so they are neither recommended n nor passage/power estimates. All scenarios and necessary bounds are retained in `analytical_scenarios.csv` and `analytical_constraints.json`.
++
++For Delta, even a zero empirical variance leaves 2q_n. A zero observed score margin, as in always-D or the complement, gives a negative lower expression for every finite n under unchanged moments. Audit score noninferiority uses margin zero; the separate test threshold delta_score≥0 remains symbolic/unfrozen and requires three superiority contrasts. For cost, write margin M_C=beta−mean(C); a necessary condition with M_C>0 is n≥1+A W_C/M_C, before the variance term. Unknown W_C means no valid numerical audit-cost radius can be supplied.
++
++For a future fixed input-only g, Var(B̂)=Var_X(g p_D)+E_X[g p_D(1−p_D)/K]. Likewise Var(Deltâ)=Var_X(g b)+E_X[g(Var(S_D|X)+Var(S_R|X))/K] under independent D/R draws. These explain K's noise role while retaining between-input variation and the n penalty. They do not license applying a frozen-policy confidence guarantee to our outcome-selected diagnostic rules. Repeats alone cannot change n=24 into a larger independent-cluster denominator.
++
++## C. Cost reconciliation and measurement boundaries
++
++All **193 sessions, 129,371 tokens, 11,560.2217413 residency seconds and 12,836.8229112 execution-wall seconds** reconcile. All 192 answer failures/successes, 50 feature passes including two warm-ups and their overhead remain charged. Unknown tokens/process cost are zero in this completed run; reserved output was 393,216, not generated tokens. No clipping or dropped expenditure.
++
++| Non-overlapping execution-wall partition | Seconds | Meaning |
++|---|---:|---|
++| Recorded load components | 3273.983664200 | Includes cache hashing/import/load/device/tokenizer/sync inside each loader timer |
++| Recorded generation + feature forwards | 5589.179833700 | Generation 5586.079329200 plus all feature forwards 3.100504500 |
++| Recorded CPU feature processing | 0.034642800 | Input validation/vector transfer/gate-vector checks; no learned gate |
++| Final cleanup components | 0.061383700 | Final kill/wait/close block only; normal finish handshake also has other accounting locations |
++| Unallocated within recorded residency | 2696.962216900 | Difference, not a separately profiled operation |
++| Outside residency but inside execution wall | 1276.601169900 | Difference, including inter-session/terminal supervisor work; not idle GPU time by definition |
++| **Execution wall total** | **12836.822911200** | Sum of the six disjoint buckets |
++
++The first five sum to the residency measure. GPU synchronization ({cost['nested_detail']['answer_sync_seconds_in_generation']:.10f} seconds across answers, exact sum in the JSON) is nested in generation, never added again. The feature session total 52.8643334 includes cold load 20.0065404, all 50 forwards 3.1005045, CPU feature 0.0346428, cleanup and residual. The 48 non-warm-up forwards average 0.05368644 seconds; that is neither total feature service nor total gate cost. Repeated vectors are repeated measurements, not independent inputs.
++
++Offline P02D reporting additionally cost 30.7702649 wall / 30.703125 process-CPU seconds; packaging cost 28.8920755 / 28.53125 seconds. These follow execution, so add their wall durations only when describing the measured research workflow, never to worker residency. Command-wrapper wall overlaps supervisor wall; only its approximately 0.1798385-second difference is additional. Prior preparation, manual report preparation and some independent verification were not comprehensively CPU-profiled; their known command records remain preserved and unknown portions are not assigned zero. P02E's own CPU/wall receipts are separate. No paid charge is inferred.
++
++{chr(10).join(round_table)}
++
++Residual means rise **5.911198 → 12.014805 → 17.182749 → 20.460017 seconds**, for all modes within each round. Load means stay around 16.9–17.1 seconds while generation depends on mode/outputs. Recorded UTC start-to-admission intervals rise from 20.35 to 28.57 seconds and result-to-session-end from 1.59 to 4.40 seconds. These are event-publication intervals, not a profiler: timestamps are assigned after ledger scanning, and monotonic residency boundaries differ. Exact per-session components/intervals and ledger-prefix sizes are in `cost_sessions.csv`; round/mode totals in `cost_round_mode.csv`.
++
++Source inspection of hash-bound code explains plausible contributors, **not causal time allocation**:
++
++- `p02d_ledger.py:13` scans and verifies the entire committed ledger and referenced results/resources; `append` at line 79 calls that scan before each event. Dispatch/recover and every heartbeat therefore revisit growing history. Child scans occur before its loader timer and again after admission (`p02d_worker.py:83,107`).
++- The supervisor starts its residency timer before envelope checks/session-start/dispatch and process creation (`p02d_runner.py:85` onward). It is a conservative session interval, not exact child lifetime or pure GPU busy time. `tick` recursively enumerates evidence and can append heartbeats while generation is active. These operations can overlap generation; adding their guessed cost would double count.
++- Worker load timing begins only after authorization/source verification and initial ledger scan. Generation timing ends **before** decoding, native entry regeneration, strict parsing and scoring (`p02d_worker.py:56–67`); those costs fall into unallocated residency. Parent result validation and IPC also have no individual timers.
++- Residency elapsed is captured at `p02d_runner.py:162` **before** final evidence re-scan/result validation and resource/session-end publication. Subsequent scans and inter-worker authorization/recovery contribute outside residency but inside execution wall. Native scorer, validation, filesystem enumeration and ledger verification cannot be separately quantified from current records. Existing read-only progress scans could also contend for CPU/storage; no instrumentation isolates them.
++
++Thus repeated full-prefix reads have increasing work with history and are consistent with drift; hardware scheduling, caches, filesystem/antivirus effects and other overhead remain unseparated. No benchmark or optimization was run. No timer subtraction is a pure inference-kernel measurement. This is a factual boundary clarification of earlier shorthand “worker lifetime,” not a change to accepted numbers or their cost-once policy.
++
++## Scalar ledger options and proposal
++
++| Option permitted by protocol | Scientific meaning | Completeness / enforceability | Required review/validation |
++|---|---|---|---|
++| **Local all-in hardware service seconds (preferred conditional proposal)** | Resource occupancy/latency of the declared workstation serving policy | Covers cold start, CPU and GPU path, failed attempts, response and safe stop; shared-work allocation must be explicit. Current operational timers do not prove bounded support. | Precisely instrument one-query boundary; define platform assumptions and hard-stop/accounting feasibility, then parity and reference calibration |
++| Explicit token/call monetary reference tariff | Utility under a declared price schedule, not actual hardware-time optimality or paid fees | Can be algebraically bounded when every bounded operation/attempt, gate and initialization is priced; omissions make it invalid. Rates cannot be selected to subsidize TC. | Review rate provenance and units, non-overlapping bundles, count ceilings, failure/overflow billing; adopt before references/tuning |
++
++Recommend defining a **cold isolated one-query service boundary** from first charged validation/admission attempt through safe process stop and mandatory response/bookkeeping. Within one load: original-text tokenization/input-only decoder features, cheap observables, CPU learned head/calibration and dispatch, exactly one native D/R generation, strict output handling, cancellation/cleanup. There is no answer preview, no second answer, no KV reuse and no free feature pass on a query routed D. Gold/native evaluation and growing research archival scans are not needed to serve a query; if excluded from the serving metric they remain fully counted as research collection, with mandatory serving integrity work kept inside. This boundary is **proposed**, not implemented or adopted. CPU gate dimensions/calibration remain unfrozen; a fixed dispatcher diagnostic cannot replace their cost.
++
++Cold per-query allocation is initially more defensible than assuming free initialization: all startup belongs to that query, including failed pre-admission attempts. Persistent/shared-model service or prefill reuse is only an alternative proposal. It would need a fixed session size, start/idle/restart/cleanup allocation, handling for partially used sessions, mode/RNG/cache isolation and identical opportunity/accounting for all three learned methods. Never add two cold loads when one shared load is the declared physical work; never divide by an imagined future number of queries to make startup vanish.
++
++Current controls bound discrete counts (J=0, one selected answer, 2,048 new tokens, approved input ceilings, a bounded feature recipe), conditional on the correct execution contract. They **do not** establish a hard physical stopping time for OS/GPU work or bound missing gate/calibration work. Loader/generation deadlines, 300-second reservation, finite wait calls, observed maxima and total research ceiling are not mathematical service-time support. We cannot currently justify finite c_max for the proposed all-in hardware service distribution. **D08/D09 remain unresolved.** No cost bound is inferred from successful cleanup in 193 sessions.
++
++A prospective overflow/accounting policy must preserve actual cost without clipping; stop admissions, mark unresolved process/cost explicitly, and block affected audit/analysis. It cannot silently drop expensive rows or condition on successful stops to restore support. If an assumed support contract fails, the affected design/candidate evidence is invalid for that bound and needs review under a predeclared invalidation policy, not a retuned/repeated audit. Direct fallback is operational protection, not repair of invalid statistical evidence.
++
++A tariff alternative would require explicitly reviewed non-overlapping rates such as r_start, r_feature(P_raw), r_gate(M), r_answer_input(P_chat), r_output per token, r_dispatch and r_failure/cleanup. With P_raw,P_chat≤2,048, N_out≤2,048, J=0 and a reviewed gate operation bound M_max, a schedule could imply a finite charge bound by summing those maximum charges. Without gate/initialization/failure rates and count bounds it is incomplete. An explicit fixed failure fee could bound **contractual price**, not actual runaway hardware time. No numerical rates, currency charges or such schedule are adopted here; actual paid fees remain zero/not incurred by this task.
++
++The budget remains **beta=c_D_ref+0.5(c_R_ref−c_D_ref)**, common to all methods. Obtain references on outcome-independent balanced development inputs with the *same* service/startup/failure policy and frozen reference averaging; do not set beta from isolated collection-worker means. Unconditional D/R references bypass the learned gate; active TC/winner/factorized costs include their entire gate even when routing D. If c_R_ref≤c_D_ref, report that fact and implications without forcing a gap or enlarging beta. References and beta must be fixed before tuning. No reference number or beta is set here.
++
++{chr(10).join(proxy_table)}
++
++These are **selected-answer component proxies from existing collection**, computed with per-input selected D/R means, not deployable all-in C_g or estimated fees. The last column intentionally illustrates the simplifying independence assumption of routing fraction times global means; the outcome-selected rules differ because input, action and cost are associated. For an active gate add its per-input live feature/CPU/calibration/init charge under the reviewed service policy, not a free cache and not 50 research passes per query. Always-D fallback bypasses the gate entirely. No cost-feasible or audit-feasible candidate is asserted from this table.
++
++## D. Recommendation, authority discrepancies and limitations
++
++Recommend the **offline cost-boundary/calibration preflight** detailed in `next_step_proposal.md`/`.json`, aimed at a contingent 24-answer/26-feature diagnostic. This is preferable to immediately scaling outcome labels: the cost boundary/support issue remains unsolved and concentrated direct exposure gives little evidence for learning a harm screen. All model work in that proposal is explicitly **UNAPPROVED**. No schedule or new inputs were materialized, and no serving or scientific change was implemented.
++
++The original reference PDF (12 pages, SHA-256 `9eed0fe74f46c3acbc200183cf11693f1bec66a1180568087aeb775c97d8f6c8`) Sections 3–8 and the active CR01 TeX Sections 3–8 were read. Original cap/99% stop and pre-label candidate-hash/failed-resample wording are already superseded by approved CR01/C01/C02; they are preserved, not silently reapplied. Active protocol and TeX agree on gate/objective, scalar choices, audit algebra and three-contrast success rule. The cost sentence “any declared preview” remains a generic charge clause in both; scope prohibits previews here, and no preview is proposed. Historical preflight documents' “no decoder ran/no authorization exists” statements describe their old checkpoint; P02D execution does not rewrite them. No new scientific contradiction blocks this offline algebra. Log the conservative-residency timing-boundary clarification above for future reporting; no manuscript conclusion or accepted artifact is edited.
++
++Decision ledger entries explicitly separate evidence from proposed resolutions. Open: D08/D09 support/accounting, D05 full gate/feature freeze, D10 resources, D11 n/K and breadth/depth, D12 normative risk/score margins, D14 theorem/simulation work in P03, D16 common reference/beta, and D17 final backup. None is resolved by a successful small diagnostic. No study-wide infeasibility, significance, trained-route comparison or completion eligibility stop is declared. Jev, judges, extra checkpoints and cascades remain parked.
++
++Reproduce using `.venv/Scripts/python.exe scripts/p02e_reproduce.py`; it writes to a disposable directory and compares deterministic outputs without overwriting accepted output. It imports only standard-library modules, verifies sources and writes new analytical files exclusively. Focused checks: `.venv/Scripts/python.exe -m unittest discover -s tests -p test_p02e_design.py -v`. Eight checks pass for formula ranges/zero variance, denominator/Kish, the contract example/incomplete/invalid-score rejection, cost partitioning, totals and bindings/no model/audit imports. No full regression suite was rerun because no production code changed.
++
++Preparation's PDF text extraction succeeded but its first console print exited 1 due to Windows cp1252; a UTF-8 read of the saved extraction succeeded. This was an offline display error with no evidence/model impact. Preparation/analysis/test/documentation/package receipts record wall/CPU where instrumented; human reading/writing is not comprehensively CPU-timed. Original and CR01 manuscript/PDF bytes remain unchanged. All P02D raw evidence and immutable plans/packets remain preserved.
++
++Backup is verified local files/packets only; no push, upload, remote query or external transfer. “External receipt” means outside the ZIP on this workstation, not off-machine backup. A later coordinator handoff is required after review. **Dispatch false; zero new model work; P02 incomplete/unsealed; P03 unstarted.**
++''')
++write(OUT/'document_render_receipt.json',dict(status='PASS',wall_seconds=time.perf_counter()-start,cpu_seconds=time.process_time()-cpu,
++ model_work=0,source_sha256=sha(Path(__file__)),rendered=['offline_design_report.md','next_step_proposal.md','next_step_proposal.json']))
+diff --git a/scripts/p02e_finalize.py b/scripts/p02e_finalize.py
+new file mode 100644
+index 0000000..0be7d80
+--- /dev/null
++++ b/scripts/p02e_finalize.py
+@@ -0,0 +1,144 @@
++"""Close the authorized offline checkpoint; does not touch execution evidence."""
++from datetime import datetime, timezone
++import hashlib
++import json
++from pathlib import Path
++import zipfile
++from p02e_analyze import ROOT, OUT, read, write, sha
++
++now = datetime.now(timezone.utc).isoformat()
++reproduction = read(OUT/'reproduction_workspace_command.json')
++write(OUT/'reproduction_receipt.json', json.loads(reproduction['stdout']))
++
++# Preserve and check supplied coordinator evidence without running its rescoring script.
++with zipfile.ZipFile(OUT/'provenance/P02D_execution_coordinator_checks.zip') as z:
++    manifest = json.loads(z.read('P02D_execution_coordinator_manifest.json'))
++    files = manifest.get('files', manifest)
++    verified = {}
++    for name, digest in files.items():
++        if not isinstance(digest, str) or len(digest) != 64:
++            continue
++        assert hashlib.sha256(z.read(name)).hexdigest() == digest, name
++        verified[name] = digest
++    for name in ['P02D_execution_coordinator_manifest.json', 'P02D_execution_coordinator_results.json']:
++        with (OUT/'provenance'/name).open('xb') as f:
++            f.write(z.read(name))
++write(OUT/'coordinator_bundle_verification.json', dict(status='PASS', files=verified,
++    bundle_sha256=sha(OUT/'provenance/P02D_execution_coordinator_checks.zip'),
++    execution='No coordinator script executed; original offline results preserved with attribution.'))
++
++ledger = ROOT/'reports/decision_ledger.md'
++with ledger.open('a', encoding='utf-8', newline='\n') as f:
++    f.write(f'''
++## P02E offline design review ({now})
++
++P02D execution accepted once in event 023, user-conveyed coordinator decision **“Decision: ACCEPTED as completed DEVELOPMENT evidence.”** Archived review SHA-256 `a332bdd5566d66cd800261771986de54632ac54cf24485253e9b7050f2fcb13f`. All 8,997 accepted indexed members verified against ZIP and current bytes before state transition. The consumed single-run authorization remains unchanged and unusable for P02E. Dispatch false; no new model/GPU work. P02 incomplete/unsealed, P03 unstarted, study unfrozen.
++
++| Entry | Evidence or proposed resolution | Status and consequence |
++|---|---|---|
++| P02E signal | D 30/96 perfect, R 64/96; strict FINAL D 66/96 and R 64/96; 24 clusters, all primary scores binary. Eleven positive benefits, thirteen zero; all harm estimates zero. | Descriptive DEVELOPMENT only; no advantage over required routers established; no positive harm supervision. All outcomes retained. |
++| P02E denominator | Positive-benefit oracle B=0.0625 from six nested successes/two inputs; always-R B=0.3125. Range penalty at n=24 is 0.3742341475, already above maximum B. | Analytical limitation under existing formula, not an audit, power estimate or whole-study infeasibility. No risk tolerance, b_min or n selected. |
++| D08/D09 | Prefer investigating a cold isolated all-in hardware service boundary; physical support still unproved. A token/call tariff is an explicit alternative needing rate/count review. | **UNRESOLVED.** Deadline/reservation/observed maximum is not c_max. No scalar ledger, rates, hard support or overflow policy adopted. |
++| D05/D16 | Full gate/calibration cost and consistent startup/failure reference policy still needed. Keep beta=c_D_ref+0.5(c_R_ref-c_D_ref). | **UNRESOLVED.** No free cached features, TC-specific budget, normalization fit, gate freeze or beta adoption. |
++| D10/D11/D12 | Compare breadth and repeats; cost scales to hundreds/thousands of worker hours under explicit uncertain assumptions. | **UNRESOLVED.** No final allocation, K, alpha, b_min, delta_score or resource ceiling adopted. |
++| D14/D17 | Theorem checks/simulation remain P03; local packets do not establish off-machine backup. | **UNRESOLVED.** No P03 work; durable backup/capacity before final collection. No upload/purchase requested here. |
++| P02E next proposal | Next separately authorized offline cost-boundary/calibration preflight; contingent 12-existing-input, K=1/mode, 24-answer/26-feature diagnostic under 90-minute worker/120-minute wall/128-MiB ceilings. | **PROPOSAL ONLY / EXECUTION UNAPPROVED.** No new plan, seed or dispatch schedule materialized. Needs source/guard review and separate one-run authority. |
++
++Detailed evidence: `reports/p02e/offline_design_report.md`, machine-readable tables and `next_step_proposal.md`. Historical P02A/P02B are not pooled. Native questions/scoring, runner, manuscript conclusions and old reports are unchanged. Residency interval starts before some process setup and ends before some terminal scans: this is a reporting-boundary clarification, not a change to the accepted 11,560.2217413 seconds. Growing ledger scans plausibly contribute to residual drift but lack isolated timing attribution. Earlier “pushed” statement remains corrected to **“nothing pushed”**; no new push or remote backup is inferred.
++''')
++
++completion = ROOT/'reports/phases/P02E_completion.md'
++text = f'''# P02E completion — offline denominator and cost-design review
++
++**P02E OFFLINE DESIGN READY_FOR_REVIEW**
++
++## Scope and authority
++
++Active prompt: archived `reports/p02e/provenance/P02E_offline_design_prompt.md`; user conveyed the P02D execution acceptance on 2026-10-15 America/Chicago. Actual workstation adoption: event 023 at 2026-10-15T20:40:22.410173+00:00; offline checkpoint closure: {now}. Acceptance is recorded once, not a new seal of P02. Review SHA-256 `a332bdd5566d66cd800261771986de54632ac54cf24485253e9b7050f2fcb13f`.
++
++Branch `codex/p02e-offline-design`. Task-only local evidence and packet commits are identified in `reports/p02e/source_commits.json` and the external packet receipt; the packet commit can be resolved with `git log -1 -- reports/p02e/P02E_review_packet.zip`. The supplied untracked originals in docs (review, coordinator ZIP, prompt) are preserved and excluded from task staging. No push, merge, remote query, upload, download or installation.
++
++Original PDF SHA-256 `9eed0fe74f46c3acbc200183cf11693f1bec66a1180568087aeb775c97d8f6c8`; approved CR01 adopted v1 SHA-256 `ec07c0133224fb10f535fc9ac4d0816d12fb10acc683c09043de717cc089c0b8`. Original Sections 3–8 and active CR01 manuscript sections were read; CR01 fixes 2,048 tokens and descriptive completion, not an eligibility threshold. No manuscript edits, new scientific conflicts resolved silently, or final manifest/freeze.
++
++Bound P02D plan `c46977bfc0de1040965f08df8acbd55b9b063b386ccfb97f247a280ae2472365`; ZIP `8b487fdbd321e997683e014a86caedf9bd006323544f03972e65d06239c8faa9`; production report `9a5f6c7cf713941284b1c125570b3e174c641e685e01284b6bf86f0f95ff4dab`; accounting `0dda412d334389fc5278e8e05c48667a151120f67dbc6d7dfed06ebb4af0ef03`. All 8,997 indexed files matched accepted ZIP and current bytes before operational state changes. Analysis binds 7,837 source records and checks the 7,257-event chain. Packet building repeats historical verification with explicit current phase-state exception; old packet remains authoritative for that historical state.
++
++## Delivered slice
++
++The [offline design report](../p02e/offline_design_report.md) covers all 24 input clusters, four fixed diagnostic rules, analytical sample-size constraints and a non-overlapping collection-cost map. CSV/JSON files preserve full precision and 192 original score outcomes. The precomputed scenario declaration precedes all illustrative calculations; none of its tolerances/counts is adopted. Analysis imports neither a final audit path nor model libraries.
++
++The [next-step proposal](../p02e/next_step_proposal.md) recommends a separately authorized **offline cost-boundary/calibration preflight**, before spending on more labels. Its concrete contingent diagnostic is **UNAPPROVED**: zero fresh inputs, 12 fixed existing inputs, K=1/mode, 24 answer calls, 26 feature forwards including two charged warm-ups, 49,152 maximum output tokens; 90-minute worker, 120-minute wall and 128-MiB operational ceilings. No dispatch plan/seeds/requests were materialized. New shared-within-query loading is only a lifecycle proposal requiring review, not an implemented optimization or a hard-support proof.
++
++## Verification and exact commands
++
++Commands below ran from the implementation root. `scripts/p01_command.py LOG COMMAND...` is the existing stdout/stderr/exit/wall logger used for preparation, analysis, tests, documents and reproduction. All commands are CPU-only.
++
++| Command actually executed | Exit/status | Evidence and interpretation |
++|---|---|---|
++| `.venv/Scripts/python.exe scripts/p02e_prepare.py` | 0 | `prepare_command.json`; accepted hashes/8,997 members and source identities, archive and event 023 |
++| `.venv/Scripts/python.exe scripts/p02e_analyze.py` | 0 | `analysis_command.json`, `analysis_run_receipt.json`; 3.4861601 s wall / 3.40625 s CPU, 7,837 bound records |
++| `.venv/Scripts/python.exe -m unittest discover -s tests -p test_p02e_design.py -v` | 0; 8 pass | `focused_tests_command.json`; formulas, retained Z range, zero denominators/Kish, cluster contract/missingness, costs, totals, bindings |
++| `.venv/Scripts/python.exe scripts/p02e_documents.py` | 0 | Initial `documents_command.json`; corrected draft render is separately tracked in `document_correction_receipt.json` and current `document_render_receipt.json` |
++| `.venv/Scripts/python.exe scripts/p02e_reproduce.py` (initial system-temp path) | 1 | `reproduction_command.json`; sandbox temp ACL blocked before analysis; no empirical evidence touched |
++| `.venv/Scripts/python.exe scripts/p02e_reproduce.py` (workspace-temp version) | 0 | `reproduction_workspace_command.json` / `reproduction_receipt.json`; all 17 deterministic analytical/document files match; 3.0788512 s wall / 3.0625 s CPU |
++| `.venv/Scripts/python.exe scripts/p02e_finalize.py` | 0 on completion | Archive verification, append-only decision record, completion/state event; no runner calls |
++| `.venv/Scripts/python.exe scripts/p02e_packet.py` | See external receipt; PASS required | Every indexed member verified after compression, accepted historical hashes rechecked, CPU/wall/bytes and commit IDs recorded |
++
++Offline PDF extraction succeeded with bundled pypdf Python, but initial console printing exited 1 under cp1252; reading saved `provenance/reference_pdf_text.txt` with UTF-8 succeeded. A draft rerender also initially hit the sandbox system-temp ACL; workspace-local temporary files resolved it. A draft synchronization subtotal was corrected from a manual transcription to the exact JSON-derived 0.0067902000 seconds; the original render receipt and old/new draft hashes remain recorded. These are preparation/display failures, not model/evidence failures. No full regression suite, GPU smoke tests, model execution, final audit decision or full simulation was run; production sources did not change. No new tests were added merely to raise a count.
++
++## Data, costs and findings
++
++Only accepted DEVELOPMENT P02D rows were analyzed: six families, four inputs/family, K=4/mode, 192 retained outcomes. P02A/P02B moments are not pooled. P01's deliberate interruption stays a separate diagnostic. New scheduled/admitted/dispatched/model/feature/answer/gate-fit/final-label counts are all **zero**. No execution authorization was created or consumed again.
++
++D perfect 30/96 versus R 64/96; strict FINAL 66/96 versus 64/96. Only 8/24 inputs show any D success. Eleven benefits positive, thirteen zero, none negative; all 24 harm targets zero. Binary observed scores provide no target-information advantage over factorized routing here; there are no harm-positive supervision examples. These facts do not establish true zero harm, gate superiority or population feasibility.
++
++Positive-benefit selection has six nested D successes on two inputs, B=0.0625; always-R B=0.3125. These are outcome-informed descriptions. At n=24 the contract range term 0.3742341475 exceeds maximum observed B even before variance; no g can meet a positive denominator check on these rows. This is algebra, **not an audit, theorem validation, power calculation or a whole-study stop**. Repeats cannot erase the independent-cluster penalty. K-squared pairs and Kish concentration are not independent success counts.
++
++Existing P02D collection reconciles 193 sessions, 129,371 output tokens, 11,560.2217413 conservative worker seconds and 12,836.8229112 execution-wall seconds. Separate components, unallocated residuals, round/mode tables, CPU reporting/packaging and unavailable timing are in the cost report. Worker-minus-load-minus-generation rises about 5.9 to 20.5 seconds; source shows repeated growing ledger/evidence scans, consistent with but not proving attribution. No new benchmark or optimization. Current warm feature timing is not complete gate cost; live features, CPU heads, startup and failures must be charged under a reviewed service policy.
++
++P02E CPU/wall costs are instrumented in preparation/analysis/render/reproduction/package receipts; reading, editing and all interactive overhead are not comprehensively CPU-profiled. P02D costs are not charged again for this analysis. Package receipt gives local size, full hashes and exact indexed count. Local raw evidence/verified packets are preserved; external receipt means outside the ZIP **on this workstation**, not a verified remote backup. No new off-machine copy exists from this task.
++
++## Decisions and limitations
++
++| Item | Status | Consequence |
++|---|---|---|
++| P02D acceptance | Recorded once, event 023 | Completed DEVELOPMENT checkpoint; consumed authority stays closed |
++| D08/D09 hardware service ledger/support | UNRESOLVED; conditional cold one-query proposal | A timeout, reservation, observed maximum or successful cleanup does not prove finite support; overflow cannot be clipped or excluded |
++| D05/D16 gate/init/reference charges | UNRESOLVED | Preserve common beta formula; no beta from collection-worker means or free cached embeddings |
++| D10/D11/D12 resource/n/K/risk/score margins | UNRESOLVED | Illustrations are not selected tolerances or allocations |
++| D14/D17 theorem/simulation and durable backup | UNRESOLVED | Remain later reviewed work; P03 unstarted |
++
++No scientific rule, norm, tariff, cost bound, feature freeze or resource spend was adopted. No strict scoring, native source, runner, cap, sampler, inputs or manuscript conclusions changed. The report logs historical authority discrepancies and the residency-boundary clarification without rewriting history. All three required primary comparisons remain intact.
++
++## Acceptance checklist and review packet
++
++- PASS: authority/archive/hash bindings and once-only acceptance — `acceptance_verification.json`, event 023.
++- PASS: all clusters/rules and denominator algebra — `cluster_rows.*`, `diagnostic_rules.*`, `analytical_constraints.json`, declared scenarios and report.
++- PASS: non-overlapping costs, round/mode trends and support limitations — `cost_reconciliation.json`, `cost_sessions.csv`, `cost_round_mode.csv`.
++- PASS: exact unapproved next proposal and longer-study implications — `next_step_proposal.*`, `longer_study_resource_scenarios.csv`.
++- PASS: focused checks and deterministic reproduction — test/command/receipt files.
++- PASS required by packaging: all indexed files match review ZIP and local bytes; exact count/hash in external `P02E_packet_receipt.json`.
++- NOT RUN by design: any model work, candidate gate, full regression, final audit, P03 simulation or final data collection.
++
++Review order: this completion; `offline_design_report.md`; `next_step_proposal.md`; tables/source/test receipts; `P02E_review_packet.zip`, `P02E_evidence_index.json`, external `P02E_packet_receipt.json`. The packet references accepted old ZIPs by hash instead of recursively embedding them; original raw evidence is needed to rerun analysis. Source diff and source/evidence commit are included. No P02 accepted seal or final manifest is proposed.
++
++## Stop statement
++
++**Dispatch false; zero new model work; P02 incomplete/unsealed; P03 unstarted; study unfrozen.** Event 024 closes only P02E at READY_FOR_REVIEW. Another phase or any execution requires a separate coordinator handoff after review.
++'''
++with completion.open('x', encoding='utf-8', newline='\n') as f:
++    f.write(text)
++
++state_path = ROOT/'configs/phase_state.json'
++state = read(state_path)
++assert state['active_phase']=='P02E' and not state['real_dispatch_enabled']
++write(OUT/'provenance/P02E_active_state.json', state)
++event_path = 'configs/state_events/024_P02E_offline_design_review_checkpoint.json'
++write(ROOT/event_path, dict(event='P02E_OFFLINE_DESIGN_READY_FOR_REVIEW', timestamp_utc=now,
++    evidence_kind='development_observation', completion_sha256=sha(completion),
++    report_sha256=sha(OUT/'offline_design_report.md'), analysis_receipt_sha256=sha(OUT/'analysis_run_receipt.json'),
++    previous_state_sha256=sha(state_path), real_dispatch_enabled=False,
++    new_model_work=0, p02_sealed=False, p03_started=False, study_frozen=False,
++    no_next_phase_authorized=True))
++state.update(status='READY_FOR_REVIEW', latest_event=event_path, authorized_next_phase=None)
++state_path.write_text(json.dumps(state,indent=2)+'\n', encoding='utf-8')
++print(json.dumps(dict(status='READY_FOR_REVIEW', timestamp_utc=now, model_work=0)))
+diff --git a/scripts/p02e_packet.py b/scripts/p02e_packet.py
+new file mode 100644
+index 0000000..8cb400d
+--- /dev/null
++++ b/scripts/p02e_packet.py
+@@ -0,0 +1,96 @@
++"""Build a compact P02E packet, verify old/new bytes, and write external receipt."""
++from datetime import datetime, timezone
++import hashlib
++import json
++from pathlib import Path
++import subprocess
++import time
++import zipfile
++from p02e_analyze import ROOT, OUT, read, write, sha
++
++start, cpu = time.perf_counter(), time.process_time()
++state = read(ROOT/'configs/phase_state.json')
++assert state['active_phase']=='P02E' and state['status']=='READY_FOR_REVIEW'
++assert not state['real_dispatch_enabled'] and not state['p02_sealed'] and not state['p03_started']
++assert state['study_freeze'] is None and state['authorized_next_phase'] is None
++verification = read(OUT/'acceptance_verification.json')
++for name,digest in verification['accepted_hashes'].items():
++    assert sha(ROOT/name)==digest, name
++for name,digest in verification['source_hashes'].items():
++    assert sha(ROOT/name)==digest, name
++oldindex = read(ROOT/'reports/p02d_execution/P02D_execution_evidence_index.json')
++current_changed = {}
++with zipfile.ZipFile(ROOT/'reports/p02d_execution/P02D_execution_review_packet.zip') as z:
++    for name,digest in oldindex['files'].items():
++        assert hashlib.sha256(z.read(name)).hexdigest()==digest, name
++        current = sha(ROOT/name)
++        if current != digest:
++            assert name=='configs/phase_state.json', name
++            current_changed[name] = dict(accepted=digest,current=current,
++                reason='Explicit P02D acceptance/P02E offline activation and checkpoint events 023/024; old bytes preserved in accepted ZIP.')
++assert len(oldindex['files'])==8997
++assert subprocess.check_output(['git','diff','b5c6abd5edf6e1d8032d68567dd2f8e9c23bd7a4','--','src'],cwd=ROOT)==b''
++head = subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
++write(OUT/'source_commits.json',dict(analysis_evidence_commit=head,
++    source_diff='reports/p02e/source_changes.diff',
++    accepted_source_commit=verification['source_commit'],
++    accepted_execution_evidence_commit=verification['evidence_commit'],
++    accepted_packet_commit=verification['packet_commit'],
++    new_packet_commit_lookup='git log -1 -- reports/p02e/P02E_review_packet.zip',
++    no_push=True, production_sources_unchanged=True))
++write(OUT/'historical_reverification.json',dict(status='PASS',
++    indexed_snapshot_files_verified=8997, current_state_changes=current_changed,
++    all_other_indexed_current_files_unchanged=True, accepted_artifacts=verification['accepted_hashes'],
++    timestamp_utc=datetime.now(timezone.utc).isoformat(),model_work=0))
++
++paths = set()
++excluded={'P02E_evidence_index.json','P02E_review_packet.zip','P02E_packet_receipt.json'}
++for p in OUT.rglob('*'):
++    if p.is_file() and p.name not in excluded and p.suffix.lower()!='.zip':
++        paths.add(p.relative_to(ROOT).as_posix())
++for p in (ROOT/'scripts').glob('p02e_*.py'):
++    paths.add(p.relative_to(ROOT).as_posix())
++paths.update([
++    'scripts/p01_command.py','tests/test_p02e_design.py',
++    'reports/phases/P02E_completion.md','reports/decision_ledger.md',
++    'configs/phase_state.json',
++    'configs/state_events/023_P02D_execution_accepted_P02E_authorized.json',
++    'configs/state_events/024_P02E_offline_design_review_checkpoint.json',
++    'AGENTS.md','docs/PROTOCOL_SOURCE_OF_TRUTH.md','docs/STATISTICAL_CONTRACT.md',
++    'docs/DECISIONS_AND_GAPS.md','docs/ARCHITECTURE_AND_DATA.md',
++    'docs/amendments/CR01_2026-10-05_v1.md','docs/P02D_RUNNER_CONTRACT.md',
++    'paper/cr01-2026-10-05-v1/taskcognition.tex'])
++files={p:sha(ROOT/p) for p in sorted(paths)}
++index_path=OUT/'P02E_evidence_index.json'
++write(index_path,dict(phase='P02E',evidence_kind='development_observation',
++    analysis_kind='offline_design',files=files,indexed_file_count=len(files),
++    analysis_evidence_commit=head, accepted_plan_sha256=state['p02d_plan_sha256'],
++    accepted_execution_zip_sha256=verification['accepted_hashes']['reports/p02d_execution/P02D_execution_review_packet.zip'],
++    references_only='Accepted raw evidence/preflight sources are not duplicated. Original accepted packet(s) required to rerun analysis. Coordinator bundle archived locally and referenced by hash, not embedded recursively.',
++    all_execution_unapproved=True,new_model_work=0))
++packet=OUT/'P02E_review_packet.zip'
++index_name=index_path.relative_to(ROOT).as_posix()
++with zipfile.ZipFile(packet,'x',compression=zipfile.ZIP_DEFLATED,compresslevel=9) as z:
++    for p in files:z.write(ROOT/p,p)
++    z.write(index_path,index_name)
++with zipfile.ZipFile(packet) as z:
++    assert set(z.namelist())==set(files)|{index_name}
++    for p,digest in files.items():
++        assert hashlib.sha256(z.read(p)).hexdigest()==digest==sha(ROOT/p),p
++    assert z.read(index_name)==index_path.read_bytes()
++write(OUT/'P02E_packet_receipt.json',dict(status='PASS',phase='P02E',
++    timestamp_utc=datetime.now(timezone.utc).isoformat(),
++    zip_sha256=sha(packet),index_sha256=sha(index_path),
++    completion_sha256=sha(ROOT/'reports/phases/P02E_completion.md'),
++    design_report_sha256=sha(OUT/'offline_design_report.md'),
++    proposal_sha256=sha(OUT/'next_step_proposal.md'),
++    indexed_files_verified=len(files),zip_members=len(files)+1,
++    zip_bytes=packet.stat().st_size,indexed_uncompressed_bytes=sum((ROOT/p).stat().st_size for p in files),
++    local_p02e_bytes_before_this_receipt=sum(p.stat().st_size for p in OUT.rglob('*') if p.is_file()),
++    historical_indexed_files_reverified=8997,analysis_evidence_commit=head,
++    wall_seconds=time.perf_counter()-start,cpu_seconds=time.process_time()-cpu,
++    model_work=0,real_dispatch_enabled=False,p02_sealed=False,p03_started=False,
++    receipt_location='Outside ZIP, local workstation only; no off-machine backup claimed.',
++    no_push_upload_remote_query=True))
++print(json.dumps(dict(status='PASS',files=len(files),zip_sha256=sha(packet),
++    receipt_sha256=sha(OUT/'P02E_packet_receipt.json'))))
+diff --git a/scripts/p02e_prepare.py b/scripts/p02e_prepare.py
+new file mode 100644
+index 0000000..dbec62f
+--- /dev/null
++++ b/scripts/p02e_prepare.py
+@@ -0,0 +1,79 @@
++"""Offline provenance/acceptance and prospective analytical declaration only."""
++from pathlib import Path
++from datetime import datetime, timezone
++import hashlib,json,shutil,subprocess,time,zipfile
++
++ROOT=Path(__file__).resolve().parents[1]; OUT=ROOT/'reports/p02e'; PROV=OUT/'provenance'
++def read(p):return json.loads(p.read_text(encoding='utf-8-sig'))
++def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
++def write(p,v):
++ p.parent.mkdir(parents=True,exist_ok=True)
++ with p.open('x',encoding='utf-8',newline='\n') as f:json.dump(v,f,indent=2,allow_nan=False);f.write('\n')
++start=time.perf_counter();cpu=time.process_time();now=datetime.now(timezone.utc).isoformat()
++expected={
++ 'artifacts/development/p02d-cr01-plan-v4/run_plan.json':'c46977bfc0de1040965f08df8acbd55b9b063b386ccfb97f247a280ae2472365',
++ 'reports/p02d_execution/P02D_execution_review_packet.zip':'8b487fdbd321e997683e014a86caedf9bd006323544f03972e65d06239c8faa9',
++ 'reports/p02d_execution/production_execution_report.json':'9a5f6c7cf713941284b1c125570b3e174c641e685e01284b6bf86f0f95ff4dab',
++ 'reports/p02d_execution/execution_accounting.json':'0dda412d334389fc5278e8e05c48667a151120f67dbc6d7dfed06ebb4af0ef03',
++ 'reports/p02d_execution/P02D_execution_evidence_index.json':'89d0ec3b67123b7a46fdfbd688a7875a0911fa2a969ba6cdaeb4db9a41944521',
++ 'reports/p02d_execution/P02D_execution_packet_receipt.json':'c5e68413663dad2e426a7426edd4b287f0d0bd7826fec10c576d9b4222a0ab71',
++ 'reference/TaskCognition_Revised_Verified.pdf':'9eed0fe74f46c3acbc200183cf11693f1bec66a1180568087aeb775c97d8f6c8',
++ 'docs/amendments/CR01_2026-10-05_v1.md':'ec07c0133224fb10f535fc9ac4d0816d12fb10acc683c09043de717cc089c0b8'}
++for n,h in expected.items():assert sha(ROOT/n)==h,n
++idx=read(ROOT/'reports/p02d_execution/P02D_execution_evidence_index.json')
++assert len(idx['files'])==8997
++with zipfile.ZipFile(ROOT/'reports/p02d_execution/P02D_execution_review_packet.zip') as z:
++ assert z.testzip() is None
++ for n,h in idx['files'].items():
++  assert hashlib.sha256(z.read(n)).hexdigest()==h,n
++  assert sha(ROOT/n)==h,n
++state=read(ROOT/'configs/phase_state.json')
++assert state['active_phase']=='P02D' and not state['real_dispatch_enabled'] and not state['p02_sealed'] and not state['p03_started']
++assert not (ROOT/'configs/state_events/023_P02D_execution_accepted_P02E_authorized.json').exists()
++archive={}
++for n in ['docs/P02D_execution_acceptance_review.md','docs/prompts/P02E_offline_design_prompt.md','docs/P02D_execution_coordinator_checks.zip']:
++ p=ROOT/n;dest=PROV/p.name;assert not dest.exists();shutil.copyfile(p,dest);archive[n]=sha(p)
++shutil.copyfile(ROOT/'configs/phase_state.json',PROV/'phase_state_before.json')
++shutil.copyfile(ROOT/'reports/decision_ledger.md',PROV/'decision_ledger_before.md')
++authority=['AGENTS.md','docs/PROTOCOL_SOURCE_OF_TRUTH.md','docs/STATISTICAL_CONTRACT.md','docs/ARCHITECTURE_AND_DATA.md',
++ 'docs/DECISIONS_AND_GAPS.md','docs/EVIDENCE_AND_MANUSCRIPT.md','docs/TaskCognition_CR01_APPROVED.md',
++ 'paper/cr01-2026-10-05-v1/taskcognition.tex','reports/phases/P02D_execution_completion.md','docs/P02D_RUNNER_CONTRACT.md']
++sources=['src/taskcognition/p02d_runner.py','src/taskcognition/p02d_worker.py','src/taskcognition/p02d_ledger.py',
++ 'src/taskcognition/p02d_plan.py','src/taskcognition/p02d_features.py','src/taskcognition/p02d_reporting.py','src/taskcognition/p02_native.py']
++for n in sources:
++ assert sha(ROOT/n)==idx['files'][n] if n in idx['files'] else True
++ # Exact source identities are already in the v4 plan and reviewed preflight packet.
++plan=read(ROOT/'artifacts/development/p02d-cr01-plan-v4/run_plan.json')
++source_hashes={n:sha(ROOT/n) for n in sources}
++for n,h in source_hashes.items():assert plan['bound_files'][n]==h,n
++write(OUT/'acceptance_verification.json',dict(evidence_kind='development_observation',analysis_kind='offline_provenance',status='PASS',
++ timestamp_utc=now,accepted_hashes=expected,indexed_zip_and_current_files_verified=8997,archived_authority_hashes=archive,
++ authority_hashes={n:sha(ROOT/n) for n in authority},source_hashes=source_hashes,
++ source_commit='b5c6abd5edf6e1d8032d68567dd2f8e9c23bd7a4',evidence_commit='de45085992a23a3731ea267388a84349344f4ca1',
++ packet_commit='32897ffcf99d0e950dd4ffec43b3adf94307a9bb',head_before=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
++ coordinator_qualification='Offline reproduction only; not independent workstation/GPU/weight verification.',
++ prior_pdf_console_display_failure='PDF extraction succeeded; console printing exited 1 under cp1252. UTF-8 read of saved extraction succeeded; no PDF bytes changed.',
++ seconds=time.perf_counter()-start,cpu_seconds=time.process_time()-cpu,model_work=0))
++write(OUT/'analytical_declaration.json',dict(evidence_kind='development_observation',analysis_kind='prospective_analytical_scenarios',
++ declared_utc=datetime.now(timezone.utc).isoformat(),adopted=False,not_audit=True,not_simulation=True,
++ fixed_rules=['always_D','always_R','observed_positive_benefit','complement_positive_benefit'],
++ n_grid=[24,120,450,1200,2400,6000,15000],alpha_grid=[0.01,0.05,0.10],b_min_grid=[0.01,0.05],
++ gamma=0.05,range_widths=dict(B=1,Z=1,Delta=2,C='symbolic independently justified W_C'),
++ rationale='n=24 anchors observed clusters; 120 small breadth, 450 manuscript placeholder, 1200/2400/6000/15000 display resource scale. Alpha and b_min bracket illustrative risk/exposure magnitudes, never recommended tolerances. All combinations retained; no candidate search.',
++ future_moment_assumption='Illustrations hold the 24-row descriptive mean and sample variance fixed as n changes; no duplicated rows or new evidence.',
++ delta_score='symbolic, unfrozen test-superiority margin; not the audit noninferiority margin',
++ rare_event_grid=dict(p_D=[0.1,0.5],p_R=[0.95,0.99],K=[4,8,16]),
++ rare_event_rationale='Algebraic probability of an all-zero empirical harm target under hypothetical independent Bernoulli D/R draws; not fitted probabilities or confidence bounds.',
++ resource_comparison=dict(K=[4,8],fresh_breadth_inputs=24,extra_repeats_on_existing_inputs=4),
++ no_threshold_search=True,no_gate_fit=True,no_final_audit_path=True))
++event=dict(evidence_kind='development_observation',event='P02D_EXECUTION_ACCEPTED_P02E_OFFLINE_AUTHORIZED',timestamp_utc=datetime.now(timezone.utc).isoformat(),
++ user_conveyed_date='2026-10-15',timezone='America/Chicago',review='reports/p02e/provenance/P02D_execution_acceptance_review.md',
++ review_sha256=archive['docs/P02D_execution_acceptance_review.md'],acceptance_verbatim='Decision: ACCEPTED as completed DEVELOPMENT evidence.',
++ accepted_plan_sha256=expected['artifacts/development/p02d-cr01-plan-v4/run_plan.json'],verification='reports/p02e/acceptance_verification.json',
++ real_dispatch_enabled=False,p02_sealed=False,p03_started=False,study_frozen=False,previous_state_sha256=sha(ROOT/'configs/phase_state.json'),
++ scope='Offline denominator/cost design only; P02D single-run authorization consumed; no new model work.')
++write(ROOT/'configs/state_events/023_P02D_execution_accepted_P02E_authorized.json',event)
++state.update(active_phase='P02E',status='IN_PROGRESS',checkpoint='OFFLINE_DESIGN_REVIEW',accepted_previous_checkpoint='P02D_EXECUTION',
++ accepted_previous_checkpoint_record='configs/state_events/023_P02D_execution_accepted_P02E_authorized.json',latest_event='configs/state_events/023_P02D_execution_accepted_P02E_authorized.json')
++temp=ROOT/'configs/phase_state.p02e.pending';write(temp,state);temp.replace(ROOT/'configs/phase_state.json')
++print(json.dumps(dict(status='PASS',accepted_files=8997,dispatch=False,active_phase='P02E',model_work=0)))
+diff --git a/scripts/p02e_reproduce.py b/scripts/p02e_reproduce.py
+new file mode 100644
+index 0000000..7214baf
+--- /dev/null
++++ b/scripts/p02e_reproduce.py
+@@ -0,0 +1,39 @@
++"""Reproduce P02E offline outputs in a disposable directory; no model imports."""
++import contextlib
++import io
++import json
++from pathlib import Path
++import runpy
++import shutil
++import tempfile
++import time
++import p02e_analyze as analysis
++
++def main():
++    start, cpu = time.perf_counter(), time.process_time()
++    original = analysis.OUT
++    compared = {}
++    # Explicit workspace parent avoids Windows sandbox system-temp ACL failures.
++    with tempfile.TemporaryDirectory(prefix='.p02e-offline-', dir=analysis.ROOT) as tmp:
++        assert Path(tmp).resolve().parent == analysis.ROOT.resolve()
++        analysis.OUT = Path(tmp)
++        for name in ('analytical_declaration.json', 'acceptance_verification.json'):
++            shutil.copyfile(original / name, analysis.OUT / name)
++        with contextlib.redirect_stdout(io.StringIO()):
++            analysis.main()
++        runpy.run_path(str(analysis.ROOT / 'scripts/p02e_documents.py'))
++        for path in sorted(analysis.OUT.iterdir()):
++            if path.name.endswith('_receipt.json'):
++                continue
++            digest = analysis.sha(path)
++            assert digest == analysis.sha(original / path.name), path.name
++            compared[path.name] = digest
++    analysis.OUT = original
++    receipt = dict(status='PASS', compared_files=compared, count=len(compared),
++                   wall_seconds=time.perf_counter()-start,
++                   cpu_seconds=time.process_time()-cpu, model_work=0,
++                   source_sha256=analysis.sha(Path(__file__)))
++    print(json.dumps(receipt, indent=2))
++
++if __name__ == '__main__':
++    main()
+diff --git a/tests/test_p02e_design.py b/tests/test_p02e_design.py
+new file mode 100644
+index 0000000..900a387
+--- /dev/null
++++ b/tests/test_p02e_design.py
+@@ -0,0 +1,57 @@
++"""Focused offline checks of the P02E analysis, not a final audit or simulation."""
++import importlib.util,json,math,sys,unittest
++from pathlib import Path
++ROOT=Path(__file__).resolve().parents[1]
++spec=importlib.util.spec_from_file_location('p02e_analyze',ROOT/'scripts/p02e_analyze.py')
++a=importlib.util.module_from_spec(spec);spec.loader.exec_module(a)
++
++class P02EDesignChecks(unittest.TestCase):
++ def test_range_and_zero_variance_anchor(self):
++  self.assertAlmostEqual(a.radius(24,0),.3742341475188051)
++  self.assertGreater(a.radius(24,0),.3125)
++  self.assertAlmostEqual(a.radius(24,0,2),2*.3742341475188051)
++ def test_zero_harm_retains_full_Z_range(self):
++  alpha=.05;v=.2078804347826087;n=1200
++  self.assertAlmostEqual(a.radius(n,alpha*alpha*v,1),alpha*math.sqrt(2*v*math.log(40)/n)+a.A/(n-1))
++  self.assertGreater(a.radius(n,alpha*alpha*v,1),a.radius(n,alpha*alpha*v,alpha))
++ def test_formula_rejects_invalid_inputs(self):
++  for args in [(1,0,1),(24,-1,1),(24,0,-1),(24,float('nan'),1)]:
++   with self.assertRaises(ValueError):a.radius(*args)
++ def test_cluster_contract_example_and_incomplete_rejection(self):
++  item=dict(input_id='fixture',family='fixture',dataset_index=0)
++  obs=[dict(mode=m,draw_index=i,native_score=s,strict_valid_final=True,worker_seconds=1,generation_seconds=.5)
++   for m,ss in [('D',[1,1,1,0]),('R',[1,1,0,0])] for i,s in enumerate(ss)]
++  r=a.summarize_cluster(item,obs)
++  self.assertEqual((r['benefit'],r['joint_spoilage'],r['direct_redraw'],r['decline_010'],r['decline_025']),(-.25,.375,.25,.375,.375))
++  with self.assertRaises(ValueError):a.summarize_cluster(item,obs[:-1])
++  obs[0]['native_score']=1.001
++  with self.assertRaises(ValueError):a.summarize_cluster(item,obs)
++ def test_fixed_rules_zero_exposure_and_concentration(self):
++  rows=a.read(ROOT/'reports/p02e/cluster_rows.json')['rows']
++  result={n:a.diagnostic_rule(n,rows) for n in ['always_D','always_R','observed_positive_benefit','complement_positive_benefit']}
++  self.assertIsNone(result['always_D']['conditional_spoilage']);self.assertIsNone(result['always_D']['kish_concentration'])
++  self.assertEqual(result['observed_positive_benefit']['weighted_exposure_B'],.0625)
++  self.assertEqual(result['observed_positive_benefit']['kish_concentration'],2)
++  self.assertEqual(result['complement_positive_benefit']['raw_nested_direct_successes'],24)
++  self.assertAlmostEqual(result['always_R']['kish_concentration'],7.894736842105263)
++ def test_no_cost_double_charge(self):
++  parts=a.cost_partition(100,20,40,1,2,115)
++  self.assertEqual(parts['unallocated_within_residency'],37)
++  self.assertEqual(parts['outside_residency_in_execution_wall'],15)
++  self.assertEqual(sum(parts[k] for k in ['load_components','generation_and_forward_components','cpu_feature_component','cleanup_components','unallocated_within_residency','outside_residency_in_execution_wall']),115)
++  with self.assertRaises(ValueError):a.cost_partition(100,80,40,1,2,115)
++ def test_recorded_totals_and_full_outcome_retention(self):
++  rows=a.read(ROOT/'reports/p02e/cluster_rows.json')['rows'];cost=a.read(ROOT/'reports/p02e/cost_reconciliation.json')
++  self.assertEqual(len(rows),24);self.assertEqual(sum(len(c['scores_D'])+len(c['scores_R']) for c in rows),192)
++  self.assertEqual(sum(c['direct_perfect_count'] for c in rows),30)
++  self.assertEqual(sum(c['benefit']>0 for c in rows),11);self.assertEqual(sum(c['joint_spoilage'] for c in rows),0)
++  self.assertEqual(cost['sessions'],193);self.assertEqual(cost['known_output_tokens'],129371)
++  self.assertAlmostEqual(sum(cost['partition'][k] for k in ['load_components','generation_and_forward_components','cpu_feature_component','cleanup_components','unallocated_within_residency']),11560.2217413,places=6)
++ def test_analysis_bound_source_and_no_forbidden_imports(self):
++  receipt=a.read(ROOT/'reports/p02e/analysis_run_receipt.json')
++  self.assertEqual(receipt['source_sha256'],a.sha(ROOT/'scripts/p02e_analyze.py'))
++  self.assertEqual(receipt['declaration_sha256'],a.sha(ROOT/'reports/p02e/analytical_declaration.json'))
++  for m in ['torch','transformers','taskcognition.audit','taskcognition.p02d_runner']:self.assertNotIn(m,sys.modules)
++  bindings=a.read(ROOT/'reports/p02e/acceptance_verification.json')
++  for p,h in bindings['accepted_hashes'].items():self.assertEqual(a.sha(ROOT/p),h,p)
++if __name__=='__main__':unittest.main()

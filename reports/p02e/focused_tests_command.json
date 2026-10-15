@@ -1,0 +1,19 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-10-15T20:44:44.751677+00:00",
+  "argv": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-p",
+    "test_p02e_design.py",
+    "-v"
+  ],
+  "exit": 0,
+  "seconds": 0.20447630000126082,
+  "stdout": "",
+  "stderr": "test_analysis_bound_source_and_no_forbidden_imports (test_p02e_design.P02EDesignChecks.test_analysis_bound_source_and_no_forbidden_imports) ... ok\ntest_cluster_contract_example_and_incomplete_rejection (test_p02e_design.P02EDesignChecks.test_cluster_contract_example_and_incomplete_rejection) ... ok\ntest_fixed_rules_zero_exposure_and_concentration (test_p02e_design.P02EDesignChecks.test_fixed_rules_zero_exposure_and_concentration) ... ok\ntest_formula_rejects_invalid_inputs (test_p02e_design.P02EDesignChecks.test_formula_rejects_invalid_inputs) ... ok\ntest_no_cost_double_charge (test_p02e_design.P02EDesignChecks.test_no_cost_double_charge) ... ok\ntest_range_and_zero_variance_anchor (test_p02e_design.P02EDesignChecks.test_range_and_zero_variance_anchor) ... ok\ntest_recorded_totals_and_full_outcome_retention (test_p02e_design.P02EDesignChecks.test_recorded_totals_and_full_outcome_retention) ... ok\ntest_zero_harm_retains_full_Z_range (test_p02e_design.P02EDesignChecks.test_zero_harm_retains_full_Z_range) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 0.010s\n\nOK\n"
+}

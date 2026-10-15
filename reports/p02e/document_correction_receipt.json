@@ -1,0 +1,16 @@
+{
+  "reason": "Correct draft synchronization subtotal from checked JSON and provide exact reproduction command; no empirical data changed. Initial render/reproduction attempts failed on sandbox system-temp ACL before analysis; workspace temporary directories succeeded.",
+  "old_hashes": {
+    "offline_design_report.md": "bcf352d258c92e48dff5fde81e31ccd035552797122545362196a5739283b361",
+    "next_step_proposal.md": "3220410a1d3a0f8e9194e3114d05ef4ae779860b27179da4b604de34b2770546",
+    "next_step_proposal.json": "0e1d8f46ae1dd0577f5d51ff853567ac9628cc9c995cdab538995574d6486bf8",
+    "document_render_receipt.json": "88593ca39af662589985781303b72f3ffdc24c22d523eaf300b847300d6d8741"
+  },
+  "new_hashes": {
+    "offline_design_report.md": "62bd6de18f851239e5833684f818072d1965a5f7da302320e258b7b610db4d24",
+    "next_step_proposal.md": "3220410a1d3a0f8e9194e3114d05ef4ae779860b27179da4b604de34b2770546",
+    "next_step_proposal.json": "0e1d8f46ae1dd0577f5d51ff853567ac9628cc9c995cdab538995574d6486bf8",
+    "document_render_receipt.json": "8185ae243a4e89ab2024a337f3d952360fd42a878144e69ec6444d31d05326dd"
+  },
+  "model_work": 0
+}

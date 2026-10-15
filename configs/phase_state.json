@@ -1,1 +1,21 @@
-{"accepted_previous_checkpoint":"P02D_V4_PREFLIGHT","accepted_previous_checkpoint_record":"configs/state_events/020_P02D_v4_preflight_accepted.json","accepted_previous_phase":"P01","accepted_previous_seal":"reports/phases/P01_accepted_seal.md","active_phase":"P02D","amendment_sha256":"ec07c0133224fb10f535fc9ac4d0816d12fb10acc683c09043de717cc089c0b8","authorized_next_phase":null,"checkpoint":"P02D_EXECUTION","latest_event":"configs/state_events/022_P02D_v4_execution_review_checkpoint.json","p02_sealed":false,"p02b_plan_sha256":"9afcea3b3fe41aa39cfbf44e30f81514128f077ecdb42a18f13fb25f8f2eff36","p02d_authorization_sha256":"db66a4d9dde575496c66587f7d2cf1fcaf68f933c8851e53d6c6ed3bf30de2e0","p02d_plan_sha256":"c46977bfc0de1040965f08df8acbd55b9b063b386ccfb97f247a280ae2472365","p03_started":false,"parent_phase":"P02","real_dispatch_enabled":false,"specification_version":"TaskCognition-CR01-2026-10-05-v1","status":"READY_FOR_REVIEW","study_freeze":null}
+{
+  "accepted_previous_checkpoint": "P02D_EXECUTION",
+  "accepted_previous_checkpoint_record": "configs/state_events/023_P02D_execution_accepted_P02E_authorized.json",
+  "accepted_previous_phase": "P01",
+  "accepted_previous_seal": "reports/phases/P01_accepted_seal.md",
+  "active_phase": "P02E",
+  "amendment_sha256": "ec07c0133224fb10f535fc9ac4d0816d12fb10acc683c09043de717cc089c0b8",
+  "authorized_next_phase": null,
+  "checkpoint": "OFFLINE_DESIGN_REVIEW",
+  "latest_event": "configs/state_events/024_P02E_offline_design_review_checkpoint.json",
+  "p02_sealed": false,
+  "p02b_plan_sha256": "9afcea3b3fe41aa39cfbf44e30f81514128f077ecdb42a18f13fb25f8f2eff36",
+  "p02d_authorization_sha256": "db66a4d9dde575496c66587f7d2cf1fcaf68f933c8851e53d6c6ed3bf30de2e0",
+  "p02d_plan_sha256": "c46977bfc0de1040965f08df8acbd55b9b063b386ccfb97f247a280ae2472365",
+  "p03_started": false,
+  "parent_phase": "P02",
+  "real_dispatch_enabled": false,
+  "specification_version": "TaskCognition-CR01-2026-10-05-v1",
+  "status": "READY_FOR_REVIEW",
+  "study_freeze": null
+}

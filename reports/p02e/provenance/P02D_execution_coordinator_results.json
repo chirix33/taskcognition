@@ -1,0 +1,244 @@
+{
+  "status": "PASS",
+  "evidence_kind": "offline_coordinator_check",
+  "indexed_files_verified": 8997,
+  "production_report_exact_match": true,
+  "raw_token_decodes_and_native_rescores": 192,
+  "native_entry_hash_matches": 24,
+  "ledger_events": 7257,
+  "ledger_event_counts": {
+    "session_start": 193,
+    "dispatch": 242,
+    "heartbeat": 6145,
+    "admitted": 242,
+    "result": 242,
+    "session_end": 193
+  },
+  "feature_before_answer": true,
+  "completed_sessions": 193,
+  "worker_seconds": 11560.221741299993,
+  "known_output_tokens": 129371,
+  "unique_seeds": 192,
+  "complete_clusters": 24,
+  "zero_harm_clusters": 24,
+  "positive_direct_inputs": 8,
+  "all_route_B": 0.3125,
+  "empirical_positive_benefit_inputs": 11,
+  "empirical_positive_benefit_B": 0.0625,
+  "empirical_positive_benefit_direct_successes": 6.0,
+  "mode_totals": {
+    "D": {
+      "perfect": 30,
+      "strict_valid": 66,
+      "tokens": 6946
+    },
+    "R": {
+      "perfect": 64,
+      "strict_valid": 64,
+      "tokens": 122425
+    }
+  },
+  "clusters": [
+    {
+      "input_id": "0b18ad4b25042863a4d148d5631da3479ba3cca39cd0a628fb6e2483ba88dd30",
+      "family": "number_sorting",
+      "pd": 0.0,
+      "pr": 1.0,
+      "benefit": 1.0,
+      "harm": 0.0
+    },
+    {
+      "input_id": "bed4b15503bb7ceef0732a560ebc0a1506ad1ceeca1a3e3e1ecb804a0a90283e",
+      "family": "number_sorting",
+      "pd": 0.0,
+      "pr": 1.0,
+      "benefit": 1.0,
+      "harm": 0.0
+    },
+    {
+      "input_id": "aaf37f95311ad8c5a787bbb11df72dfe3c28df24384ce5c55bd333c24229ff84",
+      "family": "number_sorting",
+      "pd": 1.0,
+      "pr": 1.0,
+      "benefit": 0.0,
+      "harm": 0.0
+    },
+    {
+      "input_id": "4974aec2148826455abfb50c981433135a1e9eb275d1580d3079739f60ab945a",
+      "family": "number_sorting",
+      "pd": 0.0,
+      "pr": 1.0,
+      "benefit": 1.0,
+      "harm": 0.0
+    },
+    {
+      "input_id": "65e79401a071f1e70cd52124f205412d4e3ac5139d73084ce657643bdfd4be29",
+      "family": "number_format",
+      "pd": 1.0,
+      "pr": 1.0,
+      "benefit": 0.0,
+      "harm": 0.0
+    },
+    {
+      "input_id": "454f382c1f601b3679dd9a8545e5bdda75e30e8bbd737d832b74c2f53e0cc7f2",
+      "family": "number_format",
+      "pd": 1.0,
+      "pr": 1.0,
+      "benefit": 0.0,
+      "harm": 0.0
+    },
+    {
+      "input_id": "3e7bcec0872d44839f8d2fda07ccd7033d8c98f286a746b2769404a17d834797",
+      "family": "number_format",
+      "pd": 1.0,
+      "pr": 1.0,
+      "benefit": 0.0,
+      "harm": 0.0
+    },
+    {
+      "input_id": "836b15d78bb442b2f2b9ffeb0db44774eec5c6657d8f78abf0c2551a88f869c9",
+      "family": "number_format",
+      "pd": 1.0,
+      "pr": 1.0,
+      "benefit": 0.0,
+      "harm": 0.0
+    },
+    {
+      "input_id": "883e1e30eea51db35e192d570aadaf11971bad2ae7df66a6c98cfc5b2ddcd85e",
+      "family": "letter_counting",
+      "pd": 0.0,
+      "pr": 1.0,
+      "benefit": 1.0,
+      "harm": 0.0
+    },
+    {
+      "input_id": "d7dc610a978b638f5f60168ddd6c94d06332d2ce1f60a31aeac01dc9a208b487",
+      "family": "letter_counting",
+      "pd": 0.0,
+      "pr": 1.0,
+      "benefit": 1.0,
+      "harm": 0.0
+    },
+    {
+      "input_id": "55445bd2ec9967976b76d11b1267f678a4849021ffd1f79507f917eb936c8cd8",
+      "family": "letter_counting",
+      "pd": 0.0,
+      "pr": 0.5,
+      "benefit": 0.5,
+      "harm": 0.0
+    },
+    {
+      "input_id": "401ed4d11e91c0d7f2e75ad319811e2b473dd2e5cb77b121c219de1134ecf7b7",
+      "family": "letter_counting",
+      "pd": 0.75,
+      "pr": 1.0,
+      "benefit": 0.25,
+      "harm": 0.0
+    },
+    {
+      "input_id": "281fe48a734b2571306889cb223517f450d633d7f455d81eb9c779e3f3c76c5c",
+      "family": "graph_color",
+      "pd": 0.0,
+      "pr": 1.0,
+      "benefit": 1.0,
+      "harm": 0.0
+    },
+    {
+      "input_id": "f200a01a171eb4e538ecfbfa13cfbc5d73fa9c837ecf3f5310a5731ed319b62a",
+      "family": "graph_color",
+      "pd": 0.0,
+      "pr": 0.0,
+      "benefit": 0.0,
+      "harm": 0.0
+    },
+    {
+      "input_id": "8680a46bf75a99d968a5cce58571017d73eb3edc8c9a9df6de96584bfcc520b5",
+      "family": "graph_color",
+      "pd": 0.0,
+      "pr": 0.0,
+      "benefit": 0.0,
+      "harm": 0.0
+    },
+    {
+      "input_id": "b04603cfb7f55bc63a6981319c845aebb3a017c01ca18468f6dd9a3ab00318a9",
+      "family": "graph_color",
+      "pd": 0.0,
+      "pr": 0.5,
+      "benefit": 0.5,
+      "harm": 0.0
+    },
+    {
+      "input_id": "f434ee436187a084ef364dabaa9ca1e60949f911bbd0f0616eabb8aeabc33e81",
+      "family": "shortest_path",
+      "pd": 0.0,
+      "pr": 0.0,
+      "benefit": 0.0,
+      "harm": 0.0
+    },
+    {
+      "input_id": "d21984adaac8d34e4538fdb92d9d1a45b9848ec0b9fcc9f2056913e91d73e6ce",
+      "family": "shortest_path",
+      "pd": 0.0,
+      "pr": 0.0,
+      "benefit": 0.0,
+      "harm": 0.0
+    },
+    {
+      "input_id": "76a1ecefabfe39410c05a0f08a42e184ab3957f4e1fcb8ab3420dd5307d902c6",
+      "family": "shortest_path",
+      "pd": 0.0,
+      "pr": 0.0,
+      "benefit": 0.0,
+      "harm": 0.0
+    },
+    {
+      "input_id": "041f5e754e6f2731e4e2f3af3bdae1b997b51bea19fb483a4861cd52d62de973",
+      "family": "shortest_path",
+      "pd": 0.0,
+      "pr": 0.0,
+      "benefit": 0.0,
+      "harm": 0.0
+    },
+    {
+      "input_id": "fa4be76e5463236f394d2a86620023bdd589075b6928f2b4563f2e5eb91c7d19",
+      "family": "knights_knaves",
+      "pd": 0.0,
+      "pr": 1.0,
+      "benefit": 1.0,
+      "harm": 0.0
+    },
+    {
+      "input_id": "b736b398e5e5635079444fb5f35b2c8fabb9dc4ff90411b4d66b19a49d95f29c",
+      "family": "knights_knaves",
+      "pd": 0.0,
+      "pr": 0.0,
+      "benefit": 0.0,
+      "harm": 0.0
+    },
+    {
+      "input_id": "430c39d7cb402c2925cb5cad110de4c772c282298f557d911fd0df56fa769723",
+      "family": "knights_knaves",
+      "pd": 0.75,
+      "pr": 1.0,
+      "benefit": 0.25,
+      "harm": 0.0
+    },
+    {
+      "input_id": "9584691319ab68b082e748b503fc76be17f5f994758fd85ff3ee418fc32c11f7",
+      "family": "knights_knaves",
+      "pd": 1.0,
+      "pr": 1.0,
+      "benefit": 0.0,
+      "harm": 0.0
+    }
+  ],
+  "torch_imported": false,
+  "transformers_imported": false,
+  "new_model_work": 0,
+  "limitations": [
+    "No independent Windows/GPU execution or model-weight verification.",
+    "Reconstruction uses archived hash-matched source/dependencies; workstation runtime installation is not replicated.",
+    "Native scorer checks use pinned source; local NumPy version may differ from workstation.",
+    "Empirical positive-benefit selection is outcome-informed diagnostic only, not a fitted gate or deployment."
+  ]
+}

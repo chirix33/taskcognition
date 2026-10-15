@@ -1,0 +1,12 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-10-15T20:49:45.378310+00:00",
+  "argv": [
+    ".venv/Scripts/python.exe",
+    "scripts/p02e_documents.py"
+  ],
+  "exit": 0,
+  "seconds": 0.13838720000057947,
+  "stdout": "",
+  "stderr": ""
+}

@@ -1,0 +1,1280 @@
+=== PAGE 1 ===
+000
+001
+002
+003
+004
+005
+006
+007
+008
+009
+010
+011
+012
+013
+014
+015
+016
+017
+018
+019
+020
+021
+022
+023
+024
+025
+026
+027
+028
+029
+030
+031
+032
+033
+034
+035
+036
+037
+038
+039
+040
+041
+042
+043
+044
+045
+046
+047
+048
+049
+050
+051
+052
+053
+Under review as a conference paper at ICLR 2027
+TASK COGNITION : W HEN DOES OVERUSE OF REASON -
+ING MODELS DEGRADE ANSWER PERFORMANCE ?
+Anonymous authors
+Paper under double-blind review
+ABSTRACT
+We propose TASK COGNITION , a pre-results protocol for choosing between exactly
+two fixed inference packages on one frozen Qwen3-8B checkpoint: direct answer-
+ing (D) and bounded native thinking (R). Exactly one input-only gate acts before
+generation, and deployment makes exactly one answer call. The empirical question
+is whether supervision on direct-relative native-score benefit and package-relative
+independent-draw perfect-to-imperfect spoilage improves constrained deployment
+over same-resource winner and factorized outcome routers. A disjoint develop-
+ment stage freezes both packages before final labels; separate train, tune, held-out
+audit, and test splits then have immutable roles. Each learned method selects one
+candidate on tuning data and receives its own finite-sample empirical-Bernstein
+audit of score, cost, spoilage, and denominator adequacy. Audit failure forces
+direct deployment. Confirmatory evaluation requires test-set improvement over
+always-direct, winner, and factorized deployments. The audit is a deployment
+safeguard, not a new risk-control method. No TaskCognition experiment, power
+study, audit, or test has been run, and all result cells are empty.
+1 I NTRODUCTION
+Reasoning traces can improve multi-step problem solving (Wei et al., 2022), but a longer or explicit
+process is costly and may reduce performance in particular settings (Liu et al., 2025a; Wu et al.,
+2026; Srivastava et al., 2026). This motivates a concrete deployment question: before any answer is
+generated, when should a system use a bounded native-thinking package rather than a direct package?
+Scope. We compare two named inference packages on one checkpoint, not latent cognition and
+not the causal effect of exposing a rationale. In the title, overuse is policy-relative shorthand for
+sending an input to R when the declared score–cost–spoilage objective would prefer D. It neither
+attributes excessive internal cognition to the model nor claims that reasoning models generally degrade
+performance. Exactly one learned input-only, pre-generation gate observes the query; deployment
+invokes exactly one of D and R once. Tools, agents, additional checkpoints, post-answer switching,
+and deployable cascades are outside scope.
+Routing itself is established (Pan et al., 2024; Zhou et al., 2026; Zhang et al., 2025; Guo et al., 2026;
+Wang et al., 2025; Pan et al., 2025). Our proposed contribution is instead an empirical comparison:
+does learning direct-relative paired benefit together with independent-draw perfect-to-imperfect
+spoilage improve constrained deployment beyond an equally resourced winner router and an equally
+resourced factorized outcome router? The held-out audit merely safeguards deployment of a tune-
+frozen candidate. It is not the statistical novelty. A null comparison, frequent fallback, or infeasible
+package is a valid outcome rather than permission to add policies.
+2 R ELATED WORK AND CLAIM BOUNDARY
+Routing and adaptive effort. Select-then-Solve, DynaThink, SynapseRoute, Think When Needed,
+When to Reason, and Route to Reason allocate inference regimes before or during generation (Zhou
+et al., 2026; Pan et al., 2024; Zhang et al., 2025; Guo et al., 2026; Wang et al., 2025; Pan et al., 2025).
+Broader methods allocate planning or decomposition (Yang et al., 2026; Paglieri et al., 2025; Liu
+1
+
+=== PAGE 2 ===
+054
+055
+056
+057
+058
+059
+060
+061
+062
+063
+064
+065
+066
+067
+068
+069
+070
+071
+072
+073
+074
+075
+076
+077
+078
+079
+080
+081
+082
+083
+084
+085
+086
+087
+088
+089
+090
+091
+092
+093
+094
+095
+096
+097
+098
+099
+100
+101
+102
+103
+104
+105
+106
+107
+Under review as a conference paper at ICLR 2027
+et al., 2025b; Prasad et al., 2024). TASK COGNITION is a narrow algorithm-selection study (Rice,
+1975); its value must come from the preregistered comparison, not a configuration-only novelty claim.
+Cascades and risk control. Confidence cascades observe a realized direct preview before escalating
+(Lu et al., 2025; Lewis-Lim et al., 2026); that information set induces a distinct preview-conditional
+risk. Cascades are therefore excluded from the primary comparison and may appear only in a
+secondary future analysis that charges the preview and defines a separate estimand. Conformal Risk
+Control, Conformal Thinking, and Learn then Test motivate explicit post-selection risk accounting
+(Angelopoulos et al., 2024; Wang et al., 2026; Angelopoulos et al., 2025). Our fixed-candidate audit
+is not any of those procedures and provides no conformal or distribution-free guarantee.
+Reasoning degradation. Mind Your Step, When More Is Less, and LLMThinkBench already
+motivate broad degradation questions (Liu et al., 2025a; Wu et al., 2026; Srivastava et al., 2026). Any
+eventual result here remains checkpoint-, package-, scorer-, cap-, and distribution-relative. Audit
+passage only authorizes one frozen deployment rule.
+3 E STIMANDS AND CONSTRAINED OBJECTIVE
+Let F ∈ {1, . . . ,6} denote a prespecified Reasoning Gym family. Every primary tuning, audit, and
+test quantity uses
+Ew[T ] = 1
+6
+6X
+f=1
+E[T | F = f]. (1)
+For input X = x, independent package draws yield native scoresS(1)
+a ∈ [0, 1] and perfect-correctness
+indicators Y (1)
+a = I{S(1)
+a = 1}, a ∈ {D, R}. Write pa(x) = P(Y (1)
+a = 1 | X = x) and
+hind(x) = P{Y (1)
+D = 1, Y (1)
+R = 0 | X = x} = pD(x){1 − pR(x)}. (2)
+This is package-relative independent-draw perfect-to-imperfect spoilage. It is neither a same-seed
+flip nor a causal statement about switching an already-correct answer. A gate g(X) ∈ {0, 1} routes
+to R when g = 1. Its aggregate risk is
+Rspoil(g) = Ew[g(X)hind(X)]
+Ew[g(X)pD(X)] , (3)
+when the denominator is positive.
+A direct redraw can disagree even without changing packages. We therefore report, descriptively,
+hDD(x) = pD(x){1 − pD(x)}, (4)
+RDD(g) = Ew[g(X)hDD(X)]
+Ew[g(X)pD(X)] , (5)
+∆DD(g) = Rspoil(g) − RDD(g) = Ew[gpD(pD − pR)]
+Ew[gpD] . (6)
+These are direct–direct independent-redraw references only; they neither replace Eq. 3 nor define a
+causal excess. For partial scores, another descriptive quantity is
+dϵ(x) = P{S(1)
+D − S(1)
+R ≥ ϵ | X = x}, ϵ ∈ {0.10, 0.25}. (7)
+We will report all-input and routed-subset aggregates. Expected score change and dϵ complement
+perfect-to-imperfect spoilage but do not enter its primary constraint.
+For K ≥ 2 draws per package and input i, the prespecified finite-K estimators are
+bpai = K −1
+KX
+k=1
+Yaik, bhind,i = bpDi(1 − bpRi), (8)
+bhDD,i = K
+K − 1 bpDi(1 − bpDi), bdϵ,i = K −2 X
+k,ℓ
+I{SDik − SRiℓ ≥ ϵ}. (9)
+2
+
+=== PAGE 3 ===
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+Under review as a conference paper at ICLR 2027
+1 DEVELOPMENT → TRAIN
+Disjoint pool
+no final labels
+Validate contract
+modes · templates · parser
+retries · throughput · cost
+Cellwise cap
+1024 if all ≥99%
+else 2048 if all ≥99%
+else STOP
+Freeze D/R packages
+manifest before every label
+TRAIN
+K draws/package
+fit methods
+2 TUNING
+Disjoint tune set
+fixed 1/6 family weights
+Calibrate + search
+same gate family, budget,
+resources, tie-to-direct
+Select one
+candidate per
+learned method
+Freeze candidate hash
+no audit-set candidate change
+3 HELD-OUT DEPLOYMENT AUDIT
+Frozen
+candidate
+one audit; no retuning
+Empirical-Bernstein
+score LCB · cost UCB
+spoilage Z UCB
+denominator B LCB
+All four
+checks pass?
+Level-gamma intersection–union pass rule for one frozen candidate
+Empirical safeguard—not conformal, pointwise, or shift guarantee
+4 DEPLOYMENT / TEST
+New input x
+input only
+Frozen gate
+enabled only on pass
+otherwise bypassed
+Exactly one answer call
+D: direct or R: bounded
+native thinking
+TEST: offline policy swap only
+after action log; never changes deployment gate
+PASS: enable frozen gate
+FAIL: force D and bypass gate
+Figure 1: Frozen protocol and one-call deployment. DEVELOPMENT precedes TRAIN and
+freezes both packages before any final rollout label. TUNING selects one candidate per learned
+method. A held-out empirical-Bernstein audit checks score, cost, spoilage, and denominator adequacy
+without retuning; failure forces D and bypasses the gate. Deployment makes exactly one answer call.
+Test-time policy swap runs both packages offline only after the chosen action is logged and never
+changes the deployment gate.
+The direct and reasoning draw sets are conditionally independent, making bhind,i unbiased for Eq. 2;
+bhDD,i is the distinct-draw order-two U-statistic (Hoeffding, 1948). The cross-products overlap.
+Neither K2 cross-package cells nor K(K − 1) direct pairs are independent observations: the
+complete input cluster is the inferential unit.
+Let Sg = (1 − g)SD + gSR. The restricted decision family is tuned for
+max
+g∈G
+Ew[Sg] s.t. Ew[Cg] ≤ β, R spoil(g) ≤ α. (10)
+Development fixes one scalar, nonduplicative resource ledger: either a monetary token/call schedule
+or hardware service time, but not both charged for the same serving work. Calls, tokens, latency,
+hardware, batching, concurrency, caching, and warm-up remain separate descriptive fields. Let
+cref
+D , cref
+R be development reference package charges. The common exogenous budget is frozen before
+tuning as
+β = cref
+D + ρ(cref
+R − cref
+D ), ρ = 1/2. (11)
+Every method is assessed against this same β. Its own gate, any declared preview, every dispatched
+pre-admission retry, and the selected answer are charged exactly once; its gate cannot expand β.
+4 T ASK COGNITION AND LEARNING TARGETS
+A frozen encoder maps input text to an embedding, concatenated with cheap input-only observables
+such as length, numeric-token count, symbolic-operator count, multiple-choice markers, and format
+indicators. Dataset identity, latent generator parameters, answers, traces, verifier feedback, and direct
+drafts are prohibited. One shared-trunk multilayer perceptron predicts bϕ(x) ≈ E[SR − SD | X = x]
+and qϕ(x) ≈ hind(x).
+The benefit target is Tb,i = ¯SRi − ¯SDi, trained primarily by the squared loss (bϕ(Xi) − Tb,i)2, which
+elicits its conditional mean. A Huber loss is sensitivity-only. The harm head uses one soft-label log
+loss per instance,
+−Th,i log qϕ(Xi) − (1 − Th,i) log{1 − qϕ(Xi)}, T h,i = bpDi(1 − bpRi). (12)
+3
+
+=== PAGE 4 ===
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+Under review as a conference paper at ICLR 2027
+This proper fractional-label objective (Gneiting & Raftery, 2007) is unweighted except for outcome-
+independent family or instance weights frozen before labels. It does not manufacture K2 independent
+samples.
+On TUNE, calibration maps, architecture, initialization, and thresholds are selected. The restricted
+gate is
+gτ,η(x) = I{ebϕ(x) > τ ∧ eqϕ(x) ≤ η}. (13)
+Ties go to direct after the common score, cost, spoilage, and routing-rate tie-break order is frozen.
+The q threshold is a restricted local joint-harm screen. It is not pointwise conditional spoilage, which
+would be 1 − pR(x) when pD(x) > 0, and it is not a proof that Eq. 10 is globally optimized. Only
+the aggregate audit can authorize deployment.
+5 D EVELOPMENT AND FROZEN ANSWER CONTRACT
+The active TeX and PROTOCOL SOURCE OF TRUTH.md govern the current draft. Before any
+final label, a dated, hash-bound frozen manifest must become the sole executable specification.
+That manifest binds the model/tokenizer revision, engine/API invocation and chat-template hashes,
+precision, hardware, serialized prompts, samplers, cap, stop behavior, parsers, scorers, features, split
+and latent-ID manifests, K, α, β, bmin, δscore, audit level, RNG streams, retry/timeout policy, cost
+schedule, candidate hashes, and direct fallback. A package change after freeze invalidates every
+rollout-derived label.
+Development before labels. A separate six-family DEVELOPMENT pool is disjoint from all final
+rolls. It validates Qwen mode controls and templates, parsers and native adapters, pre-admission retry
+behavior, timeout handling, throughput, scalar cost accounting, cap feasibility, and sample/repeat
+allocation. It also supplies development reference charges and full-pipeline simulations, but no
+development rollout enters TRAIN, TUNE, AUDIT, or TEST.
+The cellwise terminal cap rule is fixed. Package cap 1,024 is used only if every mode-by-family strict-
+valid-FINAL rate is at least 99% in development. Otherwise 2,048 is used only if every cell reaches
+99%. If any cell remains below 99%, the confirmatory study stops as infeasible for the bounded
+package. A larger cap may be studied only as a development diagnostic; Qwen’s recommended long
+allowances are not the primary package. This rule is assessed before final labels, not on training
+completion curves.
+Exactly two packages. Both packages use the same frozen Qwen/Qwen3-8B checkpoint
+and task information, no tools or feedback, and exactly one admitted answer generation (Yang
+et al., 2025; Qwen Team, 2026). Package D sets enable thinking=False; package R sets
+enable thinking=True with the frozen bounded cap. The primary matching sampler is sam-
+pling enabled, temperature 0.6, top-p 0.95, top-k 20, and min-p 0 for both. The package-faithful
+sensitivity uses the model-card direct settings(0.7, 0.8, 20, 0) and reasoning settings (0.6, 0.95, 20, 0)
+for (temperature, top- p, top- k, min- p). The manifest pins the exact engine/API invocation that
+implements enable thinking, the chat template, and raw serialized prompts/completions.
+Parser, retry, and failure contract. The strict sequence is: (i) native-think channelization; (ii)
+exactly one nonempty case-sensitive <FINAL> pair validated on the final channel, with no trailing
+text; and (iii) a version-pinned suite-native adapter and scorer. A FINAL-like tag in a reasoning
+trace is never authoritative. Status records distinguish native-delimiter failure, outer-wrapper failure,
+native-syntax failure, cap-without-final, valid partial credit, completed-native-wrong, and admitted
+execution/response failure.
+Each draw permits one admitted answer generation. Deadline T , maximum pre-admission retries
+J, and RNG stream are frozen. A retry is allowed only when logs establish that no generation was
+admitted, using the identical request and stream; every dispatched attempt is charged. Unknown
+admission is treated as admitted. An admitted missing response, timeout, transport loss, malformed
+output, or cap stop is not retried and scores zero when no retainable valid response exists. In particular,
+an R runtime failure never triggers a direct answer. Thus deployment still contains two packages, one
+input-only gate, and one answer call.
+4
+
+=== PAGE 5 ===
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+Under review as a conference paper at ICLR 2027
+6 C OMPARATORS AND EXPERIMENTAL DESIGN
+Equally resourced learned comparators. Every learned method receives the same input informa-
+tion, frozen features, rollout table, split roles, overall trainable-parameter budget (within a disclosed
+prespecified tolerance), optimizer/search budget, calibration opportunities, tuning objective, family
+weights, tie-to-direct rule, all-in accounting, one frozen candidate, audit, and direct fallback. The
+winner router uses Wi = I{ ¯SRi > ¯SDi}, with exact ties assigned to direct. It fits a calibrated score
+rW (x) ≈ P(W = 1 | x) with one binary log loss per input and deploys gW
+τ (x) = I{erW (x) > τ }.
+Its single threshold τ is tuned under the same Ew score/cost/spoilage objective and frozen tie-breaks.
+This is a winner-only gate family, not the two-head TASK COGNITION family; resource parity,
+candidate selection, audit, and fallback are matched.
+The factorized outcome router predicts
+pD(x), p R(x), µ D(x) = E[SD | x], µ R(x) = E[SR | x], (14)
+and forms bF = µR − µD and hF = pD(1 − pR). Fractional-label proper losses fit pa and
+squared losses fit µa; binary families may share numerically identical outputs, while partial-credit
+families require both. It predicts cost only if a separately declared decision rule uses that prediction.
+TASK COGNITION claims no information advantage over this factorization because its targets are
+algebraically recoverable. The empirical hypothesis is only a possible finite-data, calibration, or shift
+advantage from direct target learning.
+Always-direct, always-reasoning, fixed random allocation, and observable-count thresholds are
+descriptive references. A nondeployable family-only allocation reference measures whether gains
+exceed coarse family allocation, but family ID remains prohibited at deployment. The same-rollout
+empirical oracle (optimistic under stochastic finite-K selection) is a descriptive ceiling with finite-K
+selection bias; it is excluded from claims. No cascade appears in the primary table.
+Splits and provisional counts. The confirmatory universe is the original-renderer Rea-
+soning Gym version and six prespecified families: number sorting, number format,
+letter counting, graph color, shortest path, and knights knaves (Stojanovski
+et al., 2025; Open-Thought, 2026). Current planning placeholders per family are 200 TRAIN, 75
+TUNE, nf = n/6 AUDIT, and 100 TEST inputs, with disjoint seeds. They are not evidence and will
+be finalized by development before final labels. Equal1/6 weighting defines a finite-family target,
+not a natural deployment distribution.
+Renderer variants are paired only when generated from the same held-out latent problem ID and kept
+in the same split. Otherwise they are labeled unpaired fixed-case descriptions, with no renderer-effect
+attribution. LLMThinkBench remains separate test-only descriptive evidence (Srivastava et al., 2026;
+Srivastava & collaborators, 2026). The Mind-Your-Step-inspired set is independently generated new
+diagnostic material, not redistributed data or a replication (Liu et al., 2025a; Geng & Liu, 2025;
+Anonymous Authors, 2026). Its generator/version and construct-validation criteria are frozen before
+final diagnostic generation; failed validation yields only a new procedural diagnostic label.
+7 H ELD -OUT DEPLOYMENT AUDIT
+Each of the six families contributes the same nf = n/6 complete input clusters; development selects
+balanced n before final labels. Latent problem IDs are independently sampled within family, RNG
+streams are independent by input and package, and failed rows are retained rather than dropped.
+Shared batch or system-failure units are eliminated or, if unavoidable, become the resampling and
+audit cluster. For the one tune-frozen candidate of a learned method, define cluster rows
+Bi = gi bpDi, Z i = gi bpDi(1 − bpRi − α), (15)
+∆i = gi( ¯SRi − ¯SDi), C i = Cgate,i + (1 − gi) ¯CDi + gi ¯CRi. (16)
+Here Ew[Z] = Ew[B]{Rspoil(g) − α}. Let ¯T = n−1 P
+i Ti and s2
+T = (n − 1)−1 P
+i(Ti − ¯T )2. For
+a row bounded in frozen [a, b], use the finite-sample empirical-Bernstein radius for independent, not
+necessarily identically distributed rows (Maurer & Pontil, 2009)
+rEB(T ) =
+r
+2s2
+T ln(2/γ)
+n + 7(b − a) ln(2/γ)
+3(n − 1) , γ = 0.05. (17)
+5
+
+=== PAGE 6 ===
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+Under review as a conference paper at ICLR 2027
+The declared ranges are [−α, 1 − α] for Z, [0, 1] for B, [−1, 1] for ∆, and development-frozen
+[cmin, cmax] for C. The latter is an analytic hard support bound derived from maximum input
+length, cap, retry ceiling, and the frozen tariff or service-time rule; it is not estimated from observed
+development extrema. A deterministic algebraic design calculation under normalized midpoint
+cost shows that the symmetric Hoeffding construction (Hoeffding, 1963) cannot jointly pass its
+cost and spoilage margins at the initial n = 450 even in a favorable zero-spoilage idealization.
+This is not a TaskCognition feasibility run or result; n = 450 is therefore not claimed sufficient.
+The empirical-Bernstein rule is frozen only after prospective validation over the full development
+simulation.
+The candidate is enabled only if all four conditions hold:
+¯Z + rEB(Z) ≤ 0, ¯C + rEB(C) ≤ β, ¯B − rEB(B) ≥ bmin > 0, ¯∆ − rEB(∆) ≥ 0. (18)
+The first is a linearized aggregate spoilage check; the third enforces denominator precision; the fourth
+is score noninferiority, not superiority. Development full-pipeline simulation freezes n, K, bmin, cost
+bounds, α, and β. Audit data cannot change a candidate, threshold, or design quantity. Every learned
+method is audited separately and deploys direct if any check fails.
+Equation 18 is a level-γ intersection–union pass rule for one frozen candidate under the declared
+independent-cluster design (Berger & Hsu, 1996). Because passage requires rejection of every
+component null, no Bonferroni adjustment is applied; the displayed bounds are not advertised as
+a joint confidence region. This empirical acceptance test is a deployment safeguard, not a novel
+certificate. It is not conformal, pointwise, distribution-free, or a renderer/suite-shift guarantee. Cluster
+bootstrap intervals may be reported descriptively only (Field & Welsh, 2007); test superiority is
+separate.
+Adequacy reporting separates selected input count, weighted routing rate, ¯B and its lower bound, raw
+nested direct successes K P
+i gi bpDi, and Kish concentration (P
+i ai)2/ P
+i a2
+i for ai = n−1gi bpDi.
+Kish measures weight concentration, not “effective direct-correct instances.”
+8 P RIMARY TEST, PLANNING , AND REPORTING
+For m ∈ {always-direct, winner, factorized}, define the original-renderer test contrast
+∆m = 1
+6
+6X
+f=1
+STC,deploy − Sm,deploy
+(f)
+. (19)
+Each learned comparator is its own audit-selected deployment: its frozen candidate if it passes,
+direct otherwise. Pre-audit candidate behavior is descriptive. The confirmatory contribution requires
+one-sided 95% family-stratified paired instance-cluster bootstrap lower bounds above a development-
+frozen δscore ≥ 0 for all three contrasts. The manifest fixes the percentile interval construction,
+10,000 within-family complete-cluster resamples, RNG seed, score aggregation over the K draws,
+and failure handling before test access; a failed resample is retained with its frozen zero-score rule
+rather than redrawn. This bootstrap is asymptotic conditional on frozen deployments, not an exact
+randomization test. Whole input clusters are resampled within family, preserving equal family
+weights (Field & Welsh, 2007). This conjunctive claim does not use Holm correction; separately
+declared nonprimary families do. No sign-flip test is claimed exact.
+Before any final label, a disjoint high-repeat development pool and full
+TRAIN→TUNE→AUDIT→TEST simulation select balanced n, bmin, K, and feasible α/β
+values. Each replicate fits and tunes each method, freezes one candidate, applies one audit, falls back
+to direct on failure, and evaluates the resulting deployment. Planned outputs include enablement,
+useful-candidate enablement, unsafe-candidate false enablement, fallback, bound widths, and
+conditional and unconditional test power or minimum detectable effect. A provisional high-repeat
+design is 25 inputs per family and 50 draws per package; this and all split counts are placeholders
+until DEVELOPMENT. These simulations are planning, not reported TaskCognition results or a
+promise of feasibility.
+6
+
+=== PAGE 7 ===
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+Under review as a conference paper at ICLR 2027
+Table 1: Primary test reporting contract. Every result cell is intentionally empty. Each learned row
+denotes its audit-selected deployment.
+Method Score Rspoil RDD R rate Scalar cost
+Always direct — — — — —
+Always reasoning — — — — —
+Winner deployment — — — — —
+Factorized deployment — — — — —
+Family-only reference — — — — —
+TASK COGNITION deployment — — — — —
+Table 2: Held-out audit contract for every learned method. All result fields, including hashes and
+decisions, remain empty until execution.
+Method Hash ¯B L B ¯Z U Z ¯C U C ¯∆ / L ∆ Decision Fallback
+Winner — — — — — — — — — —
+Factorized — — — — — — — — — —
+TASK C OGNITION — — — — — — — — — —
+9 L IMITATIONS AND CONCLUSION
+The study concerns one checkpoint, two package distributions, one cap rule, fixed scorers, and a finite
+six-family target. Independent-draw spoilage is not a causal switch; finiteK yields noisy input targets;
+and dϵ and expected score capture losses omitted by perfect correctness. An aggregate audit can
+miss family heterogeneity and cannot transfer to renderer or external-suite shift. Empirical-Bernstein
+validity depends on the frozen bounded ledger and independent complete clusters. Renderer cases
+not paired by latent ID remain unpaired descriptions. The same-rollout empirical oracle is optimistic.
+No non-significant contrast will be called equivalence.
+TASK COGNITION asks whether paired benefit and independent-draw spoilage supervision improves
+a constrained choice between D and R beyond same-resource winner and factorized outcome routers.
+Package freeze precedes labels; tuning selects once; each method is audited once; failure forces
+direct; and test superiority is adjudicated separately. No TaskCognition result, audit passage, power
+estimate, or novel effect is reported in this manuscript.
+REPRODUCIBILITY STATEMENT
+The active manuscript plus the governed dated manifest will be the sole implementation specification.
+Before test access, the release will archive immutable hashes for packages, prompts, parsers, features,
+data splits, candidates, audit code, cost schedule, random streams, and fallback. Historical conflicting
+notes remain marked superseded. Outputs will be released only where licenses permit; otherwise
+permitted identifiers, hashes, derived cluster rows, and evaluation code will be provided.
+AI USE STATEMENT (DRAFT STAGE )
+Generative AI assisted literature organization, critique-driven protocol revision, prose editing, BibTeX
+preparation, and vector figure layout. It did not execute TaskCognition experiments or generate evi-
+dence. Authors must verify every source, protocol component, artifact, and claim before submission
+and retain responsibility for the final work.
+7
+
+=== PAGE 8 ===
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+Under review as a conference paper at ICLR 2027
+REFERENCES
+Anastasios N. Angelopoulos, Stephen Bates, Adam Fisch, Lihua Lei, and Tal Schuster. Conformal
+risk control. In International Conference on Learning Representations , 2024. URL https:
+//openreview.net/forum?id=33XGfHLtZg.
+Anastasios N. Angelopoulos, Stephen Bates, Emmanuel J. Cand `es, Michael I. Jordan, and Lihua
+Lei. Learn then test: Calibrating predictive algorithms to achieve risk control. The Annals
+of Applied Statistics , 19(2):1641–1662, 2025. doi: 10.1214/24-AOAS1998. URL https:
+//doi.org/10.1214/24-AOAS1998.
+Anonymous Authors. TaskCognition mind-your-step-inspired diagnostic generator: Version 0.1
+release plan. Planned supplementary software artifact; independently authored generator to be
+frozen and released under Apache-2.0 before execution, 2026.
+Roger L. Berger and Jason C. Hsu. Bioequivalence trials, intersection–union tests and equivalence
+confidence sets. Statistical Science, 11(4):283–319, 1996. doi: 10.1214/ss/1032280304. URL
+https://doi.org/10.1214/ss/1032280304.
+C. A. Field and A. H. Welsh. Bootstrapping clustered data. Journal of the Royal Statistical Society:
+Series B (Statistical Methodology), 69(3):369–390, 2007. doi: 10.1111/j.1467-9868.2007.00593.x.
+URL https://doi.org/10.1111/j.1467-9868.2007.00593.x.
+Jiayi Geng and Ryan Liu. Code for Mind Your Step (by Step). Software repository, revision
+ee9b9c580170c8e6b37e806ca039e8fdf0295c1f, 2025. URL https://github.
+com/JiayiGeng/CoT_overthinking. Repository provides no explicit redistribution li-
+cense as accessed 2026-09-19.
+Tilmann Gneiting and Adrian E. Raftery. Strictly proper scoring rules, prediction, and estima-
+tion. Journal of the American Statistical Association , 102(477):359–378, 2007. doi: 10.1198/
+016214506000001437. URL https://doi.org/10.1198/016214506000001437.
+Huizhong Guo, Tianjun Wei, Dongxia Wang, Yingpeng Du, Ziyan Wang, Jie Zhang, and Zhu Sun.
+Think when needed: Model-aware reasoning routing for LLM-based ranking. arXiv preprint
+arXiv:2601.18146, 2026. URL https://arxiv.org/abs/2601.18146.
+Wassily Hoeffding. A class of statistics with asymptotically normal distribution. The Annals of
+Mathematical Statistics, 19(3):293–325, 1948. doi: 10.1214/aoms/1177730196. URL https:
+//doi.org/10.1214/aoms/1177730196.
+Wassily Hoeffding. Probability inequalities for sums of bounded random variables. Journal of the
+American Statistical Association, 58(301):13–30, 1963. doi: 10.1080/01621459.1963.10500830.
+URL https://www.jstor.org/stable/2282952.
+Samuel Lewis-Lim, Xingwei Tan, Zhixue Zhao, and Nikolaos Aletras. Can confidence estimates
+decide when chain-of-thought is necessary for LLMs? arXiv preprint arXiv:2510.21007, 2026.
+URL https://arxiv.org/abs/2510.21007.
+Ryan Liu, Jiayi Geng, Addison J. Wu, Ilia Sucholutsky, Tania Lombrozo, and Thomas L. Griffiths.
+Mind your step (by step): Chain-of-thought can reduce performance on tasks where thinking
+makes humans worse. In Proceedings of the 42nd International Conference on Machine Learning,
+volume 267 of Proceedings of Machine Learning Research, pp. 38489–38517. PMLR, 2025a. URL
+https://proceedings.mlr.press/v267/liu25t.html.
+Shuodi Liu, Yingzhuo Liu, Zi Wang, Yusheng Wang, Huijia Wu, Liuyu Xiang, and Zhaofeng
+He. Select-then-decompose: From empirical analysis to adaptive selection strategy for task de-
+composition in large language models. In Proceedings of the 2025 Conference on Empirical
+Methods in Natural Language Processing, pp. 5454–5477. Association for Computational Linguis-
+tics, 2025b. doi: 10.18653/v1/2025.emnlp-main.278. URL https://aclanthology.org/
+2025.emnlp-main.278/.
+8
+
+=== PAGE 9 ===
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481
+482
+483
+484
+485
+Under review as a conference paper at ICLR 2027
+Jinghui Lu, Haiyang Yu, Siliang Xu, Shiwei Ran, Guozhi Tang, Siqi Wang, Bin Shan, Teng Fu, Hao
+Feng, Jingqun Tang, Han Wang, and Can Huang. Prolonged reasoning is not all you need: Certainty-
+based adaptive routing for efficient LLM/MLLM reasoning. arXiv preprint arXiv:2505.15154,
+2025. URL https://arxiv.org/abs/2505.15154.
+Andreas Maurer and Massimiliano Pontil. Empirical bernstein bounds and sample variance pe-
+nalization. In Proceedings of the 22nd Annual Conference on Learning Theory , 2009. URL
+https://arxiv.org/abs/0907.3740.
+Open-Thought. Reasoning gym software, version 0.1.25. Software release, commit
+21e6d2a9a581b3e11aafe711abfd37402f8482d5, 2026. URL https://github.
+com/open-thought/reasoning-gym/releases/tag/v0.1.25. Apache-2.0.
+Davide Paglieri, Bartłomiej Cupiał, Jonathan Cook, Ulyana Piterbarg, Jens Tuyls, Edward Grefen-
+stette, Jakob Nicolaus Foerster, Jack Parker-Holder, and Tim Rockt¨aschel. Learning when to plan:
+Efficiently allocating test-time compute for LLM agents. arXiv preprint arXiv:2509.03581, 2025.
+URL https://arxiv.org/abs/2509.03581.
+Jiabao Pan, Yan Zhang, Chen Zhang, Zuozhu Liu, Hongwei Wang, and Haizhou Li. DynaThink: Fast
+or slow? a dynamic decision-making framework for large language models. In Proceedings of
+the 2024 Conference on Empirical Methods in Natural Language Processing, pp. 14686–14695.
+Association for Computational Linguistics, 2024. doi: 10.18653/v1/2024.emnlp-main.814. URL
+https://aclanthology.org/2024.emnlp-main.814/.
+Zhihong Pan, Kai Zhang, Yuze Zhao, and Yupeng Han. Route to reason: Adaptive routing for
+LLM and reasoning strategy selection. arXiv preprint arXiv:2505.19435, 2025. URL https:
+//arxiv.org/abs/2505.19435.
+Archiki Prasad, Alexander Koller, Mareike Hartmann, Peter Clark, Ashish Sabharwal, Mohit Bansal,
+and Tushar Khot. ADaPT: As-needed decomposition and planning with language models. In
+Findings of the Association for Computational Linguistics: NAACL 2024, pp. 4226–4252. Asso-
+ciation for Computational Linguistics, 2024. doi: 10.18653/v1/2024.findings-naacl.264. URL
+https://aclanthology.org/2024.findings-naacl.264/.
+Qwen Team. Qwen3-8B model card. Hugging Face model repository, revision
+b968826d9c46dd6066d109eabc6255188de91218, 2026. URL https:
+//huggingface.co/Qwen/Qwen3-8B. Accessed 2026-09-19; Apache-2.0.
+John R. Rice. The algorithm selection problem. Technical Report 75-152, Purdue University, Depart-
+ment of Computer Science, 1975. URL https://docs.lib.purdue.edu/cstech/99/.
+Gaurav Srivastava and collaborators. LLMThinkBench software, version 0.1.6. Software package
+and repository, revision bb8cbe2e2969b258c314fef3a316f22e8de455f6, 2026. URL
+https://github.com/ctrl-gaurav/LLMThinkBench. MIT License; accessed 2026-
+09-19.
+Gaurav Srivastava, Aafiya Shamshad Hussain, Sriram Srinivasan, and Xuan Wang. Do LLMs
+overthink basic math reasoning? benchmarking the accuracy–efficiency tradeoff in language
+models. In Findings of the Association for Computational Linguistics: ACL 2026 , pp. 25784–
+25826. Association for Computational Linguistics, 2026. doi: 10.18653/v1/2026.findings-acl.1285.
+URL https://aclanthology.org/2026.findings-acl.1285/.
+Zafir Stojanovski, Oliver Stanley, Joe Sharratt, Richard Jones, Abdulhakeem Adefioye, Jean Kaddour,
+and Andreas K ¨opf. Reasoning gym: Reasoning environments for reinforcement learning with
+verifiable rewards. arXiv preprint arXiv:2505.24760, 2025. URL https://arxiv.org/abs/
+2505.24760.
+Chen Wang, Xunzhuo Liu, Yuhan Liu, Yue Zhu, Xiangxi Mo, Junchen Jiang, and Huamin Chen.
+When to reason: Semantic router for vLLM. arXiv preprint arXiv:2510.08731 , 2025. URL
+https://arxiv.org/abs/2510.08731.
+9
+
+=== PAGE 10 ===
+486
+487
+488
+489
+490
+491
+492
+493
+494
+495
+496
+497
+498
+499
+500
+501
+502
+503
+504
+505
+506
+507
+508
+509
+510
+511
+512
+513
+514
+515
+516
+517
+518
+519
+520
+521
+522
+523
+524
+525
+526
+527
+528
+529
+530
+531
+532
+533
+534
+535
+536
+537
+538
+539
+Under review as a conference paper at ICLR 2027
+Xi Wang, Anushri Suresh, Alvin Zhang, Rishi More, William Jurayj, Benjamin Van Durme, Mehrdad
+Farajtabar, Daniel Khashabi, and Eric Nalisnick. Conformal thinking: Risk control for reasoning
+on a compute budget. arXiv preprint arXiv:2602.03814, 2026. URL https://arxiv.org/
+abs/2602.03814.
+Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Brian Ichter, Fei Xia, Ed Chi,
+Quoc V . Le, and Denny Zhou. Chain-of-thought prompting elicits reasoning in large
+language models. In Advances in Neural Information Processing Systems , volume 35,
+2022. URL https://proceedings.neurips.cc/paper_files/paper/2022/
+hash/9d5609613524ecf4f15af0f7b31abca4-Abstract-Conference.html.
+Yuyang Wu, Yifei Wang, Ziyu Ye, Tianqi Du, Stefanie Jegelka, and Yisen Wang. When more is less:
+Understanding chain-of-thought length in LLMs. In International Conference on Learning Rep-
+resentations, 2026. URL https://proceedings.iclr.cc/paper_files/paper/
+2026/hash/ce916251b4fe04f54f99c8d304d68877-Abstract-Conference.
+html.
+An Yang, Anfeng Li, Baosong Yang, Beichen Zhang, Binyuan Hui, et al. Qwen3 technical report.
+arXiv preprint arXiv:2505.09388, 2025. URL https://arxiv.org/abs/2505.09388.
+Jingbo Yang, Bairu Hou, Wei Wei, Yujia Bao, and Shiyu Chang. Ares: Adaptive reasoning effort
+selection for efficient LLM agents. arXiv preprint arXiv:2603.07915 , 2026. URL https:
+//arxiv.org/abs/2603.07915.
+Wencheng Zhang, Shiqin Qiao, Lingjie Luo, Yinfeng Li, Chuanyang Zheng, Qian Xu, Meng Li,
+Yong Gui, Yijun He, Jianing Qiu, Jindong Hong, and Jiankai Sun. SynapseRoute: An auto-route
+switching framework on dual-state large language model. arXiv preprint arXiv:2507.02822, 2025.
+URL https://arxiv.org/abs/2507.02822.
+Heng Zhou, Zelin Tan, Zhemeng Zhang, Yutao Fan, Yibing Lin, et al. Select-then-solve: Paradigm
+routing as inference-time optimization for LLM agents. arXiv preprint arXiv:2604.06753, 2026.
+URL https://arxiv.org/abs/2604.06753.
+A F ROZEN PROTOCOL DETAILS
+A.1 S TAGE AND MANIFEST CONTRACT
+The final manifest is created only after DEVELOPMENT. If any package-defining element changes
+thereafter, all TRAIN, TUNE, AUDIT, and TEST rollout-derived labels are regenerated. The
+executable order is:
+DEVELOPMENT (disjoint): validate modes, templates, parsers,
+retries, throughput, and one scalar ledger; apply the
+cellwise cap rule; run high-repeat and full-pipeline
+design simulations; freeze the manifest.
+TRAIN: collect K draws from both frozen packages;
+aggregate one row per input;
+fit winner, factorized, and TaskCognition methods.
+TUNE: calibrate/search with E_w; freeze one candidate and
+hash per method.
+AUDIT: apply each candidate once; compute empirical-
+Bernstein B/Z/C/Delta
+checks; on any failure deploy direct. Never retune on audit.
+TEST: evaluate frozen deployments; force D and R offline
+only after the selected action is logged; never update
+a gate.
+A.2 P LANNED SAMPLE MANIFEST
+Table 3 contains provisional design placeholders, not results. Development may change them before
+final labels; after the manifest is frozen, test access cannot.
+10
+
+=== PAGE 11 ===
+540
+541
+542
+543
+544
+545
+546
+547
+548
+549
+550
+551
+552
+553
+554
+555
+556
+557
+558
+559
+560
+561
+562
+563
+564
+565
+566
+567
+568
+569
+570
+571
+572
+573
+574
+575
+576
+577
+578
+579
+580
+581
+582
+583
+584
+585
+586
+587
+588
+589
+590
+591
+592
+593
+Under review as a conference paper at ICLR 2027
+Table 3: Provisional balanced counts to be finalized by development simulation.
+Source Development Train Tune Audit Test
+Reasoning Gym, per family TBD 200 75 n/6 100
+Reasoning Gym, six families TBD 1200 450 n 600
+LLMThinkBench 0 0 0 0 descriptive
+Independent diagnostic TBD 0 0 0 descriptive
+Table 4: Planned learned-method adequacy report; all result cells are empty.
+Method Selected N Weighted route ¯B/LB Raw nested successes Kish Audit action
+Winner — — — — — —
+Factorized — — — — — —
+TASK COGNITION — — — — — —
+A.3 A UDIT IMPLEMENTATION AND DESCRIPTIVE BOOTSTRAP
+For each method, analysis verifies the candidate hash and complete balanced family membership,
+computes Eq. 16 from one row per input, checks the frozen ranges, and evaluates Eq. 18 without
+candidate search. The all-in cost bound includes the gate and all dispatched attempts. A missing,
+failed, or mismatched audit artifact invokes direct deployment.
+Any descriptive bootstrap resamples complete inputs within each family, recomputes Ew and every
+ratio inside the replicate, and uses a frozen replicate count, seed, interval rule, and zero-denominator
+convention. Such intervals do not determine deployment. Package-output reports are mode-by-
+family and separate admitted generations, pre-admission retries, transport/timeouts, finish reason,
+cap-without-final, native-delimiter errors, outer-wrapper errors, native-syntax errors, valid partial
+credit, completed wrong answers, and successes.
+B S ECONDARY ANALYSES AND INTERPRETIVE BOUNDARIES
+Per-family score, cost, routing, Rspoil, direct-success mass, RDD, ∆DD, and the three score contrasts
+will be reported descriptively. External suites and renderer variants never inherit the original-renderer
+audit. If latent-ID pairing is available, renderer comparisons resample latent-problem clusters;
+otherwise only separate fixed-case values are shown.
+A future cascade analysis must retain each direct preview jointly with its confidence and correctness,
+charge that preview and all escalation work, and define a preview-conditional risk such as
+E[eYD0(1 − YR1)]
+E[eYD0] ,
+where e may observe (X, YD0) and YR1 is an independent reasoning draw. It is not numerically
+interchangeable with Eq. 3 and cannot be inserted into the primary table. Cost-aware Lagrangians,
+per-query bounds, additional checkpoints, tools, agents, and new policy checkpoints likewise require
+separate protocols.
+C P RE-EXECUTION CHECKLIST
+Before final rollouts, the authors will verify: six-family development coverage; Qwen mode sep-
+aration; serialized template hashes; strict parser order; terminal cap decision; the retry/admission
+state machine; one scalar cost schedule and hard bounds; high-repeat target-variance estimates;
+full-pipeline false-enable and power simulations; frozen K, n, bmin, α, β, δscore; disjoint seed and
+latent-ID manifests; candidate-resource parity; and analysis unit tests. This checklist authorizes
+implementation only; it cannot be filled with post-test choices.
+11
+
+=== PAGE 12 ===
+594
+595
+596
+597
+598
+599
+600
+601
+602
+603
+604
+605
+606
+607
+608
+609
+610
+611
+612
+613
+614
+615
+616
+617
+618
+619
+620
+621
+622
+623
+624
+625
+626
+627
+628
+629
+630
+631
+632
+633
+634
+635
+636
+637
+638
+639
+640
+641
+642
+643
+644
+645
+646
+647
+Under review as a conference paper at ICLR 2027
+Table 5: Planned package quality-control report, stratified by the two modes and six families; all cells
+are empty.
+Mode–family cell Admitted N Valid FINAL Cap/no final Native delimiter Wrapper/syntax Partial/wrong
+Direct, six cells — — — — — —
+Reasoning, six cells — — — — — —
+12

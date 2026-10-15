@@ -1,0 +1,69 @@
+{
+  "evidence_kind": "development_observation",
+  "analysis_kind": "prospective_analytical_scenarios",
+  "declared_utc": "2026-10-15T20:40:22.407165+00:00",
+  "adopted": false,
+  "not_audit": true,
+  "not_simulation": true,
+  "fixed_rules": [
+    "always_D",
+    "always_R",
+    "observed_positive_benefit",
+    "complement_positive_benefit"
+  ],
+  "n_grid": [
+    24,
+    120,
+    450,
+    1200,
+    2400,
+    6000,
+    15000
+  ],
+  "alpha_grid": [
+    0.01,
+    0.05,
+    0.1
+  ],
+  "b_min_grid": [
+    0.01,
+    0.05
+  ],
+  "gamma": 0.05,
+  "range_widths": {
+    "B": 1,
+    "Z": 1,
+    "Delta": 2,
+    "C": "symbolic independently justified W_C"
+  },
+  "rationale": "n=24 anchors observed clusters; 120 small breadth, 450 manuscript placeholder, 1200/2400/6000/15000 display resource scale. Alpha and b_min bracket illustrative risk/exposure magnitudes, never recommended tolerances. All combinations retained; no candidate search.",
+  "future_moment_assumption": "Illustrations hold the 24-row descriptive mean and sample variance fixed as n changes; no duplicated rows or new evidence.",
+  "delta_score": "symbolic, unfrozen test-superiority margin; not the audit noninferiority margin",
+  "rare_event_grid": {
+    "p_D": [
+      0.1,
+      0.5
+    ],
+    "p_R": [
+      0.95,
+      0.99
+    ],
+    "K": [
+      4,
+      8,
+      16
+    ]
+  },
+  "rare_event_rationale": "Algebraic probability of an all-zero empirical harm target under hypothetical independent Bernoulli D/R draws; not fitted probabilities or confidence bounds.",
+  "resource_comparison": {
+    "K": [
+      4,
+      8
+    ],
+    "fresh_breadth_inputs": 24,
+    "extra_repeats_on_existing_inputs": 4
+  },
+  "no_threshold_search": true,
+  "no_gate_fit": true,
+  "no_final_audit_path": true
+}

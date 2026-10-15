@@ -1,0 +1,20 @@
+{
+  "evidence_kind": "development_observation",
+  "analysis_kind": "offline_design",
+  "status": "PASS",
+  "timestamp_utc": "2026-10-15T20:43:00.167087+00:00",
+  "source_sha256": "7f88ba24ac16bad02a1cb62637e12bce56017aa3d0439679b3c490f5431dd968",
+  "declaration_sha256": "5590add41dd6f637dfce6949b397d8a386b91fbd3e73be42760da7260679bca1",
+  "bound_records_read": 7837,
+  "wall_seconds": 3.4861601000011433,
+  "cpu_seconds": 3.40625,
+  "new_model_loads": 0,
+  "new_feature_forwards": 0,
+  "new_answer_generations": 0,
+  "new_gpu_work": 0,
+  "gate_fits": 0,
+  "simulations": 0,
+  "final_labels": 0,
+  "no_model_or_final_audit_import": true,
+  "scientific_choices_adopted": false
+}

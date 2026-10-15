@@ -1,0 +1,12 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-10-15T20:42:56.568255+00:00",
+  "argv": [
+    ".venv/Scripts/python.exe",
+    "scripts/p02e_analyze.py"
+  ],
+  "exit": 0,
+  "seconds": 3.6164771000039764,
+  "stdout": "{\"evidence_kind\": \"development_observation\", \"analysis_kind\": \"offline_design\", \"outcomes\": 192, \"clusters\": 24, \"K\": 4, \"perfect_D\": 30, \"perfect_R\": 64, \"strict_D\": 66, \"strict_R\": 64, \"positive_benefit\": 11, \"zero_benefit\": 13, \"negative_benefit\": 0, \"zero_harm_targets\": 24, \"inputs_with_D_success\": 8, \"all_scores_binary\": true, \"historical_draws_pooled\": false, \"allround_answer_worker_mean\": 59.93415316614581, \"last_round_answer_worker_mean\": 66.4907632770831, \"breadth_vs_depth\": {\"equal_answer_budget\": 192, \"fresh_24_K4\": \"24 new clusters; historical 24 remain a separate tranche\", \"existing_24_extra_K4\": \"same 24 clusters at K8; never increases independent n\"}, \"scalar_ledger_adopted\": false, \"alpha_bmin_beta_delta_n_K_frozen\": false}\n{\"load_components\": 3273.9836641999573, \"generation_and_forward_components\": 5589.179833699989, \"cpu_feature_component\": 0.03464279999752762, \"cleanup_components\": 0.061383700023725396, \"unallocated_within_residency\": 2696.962216900025, \"outside_residency_in_execution_wall\": 1276.6011699000082, \"summed_residency\": 11560.221741299993, \"execution_wall\": 12836.8229112}\n",
+  "stderr": ""
+}
