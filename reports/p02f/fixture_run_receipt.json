@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "evidence_kind": "fixture",
+  "timestamp_utc": "2026-10-17T23:00:26.605948+00:00",
+  "source_sha256": "56e80fe3a64aff63b7ffadc12b9920172b696908dbba2ecff56b49ac387a80a2",
+  "script_sha256": "c3783b0f8fc5fa0ab78c82fd8fa0242ffd48dccd34301b80db320f87f85765c3",
+  "wall_seconds": 0.18015140003990382,
+  "cpu_seconds": 0.109375,
+  "fixture_cases": 6,
+  "actual_model_loads": 0,
+  "actual_forwards": 0,
+  "actual_answers": 0,
+  "actual_gpu_work": 0,
+  "note": "Fake stages only; no final audit, learned gate or full-pipeline simulation."
+}

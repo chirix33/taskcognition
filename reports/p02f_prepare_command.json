@@ -1,0 +1,12 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-10-17T22:53:58.012272+00:00",
+  "argv": [
+    ".venv/Scripts/python.exe",
+    "scripts/p02f_prepare.py"
+  ],
+  "exit": 0,
+  "seconds": 1.0158924999996088,
+  "stdout": "{\"status\": \"PASS\", \"indexed_files\": 63, \"adoption_utc\": \"2026-10-17T22:53:58.271333+00:00\", \"model_work\": 0}\n",
+  "stderr": ""
+}

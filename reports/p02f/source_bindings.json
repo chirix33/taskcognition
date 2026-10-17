@@ -1,0 +1,20 @@
+{
+  "evidence_kind": "fixture",
+  "protocol": "P02F-cost-fixture-v1",
+  "new_files": {
+    "src/taskcognition/p02f_cost_v1.py": "56e80fe3a64aff63b7ffadc12b9920172b696908dbba2ecff56b49ac387a80a2",
+    "tests/test_p02f_cost_v1.py": "87e29d7171438d73218a75e77535516b896b0a682c0c65cd830ad691b94ce6f1",
+    "scripts/p02f_prepare.py": "84e9611bccb1edc5bb4d6458264abebf1b67039150fc4290cd64e4f065daf1d0",
+    "scripts/p02f_fixture_evidence.py": "c3783b0f8fc5fa0ab78c82fd8fa0242ffd48dccd34301b80db320f87f85765c3"
+  },
+  "unchanged_helpers": {
+    "src/taskcognition/__init__.py": "4ab2849ffae20f4bda207b801c05e98ec79a6633dde0389455ec218a2b3416c7",
+    "src/taskcognition/p02d_publication.py": "dae6f9cbba184e8b4c5f5aaf0ec87c1d8f92562c6320ddf137c754b6bda103ae",
+    "src/taskcognition/artifacts.py": "d9305b414d243901c142483992f10fef2b13fe1d82e938d3db29fbc55979812d",
+    "src/taskcognition/contracts.py": "26bd43c723106dc6318d44601b1e464ceca6632b16ec1964fd6b61af057cf8a0"
+  },
+  "reviewed_model_plan_sha256": "c46977bfc0de1040965f08df8acbd55b9b063b386ccfb97f247a280ae2472365",
+  "no_inference_environment_import": true,
+  "no_plan_created": true,
+  "real_dispatch_enabled": false
+}

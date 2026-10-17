@@ -1,0 +1,12 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-10-17T23:00:26.281565+00:00",
+  "argv": [
+    ".venv/Scripts/python.exe",
+    "scripts/p02f_fixture_evidence.py"
+  ],
+  "exit": 0,
+  "seconds": 0.33625819999724627,
+  "stdout": "{\"status\": \"PASS\", \"fixture_cases\": 6, \"model_work\": 0}\n",
+  "stderr": ""
+}

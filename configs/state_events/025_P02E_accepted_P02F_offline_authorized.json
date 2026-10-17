@@ -1,0 +1,16 @@
+{
+  "event": "P02E_ACCEPTED_P02F_OFFLINE_AUTHORIZED",
+  "timestamp_utc": "2026-10-17T22:53:58.271333+00:00",
+  "user_conveyed_acceptance_date": "2026-10-17",
+  "timezone": "America/Chicago",
+  "acceptance_verbatim": "Decision: P02E OFFLINE DESIGN ACCEPTED.",
+  "review_sha256": "224c5faede6c8200e0a8216de53f078362c089dfcb4001031f201adb54d760b3",
+  "prompt_sha256": "b664650e7d37ad27b18d1a476cac8562996ccdf99fa296661124012eb3ad2433",
+  "verification": "reports/p02f/acceptance_verification.json",
+  "previous_state_sha256": "c14e29b0366d566682e7b18939ac5eb88775020e19f03b509b6884e144c19c4a",
+  "real_dispatch_enabled": false,
+  "p02_sealed": false,
+  "p03_started": false,
+  "study_frozen": false,
+  "scope": "Offline cost decision and minimal fixture-only prototype; consumed P02D authorization remains closed."
+}

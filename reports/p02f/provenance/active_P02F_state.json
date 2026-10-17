@@ -1,0 +1,21 @@
+{
+  "accepted_previous_checkpoint": "P02E_OFFLINE_DESIGN",
+  "accepted_previous_checkpoint_record": "configs/state_events/025_P02E_accepted_P02F_offline_authorized.json",
+  "accepted_previous_phase": "P01",
+  "accepted_previous_seal": "reports/phases/P01_accepted_seal.md",
+  "active_phase": "P02F",
+  "amendment_sha256": "ec07c0133224fb10f535fc9ac4d0816d12fb10acc683c09043de717cc089c0b8",
+  "authorized_next_phase": null,
+  "checkpoint": "OFFLINE_COST_BOUNDARY_PREFLIGHT",
+  "latest_event": "configs/state_events/025_P02E_accepted_P02F_offline_authorized.json",
+  "p02_sealed": false,
+  "p02b_plan_sha256": "9afcea3b3fe41aa39cfbf44e30f81514128f077ecdb42a18f13fb25f8f2eff36",
+  "p02d_authorization_sha256": "db66a4d9dde575496c66587f7d2cf1fcaf68f933c8851e53d6c6ed3bf30de2e0",
+  "p02d_plan_sha256": "c46977bfc0de1040965f08df8acbd55b9b063b386ccfb97f247a280ae2472365",
+  "p03_started": false,
+  "parent_phase": "P02",
+  "real_dispatch_enabled": false,
+  "specification_version": "TaskCognition-CR01-2026-10-05-v1",
+  "status": "IN_PROGRESS",
+  "study_freeze": null
+}

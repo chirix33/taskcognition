@@ -1,0 +1,13 @@
+{
+  "status": "PASS_WITH_COST_DESIGN_BLOCK",
+  "evidence_kind": "fixture",
+  "final_focused_checks": 12,
+  "initial_attempt": "9 filesystem PermissionError failures among 11 checks; sandbox denied hard links.",
+  "windows_run": "11 passed after authorized filesystem escalation; final 12 passed after cumulative budget check added.",
+  "previous_production_sources_unchanged": true,
+  "fixture_cases": 6,
+  "actual_model_work": 0,
+  "limits": "Fixtures verify accounting semantics only, not support, hardware termination, real tensor/RNG equivalence, or final calibration.",
+  "full_regression": "Not run; no historical implementation changed. Relevant publication/reader boundaries exercised directly.",
+  "incidental_read_error": "An exploratory read of nonexistent src/taskcognition/evidence.py reported missing path; actual artifacts.py and contracts.py were read. No mutation or runtime impact."
+}

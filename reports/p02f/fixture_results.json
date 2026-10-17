@@ -1,0 +1,704 @@
+{
+  "evidence_kind": "fixture",
+  "not_empirical": true,
+  "synthetic_clock_units": "illustrative seconds, not observed hardware measurements",
+  "records": {
+    "warmup_augmented": {
+      "evidence_kind": "fixture",
+      "status": "COMPLETE_FIXTURE",
+      "claim_sha256": "8f4bed2a41b3604ef87f258479b2b3230b54abcf2518361b2fe9c9982056c090",
+      "primary_score": 1,
+      "error": null,
+      "accounting": {
+        "observed_elapsed_seconds": 17.35,
+        "total_service_seconds": 17.35,
+        "incurred_lower_bound_seconds": 17.35,
+        "exclusive_component_seconds": 17.35,
+        "unallocated_residual_seconds": 0.0,
+        "nested_components_additive": false,
+        "safe_stopped": true,
+        "hard_support_bound_seconds": null
+      },
+      "events": [
+        {
+          "name": "validation",
+          "start": 0.0,
+          "end": 2.0,
+          "nested": []
+        },
+        {
+          "name": "load",
+          "start": 2.0,
+          "end": 6.0,
+          "nested": []
+        },
+        {
+          "name": "warmup",
+          "start": 6.0,
+          "end": 7.0,
+          "nested": []
+        },
+        {
+          "name": "warmup",
+          "start": 7.0,
+          "end": 8.0,
+          "nested": []
+        },
+        {
+          "name": "raw_tokenization",
+          "start": 8.0,
+          "end": 9.0,
+          "nested": []
+        },
+        {
+          "name": "feature",
+          "start": 9.0,
+          "end": 10.0,
+          "nested": []
+        },
+        {
+          "name": "cheap_observables",
+          "start": 10.0,
+          "end": 10.25,
+          "nested": []
+        },
+        {
+          "name": "fixed_action",
+          "start": 10.25,
+          "end": 10.5,
+          "nested": []
+        },
+        {
+          "name": "prompt",
+          "start": 10.5,
+          "end": 11.0,
+          "nested": []
+        },
+        {
+          "name": "reseed",
+          "start": 11.0,
+          "end": 11.1,
+          "nested": []
+        },
+        {
+          "name": "answer",
+          "start": 11.1,
+          "end": 14.1,
+          "nested": []
+        },
+        {
+          "name": "strict_handling",
+          "start": 14.1,
+          "end": 14.6,
+          "nested": []
+        },
+        {
+          "name": "response_ack",
+          "start": 14.6,
+          "end": 15.1,
+          "nested": []
+        },
+        {
+          "name": "cleanup",
+          "start": 15.1,
+          "end": 17.1,
+          "nested": []
+        },
+        {
+          "name": "terminal_handling",
+          "start": 17.1,
+          "end": 17.35,
+          "nested": []
+        }
+      ],
+      "loads": 1,
+      "feature_attempts": 3,
+      "answer_attempts": 1,
+      "warmups": 2,
+      "warmup_seconds": 2.0,
+      "warmups_in_elapsed": true,
+      "head_cost_seconds": null,
+      "learned_gate": false,
+      "all_in_reference_calibration": false,
+      "bypass_path_directly_exercised": false,
+      "reservation_seconds": 690,
+      "overshoot_seconds": 0,
+      "output_tokens_observed": null,
+      "output_tokens_reserved": 2048,
+      "model_work": 0
+    },
+    "retained_failure": {
+      "evidence_kind": "fixture",
+      "status": "COMPLETE_FIXTURE",
+      "claim_sha256": "c0190f85991e58a91b95888956620cd9ad2d5eadf24dd3785bf5b036aebe0d42",
+      "primary_score": 0,
+      "error": null,
+      "accounting": {
+        "observed_elapsed_seconds": 15.35,
+        "total_service_seconds": 15.35,
+        "incurred_lower_bound_seconds": 15.35,
+        "exclusive_component_seconds": 15.35,
+        "unallocated_residual_seconds": 0.0,
+        "nested_components_additive": false,
+        "safe_stopped": true,
+        "hard_support_bound_seconds": null
+      },
+      "events": [
+        {
+          "name": "validation",
+          "start": 0.0,
+          "end": 2.0,
+          "nested": []
+        },
+        {
+          "name": "load",
+          "start": 2.0,
+          "end": 6.0,
+          "nested": []
+        },
+        {
+          "name": "raw_tokenization",
+          "start": 6.0,
+          "end": 7.0,
+          "nested": []
+        },
+        {
+          "name": "feature",
+          "start": 7.0,
+          "end": 8.0,
+          "nested": []
+        },
+        {
+          "name": "cheap_observables",
+          "start": 8.0,
+          "end": 8.25,
+          "nested": []
+        },
+        {
+          "name": "fixed_action",
+          "start": 8.25,
+          "end": 8.5,
+          "nested": []
+        },
+        {
+          "name": "prompt",
+          "start": 8.5,
+          "end": 9.0,
+          "nested": []
+        },
+        {
+          "name": "reseed",
+          "start": 9.0,
+          "end": 9.1,
+          "nested": []
+        },
+        {
+          "name": "answer",
+          "start": 9.1,
+          "end": 12.1,
+          "nested": []
+        },
+        {
+          "name": "strict_handling",
+          "start": 12.1,
+          "end": 12.6,
+          "nested": []
+        },
+        {
+          "name": "response_ack",
+          "start": 12.6,
+          "end": 13.1,
+          "nested": []
+        },
+        {
+          "name": "cleanup",
+          "start": 13.1,
+          "end": 15.1,
+          "nested": []
+        },
+        {
+          "name": "terminal_handling",
+          "start": 15.1,
+          "end": 15.35,
+          "nested": []
+        }
+      ],
+      "loads": 1,
+      "feature_attempts": 1,
+      "answer_attempts": 1,
+      "warmups": 0,
+      "warmup_seconds": 0,
+      "warmups_in_elapsed": true,
+      "head_cost_seconds": null,
+      "learned_gate": false,
+      "all_in_reference_calibration": false,
+      "bypass_path_directly_exercised": false,
+      "reservation_seconds": 450,
+      "overshoot_seconds": 0,
+      "output_tokens_observed": null,
+      "output_tokens_reserved": 2048,
+      "model_work": 0
+    },
+    "feature_incident": {
+      "evidence_kind": "fixture",
+      "status": "INTEGRITY_INCIDENT",
+      "claim_sha256": "c0190f85991e58a91b95888956620cd9ad2d5eadf24dd3785bf5b036aebe0d42",
+      "primary_score": null,
+      "error": "injected feature failure",
+      "accounting": {
+        "observed_elapsed_seconds": 10.25,
+        "total_service_seconds": 10.25,
+        "incurred_lower_bound_seconds": 10.25,
+        "exclusive_component_seconds": 10.25,
+        "unallocated_residual_seconds": 0.0,
+        "nested_components_additive": false,
+        "safe_stopped": true,
+        "hard_support_bound_seconds": null
+      },
+      "events": [
+        {
+          "name": "validation",
+          "start": 0.0,
+          "end": 2.0,
+          "nested": []
+        },
+        {
+          "name": "load",
+          "start": 2.0,
+          "end": 6.0,
+          "nested": []
+        },
+        {
+          "name": "raw_tokenization",
+          "start": 6.0,
+          "end": 7.0,
+          "nested": []
+        },
+        {
+          "name": "feature",
+          "start": 7.0,
+          "end": 8.0,
+          "nested": []
+        },
+        {
+          "name": "cleanup",
+          "start": 8.0,
+          "end": 10.0,
+          "nested": []
+        },
+        {
+          "name": "terminal_handling",
+          "start": 10.0,
+          "end": 10.25,
+          "nested": []
+        }
+      ],
+      "loads": 1,
+      "feature_attempts": 1,
+      "answer_attempts": 0,
+      "warmups": 0,
+      "warmup_seconds": 0,
+      "warmups_in_elapsed": true,
+      "head_cost_seconds": null,
+      "learned_gate": false,
+      "all_in_reference_calibration": false,
+      "bypass_path_directly_exercised": false,
+      "reservation_seconds": 450,
+      "overshoot_seconds": 0,
+      "output_tokens_observed": null,
+      "output_tokens_reserved": 2048,
+      "model_work": 0
+    },
+    "unsafe_stop": {
+      "evidence_kind": "fixture",
+      "status": "INTEGRITY_INCIDENT",
+      "claim_sha256": "c0190f85991e58a91b95888956620cd9ad2d5eadf24dd3785bf5b036aebe0d42",
+      "primary_score": null,
+      "error": "safe stop unresolved",
+      "accounting": {
+        "observed_elapsed_seconds": 25.35,
+        "total_service_seconds": null,
+        "incurred_lower_bound_seconds": 25.35,
+        "exclusive_component_seconds": 25.35,
+        "unallocated_residual_seconds": 0.0,
+        "nested_components_additive": false,
+        "safe_stopped": false,
+        "hard_support_bound_seconds": null
+      },
+      "events": [
+        {
+          "name": "validation",
+          "start": 0.0,
+          "end": 2.0,
+          "nested": []
+        },
+        {
+          "name": "load",
+          "start": 2.0,
+          "end": 6.0,
+          "nested": []
+        },
+        {
+          "name": "raw_tokenization",
+          "start": 6.0,
+          "end": 7.0,
+          "nested": []
+        },
+        {
+          "name": "feature",
+          "start": 7.0,
+          "end": 8.0,
+          "nested": []
+        },
+        {
+          "name": "cheap_observables",
+          "start": 8.0,
+          "end": 8.25,
+          "nested": []
+        },
+        {
+          "name": "fixed_action",
+          "start": 8.25,
+          "end": 8.5,
+          "nested": []
+        },
+        {
+          "name": "prompt",
+          "start": 8.5,
+          "end": 9.0,
+          "nested": []
+        },
+        {
+          "name": "reseed",
+          "start": 9.0,
+          "end": 9.1,
+          "nested": []
+        },
+        {
+          "name": "answer",
+          "start": 9.1,
+          "end": 12.1,
+          "nested": []
+        },
+        {
+          "name": "cancel",
+          "start": 12.1,
+          "end": 22.1,
+          "nested": []
+        },
+        {
+          "name": "strict_handling",
+          "start": 22.1,
+          "end": 22.6,
+          "nested": []
+        },
+        {
+          "name": "response_ack",
+          "start": 22.6,
+          "end": 23.1,
+          "nested": []
+        },
+        {
+          "name": "cleanup",
+          "start": 23.1,
+          "end": 25.1,
+          "nested": []
+        },
+        {
+          "name": "terminal_handling",
+          "start": 25.1,
+          "end": 25.35,
+          "nested": []
+        }
+      ],
+      "loads": 1,
+      "feature_attempts": 1,
+      "answer_attempts": 1,
+      "warmups": 0,
+      "warmup_seconds": 0,
+      "warmups_in_elapsed": true,
+      "head_cost_seconds": null,
+      "learned_gate": false,
+      "all_in_reference_calibration": false,
+      "bypass_path_directly_exercised": false,
+      "reservation_seconds": 450,
+      "overshoot_seconds": 0,
+      "output_tokens_observed": null,
+      "output_tokens_reserved": 2048,
+      "model_work": 0
+    },
+    "overshoot": {
+      "evidence_kind": "fixture",
+      "status": "STOPPED_INCOMPLETE",
+      "claim_sha256": "c0190f85991e58a91b95888956620cd9ad2d5eadf24dd3785bf5b036aebe0d42",
+      "primary_score": 0,
+      "error": null,
+      "accounting": {
+        "observed_elapsed_seconds": 522.35,
+        "total_service_seconds": 522.35,
+        "incurred_lower_bound_seconds": 522.35,
+        "exclusive_component_seconds": 522.35,
+        "unallocated_residual_seconds": 0.0,
+        "nested_components_additive": false,
+        "safe_stopped": true,
+        "hard_support_bound_seconds": null
+      },
+      "events": [
+        {
+          "name": "validation",
+          "start": 0.0,
+          "end": 2.0,
+          "nested": []
+        },
+        {
+          "name": "load",
+          "start": 2.0,
+          "end": 6.0,
+          "nested": []
+        },
+        {
+          "name": "raw_tokenization",
+          "start": 6.0,
+          "end": 7.0,
+          "nested": []
+        },
+        {
+          "name": "feature",
+          "start": 7.0,
+          "end": 8.0,
+          "nested": []
+        },
+        {
+          "name": "cheap_observables",
+          "start": 8.0,
+          "end": 8.25,
+          "nested": []
+        },
+        {
+          "name": "fixed_action",
+          "start": 8.25,
+          "end": 8.5,
+          "nested": []
+        },
+        {
+          "name": "prompt",
+          "start": 8.5,
+          "end": 9.0,
+          "nested": []
+        },
+        {
+          "name": "reseed",
+          "start": 9.0,
+          "end": 9.1,
+          "nested": []
+        },
+        {
+          "name": "answer",
+          "start": 9.1,
+          "end": 509.1,
+          "nested": []
+        },
+        {
+          "name": "cancel",
+          "start": 509.1,
+          "end": 519.1,
+          "nested": []
+        },
+        {
+          "name": "strict_handling",
+          "start": 519.1,
+          "end": 519.6,
+          "nested": []
+        },
+        {
+          "name": "response_ack",
+          "start": 519.6,
+          "end": 520.1,
+          "nested": []
+        },
+        {
+          "name": "cleanup",
+          "start": 520.1,
+          "end": 522.1,
+          "nested": []
+        },
+        {
+          "name": "terminal_handling",
+          "start": 522.1,
+          "end": 522.35,
+          "nested": []
+        }
+      ],
+      "loads": 1,
+      "feature_attempts": 1,
+      "answer_attempts": 1,
+      "warmups": 0,
+      "warmup_seconds": 0,
+      "warmups_in_elapsed": true,
+      "head_cost_seconds": null,
+      "learned_gate": false,
+      "all_in_reference_calibration": false,
+      "bypass_path_directly_exercised": false,
+      "reservation_seconds": 450,
+      "overshoot_seconds": 72.35000000000002,
+      "output_tokens_observed": null,
+      "output_tokens_reserved": 2048,
+      "model_work": 0
+    },
+    "resource_stop": {
+      "first": {
+        "evidence_kind": "fixture",
+        "status": "COMPLETE_FIXTURE",
+        "claim_sha256": "c4f7290136afdc185256c783ebe88a57c378287c4a4c0ca1ac8eaf4b41c0e1d0",
+        "primary_score": 1,
+        "error": null,
+        "accounting": {
+          "observed_elapsed_seconds": 15.35,
+          "total_service_seconds": 15.35,
+          "incurred_lower_bound_seconds": 15.35,
+          "exclusive_component_seconds": 15.35,
+          "unallocated_residual_seconds": 0.0,
+          "nested_components_additive": false,
+          "safe_stopped": true,
+          "hard_support_bound_seconds": null
+        },
+        "events": [
+          {
+            "name": "validation",
+            "start": 0.0,
+            "end": 2.0,
+            "nested": []
+          },
+          {
+            "name": "load",
+            "start": 2.0,
+            "end": 6.0,
+            "nested": []
+          },
+          {
+            "name": "raw_tokenization",
+            "start": 6.0,
+            "end": 7.0,
+            "nested": []
+          },
+          {
+            "name": "feature",
+            "start": 7.0,
+            "end": 8.0,
+            "nested": []
+          },
+          {
+            "name": "cheap_observables",
+            "start": 8.0,
+            "end": 8.25,
+            "nested": []
+          },
+          {
+            "name": "fixed_action",
+            "start": 8.25,
+            "end": 8.5,
+            "nested": []
+          },
+          {
+            "name": "prompt",
+            "start": 8.5,
+            "end": 9.0,
+            "nested": []
+          },
+          {
+            "name": "reseed",
+            "start": 9.0,
+            "end": 9.1,
+            "nested": []
+          },
+          {
+            "name": "answer",
+            "start": 9.1,
+            "end": 12.1,
+            "nested": []
+          },
+          {
+            "name": "strict_handling",
+            "start": 12.1,
+            "end": 12.6,
+            "nested": []
+          },
+          {
+            "name": "response_ack",
+            "start": 12.6,
+            "end": 13.1,
+            "nested": []
+          },
+          {
+            "name": "cleanup",
+            "start": 13.1,
+            "end": 15.1,
+            "nested": []
+          },
+          {
+            "name": "terminal_handling",
+            "start": 15.1,
+            "end": 15.35,
+            "nested": []
+          }
+        ],
+        "loads": 1,
+        "feature_attempts": 1,
+        "answer_attempts": 1,
+        "warmups": 0,
+        "warmup_seconds": 0,
+        "warmups_in_elapsed": true,
+        "head_cost_seconds": null,
+        "learned_gate": false,
+        "all_in_reference_calibration": false,
+        "bypass_path_directly_exercised": false,
+        "reservation_seconds": 450,
+        "overshoot_seconds": 0,
+        "output_tokens_observed": null,
+        "output_tokens_reserved": 2048,
+        "model_work": 0
+      },
+      "stop": {
+        "status": "STOPPED_INCOMPLETE",
+        "resource_stop": true,
+        "admitted": false,
+        "reservation_seconds": 450,
+        "primary_score": null,
+        "accounting": {
+          "observed_elapsed_seconds": 3.0,
+          "total_service_seconds": 3.0,
+          "incurred_lower_bound_seconds": 3.0,
+          "exclusive_component_seconds": 3.0,
+          "unallocated_residual_seconds": 0.0,
+          "nested_components_additive": false,
+          "safe_stopped": true,
+          "hard_support_bound_seconds": null
+        },
+        "events": [
+          {
+            "name": "validation",
+            "start": 0.0,
+            "end": 2.0,
+            "nested": []
+          },
+          {
+            "name": "rejection_response",
+            "start": 2.0,
+            "end": 3.0,
+            "nested": []
+          }
+        ]
+      },
+      "recovered": {
+        "consumed": [
+          "slot_000"
+        ],
+        "unresolved": [],
+        "stop_dispatch": true,
+        "known_incurred_seconds": 18.35,
+        "unknown_cost_slots": [],
+        "evidence_kind": "fixture"
+      }
+    }
+  }
+}

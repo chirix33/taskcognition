@@ -1,0 +1,812 @@
+diff --git a/configs/phase_state.json b/configs/phase_state.json
+index c4e4941..01c21f5 100644
+--- a/configs/phase_state.json
++++ b/configs/phase_state.json
+@@ -1,21 +1,21 @@
+-{
+-  "accepted_previous_checkpoint": "P02D_EXECUTION",
+-  "accepted_previous_checkpoint_record": "configs/state_events/023_P02D_execution_accepted_P02E_authorized.json",
+-  "accepted_previous_phase": "P01",
+-  "accepted_previous_seal": "reports/phases/P01_accepted_seal.md",
+-  "active_phase": "P02E",
+-  "amendment_sha256": "ec07c0133224fb10f535fc9ac4d0816d12fb10acc683c09043de717cc089c0b8",
+-  "authorized_next_phase": null,
+-  "checkpoint": "OFFLINE_DESIGN_REVIEW",
+-  "latest_event": "configs/state_events/024_P02E_offline_design_review_checkpoint.json",
+-  "p02_sealed": false,
+-  "p02b_plan_sha256": "9afcea3b3fe41aa39cfbf44e30f81514128f077ecdb42a18f13fb25f8f2eff36",
+-  "p02d_authorization_sha256": "db66a4d9dde575496c66587f7d2cf1fcaf68f933c8851e53d6c6ed3bf30de2e0",
+-  "p02d_plan_sha256": "c46977bfc0de1040965f08df8acbd55b9b063b386ccfb97f247a280ae2472365",
+-  "p03_started": false,
+-  "parent_phase": "P02",
+-  "real_dispatch_enabled": false,
+-  "specification_version": "TaskCognition-CR01-2026-10-05-v1",
+-  "status": "READY_FOR_REVIEW",
+-  "study_freeze": null
+-}
++{
++  "accepted_previous_checkpoint": "P02E_OFFLINE_DESIGN",
++  "accepted_previous_checkpoint_record": "configs/state_events/025_P02E_accepted_P02F_offline_authorized.json",
++  "accepted_previous_phase": "P01",
++  "accepted_previous_seal": "reports/phases/P01_accepted_seal.md",
++  "active_phase": "P02F",
++  "amendment_sha256": "ec07c0133224fb10f535fc9ac4d0816d12fb10acc683c09043de717cc089c0b8",
++  "authorized_next_phase": null,
++  "checkpoint": "OFFLINE_COST_BOUNDARY_PREFLIGHT",
++  "latest_event": "configs/state_events/026_P02F_cost_design_blocked.json",
++  "p02_sealed": false,
++  "p02b_plan_sha256": "9afcea3b3fe41aa39cfbf44e30f81514128f077ecdb42a18f13fb25f8f2eff36",
++  "p02d_authorization_sha256": "db66a4d9dde575496c66587f7d2cf1fcaf68f933c8851e53d6c6ed3bf30de2e0",
++  "p02d_plan_sha256": "c46977bfc0de1040965f08df8acbd55b9b063b386ccfb97f247a280ae2472365",
++  "p03_started": false,
++  "parent_phase": "P02",
++  "real_dispatch_enabled": false,
++  "specification_version": "TaskCognition-CR01-2026-10-05-v1",
++  "status": "COST_DESIGN_BLOCKED",
++  "study_freeze": null
++}
+diff --git a/configs/state_events/025_P02E_accepted_P02F_offline_authorized.json b/configs/state_events/025_P02E_accepted_P02F_offline_authorized.json
+new file mode 100644
+index 0000000..6a4cd45
+--- /dev/null
++++ b/configs/state_events/025_P02E_accepted_P02F_offline_authorized.json
+@@ -0,0 +1,16 @@
++{
++  "event": "P02E_ACCEPTED_P02F_OFFLINE_AUTHORIZED",
++  "timestamp_utc": "2026-10-17T22:53:58.271333+00:00",
++  "user_conveyed_acceptance_date": "2026-10-17",
++  "timezone": "America/Chicago",
++  "acceptance_verbatim": "Decision: P02E OFFLINE DESIGN ACCEPTED.",
++  "review_sha256": "224c5faede6c8200e0a8216de53f078362c089dfcb4001031f201adb54d760b3",
++  "prompt_sha256": "b664650e7d37ad27b18d1a476cac8562996ccdf99fa296661124012eb3ad2433",
++  "verification": "reports/p02f/acceptance_verification.json",
++  "previous_state_sha256": "c14e29b0366d566682e7b18939ac5eb88775020e19f03b509b6884e144c19c4a",
++  "real_dispatch_enabled": false,
++  "p02_sealed": false,
++  "p03_started": false,
++  "study_frozen": false,
++  "scope": "Offline cost decision and minimal fixture-only prototype; consumed P02D authorization remains closed."
++}
+diff --git a/configs/state_events/026_P02F_cost_design_blocked.json b/configs/state_events/026_P02F_cost_design_blocked.json
+new file mode 100644
+index 0000000..05ff2d1
+--- /dev/null
++++ b/configs/state_events/026_P02F_cost_design_blocked.json
+@@ -0,0 +1,14 @@
++{
++  "event": "P02F_COST_DESIGN_BLOCKED",
++  "timestamp_utc": "2026-10-17T23:01:59.542088+00:00",
++  "completion_sha256": "9e5ee456ae2bbc992c9039ca63cc28d9a9cc007872e50ba3988f1fcaa86448e2",
++  "memo_sha256": "82dacd099a1817f3db6d707c72403aa8d71e74e3116a450e188bcfc8857ef472",
++  "previous_state_sha256": "8c61f7329737f3b2cf3a0166c5b611c5f07aa3bdc7e3c9e7a1387c8690b00cd5",
++  "next_decision": "cost-metric selection",
++  "reason": "Physical-time support unsupported; tariff source/rates and head envelope unresolved.",
++  "real_dispatch_enabled": false,
++  "p02_sealed": false,
++  "p03_started": false,
++  "study_frozen": false,
++  "model_work": 0
++}
+diff --git a/reports/decision_ledger.md b/reports/decision_ledger.md
+index 3f5d17f..7f65644 100644
+--- a/reports/decision_ledger.md
++++ b/reports/decision_ledger.md
+@@ -66,3 +66,15 @@ P02D execution accepted once in event 023, user-conveyed coordinator decision **
+ | P02E next proposal | Next separately authorized offline cost-boundary/calibration preflight; contingent 12-existing-input, K=1/mode, 24-answer/26-feature diagnostic under 90-minute worker/120-minute wall/128-MiB ceilings. | **PROPOSAL ONLY / EXECUTION UNAPPROVED.** No new plan, seed or dispatch schedule materialized. Needs source/guard review and separate one-run authority. |
+ 
+ Detailed evidence: `reports/p02e/offline_design_report.md`, machine-readable tables and `next_step_proposal.md`. Historical P02A/P02B are not pooled. Native questions/scoring, runner, manuscript conclusions and old reports are unchanged. Residency interval starts before some process setup and ends before some terminal scans: this is a reporting-boundary clarification, not a change to the accepted 11,560.2217413 seconds. Growing ledger scans plausibly contribute to residual drift but lack isolated timing attribution. Earlier “pushed” statement remains corrected to **“nothing pushed”**; no new push or remote backup is inferred.
++
++## P02F offline cost-boundary checkpoint (2026-10-17T23:01:59.542088+00:00)
++
++P02E acceptance conveyed 2026-10-17 America/Chicago, recorded once in event 025 with actual workstation adoption timestamp. Verbatim decision: **“Decision: P02E OFFLINE DESIGN ACCEPTED.”** Review SHA-256 `224c5faede6c8200e0a8216de53f078362c089dfcb4001031f201adb54d760b3`. All 63 accepted indexed files matched historical ZIP and current bytes before state changes. Coordinator clarification: reproduction compared 15 regenerated outputs plus two copied provenance/declaration inputs, not 17 newly generated outputs. Historical evidence is unchanged.
++
++**P02F COST_DESIGN_BLOCKED.** D08/D09 remain unresolved: no justified finite support for actual all-in hardware service time on this platform. Additional timing samples do not establish it. Nominal ordinary/first deadline sums 430/670 seconds leave 20 seconds within 450/690 reservations for other mandatory work, with no established bound; no cap or reservation is enlarged.
++
++Recommended route **for decision only**: explicit monetary token/call reference-price schedule with justified startup, feature, head/calibration, answer prefill/output and terminal/failure charges. This changes the interpretation to price-relative efficiency, not actual paid fees or physical-time savings. User/coordinator must accept that scope and identify a rate source/owner, otherwise retain the physical-time design block or request a separately reviewed amendment. No rates, third metric, support interval, beta or scientific change adopted.
++
++Minimal separate `p02f_cost_v1.py` tests fixture accounting, atomic records, no replay and safe/unknown stop semantics. No live backend, plan or execution request exists; both public entries reject even superficially valid authorization. Twelve final focused checks and six synthetic examples use zero model/GPU work. Fake elapsed values are not empirical measurements. All prior source/scorer/runner bytes remain unchanged.
++
++D05/D13/D16 remain unresolved: feature-first fixed action is not a fitted gate or gate-bypassed D/R reference; head parity/calibration and startup/reference policy need review. Beta formula remains common and unchanged. D10-D12/D14/D17 remain open for resources, allocation/tolerances, theorem/simulation and backup. Neither 24/26 diagnostic nor a described +24-call bypass delta is authorized or materialized. P02 incomplete/unsealed, P03 unstarted, study unfrozen, dispatch false. See `reports/p02f/cost_contract_decision.md`, `lifecycle_and_accounting.md`, and `calibration_gap_and_blocked_alternative.md`.
+diff --git a/scripts/p02f_finalize.py b/scripts/p02f_finalize.py
+new file mode 100644
+index 0000000..7f44bfa
+--- /dev/null
++++ b/scripts/p02f_finalize.py
+@@ -0,0 +1,120 @@
++"""Close P02F at its explicit cost-design block; no live plan is created."""
++from datetime import datetime,timezone
++from pathlib import Path
++import json,time
++from p02f_prepare import ROOT,OUT,read,write,sha
++
++start,cpu=time.perf_counter(),time.process_time(); now=datetime.now(timezone.utc).isoformat()
++v=read(OUT/'acceptance_verification.json'); first=read(OUT/'decision_first_receipt.json')
++assert sha(OUT/'cost_contract_decision.md')==first['memo_sha256'] and first['before_prototype_created']
++for p,h in v['previous_source_hashes'].items():assert sha(ROOT/p)==h,p
++assert read(OUT/'focused_tests_final.json')['exit']==0
++fr=read(OUT/'fixture_run_receipt.json'); assert fr['status']=='PASS'
++statepath=ROOT/'configs/phase_state.json'; state=read(statepath)
++assert state['active_phase']=='P02F' and state['status']=='IN_PROGRESS' and not state['real_dispatch_enabled']
++write(OUT/'provenance/active_P02F_state.json',state)
++write(OUT/'source_bindings.json',dict(evidence_kind='fixture',protocol='P02F-cost-fixture-v1',
++    new_files={p.relative_to(ROOT).as_posix():sha(p) for p in [
++        ROOT/'src/taskcognition/p02f_cost_v1.py',ROOT/'tests/test_p02f_cost_v1.py',
++        ROOT/'scripts/p02f_prepare.py',ROOT/'scripts/p02f_fixture_evidence.py']},
++    unchanged_helpers={p:sha(ROOT/p) for p in ['src/taskcognition/__init__.py',
++        'src/taskcognition/p02d_publication.py','src/taskcognition/artifacts.py','src/taskcognition/contracts.py']},
++    reviewed_model_plan_sha256=v['accepted_hashes']['artifacts/development/p02d-cr01-plan-v4/run_plan.json'],
++    no_inference_environment_import=True,no_plan_created=True,real_dispatch_enabled=False))
++write(OUT/'verification_summary.json',dict(status='PASS_WITH_COST_DESIGN_BLOCK',
++    evidence_kind='fixture',final_focused_checks=12,initial_attempt='9 filesystem PermissionError failures among 11 checks; sandbox denied hard links.',
++    windows_run='11 passed after authorized filesystem escalation; final 12 passed after cumulative budget check added.',
++    previous_production_sources_unchanged=True,fixture_cases=6,actual_model_work=0,
++    limits='Fixtures verify accounting semantics only, not support, hardware termination, real tensor/RNG equivalence, or final calibration.',
++    full_regression='Not run; no historical implementation changed. Relevant publication/reader boundaries exercised directly.',
++    incidental_read_error='An exploratory read of nonexistent src/taskcognition/evidence.py reported missing path; actual artifacts.py and contracts.py were read. No mutation or runtime impact.'))
++with (ROOT/'reports/decision_ledger.md').open('a',encoding='utf-8',newline='\n') as f:
++    f.write(f'''
++## P02F offline cost-boundary checkpoint ({now})
++
++P02E acceptance conveyed 2026-10-17 America/Chicago, recorded once in event 025 with actual workstation adoption timestamp. Verbatim decision: **“Decision: P02E OFFLINE DESIGN ACCEPTED.”** Review SHA-256 `{v['authority_hashes']['docs/P02E_acceptance_review.md']}`. All 63 accepted indexed files matched historical ZIP and current bytes before state changes. Coordinator clarification: reproduction compared 15 regenerated outputs plus two copied provenance/declaration inputs, not 17 newly generated outputs. Historical evidence is unchanged.
++
++**P02F COST_DESIGN_BLOCKED.** D08/D09 remain unresolved: no justified finite support for actual all-in hardware service time on this platform. Additional timing samples do not establish it. Nominal ordinary/first deadline sums 430/670 seconds leave 20 seconds within 450/690 reservations for other mandatory work, with no established bound; no cap or reservation is enlarged.
++
++Recommended route **for decision only**: explicit monetary token/call reference-price schedule with justified startup, feature, head/calibration, answer prefill/output and terminal/failure charges. This changes the interpretation to price-relative efficiency, not actual paid fees or physical-time savings. User/coordinator must accept that scope and identify a rate source/owner, otherwise retain the physical-time design block or request a separately reviewed amendment. No rates, third metric, support interval, beta or scientific change adopted.
++
++Minimal separate `p02f_cost_v1.py` tests fixture accounting, atomic records, no replay and safe/unknown stop semantics. No live backend, plan or execution request exists; both public entries reject even superficially valid authorization. Twelve final focused checks and six synthetic examples use zero model/GPU work. Fake elapsed values are not empirical measurements. All prior source/scorer/runner bytes remain unchanged.
++
++D05/D13/D16 remain unresolved: feature-first fixed action is not a fitted gate or gate-bypassed D/R reference; head parity/calibration and startup/reference policy need review. Beta formula remains common and unchanged. D10-D12/D14/D17 remain open for resources, allocation/tolerances, theorem/simulation and backup. Neither 24/26 diagnostic nor a described +24-call bypass delta is authorized or materialized. P02 incomplete/unsealed, P03 unstarted, study unfrozen, dispatch false. See `reports/p02f/cost_contract_decision.md`, `lifecycle_and_accounting.md`, and `calibration_gap_and_blocked_alternative.md`.
++''')
++
++report=ROOT/'reports/phases/P02F_preflight_completion.md'
++report.write_text(f'''# P02F preflight completion
++
++**P02F COST_DESIGN_BLOCKED — complete offline decision packet**
++
++## Scope and authority
++
++P02F authorizes only offline cost-boundary work. P02E was accepted on **2026-10-17 America/Chicago**; actual workstation adoption is event 025 at **{v['timestamp_utc']}**. Archived exact review and prompt hashes are in `reports/p02f/acceptance_verification.json`. No duplicate acceptance or P02 seal. P01 stays sealed, P02A–P02E accepted development checkpoints, P03 unstarted and study unfrozen.
++
++All **63 P02E indexed files** matched ZIP and current bytes before changing operational state. Bound ZIP `9f3fddc83ff26a26726623a3a568d35b71bbf61f470ce1f724fa0ccfbbbdbe0f`, index `2cab5fc1f5e493a7ef081e948a09c753a4ae476f3220223040d4297b3e71d5e7`, design report `62bd6de18f851239e5833684f818072d1965a5f7da302320e258b7b610db4d24`, proposal `3220410a1d3a0f8e9194e3114d05ef4ae779860b27179da4b604de34b2770546`, P02D plan `c46977bfc0de1040965f08df8acbd55b9b063b386ccfb97f247a280ae2472365`. Original PDF `9eed0fe74f46c3acbc200183cf11693f1bec66a1180568087aeb775c97d8f6c8` and approved CR01 remain unchanged. Original PDF pages 3,5,6 and active TeX cost/audit sections were read. No new scientific discrepancy permits changing the audit or claim.
++
++Branch `codex/p02f-cost-boundary`; local source/evidence and packet commits are identified in `source_commits.json` and the external receipt. The packet commit is resolvable with `git log -1 -- reports/p02f/P02F_review_packet.zip`. Pre-existing untracked originals `docs/P02E_acceptance_review.md`, `docs/P02E_coordinator_checks.zip`, `docs/prompts/P02F_cost_boundary_preflight_prompt.md` remain untouched and unstaged. No push, merge, download, infrastructure upgrade, upload or external transfer.
++
++## Delivered slice and decision
++
++The cost-contract memo was written and hashed **before** the prototype (`decision_first_receipt.json`). Actual all-in physical service time lacks a justified finite support bound. Timing observations, successful kills/waits and 450/690-second reservations cannot establish one. Required startup/source/CPU/response handling lacks a justified bound inside the remaining 20 seconds after nominal deadlines. The cost decision is therefore blocked, not hidden behind a proposed timing run.
++
++Recommend considering the protocol-permitted **explicit monetary reference token/call tariff**, contingent on accepting its price-relative interpretation and identifying an accountable rate source/owner. Six non-overlapping price categories and a symbolic support expression are specified; all rates and head-operation bounds remain unset. No provider prices or actual fees are invented. If that interpretation is unacceptable, retain the physical-time block or request a separate scientific amendment. No third metric, clipping, empirical extrema or alternate concentration inequality is adopted.
++
++The next decision is **cost-metric selection**, not generic source acceptance or model execution approval. Source review can accept the limited fixture semantics, but cannot choose the metric or unblock inference. No pending executable plan or execution request was prepared. The proposed 24-answer/26-forward service-boundary diagnostic cannot provide gate-bypassed references or learned-head cost; a separate +24 bypass-call delta is described solely to quantify the missing path, never scheduled or authorized.
++
++## Implementation and verification
++
++New separate module `src/taskcognition/p02f_cost_v1.py` is fixture-only. It has no inference backend and rejects public supervisor/direct-child entry, including absent/stale/wrong-hash/consumed or superficially valid caller-supplied authorization. It reuses unchanged P02D atomic publication and original strict JSON/hash helpers. Synthetic ScriptedWorker/FakeClock exercise one load, feature passes, fresh-buffer/no-cache flags, reseed ordering, one answer, failure stopping, cumulative reservation, no replay, safe/unknown cleanup, honest overshoot and interval reconciliation. A fixed action has null measured head cost and is never labeled a fitted gate or reference calibration.
++
++Fixture records are under `artifacts/fixtures/p02f-cost-v1-evidence`; indexed copies/references accompany the packet. Their seconds/scores are synthetic, not empirical model results. The closed fake implementation checks orchestration labels, not actual tensors, native serialization, GPU numerical equivalence or physical cancellation. No live ledger redesign or serving platform was built. Interrupted claims remain consumed/unknown; missing/corrupt results stop recovery without zero imputation.
++
++Commands ran from implementation root with `PYTHONPATH=src` and `PYTHONUTF8=1`; the existing `scripts/p01_command.py LOG COMMAND...` recorded command exit/wall/stdout/stderr. Its generic development-observation log envelope is command metadata; the fixture measurements themselves explicitly use `evidence_kind=fixture`.
++
++| Command | Status | Evidence |
++|---|---|---|
++| `.venv/Scripts/python.exe scripts/p02f_prepare.py` | 0 | `reports/p02f_prepare_command.json`, acceptance verification; 63 snapshot/current matches |
++| `.venv/Scripts/python.exe -m unittest discover -s tests -p test_p02f_cost_v1.py -v` (sandbox) | 1 | `focused_tests_initial.json`; 9 hard-link permission errors, no model work |
++| Same focused command on Windows filesystem after authorized tool escalation | 0, 11 checks | `focused_tests_windows.json`; original publication protocol unchanged |
++| Same focused command after cumulative-budget addition | 0, **12 checks** | `focused_tests_final.json`; current prototype source |
++| `.venv/Scripts/python.exe scripts/p02f_fixture_evidence.py` | 0 | `fixture_command.json`, six synthetic cases and hash manifest |
++| `.venv/Scripts/python.exe scripts/p02f_finalize.py` | 0 on successful closure | `finalize_command.json`, final state/decision ledger |
++| `.venv/Scripts/python.exe scripts/p02f_packet.py` | PASS required in external receipt | Historical/current bindings, every new indexed byte and packet verification, CPU/wall cost |
++
++Publication tests use real small Windows files/threads and deterministic Events pausing `os.link` before publication, with actual readers/registry scans observing no uncommitted record; after commit they require complete valid data. Duplicate publication, interruption before commit and malformed/hash-invalid committed records are covered. CPU-only subprocesses install import traps and exercise the actual public supervisor/worker module paths. No probabilistic race loops, inference imports or GPU smoke tests. Full historical regression was not rerun: no shared historical implementation changed, and reused publication/read paths were directly exercised. An exploratory read of nonexistent `evidence.py` reported a missing path; the actual helpers were then read. No consequence for evidence or execution.
++
++## Costs, data and limitations
++
++New real model loads, feature forwards, answers, GPU work, gate/calibration/normalization fits, full-pipeline simulations, audits and final labels: **all zero**. No historical answer was regenerated, rescored or repaired. P02E/P02D empirical summaries were referenced with their accepted package identities; no new pooled data or targets. P02D single-run authority remains consumed, unchanged and closed.
++
++Preparation verification took {v['wall_seconds']:.6f} wall / {v['cpu_seconds']:.6f} process-CPU seconds. Fixture evidence took {fr['wall_seconds']:.6f} wall / {fr['cpu_seconds']:.6f} process-CPU seconds. Command logs retain all failed/successful test wall times; finalization and packet receipts record their own CPU/wall costs. Reading/writing and interactive overhead are not comprehensively CPU-profiled. FakeClock seconds must never be added to actual preparation time or historical research costs.
++
++A finite tariff bound would follow algebraically only after justified finite rates and complete bounded count/envelope rules are adopted. It would bound reference price, not physical work. Unknown usage or failed accounting still blocks valid cost evidence. Physical time remains unresolved, so D08/D09 are not marked resolved. Common beta, alpha, b_min, delta_score, final n/K, head parity, reference aggregation and resource commitments remain unfrozen. All mandatory baselines, strict scores/failures and all-three primary contrasts are preserved. No study-wide infeasibility declaration or revived completion threshold.
++
++## Acceptance checklist and packet
++
++- PASS: archived exact acceptance/prompt and snapshot bindings; event 025 once.
++- PASS: decision-first cost memo with unsupported physical support and explicit unadopted tariff alternative.
++- PASS: lifecycle/measurement schema, non-overlapping accounting, warm-up treatment and unresolved reservation headroom.
++- PASS: focused fixture implementation/checks, unknown/incident handling, atomic publication and no replay.
++- PASS: diagnostic-versus-reference gap and concrete blocked-path alternative; no executable plan/request created.
++- PASS required at packaging: all indexed files verified, historical hashes unchanged except documented active state/decision-ledger progression.
++- NOT RUN by scope: live measurements, model paths, learned heads, full regression, final audit, simulations, final labels.
++
++Read `reports/p02f/cost_contract_decision.md`, `lifecycle_and_accounting.md`, `calibration_gap_and_blocked_alternative.md`, fixture/test receipts and source diff. Send `P02F_review_packet.zip`, `P02F_evidence_index.json` and external `P02F_packet_receipt.json`; the receipt carries exact member count, sizes, full hashes and local commit. Accepted old ZIPs are referenced, never nested. Local raw evidence and packets remain available; no remote query/upload or new off-machine backup is claimed. “External receipt” means outside the ZIP on this workstation.
++
++## Stop
++
++**P02F COST_DESIGN_BLOCKED** at {now}. Next decision: **cost-metric selection and justified rate ownership**, or retaining the physical-time block. This complete review packet does not request execution. **Dispatch false; zero model work; P02 incomplete/unsealed; P03 unstarted; study unfrozen.** No automatic continuation into another preflight or phase.
++''',encoding='utf-8',newline='\n')
++event='configs/state_events/026_P02F_cost_design_blocked.json'
++write(ROOT/event,dict(event='P02F_COST_DESIGN_BLOCKED',timestamp_utc=now,completion_sha256=sha(report),
++    memo_sha256=sha(OUT/'cost_contract_decision.md'),previous_state_sha256=sha(statepath),
++    next_decision='cost-metric selection',reason='Physical-time support unsupported; tariff source/rates and head envelope unresolved.',
++    real_dispatch_enabled=False,p02_sealed=False,p03_started=False,study_frozen=False,model_work=0))
++state.update(status='COST_DESIGN_BLOCKED',latest_event=event,authorized_next_phase=None)
++statepath.write_text(json.dumps(state,indent=2)+'\n',encoding='utf-8',newline='\n')
++write(OUT/'finalize_receipt.json',dict(status='COST_DESIGN_BLOCKED',timestamp_utc=now,
++    wall_seconds=time.perf_counter()-start,cpu_seconds=time.process_time()-cpu,model_work=0))
++print(json.dumps(dict(status='COST_DESIGN_BLOCKED',model_work=0,next_decision='cost-metric selection')))
+diff --git a/scripts/p02f_fixture_evidence.py b/scripts/p02f_fixture_evidence.py
+new file mode 100644
+index 0000000..44616b1
+--- /dev/null
++++ b/scripts/p02f_fixture_evidence.py
+@@ -0,0 +1,46 @@
++"""Write small CPU-only P02F fixtures; never imports or constructs a model."""
++from pathlib import Path
++from datetime import datetime,timezone
++import json, sys, time
++from p02f_prepare import ROOT, OUT, read, write, sha
++from taskcognition.p02f_cost_v1 import run_fixture, ScriptedWorker, recover
++
++start,cpu=time.perf_counter(),time.process_time()
++base=ROOT/'artifacts/fixtures/p02f-cost-v1-evidence'
++if base.exists():raise RuntimeError('fixture evidence root already exists; no overwrite')
++records={}
++cases=[('warmup_augmented',ScriptedWorker(),dict(warmups=2)),
++       ('retained_failure',ScriptedWorker(fault='known_model_failure'),{}),
++       ('feature_incident',ScriptedWorker(fault='feature'),{}),
++       ('unsafe_stop',ScriptedWorker(fault='known_timeout',safe_stop=False),{}),
++       ('overshoot',ScriptedWorker(answer_seconds=500),{})]
++for name,worker,kwargs in cases:
++    records[name]=run_fixture(ROOT,base/name,'slot_000','R',worker,**kwargs)
++first=run_fixture(ROOT,base/'resource_stop','slot_000','D',ScriptedWorker(),remaining_seconds=465)
++stop=run_fixture(ROOT,base/'resource_stop','slot_001','R',ScriptedWorker(),remaining_seconds=465)
++records['resource_stop']=dict(first=first,stop=stop,recovered=recover(base/'resource_stop'))
++write(OUT/'fixture_results.json',dict(evidence_kind='fixture',not_empirical=True,
++    synthetic_clock_units='illustrative seconds, not observed hardware measurements',records=records))
++write(OUT/'fixture_files.json',dict(evidence_kind='fixture',files={
++    p.relative_to(ROOT).as_posix():sha(p) for p in sorted(base.rglob('*')) if p.is_file()}))
++write(OUT/'accounting_schema.json',dict(version='P02F-cost-fixture-v1',kind='offline_prototype_schema_not_plan',
++    serving_variable='t_safe_terminal_ack - t_first_charged_validation; unknown if safe stop unconfirmed',
++    units='monotonic seconds; fixture values synthetic',
++    exclusive_fields=['phase_start','phase_end','phase_name','validity','query_identity'],
++    nested_fields=['parent_phase','nested_start','nested_end'],
++    accounting_fields=['observed_elapsed_seconds','total_service_seconds_or_null','incurred_lower_bound_seconds',
++        'exclusive_component_seconds','unallocated_residual_seconds','safe_stopped','overshoot_seconds'],
++    control_not_cost=['reservation_seconds','output_tokens_reserved','deadline_seconds'],
++    output_usage=['observed_output_tokens_or_null','unknown_output_count','reserved_output_tokens'],
++    actual_head_cost=None,hard_support_bound=None,scalar_cost_adopted=False,
++    future_gate_interface=dict(inputs=['embedding[4096]','nine approved input-only observables'],
++        join_metadata_outside_learner=['input_id'],outputs=['method-specific raw/calibrated values','action','measured CPU costs','configuration hashes'],
++        implementation=None,architecture_parity_and_calibration='unresolved'),
++    no_execution_plan=True,dispatch=False))
++assert not any(m in sys.modules for m in ['torch','transformers','numpy','taskcognition.audit','taskcognition.p02d_runner'])
++write(OUT/'fixture_run_receipt.json',dict(status='PASS',evidence_kind='fixture',timestamp_utc=datetime.now(timezone.utc).isoformat(),
++    source_sha256=sha(ROOT/'src/taskcognition/p02f_cost_v1.py'),script_sha256=sha(Path(__file__)),
++    wall_seconds=time.perf_counter()-start,cpu_seconds=time.process_time()-cpu,
++    fixture_cases=6,actual_model_loads=0,actual_forwards=0,actual_answers=0,actual_gpu_work=0,
++    note='Fake stages only; no final audit, learned gate or full-pipeline simulation.'))
++print(json.dumps(dict(status='PASS',fixture_cases=6,model_work=0)))
+diff --git a/scripts/p02f_packet.py b/scripts/p02f_packet.py
+new file mode 100644
+index 0000000..6969028
+--- /dev/null
++++ b/scripts/p02f_packet.py
+@@ -0,0 +1,69 @@
++"""Package the offline blocked decision, not a live execution request."""
++from datetime import datetime,timezone
++import hashlib,json,subprocess,time,zipfile
++from p02f_prepare import ROOT,OUT,read,write,sha
++
++start,cpu=time.perf_counter(),time.process_time()
++v=read(OUT/'acceptance_verification.json'); state=read(ROOT/'configs/phase_state.json')
++assert state['active_phase']=='P02F' and state['status']=='COST_DESIGN_BLOCKED'
++assert not state['real_dispatch_enabled'] and not state['p02_sealed'] and not state['p03_started']
++assert state['study_freeze'] is None and state['authorized_next_phase'] is None
++for p,h in v['accepted_hashes'].items():assert sha(ROOT/p)==h,p
++for p,h in v['bindings'].items():assert sha(ROOT/p)==h,p
++for p,h in v['previous_source_hashes'].items():assert sha(ROOT/p)==h,p
++index=read(ROOT/'reports/p02e/P02E_evidence_index.json'); changed={}
++with zipfile.ZipFile(ROOT/'reports/p02e/P02E_review_packet.zip') as z:
++    for p,h in index['files'].items():
++        assert hashlib.sha256(z.read(p)).hexdigest()==h,p
++        current=sha(ROOT/p)
++        if current!=h:
++            assert p in ['configs/phase_state.json','reports/decision_ledger.md'],p
++            changed[p]=dict(accepted=h,current=current,reason='P02E acceptance and P02F offline state/decision events; historical bytes retained in accepted packet.')
++assert len(index['files'])==63
++write(OUT/'historical_reverification.json',dict(status='PASS',files_verified=63,
++    changed_current_operational_files=changed,all_old_scientific_source_unchanged=True,
++    accepted_hashes=v['accepted_hashes'],unchanged_authority=v['bindings']))
++head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
++write(OUT/'source_commits.json',dict(source_evidence_commit=head,
++    accepted_P02E_evidence_commit='2bc0131eb8cb70a314d6a8fcfe31f277aadf45b1',
++    accepted_P02E_packet_commit='7c2fb57b3b895ae440a9cdd9606a13a4bbaf5384',
++    P02F_packet_commit_lookup='git log -1 -- reports/p02f/P02F_review_packet.zip',no_push=True))
++excluded={'P02F_review_packet.zip','P02F_evidence_index.json','P02F_packet_receipt.json'}
++paths={p.relative_to(ROOT).as_posix() for p in OUT.rglob('*') if p.is_file() and p.name not in excluded and p.suffix!='.zip'}
++paths.update(p.relative_to(ROOT).as_posix() for p in (ROOT/'scripts').glob('p02f_*.py'))
++paths.update(read(OUT/'fixture_files.json')['files'])
++paths.update(['reports/p02f_prepare_command.json','reports/phases/P02F_preflight_completion.md',
++    'src/taskcognition/p02f_cost_v1.py','tests/test_p02f_cost_v1.py',
++    'src/taskcognition/__init__.py','src/taskcognition/contracts.py','src/taskcognition/artifacts.py','src/taskcognition/p02d_publication.py',
++    'scripts/p01_command.py','configs/phase_state.json',
++    'configs/state_events/025_P02E_accepted_P02F_offline_authorized.json',
++    'configs/state_events/026_P02F_cost_design_blocked.json','reports/decision_ledger.md',
++    'AGENTS.md','docs/PROTOCOL_SOURCE_OF_TRUTH.md','docs/STATISTICAL_CONTRACT.md',
++    'docs/DECISIONS_AND_GAPS.md','docs/amendments/CR01_2026-10-05_v1.md'])
++files={p:sha(ROOT/p) for p in sorted(paths)}
++indexpath=OUT/'P02F_evidence_index.json'
++write(indexpath,dict(phase='P02F',status='COST_DESIGN_BLOCKED',files=files,
++    indexed_files=len(files),source_evidence_commit=head,model_work=0,
++    accepted_P02E_zip_sha256=v['accepted_hashes']['reports/p02e/P02E_review_packet.zip'],
++    note='Original accepted evidence referenced by hash, not nested. Fixture files are synthetic and do not authorize execution.'))
++packet=OUT/'P02F_review_packet.zip'; indexname=indexpath.relative_to(ROOT).as_posix()
++with zipfile.ZipFile(packet,'x',compression=zipfile.ZIP_DEFLATED,compresslevel=9) as z:
++    for p in files:z.write(ROOT/p,p)
++    z.write(indexpath,indexname)
++with zipfile.ZipFile(packet) as z:
++    assert set(z.namelist())==set(files)|{indexname}
++    for p,h in files.items():assert hashlib.sha256(z.read(p)).hexdigest()==h==sha(ROOT/p),p
++    assert z.read(indexname)==indexpath.read_bytes()
++write(OUT/'P02F_packet_receipt.json',dict(status='PASS',checkpoint='P02F_COST_DESIGN_BLOCKED',
++    timestamp_utc=datetime.now(timezone.utc).isoformat(),zip_sha256=sha(packet),index_sha256=sha(indexpath),
++    completion_sha256=sha(ROOT/'reports/phases/P02F_preflight_completion.md'),
++    cost_decision_sha256=sha(OUT/'cost_contract_decision.md'),
++    indexed_files_verified=len(files),zip_members=len(files)+1,zip_bytes=packet.stat().st_size,
++    indexed_bytes=sum((ROOT/p).stat().st_size for p in files),
++    local_p02f_bytes_before_receipt=sum(p.stat().st_size for p in OUT.rglob('*') if p.is_file()),
++    source_evidence_commit=head,historical_P02E_files_reverified=63,
++    wall_seconds=time.perf_counter()-start,cpu_seconds=time.process_time()-cpu,
++    real_dispatch_enabled=False,model_work=0,p02_sealed=False,p03_started=False,
++    next_decision='cost-metric selection, not execution approval',
++    backup='Verified local packet; external receipt is outside ZIP on workstation, not off-machine. No upload/push.'))
++print(json.dumps(dict(status='PASS',files=len(files),zip_sha256=sha(packet),receipt_sha256=sha(OUT/'P02F_packet_receipt.json'))))
+diff --git a/scripts/p02f_prepare.py b/scripts/p02f_prepare.py
+new file mode 100644
+index 0000000..6a019c2
+--- /dev/null
++++ b/scripts/p02f_prepare.py
+@@ -0,0 +1,62 @@
++"""Verify P02E acceptance and activate offline P02F; standard library only."""
++from pathlib import Path
++from datetime import datetime, timezone
++import hashlib, json, platform, shutil, subprocess, sys, time, zipfile
++ROOT=Path(__file__).resolve().parents[1]; OUT=ROOT/'reports/p02f'
++def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
++def read(p): return json.loads(p.read_text(encoding='utf-8-sig'))
++def write(p,v):
++    with p.open('x',encoding='utf-8',newline='\n') as f: json.dump(v,f,indent=2,allow_nan=False); f.write('\n')
++def main():
++    start,cpu=time.perf_counter(),time.process_time()
++    expected={
++      'reports/p02e/P02E_review_packet.zip':'9f3fddc83ff26a26726623a3a568d35b71bbf61f470ce1f724fa0ccfbbbdbe0f',
++      'reports/p02e/P02E_evidence_index.json':'2cab5fc1f5e493a7ef081e948a09c753a4ae476f3220223040d4297b3e71d5e7',
++      'reports/p02e/offline_design_report.md':'62bd6de18f851239e5833684f818072d1965a5f7da302320e258b7b610db4d24',
++      'reports/p02e/next_step_proposal.md':'3220410a1d3a0f8e9194e3114d05ef4ae779860b27179da4b604de34b2770546',
++      'artifacts/development/p02d-cr01-plan-v4/run_plan.json':'c46977bfc0de1040965f08df8acbd55b9b063b386ccfb97f247a280ae2472365',
++      'reference/TaskCognition_Revised_Verified.pdf':'9eed0fe74f46c3acbc200183cf11693f1bec66a1180568087aeb775c97d8f6c8'}
++    for p,h in expected.items(): assert sha(ROOT/p)==h,p
++    index=read(ROOT/'reports/p02e/P02E_evidence_index.json')
++    with zipfile.ZipFile(ROOT/'reports/p02e/P02E_review_packet.zip') as z:
++        for p,h in index['files'].items():
++            assert hashlib.sha256(z.read(p)).hexdigest()==h==sha(ROOT/p),p
++    assert len(index['files'])==63
++    OUT.mkdir(exist_ok=True); (OUT/'provenance').mkdir(exist_ok=True)
++    authority={}
++    for p in ['docs/P02E_acceptance_review.md','docs/prompts/P02F_cost_boundary_preflight_prompt.md']:
++        dest=OUT/'provenance'/Path(p).name
++        with dest.open('xb') as f:f.write((ROOT/p).read_bytes())
++        authority[p]=sha(dest)
++    state_path=ROOT/'configs/phase_state.json'; state=read(state_path)
++    assert state['active_phase']=='P02E' and state['status']=='READY_FOR_REVIEW' and not state['real_dispatch_enabled']
++    for p in ['configs/phase_state.json','reports/decision_ledger.md']:
++        dest=OUT/'provenance'/('before_'+Path(p).name)
++        with dest.open('xb') as f:f.write((ROOT/p).read_bytes())
++    now=datetime.now(timezone.utc).isoformat()
++    bindings={p.as_posix():sha(ROOT/p) for p in [
++      Path('AGENTS.md'),Path('docs/PROTOCOL_SOURCE_OF_TRUTH.md'),Path('docs/STATISTICAL_CONTRACT.md'),
++      Path('docs/DECISIONS_AND_GAPS.md'),Path('docs/ARCHITECTURE_AND_DATA.md'),Path('docs/EVIDENCE_AND_MANUSCRIPT.md'),
++      Path('docs/amendments/CR01_2026-10-05_v1.md'),Path('paper/cr01-2026-10-05-v1/taskcognition.tex'),
++      Path('configs/p02d_execution_authorization.json'),Path('reports/p02d_execution/workstation_before.json')]}
++    source={p.relative_to(ROOT).as_posix():sha(p) for p in (ROOT/'src').rglob('*.py')}
++    write(OUT/'acceptance_verification.json',dict(status='PASS',timestamp_utc=now,accepted_hashes=expected,
++      indexed_zip_and_current_files_verified=63,authority_hashes=authority,bindings=bindings,previous_source_hashes=source,
++      original_cost_pages_read=[3,5,6],new_gpu_inspection=False,model_work=0,
++      workstation='Existing P02D inventory referenced, not a new GPU measurement.',python=sys.version,
++      os=platform.platform(),disk_free_bytes=shutil.disk_usage(ROOT).free,
++      head_before=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
++      wall_seconds=time.perf_counter()-start,cpu_seconds=time.process_time()-cpu))
++    event='configs/state_events/025_P02E_accepted_P02F_offline_authorized.json'
++    write(ROOT/event,dict(event='P02E_ACCEPTED_P02F_OFFLINE_AUTHORIZED',timestamp_utc=now,
++      user_conveyed_acceptance_date='2026-10-17',timezone='America/Chicago',
++      acceptance_verbatim='Decision: P02E OFFLINE DESIGN ACCEPTED.',
++      review_sha256=authority['docs/P02E_acceptance_review.md'],prompt_sha256=authority['docs/prompts/P02F_cost_boundary_preflight_prompt.md'],
++      verification='reports/p02f/acceptance_verification.json',previous_state_sha256=sha(state_path),
++      real_dispatch_enabled=False,p02_sealed=False,p03_started=False,study_frozen=False,
++      scope='Offline cost decision and minimal fixture-only prototype; consumed P02D authorization remains closed.'))
++    state.update(active_phase='P02F',checkpoint='OFFLINE_COST_BOUNDARY_PREFLIGHT',status='IN_PROGRESS',
++      accepted_previous_checkpoint='P02E_OFFLINE_DESIGN',accepted_previous_checkpoint_record=event,latest_event=event)
++    state_path.write_text(json.dumps(state,indent=2)+'\n',encoding='utf-8',newline='\n')
++    print(json.dumps(dict(status='PASS',indexed_files=63,adoption_utc=now,model_work=0)))
++if __name__=='__main__': main()
+diff --git a/src/taskcognition/p02f_cost_v1.py b/src/taskcognition/p02f_cost_v1.py
+new file mode 100644
+index 0000000..6e1aaef
+--- /dev/null
++++ b/src/taskcognition/p02f_cost_v1.py
+@@ -0,0 +1,211 @@
++"""P02F v1: fixture-only service accounting. No inference backend or live plan.
++
++Synthetic durations test bookkeeping, never hardware support. Historical helpers
++are reused byte-for-byte. The public supervisor and child paths always fail closed.
++"""
++from dataclasses import dataclass, field
++from pathlib import Path
++import argparse
++import math
++import re
++from .artifacts import fixture_output
++from .contracts import IntegrityError, digest
++from .p02d_publication import write_new, read_optional
++
++VERSION = 'P02F-cost-fixture-v1'
++
++class CostDesignBlocked(RuntimeError): pass
++class NoReplay(IntegrityError): pass
++
++def require_live(role, authorization=None, plan_hash=None, state=None):
++    if role not in ('supervisor', 'worker'):
++        raise CostDesignBlocked('unknown entry role')
++    if not isinstance(authorization, dict) or not isinstance(state, dict):
++        raise CostDesignBlocked('separate exact-plan authorization absent')
++    if (authorization.get('phase') != 'P02F' or authorization.get('authorized') is not True
++        or authorization.get('consumed') is not False
++        or not isinstance(plan_hash, str) or not re.fullmatch('[a-f0-9]{64}', plan_hash)
++        or authorization.get('plan_sha256') != plan_hash
++        or state.get('active_phase') != 'P02F'
++        or state.get('status') != 'EXECUTION_AUTHORIZED'
++        or state.get('real_dispatch_enabled') is not True):
++        raise CostDesignBlocked('absent, stale, wrong-hash, consumed or closed authorization')
++    # Even a caller-supplied superficially valid record cannot enable this prototype.
++    raise CostDesignBlocked('cost decision unresolved; no reviewed executable P02F plan/backend')
++
++def supervisor_entry(**kwargs): return require_live('supervisor', **kwargs)
++def worker_entry(**kwargs): return require_live('worker', **kwargs)
++
++def publish(path, kind, slot, payload):
++    write_new(path, dict(version=VERSION, evidence_kind='fixture', kind=kind,
++                         slot=slot, payload=payload, payload_sha256=digest(payload)))
++
++def read_record(path, kind, slot):
++    record = read_optional(path)
++    if record is None: return None
++    if (record.get('version') != VERSION or record.get('evidence_kind') != 'fixture'
++        or record.get('kind') != kind or record.get('slot') != slot
++        or record.get('payload_sha256') != digest(record.get('payload'))):
++        raise IntegrityError('committed record identity/hash invalid')
++    return record['payload']
++
++@dataclass
++class FakeClock:
++    seconds: float = 0.0
++    def advance(self, duration):
++        if not math.isfinite(duration) or duration < 0: raise IntegrityError('invalid duration')
++        self.seconds += duration
++
++@dataclass
++class ScriptedWorker:
++    """Closed fake implementation: cannot accept model callbacks or load weights."""
++    fault: str | None = None
++    safe_stop: bool = True
++    answer_seconds: float = 3.0
++    calls: list = field(default_factory=list)
++    def stage(self, name, context):
++        self.calls.append((name, dict(context)))
++        if self.fault == name: raise RuntimeError('injected '+name+' failure')
++
++def reconcile(events, start, end, safe_stopped):
++    if end < start: raise IntegrityError('clock reversed')
++    previous = start
++    for e in events:
++        a,b=e['start'],e['end']
++        if not all(math.isfinite(v) for v in (a,b)) or a < previous or b < a or b > end:
++            raise IntegrityError('overlapping, reversed or out-of-window component')
++        for nested in e.get('nested',[]):
++            if not a <= nested['start'] <= nested['end'] <= b:
++                raise IntegrityError('nested timer outside parent')
++        previous = b
++    elapsed=end-start
++    exclusive=sum(e['end']-e['start'] for e in events)
++    return dict(observed_elapsed_seconds=elapsed,
++                total_service_seconds=elapsed if safe_stopped else None,
++                incurred_lower_bound_seconds=elapsed,
++                exclusive_component_seconds=exclusive,
++                unallocated_residual_seconds=elapsed-exclusive,
++                nested_components_additive=False, safe_stopped=safe_stopped,
++                hard_support_bound_seconds=None)
++
++def recover(root):
++    """Small fixture registry only, not a proposed growing production ledger."""
++    consumed=[]; unresolved=[]; stopped=False; known=0.0
++    for directory in sorted(Path(root).glob('slot_*')):
++        slot=directory.name
++        claim=read_record(directory/'claim.json','claim',slot)
++        result=read_record(directory/'result.json','result',slot)
++        if claim is None:
++            if result is not None: raise IntegrityError('result without admission claim')
++            continue
++        consumed.append(slot)
++        if result is None:
++            unresolved.append(slot); continue
++        if result['claim_sha256'] != digest(claim): raise IntegrityError('result/claim mismatch')
++        known += result['accounting']['incurred_lower_bound_seconds']
++        stopped |= result['status'] != 'COMPLETE_FIXTURE'
++        if not result['accounting']['safe_stopped']: unresolved.append(slot)
++    stop=read_record(Path(root)/'stop.json','stop','batch')
++    if stop is not None:
++        known += stop['accounting']['incurred_lower_bound_seconds']
++        stopped=True
++    return dict(consumed=consumed, unresolved=unresolved,
++                stop_dispatch=stopped or bool(unresolved), known_incurred_seconds=known,
++                unknown_cost_slots=unresolved, evidence_kind='fixture')
++
++def run_fixture(repository, output, slot, action, worker, *, bypass=False, warmups=0,
++                remaining_seconds=5400.0, remaining_tokens=49152, clock=None):
++    """Only ScriptedWorker/FakeClock can run; writes under artifacts/fixtures.
++
++    Each fixture query uses a durable no-clobber claim; interruption after claim
++    consumes it even if result publication never happens. No retry/replay API.
++    """
++    root=fixture_output(Path(repository),Path(output))
++    if type(worker) is not ScriptedWorker or (clock is not None and type(clock) is not FakeClock):
++        raise IntegrityError('fixture-only worker/clock required')
++    if not re.fullmatch('slot_[0-9]{3}',slot) or action not in ('D','R') or warmups not in (0,2):
++        raise IntegrityError('invalid fixture identity/action/warm-up count')
++    if bypass and warmups: raise IntegrityError('bypass cannot hide warm-up feature work')
++    clock=clock or FakeClock(); start=clock.seconds; events=[]
++    def phase(name, duration, context=None):
++        a=clock.seconds
++        try:
++            clock.advance(duration)
++            worker.stage(name,context or {})
++        finally: events.append(dict(name=name,start=a,end=clock.seconds,nested=[]))
++    # First validation is charged even when admission is refused.
++    phase('validation',2)
++    prior=recover(root)
++    if slot in prior['consumed']: raise NoReplay('consumed/unknown slot cannot replay')
++    if prior['stop_dispatch']: raise IntegrityError('unresolved or stopped fixture batch')
++    reservation=690 if warmups else 450
++    # Parameters are the initial available fixture envelope, not fresh grants
++    # on each query. Prior committed incurred work/reservations count once.
++    available_seconds=remaining_seconds-prior['known_incurred_seconds']
++    available_tokens=remaining_tokens-2048*len(prior['consumed'])
++    if available_seconds < reservation or available_tokens < 2048 or len(prior['consumed'])>=24:
++        phase('rejection_response',1)
++        stop=dict(status='STOPPED_INCOMPLETE',resource_stop=True,admitted=False,
++                  reservation_seconds=reservation,primary_score=None,
++                  accounting=reconcile(events,start,clock.seconds,True),events=events)
++        publish(root/'stop.json','stop','batch',stop)
++        return stop
++    directory=root/slot
++    claim=dict(action=action,warmups=warmups,bypass=bypass,reservation_seconds=reservation,
++               output_tokens_reserved=2048,start_monotonic=start,invocation='fixture-only')
++    publish(directory/'claim.json','claim',slot,claim)
++    status='COMPLETE_FIXTURE'; error=None; primary=None; answers=0; features=0; loads=0
++    try:
++        loads+=1; phase('load',4)
++        for j in range(warmups):
++            features+=1; phase('warmup',1,dict(index=j,research_only=True,use_cache=False,past_key_values=None))
++        if not bypass:
++            phase('raw_tokenization',1,dict(original_text_only=True))
++            features+=1
++            phase('feature',1,dict(use_cache=False,past_key_values=None,input_buffer='fresh-feature',mask='fresh-feature',answer_information=False))
++            phase('cheap_observables',.25)
++            phase('fixed_action',.25,dict(action=action,learned_gate=False))
++        phase('prompt',.5,dict(input_buffer='fresh-answer',mask='fresh-answer',enable_thinking=action=='R'))
++        phase('reseed',.1,dict(stream='fixture-'+slot,full_reset=True))
++        publish(directory/'answer_admitted.json','answer_admitted',slot,dict(count=1))
++        answers+=1
++        phase('answer',worker.answer_seconds,dict(use_feature_cache=False,past_key_values=None,max_new_tokens=2048))
++        if worker.fault=='known_timeout' or worker.answer_seconds > 120:
++            status='STOPPED_INCOMPLETE'; primary=0; phase('cancel',10)
++        elif worker.fault=='known_model_failure': primary=0
++        else: primary=1  # Fixture oracle ONLY, never a native scorer replacement.
++        phase('strict_handling',.5,dict(score_evaluation='outside serving; fixture oracle only'))
++        publish(directory/'response.json','response',slot,dict(fixture_primary=primary))
++        phase('response_ack',.5)
++    except Exception as exc:
++        status='INTEGRITY_INCIDENT'; error=str(exc); primary=None
++    finally:
++        try: phase('cleanup',2)
++        except Exception as exc:
++            status='INTEGRITY_INCIDENT'; error=str(exc); worker.safe_stop=False
++        if not worker.safe_stop:
++            status='INTEGRITY_INCIDENT'; primary=None; error=error or 'safe stop unresolved'
++    # Complete returned record includes post-cleanup mandatory serving handling.
++    phase('terminal_handling',.25)
++    accounting=reconcile(events,start,clock.seconds,worker.safe_stop)
++    result=dict(evidence_kind='fixture',status=status,claim_sha256=digest(claim),
++      primary_score=primary,error=error,accounting=accounting,events=events,
++      loads=loads,feature_attempts=features,answer_attempts=answers,
++      warmups=warmups,warmup_seconds=sum(e['end']-e['start'] for e in events if e['name']=='warmup'),
++      warmups_in_elapsed=True,head_cost_seconds=None,learned_gate=False,
++      all_in_reference_calibration=False,bypass_path_directly_exercised=bypass,
++      reservation_seconds=reservation,overshoot_seconds=max(0,clock.seconds-start-reservation),
++      output_tokens_observed=None,output_tokens_reserved=2048,model_work=0)
++    publish(directory/'result.json','result',slot,result)
++    return result
++
++def reference_cost_from_diagnostic(_):
++    raise CostDesignBlocked('feature-before-answer fixed action is not a bypass reference or learned gate; subtraction forbidden')
++
++def main():
++    p=argparse.ArgumentParser(description=__doc__)
++    p.add_argument('--role',choices=['supervisor','worker'],required=True)
++    args=p.parse_args()
++    require_live(args.role)
++
++if __name__=='__main__':main()
+diff --git a/tests/test_p02f_cost_v1.py b/tests/test_p02f_cost_v1.py
+new file mode 100644
+index 0000000..11b8bcb
+--- /dev/null
++++ b/tests/test_p02f_cost_v1.py
+@@ -0,0 +1,159 @@
++"""CPU-only production prototype checks; synthetic clocks are not measurements."""
++from concurrent.futures import ThreadPoolExecutor
++from pathlib import Path
++from threading import Event
++from unittest.mock import patch
++import json, os, subprocess, sys, tempfile, unittest
++from taskcognition import p02f_cost_v1 as p
++from taskcognition import p02d_publication as publication
++
++ROOT=Path(__file__).resolve().parents[1]
++
++class CostFixtureTests(unittest.TestCase):
++    def setUp(self):
++        parent=ROOT/'artifacts/fixtures'; parent.mkdir(parents=True,exist_ok=True)
++        self.tmp=tempfile.TemporaryDirectory(prefix='p02f-test-',dir=parent)
++        self.root=Path(self.tmp.name)
++        assert self.root.resolve().parent==parent.resolve()
++    def tearDown(self): self.tmp.cleanup()
++    def runq(self,**kw):
++        return p.run_fixture(ROOT,self.root,'slot_000','D',kw.pop('worker',p.ScriptedWorker()),**kw)
++
++    def test_both_live_entries_reject_all_authorization_states(self):
++        valid=dict(phase='P02F',authorized=True,consumed=False,plan_sha256='a'*64)
++        state=dict(active_phase='P02F',status='EXECUTION_AUTHORIZED',real_dispatch_enabled=True)
++        for entry in (p.supervisor_entry,p.worker_entry):
++            for auth in [None,dict(valid,phase='P02D'),dict(valid,consumed=True),dict(valid,plan_sha256='b'*64),valid]:
++                with self.assertRaises(p.CostDesignBlocked): entry(authorization=auth,plan_hash='a'*64,state=state)
++        self.assertNotIn('torch',sys.modules); self.assertNotIn('transformers',sys.modules)
++
++    def test_real_cpu_subprocess_direct_child_and_supervisor_closed(self):
++        # Import blocker records any attempted inference import, including failed imports.
++        code="""import sys,runpy
++class Block:
++ def find_spec(self,name,*args):
++  if name.split('.')[0] in ('torch','transformers','numpy'):
++   raise AssertionError('FORBIDDEN_INFERENCE_IMPORT:'+name)
++sys.meta_path.insert(0,Block())
++sys.argv=['p02f','--role',sys.argv[1]]
++runpy.run_module('taskcognition.p02f_cost_v1',run_name='__main__')
++"""
++        for role in ('supervisor','worker'):
++            env=dict(os.environ,PYTHONPATH=str(ROOT/'src'))
++            r=subprocess.run([sys.executable,'-c',code,role],cwd=ROOT,env=env,capture_output=True,text=True,timeout=15)
++            self.assertNotEqual(r.returncode,0)
++            self.assertIn('CostDesignBlocked',r.stderr)
++            self.assertNotIn('FORBIDDEN_INFERENCE_IMPORT',r.stderr)
++
++    def test_one_load_passes_answer_reseed_no_cache_and_stub_not_gate(self):
++        w=p.ScriptedWorker(); r=self.runq(worker=w,warmups=2)
++        self.assertEqual((r['loads'],r['feature_attempts'],r['answer_attempts']),(1,3,1))
++        self.assertEqual(r['warmup_seconds'],2); self.assertTrue(r['warmups_in_elapsed'])
++        names=[n for n,c in w.calls]; self.assertEqual(names[names.index('answer')-1],'reseed')
++        f=next(c for n,c in w.calls if n=='feature'); a=next(c for n,c in w.calls if n=='answer')
++        self.assertIsNone(f['past_key_values']);self.assertFalse(f['use_cache']);self.assertFalse(a['use_feature_cache'])
++        self.assertNotEqual(f['input_buffer'],next(c for n,c in w.calls if n=='prompt')['input_buffer'])
++        self.assertIsNone(r['head_cost_seconds']);self.assertFalse(r['learned_gate'])
++        with self.assertRaises(p.CostDesignBlocked):p.reference_cost_from_diagnostic(r)
++
++    def test_bypass_is_distinct_directly_exercised_fixture_path(self):
++        r=self.runq(bypass=True)
++        self.assertEqual((r['loads'],r['feature_attempts'],r['answer_attempts']),(1,0,1))
++        self.assertFalse(r['all_in_reference_calibration'])
++        self.assertTrue(r['bypass_path_directly_exercised'])
++
++    def test_feature_error_stops_unscored_before_answer(self):
++        r=self.runq(worker=p.ScriptedWorker(fault='feature'))
++        self.assertEqual(r['status'],'INTEGRITY_INCIDENT');self.assertIsNone(r['primary_score'])
++        self.assertEqual(r['answer_attempts'],0);self.assertGreater(r['accounting']['total_service_seconds'],0)
++        with self.assertRaises(p.IntegrityError):p.run_fixture(ROOT,self.root,'slot_001','R',p.ScriptedWorker())
++
++    def test_known_failure_and_known_timeout_retained_but_cleanup_dominates(self):
++        for i,w in enumerate([p.ScriptedWorker(fault='known_model_failure'),p.ScriptedWorker(fault='known_timeout'),p.ScriptedWorker(fault='known_timeout',safe_stop=False)]):
++            r=p.run_fixture(ROOT,self.root/str(i),'slot_000','R',w)
++            if w.safe_stop:
++                self.assertEqual(r['primary_score'],0);self.assertIsNotNone(r['accounting']['total_service_seconds'])
++            else:
++                self.assertEqual(r['status'],'INTEGRITY_INCIDENT');self.assertIsNone(r['primary_score'])
++                self.assertIsNone(r['accounting']['total_service_seconds']);self.assertGreater(r['accounting']['incurred_lower_bound_seconds'],0)
++        self.assertEqual(p.recover(self.root/'1')['stop_dispatch'],True)
++
++    def test_reservations_exhaustion_and_declared_count_arithmetic(self):
++        for i,kwargs in enumerate([dict(remaining_seconds=449),dict(remaining_tokens=2047),dict(warmups=2,remaining_seconds=689)]):
++            w=p.ScriptedWorker();r=p.run_fixture(ROOT,self.root/str(i),'slot_000','D',w,**kwargs)
++            self.assertEqual(r['status'],'STOPPED_INCOMPLETE');self.assertFalse(r['admitted'])
++            self.assertNotIn('load',[n for n,c in w.calls]);self.assertGreater(r['accounting']['total_service_seconds'],0)
++        self.assertEqual(24*2048,49152);self.assertEqual((24+2)*2048,53248)
++        self.assertEqual(450-(150+120+120+10+30),20)
++        self.assertEqual(690-(150+3*120+120+10+30),20)
++
++    def test_no_replay_recovery_preserves_cost_once_and_unknown(self):
++        r=self.runq();a=p.recover(self.root);b=p.recover(self.root)
++        self.assertEqual(a,b);self.assertEqual(a['known_incurred_seconds'],r['accounting']['incurred_lower_bound_seconds'])
++        with self.assertRaises(p.NoReplay):self.runq()
++        p.publish(self.root/'slot_001/claim.json','claim','slot_001',dict(start_monotonic=0))
++        a=p.recover(self.root);self.assertEqual(a['unknown_cost_slots'],['slot_001'])
++        with self.assertRaises(p.IntegrityError):p.run_fixture(ROOT,self.root,'slot_002','D',p.ScriptedWorker())
++
++    def test_cumulative_budget_and_rejection_cost_remain_charged(self):
++        first=p.run_fixture(ROOT,self.root,'slot_000','D',p.ScriptedWorker(),remaining_seconds=465)
++        stop=p.run_fixture(ROOT,self.root,'slot_001','R',p.ScriptedWorker(),remaining_seconds=465)
++        self.assertEqual(stop['status'],'STOPPED_INCOMPLETE');self.assertFalse(stop['admitted'])
++        self.assertAlmostEqual(p.recover(self.root)['known_incurred_seconds'],
++            first['accounting']['observed_elapsed_seconds']+stop['accounting']['observed_elapsed_seconds'])
++        with self.assertRaises(p.IntegrityError):p.run_fixture(ROOT,self.root,'slot_002','D',p.ScriptedWorker())
++
++    def test_overshoot_and_nonoverlapping_nested_reconciliation(self):
++        r=self.runq(worker=p.ScriptedWorker(answer_seconds=500))
++        self.assertGreater(r['overshoot_seconds'],0)
++        self.assertGreater(r['accounting']['total_service_seconds'],r['reservation_seconds'])
++        # Injected duration deliberately exceeds policy: measurement cannot clip it.
++        a=p.reconcile([dict(start=0,end=3,nested=[dict(start=1,end=2)])],0,5,True)
++        self.assertEqual((a['exclusive_component_seconds'],a['unallocated_residual_seconds'],a['total_service_seconds']),(3,2,5))
++        with self.assertRaises(p.IntegrityError):p.reconcile([dict(start=0,end=3),dict(start=2,end=4)],0,5,True)
++
++    def test_actual_atomic_publication_request_result_control_and_prefix(self):
++        real_link=publication.os.link
++        for kind in ('claim','command','result','cancel','finish','resource','incident'):
++            path=self.root/(kind+'.json');prepared=Event();release=Event()
++            def paused(source,target):
++                prepared.set()
++                if not release.wait(5):raise RuntimeError('test synchronization timeout')
++                return real_link(source,target)
++            with patch.object(publication.os,'link',paused),ThreadPoolExecutor(max_workers=1) as pool:
++                future=pool.submit(p.publish,path,kind,'slot_000',{'bytes':'x'*2000})
++                try:
++                    self.assertTrue(prepared.wait(5))
++                    self.assertIsNone(p.read_record(path,kind,'slot_000'))
++                    self.assertNotIn(path,list(self.root.glob('*.json')))
++                finally:release.set()
++                future.result(timeout=5)
++            self.assertEqual(p.read_record(path,kind,'slot_000')['bytes'],'x'*2000)
++            with self.assertRaises(FileExistsError):p.publish(path,kind,'slot_000',{})
++        # Scan real fixture registry while next fully prepared claim is unpublished.
++        self.runq();prepared=Event();release=Event()
++        def pause_claim(source,target):
++            prepared.set()
++            if not release.wait(5):raise RuntimeError('test timeout')
++            return real_link(source,target)
++        with patch.object(publication.os,'link',pause_claim),ThreadPoolExecutor(max_workers=1) as pool:
++            f=pool.submit(p.publish,self.root/'slot_001/claim.json','claim','slot_001',{})
++            try:
++                self.assertTrue(prepared.wait(5));self.assertEqual(p.recover(self.root)['consumed'],['slot_000'])
++            finally:release.set()
++            f.result(timeout=5)
++        self.assertEqual(p.recover(self.root)['unresolved'],['slot_001'])
++
++    def test_precommit_interruption_and_corrupt_committed_fail_closed(self):
++        path=self.root/'interrupt.json'
++        with patch.object(publication.os,'link',side_effect=InterruptedError('injected before commit')):
++            with self.assertRaises(InterruptedError):p.publish(path,'command','slot_000',{})
++        self.assertIsNone(p.read_record(path,'command','slot_000'))
++        path.write_text('{',encoding='utf-8')
++        with self.assertRaises(ValueError):p.read_record(path,'command','slot_000')
++        self.runq();result=self.root/'slot_000/result.json'
++        obj=json.loads(result.read_text());obj['payload']['primary_score']=999
++        result.write_text(json.dumps(obj),encoding='utf-8')
++        with self.assertRaises(p.IntegrityError):p.recover(self.root)
++
++if __name__=='__main__':unittest.main()

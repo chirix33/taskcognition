@@ -1,0 +1,14 @@
+{
+  "event": "P02F_COST_DESIGN_BLOCKED",
+  "timestamp_utc": "2026-10-17T23:01:59.542088+00:00",
+  "completion_sha256": "9e5ee456ae2bbc992c9039ca63cc28d9a9cc007872e50ba3988f1fcaa86448e2",
+  "memo_sha256": "82dacd099a1817f3db6d707c72403aa8d71e74e3116a450e188bcfc8857ef472",
+  "previous_state_sha256": "8c61f7329737f3b2cf3a0166c5b611c5f07aa3bdc7e3c9e7a1387c8690b00cd5",
+  "next_decision": "cost-metric selection",
+  "reason": "Physical-time support unsupported; tariff source/rates and head envelope unresolved.",
+  "real_dispatch_enabled": false,
+  "p02_sealed": false,
+  "p03_started": false,
+  "study_frozen": false,
+  "model_work": 0
+}

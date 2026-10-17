@@ -1,0 +1,7 @@
+{
+  "module": "src/taskcognition/p02f_cost_v1.py",
+  "sha256": "56e80fe3a64aff63b7ffadc12b9920172b696908dbba2ecff56b49ac387a80a2",
+  "explicit_PYTHONPATH": "src",
+  "inference_modules_imported": false,
+  "model_work": 0
+}

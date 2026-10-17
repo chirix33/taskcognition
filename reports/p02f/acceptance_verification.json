@@ -1,0 +1,72 @@
+{
+  "status": "PASS",
+  "timestamp_utc": "2026-10-17T22:53:58.271333+00:00",
+  "accepted_hashes": {
+    "reports/p02e/P02E_review_packet.zip": "9f3fddc83ff26a26726623a3a568d35b71bbf61f470ce1f724fa0ccfbbbdbe0f",
+    "reports/p02e/P02E_evidence_index.json": "2cab5fc1f5e493a7ef081e948a09c753a4ae476f3220223040d4297b3e71d5e7",
+    "reports/p02e/offline_design_report.md": "62bd6de18f851239e5833684f818072d1965a5f7da302320e258b7b610db4d24",
+    "reports/p02e/next_step_proposal.md": "3220410a1d3a0f8e9194e3114d05ef4ae779860b27179da4b604de34b2770546",
+    "artifacts/development/p02d-cr01-plan-v4/run_plan.json": "c46977bfc0de1040965f08df8acbd55b9b063b386ccfb97f247a280ae2472365",
+    "reference/TaskCognition_Revised_Verified.pdf": "9eed0fe74f46c3acbc200183cf11693f1bec66a1180568087aeb775c97d8f6c8"
+  },
+  "indexed_zip_and_current_files_verified": 63,
+  "authority_hashes": {
+    "docs/P02E_acceptance_review.md": "224c5faede6c8200e0a8216de53f078362c089dfcb4001031f201adb54d760b3",
+    "docs/prompts/P02F_cost_boundary_preflight_prompt.md": "b664650e7d37ad27b18d1a476cac8562996ccdf99fa296661124012eb3ad2433"
+  },
+  "bindings": {
+    "AGENTS.md": "6543904d6ec6bba7e14c7da768e3753dfd06e497fa82ffeefec08b122ed2fbf5",
+    "docs/PROTOCOL_SOURCE_OF_TRUTH.md": "42f7467f3e05e09f39426c3618db9f7b6b94009074718c821708069fd9548cbe",
+    "docs/STATISTICAL_CONTRACT.md": "80687664d57fd36a5491709841536b940a24747f407b086e5ec75feb374f2dc3",
+    "docs/DECISIONS_AND_GAPS.md": "ce41af2031542b33d27c58925c46b2820573c6bcb01a10f95dcaddfd246e46bc",
+    "docs/ARCHITECTURE_AND_DATA.md": "147a17a2c5cd725f7817caa2217677d7a12ab561770ef28f94551fa0b2e2c865",
+    "docs/EVIDENCE_AND_MANUSCRIPT.md": "40877e76dc98d70486555a8ae9cebb036f25b0577632fde927a13300df02e355",
+    "docs/amendments/CR01_2026-10-05_v1.md": "ec07c0133224fb10f535fc9ac4d0816d12fb10acc683c09043de717cc089c0b8",
+    "paper/cr01-2026-10-05-v1/taskcognition.tex": "2abe9ab497224af77da372ff16c140afd4d27b82b2f841d4b42d2f631b0c92d8",
+    "configs/p02d_execution_authorization.json": "db66a4d9dde575496c66587f7d2cf1fcaf68f933c8851e53d6c6ed3bf30de2e0",
+    "reports/p02d_execution/workstation_before.json": "40fa1a454a4ccd8268e6d9d6ced8da3201a59a556f6f387cc25d5d3406d62090"
+  },
+  "previous_source_hashes": {
+    "src/taskcognition/artifacts.py": "d9305b414d243901c142483992f10fef2b13fe1d82e938d3db29fbc55979812d",
+    "src/taskcognition/cli.py": "ef6bab1b1337a219285f9e4da6117cf103e341382e32b9d21516b603515feada",
+    "src/taskcognition/contracts.py": "26bd43c723106dc6318d44601b1e464ceca6632b16ec1964fd6b61af057cf8a0",
+    "src/taskcognition/doctor.py": "75d78f74d21561d7ce295a1bfeec29e24c3af73f0206a5e4bda6b19bd367dde5",
+    "src/taskcognition/fixtures.py": "eeaac4bfa985aca88294240231a63950b5824a79f47b97c9de4e4b5ebddfc508",
+    "src/taskcognition/p01_ledger.py": "ba4b6de166d6bdb7667bb5cbe375618ed91e71173385146af28b199dd1ef2ee3",
+    "src/taskcognition/p01_native.py": "b1243feaa23c89c04e1004f7f65d376652c3477067cc8ccfe39f13c6e7ce3fd2",
+    "src/taskcognition/p01_parsing.py": "b9fbbf74e1f881c1d1da8cd4ea006d909b26b2cb665957d03da97ace2322fb0d",
+    "src/taskcognition/p01_smoke.py": "dc0c727b53196d204d9e080632f73f43380d90e72d9c5b0dd8e7a8bba4107a0a",
+    "src/taskcognition/p01_worker.py": "7acc9c3ef172ab06d2aab0ea19a4a57ccffb909b1c9d6a6a4786475d47e8e599",
+    "src/taskcognition/p02b_reporting.py": "1bfc8cc63f478a332792030082489c78a318920eaf8df09b36ab073177df7ea4",
+    "src/taskcognition/p02b_runner.py": "c8d2e09609a110da3926f85df640028086371a2d1d4a405e081286d795246116",
+    "src/taskcognition/p02b_worker.py": "d19a36e7873eb4a70946e53a7abb13dbf454b5a9f8b011e76a90fd3a1bec7655",
+    "src/taskcognition/p02d_features.py": "51f81a839dfab735f4f6a18009a30039933d4f62a85c6f1458f70534c2cc29ea",
+    "src/taskcognition/p02d_ledger.py": "ea166694fbc2832e5a3a0828fa4f680de1e5921f19f358861f01642f02db003e",
+    "src/taskcognition/p02d_plan.py": "d0cb2702f2ee593fa5636ad8a4f5941dd61488029b4aa7ece65300ab6845738d",
+    "src/taskcognition/p02d_publication.py": "dae6f9cbba184e8b4c5f5aaf0ec87c1d8f92562c6320ddf137c754b6bda103ae",
+    "src/taskcognition/p02d_reporting.py": "4224f7772bc7806ed3b456accaf601c5d1cfd0cc8dae00355469fcaa01d48c49",
+    "src/taskcognition/p02d_runner.py": "1f357150287fbe7941257a7bb48cdb4e177bbd6d7759a97e9cfb0aa379d088ed",
+    "src/taskcognition/p02d_worker.py": "e8d441c1f674263264b27538c459b1af23dbc02f09b3dda4cf3b33227584fb36",
+    "src/taskcognition/p02_native.py": "e4b09fd6357af6ac02e0d262e0ccaf7aafdd552ddd007001dff407f4bb06185b",
+    "src/taskcognition/p02_runner.py": "4ee2c7bd880a317274739f2e8e12f6591eacf78cb712dddfcaac6cfbad5dada3",
+    "src/taskcognition/p02_worker.py": "bee47d18b7590708a8e253d99c78abf3beca62dc23503c2d91a89db63e729b52",
+    "src/taskcognition/stages.py": "99bc8bd1739fae95f1aabf567e349bc31ff598617975d8f781e7fdeb4f098712",
+    "src/taskcognition/targets.py": "cbbf4af1774f51366791d94993a557325af2289f9a1b550d2ca3fa66a6b1f124",
+    "src/taskcognition/__init__.py": "4ab2849ffae20f4bda207b801c05e98ec79a6633dde0389455ec218a2b3416c7",
+    "src/taskcognition/__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d"
+  },
+  "original_cost_pages_read": [
+    3,
+    5,
+    6
+  ],
+  "new_gpu_inspection": false,
+  "model_work": 0,
+  "workstation": "Existing P02D inventory referenced, not a new GPU measurement.",
+  "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+  "os": "Windows-11-10.0.26200-SP0",
+  "disk_free_bytes": 1553805688832,
+  "head_before": "68b52df2daff85d61740d63082e9e3c5263698aa",
+  "wall_seconds": 0.7714639999903738,
+  "cpu_seconds": 0.09375
+}

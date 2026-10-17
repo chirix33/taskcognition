@@ -1,0 +1,8 @@
+{
+  "timestamp_utc": "2026-10-17T22:56:00.655958+00:00",
+  "memo_sha256": "82dacd099a1817f3db6d707c72403aa8d71e74e3116a450e188bcfc8857ef472",
+  "before_prototype_created": true,
+  "decision": "COST_DESIGN_BLOCKED",
+  "no_live_plan": true,
+  "model_work": 0
+}

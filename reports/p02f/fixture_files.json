@@ -1,0 +1,28 @@
+{
+  "evidence_kind": "fixture",
+  "files": {
+    "artifacts/fixtures/p02f-cost-v1-evidence/feature_incident/slot_000/claim.json": "8d8ddecbbf84f54a15fff7a979f3396fb85c8676bb95ac6436e2fe6a9644d2f1",
+    "artifacts/fixtures/p02f-cost-v1-evidence/feature_incident/slot_000/result.json": "1b5038fe4a7e3c7cc67f04dbdb0a153a321a4a30bf6510283ad7a6e30624d8b1",
+    "artifacts/fixtures/p02f-cost-v1-evidence/overshoot/slot_000/answer_admitted.json": "a886ccc0368396d8e3bb01b7fce4a08e9e7c14d4ab121029a1b6e9e10d63fb79",
+    "artifacts/fixtures/p02f-cost-v1-evidence/overshoot/slot_000/claim.json": "8d8ddecbbf84f54a15fff7a979f3396fb85c8676bb95ac6436e2fe6a9644d2f1",
+    "artifacts/fixtures/p02f-cost-v1-evidence/overshoot/slot_000/response.json": "b29bf9f5a97daf16b2a173537661fb9fa4545eb11e1537eb2bc6362dbd6c66be",
+    "artifacts/fixtures/p02f-cost-v1-evidence/overshoot/slot_000/result.json": "bc7f880d427a7c4450bcbf6f9fbc549210036a0a99a8de22d7e8a19a4b609bf4",
+    "artifacts/fixtures/p02f-cost-v1-evidence/resource_stop/slot_000/answer_admitted.json": "a886ccc0368396d8e3bb01b7fce4a08e9e7c14d4ab121029a1b6e9e10d63fb79",
+    "artifacts/fixtures/p02f-cost-v1-evidence/resource_stop/slot_000/claim.json": "2cc50abe643ffc6eecb2380229f4d907502450bbcefbf4fea9ea1b15fbcd4b99",
+    "artifacts/fixtures/p02f-cost-v1-evidence/resource_stop/slot_000/response.json": "1e20efc5b87e932ebcd8e12c09e1697b8729916f88da5e9fc3343982b5a19be9",
+    "artifacts/fixtures/p02f-cost-v1-evidence/resource_stop/slot_000/result.json": "eb504027c0c16f9d1a6a14a4af2981bb3b4b1043c818e448355eaf4f5f125b3e",
+    "artifacts/fixtures/p02f-cost-v1-evidence/resource_stop/stop.json": "bc1d808744c2b93f5a122d2ae41bbb026de920a2fd00a83a136e251468a1bd46",
+    "artifacts/fixtures/p02f-cost-v1-evidence/retained_failure/slot_000/answer_admitted.json": "a886ccc0368396d8e3bb01b7fce4a08e9e7c14d4ab121029a1b6e9e10d63fb79",
+    "artifacts/fixtures/p02f-cost-v1-evidence/retained_failure/slot_000/claim.json": "8d8ddecbbf84f54a15fff7a979f3396fb85c8676bb95ac6436e2fe6a9644d2f1",
+    "artifacts/fixtures/p02f-cost-v1-evidence/retained_failure/slot_000/response.json": "b29bf9f5a97daf16b2a173537661fb9fa4545eb11e1537eb2bc6362dbd6c66be",
+    "artifacts/fixtures/p02f-cost-v1-evidence/retained_failure/slot_000/result.json": "3013cf651f4c1400fe2bfaebff8a1ff38e9cfaa820be0349685fb867f6142daf",
+    "artifacts/fixtures/p02f-cost-v1-evidence/unsafe_stop/slot_000/answer_admitted.json": "a886ccc0368396d8e3bb01b7fce4a08e9e7c14d4ab121029a1b6e9e10d63fb79",
+    "artifacts/fixtures/p02f-cost-v1-evidence/unsafe_stop/slot_000/claim.json": "8d8ddecbbf84f54a15fff7a979f3396fb85c8676bb95ac6436e2fe6a9644d2f1",
+    "artifacts/fixtures/p02f-cost-v1-evidence/unsafe_stop/slot_000/response.json": "b29bf9f5a97daf16b2a173537661fb9fa4545eb11e1537eb2bc6362dbd6c66be",
+    "artifacts/fixtures/p02f-cost-v1-evidence/unsafe_stop/slot_000/result.json": "4fcc89695a4c0407fc8a22180e05696062eb2a9a668a792d8610337e6fa5bb80",
+    "artifacts/fixtures/p02f-cost-v1-evidence/warmup_augmented/slot_000/answer_admitted.json": "a886ccc0368396d8e3bb01b7fce4a08e9e7c14d4ab121029a1b6e9e10d63fb79",
+    "artifacts/fixtures/p02f-cost-v1-evidence/warmup_augmented/slot_000/claim.json": "286cc0cfc202952ec0c36592905b16aa4632bd2cb0cf9cbd1a91c3680b75df2d",
+    "artifacts/fixtures/p02f-cost-v1-evidence/warmup_augmented/slot_000/response.json": "1e20efc5b87e932ebcd8e12c09e1697b8729916f88da5e9fc3343982b5a19be9",
+    "artifacts/fixtures/p02f-cost-v1-evidence/warmup_augmented/slot_000/result.json": "eb8d8e559d71c73f4e7b90dcdc527acfff7992718570ccf6527dc8ac9f6e03f4"
+  }
+}

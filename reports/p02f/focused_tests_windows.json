@@ -1,0 +1,19 @@
+{
+  "evidence_kind": "development_observation",
+  "timestamp_utc": "2026-10-17T22:57:21.169491+00:00",
+  "argv": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-p",
+    "test_p02f_cost_v1.py",
+    "-v"
+  ],
+  "exit": 0,
+  "seconds": 1.4494500000146218,
+  "stdout": "",
+  "stderr": "test_actual_atomic_publication_request_result_control_and_prefix (test_p02f_cost_v1.CostFixtureTests.test_actual_atomic_publication_request_result_control_and_prefix) ... ok\ntest_both_live_entries_reject_all_authorization_states (test_p02f_cost_v1.CostFixtureTests.test_both_live_entries_reject_all_authorization_states) ... ok\ntest_bypass_is_distinct_directly_exercised_fixture_path (test_p02f_cost_v1.CostFixtureTests.test_bypass_is_distinct_directly_exercised_fixture_path) ... ok\ntest_feature_error_stops_unscored_before_answer (test_p02f_cost_v1.CostFixtureTests.test_feature_error_stops_unscored_before_answer) ... ok\ntest_known_failure_and_known_timeout_retained_but_cleanup_dominates (test_p02f_cost_v1.CostFixtureTests.test_known_failure_and_known_timeout_retained_but_cleanup_dominates) ... ok\ntest_no_replay_recovery_preserves_cost_once_and_unknown (test_p02f_cost_v1.CostFixtureTests.test_no_replay_recovery_preserves_cost_once_and_unknown) ... ok\ntest_one_load_passes_answer_reseed_no_cache_and_stub_not_gate (test_p02f_cost_v1.CostFixtureTests.test_one_load_passes_answer_reseed_no_cache_and_stub_not_gate) ... ok\ntest_overshoot_and_nonoverlapping_nested_reconciliation (test_p02f_cost_v1.CostFixtureTests.test_overshoot_and_nonoverlapping_nested_reconciliation) ... ok\ntest_precommit_interruption_and_corrupt_committed_fail_closed (test_p02f_cost_v1.CostFixtureTests.test_precommit_interruption_and_corrupt_committed_fail_closed) ... ok\ntest_real_cpu_subprocess_direct_child_and_supervisor_closed (test_p02f_cost_v1.CostFixtureTests.test_real_cpu_subprocess_direct_child_and_supervisor_closed) ... ok\ntest_reservations_exhaustion_and_declared_count_arithmetic (test_p02f_cost_v1.CostFixtureTests.test_reservations_exhaustion_and_declared_count_arithmetic) ... ok\n\n----------------------------------------------------------------------\nRan 11 tests in 0.929s\n\nOK\n"
+}

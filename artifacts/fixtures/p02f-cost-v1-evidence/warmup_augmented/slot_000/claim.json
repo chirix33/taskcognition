@@ -1,0 +1,1 @@
+{"evidence_kind":"fixture","kind":"claim","payload":{"action":"R","bypass":false,"invocation":"fixture-only","output_tokens_reserved":2048,"reservation_seconds":690,"start_monotonic":0.0,"warmups":2},"payload_sha256":"8f4bed2a41b3604ef87f258479b2b3230b54abcf2518361b2fe9c9982056c090","slot":"slot_000","version":"P02F-cost-fixture-v1"}
