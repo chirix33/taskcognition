@@ -1,0 +1,37 @@
+{
+  "status": "PASS",
+  "files_verified": 63,
+  "changed_current_operational_files": {
+    "configs/phase_state.json": {
+      "accepted": "c14e29b0366d566682e7b18939ac5eb88775020e19f03b509b6884e144c19c4a",
+      "current": "e5efcb54a107480a9fceacc918fc0277819f7de59f2acc6236052d5a383d040c",
+      "reason": "P02E acceptance and P02F offline state/decision events; historical bytes retained in accepted packet."
+    },
+    "reports/decision_ledger.md": {
+      "accepted": "d72a80417ca2ec7d7094a49aa7d1f74a81d965b78732d7bca691dcffdaf2451b",
+      "current": "75e6185bdb2aea223cca109a992fc67a288329d122d1957abd027199ef4f96fe",
+      "reason": "P02E acceptance and P02F offline state/decision events; historical bytes retained in accepted packet."
+    }
+  },
+  "all_old_scientific_source_unchanged": true,
+  "accepted_hashes": {
+    "reports/p02e/P02E_review_packet.zip": "9f3fddc83ff26a26726623a3a568d35b71bbf61f470ce1f724fa0ccfbbbdbe0f",
+    "reports/p02e/P02E_evidence_index.json": "2cab5fc1f5e493a7ef081e948a09c753a4ae476f3220223040d4297b3e71d5e7",
+    "reports/p02e/offline_design_report.md": "62bd6de18f851239e5833684f818072d1965a5f7da302320e258b7b610db4d24",
+    "reports/p02e/next_step_proposal.md": "3220410a1d3a0f8e9194e3114d05ef4ae779860b27179da4b604de34b2770546",
+    "artifacts/development/p02d-cr01-plan-v4/run_plan.json": "c46977bfc0de1040965f08df8acbd55b9b063b386ccfb97f247a280ae2472365",
+    "reference/TaskCognition_Revised_Verified.pdf": "9eed0fe74f46c3acbc200183cf11693f1bec66a1180568087aeb775c97d8f6c8"
+  },
+  "unchanged_authority": {
+    "AGENTS.md": "6543904d6ec6bba7e14c7da768e3753dfd06e497fa82ffeefec08b122ed2fbf5",
+    "docs/PROTOCOL_SOURCE_OF_TRUTH.md": "42f7467f3e05e09f39426c3618db9f7b6b94009074718c821708069fd9548cbe",
+    "docs/STATISTICAL_CONTRACT.md": "80687664d57fd36a5491709841536b940a24747f407b086e5ec75feb374f2dc3",
+    "docs/DECISIONS_AND_GAPS.md": "ce41af2031542b33d27c58925c46b2820573c6bcb01a10f95dcaddfd246e46bc",
+    "docs/ARCHITECTURE_AND_DATA.md": "147a17a2c5cd725f7817caa2217677d7a12ab561770ef28f94551fa0b2e2c865",
+    "docs/EVIDENCE_AND_MANUSCRIPT.md": "40877e76dc98d70486555a8ae9cebb036f25b0577632fde927a13300df02e355",
+    "docs/amendments/CR01_2026-10-05_v1.md": "ec07c0133224fb10f535fc9ac4d0816d12fb10acc683c09043de717cc089c0b8",
+    "paper/cr01-2026-10-05-v1/taskcognition.tex": "2abe9ab497224af77da372ff16c140afd4d27b82b2f841d4b42d2f631b0c92d8",
+    "configs/p02d_execution_authorization.json": "db66a4d9dde575496c66587f7d2cf1fcaf68f933c8851e53d6c6ed3bf30de2e0",
+    "reports/p02d_execution/workstation_before.json": "40fa1a454a4ccd8268e6d9d6ced8da3201a59a556f6f387cc25d5d3406d62090"
+  }
+}

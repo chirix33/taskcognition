@@ -1,0 +1,7 @@
+{
+  "source_evidence_commit": "375ecf5bb34faf262db24a102ae8d2160f376f21",
+  "accepted_P02E_evidence_commit": "2bc0131eb8cb70a314d6a8fcfe31f277aadf45b1",
+  "accepted_P02E_packet_commit": "7c2fb57b3b895ae440a9cdd9606a13a4bbaf5384",
+  "P02F_packet_commit_lookup": "git log -1 -- reports/p02f/P02F_review_packet.zip",
+  "no_push": true
+}
